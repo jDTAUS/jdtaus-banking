@@ -7,13 +7,13 @@
   <groupId>org.jdtaus</groupId>
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
-  <name>jDTAUS Banking Library</name>
+  <name>jDTAUS Banking</name>
   <version>1.0-alpha-1-SNAPSHOT</version>
   <description><![CDATA[
-  jDTAUS Banking provides a library for electronic banking facilities. This is the parent module for
-  the library artifacts.]]>
+  jDTAUS Banking provides a library for electronic banking facilities. This is
+  the parent module for the library artifacts.]]>
   </description>
-  <url>http://www.jdtaus.org/jdtaus-lib-banking/1.0.x</url>
+  <url>http://www.jdtaus.org/jdtaus-banking/1.0.x</url>
   <issueManagement>
     <system>Sourceforge</system>
     <url>http://sourceforge.net/tracker/?group_id=144535&amp;atid=759050</url>
@@ -161,6 +161,12 @@
         <artifactId>junit</artifactId>
         <version>[3.8, 3.8.1]</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.common</groupId>
+        <artifactId>jdtaus-core-api</artifactId>
+        <version>[1.0-alpha-1, 1.1)</version>
+        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.spi</groupId>
