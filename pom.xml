@@ -116,6 +116,10 @@
   </build>
   <modules>
     <module>jdtaus-banking-api</module>
+    <module>jdtaus-banking-spi</module>
+    <module>jdtaus-banking-ri-bankleitzahlenverzeichnis</module>
+    <module>jdtaus-banking-ri-textschluesselverzeichnis</module>
+    <module>jdtaus-banking-ri-dtaus</module>
   </modules>
   <repositories>
     <repository>
@@ -165,6 +169,18 @@
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-core-api</artifactId>
+        <version>RELEASE</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.spi</groupId>
+        <artifactId>jdtaus-core-spi</artifactId>
+        <version>RELEASE</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.runtime</groupId>
+        <artifactId>jdtaus-core-client-container</artifactId>
         <version>RELEASE</version>
         <scope>compile</scope>
       </dependency>
