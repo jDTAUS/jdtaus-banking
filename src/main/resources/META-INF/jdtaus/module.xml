@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  jDTAUS - DTAUS fileformat.
+  Copyright (C) 2005 - 2007 Christian Schulte <cs@schulte.it>
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document   : module.xml
+  Author     : Christian Schulte <cs@jdtaus.org>
+  Version    : $Id$
+  Description: Runtime configuration for the ${pom.name} module.
+        
+-->
+
+<jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
+               xmlns:jdtaus="http://jdtaus.org/runtime/container/xml"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://jdtaus.org/runtime/container/xml http://www.jdtaus.org/1.0.x/jdtaus-core/jdtaus-core-runtime/jdtaus-module.xsd"
+               jdtaus:name="${pom.name}"
+               jdtaus:description="${pom.description}"
+               jdtaus:version="1.0">
+  
+  <jdtaus:implementations>
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.spi.runtime.XMLTextschluesselVerzeichnis"
+                           jdtaus:name="jDTAUS Banking SPI"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+      
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"/>
+      </jdtaus:implementedSpecifications>
+      
+      <jdtaus:dependencies>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
+                           jdtaus:implementationName="jDTAUS Core SPI"
+                           jdtaus:name="Logger"
+                           jdtaus:bound="true">
+          
+          <jdtaus:properties>
+            <jdtaus:property jdtaus:name="name" 
+                             jdtaus:type="java.lang.String"
+                             jdtaus:value="org.jdtaus.banking.spi.runtime.XMLTextschluesselVerzeichnis"
+                             jdtaus:api="true"/>
+            
+          </jdtaus:properties>
+        </jdtaus:dependency>
+      </jdtaus:dependencies>
+      
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="dataDirectory"
+                         jdtaus:type="java.lang.String"
+                         jdtaus:value="META-INF/jdtaus"/>
+        
+        <jdtaus:property jdtaus:name="resource"
+                         jdtaus:type="java.lang.String"
+                         jdtaus:value="textschluessel.xml"/>
+        
+      </jdtaus:properties>
+    </jdtaus:implementation>
+  </jdtaus:implementations>
+</jdtaus:module>

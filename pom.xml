@@ -6,15 +6,15 @@
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>jdtaus-ri-textschluesselverzeichnis</artifactId>
+  <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
   <groupId>org.jdtaus.runtime</groupId>
-  <name>jDTAUS RI Textschlüsselverzeichnis</name>
+  <name>jDTAUS Banking RI Textschluesselverzeichnis</name>
   <version>1.0-alpha-1-SNAPSHOT</version>
-  <description>jDTAUS TextschlüsselVerzeichnis reference implementation.</description>
+  <description>jDTAUS TextschluesselVerzeichnis reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-ri-textschluesselverzeichnis/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-ri-textschluesselverzeichnis/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-ri-textschluesselverzeichnis/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</url>
   </scm>
   <build>
     <resources>
@@ -27,9 +27,31 @@
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
-          <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-ri-textschluesselverzeichnis/tags</tagBase>
+          <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags</tagBase>
         </configuration>
       </plugin>
+      
+      <plugin>
+        <groupId>org.jdtaus.mojo</groupId>
+        <artifactId>jdtaus-resource-mojo</artifactId>
+        <version>RELEASE</version>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>generate-bundles</goal>
+            </goals>
+            <configuration>
+              <bundles>
+                <bundle>org.jdtaus.banking.spi.runtime.XMLTextschluesselVerzeichnis</bundle>
+              </bundles>
+              <encoding>UTF-8</encoding>
+              <locale>en</locale>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-container-mojo</artifactId>
@@ -37,7 +59,7 @@
         <dependencies>
           <dependency>
             <groupId>org.jdtaus.runtime</groupId>
-            <artifactId>jdtaus-client-container-adapter</artifactId>
+            <artifactId>jdtaus-core-client-container</artifactId>
             <version>RELEASE</version>
             <scope>runtime</scope>
           </dependency>
@@ -64,7 +86,7 @@
     <dependency>
       <groupId>org.jdtaus.spi</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
-      <version>RELEASE</version>
+      <version>1.0-alpha-1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -115,7 +137,7 @@
           <doctitle>${pom.name} Specification ${pom.version}</doctitle>
           <linksource>true</linksource>
           <nodeprecated>true</nodeprecated>
-          <quiet>true</quiet>
+          <quiet>false</quiet>
           <verbose>false</verbose>
           <serialwarn>true</serialwarn>
           <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
