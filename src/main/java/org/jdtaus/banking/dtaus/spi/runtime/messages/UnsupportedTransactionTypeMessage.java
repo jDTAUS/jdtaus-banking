@@ -35,9 +35,9 @@ import org.jdtaus.common.i18n.Message;
  */
 public final class UnsupportedTransactionTypeMessage
     extends AbstractErrorMessage {
-    
+
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code UnsupportedTransactionTypeMessage} Instanz mit
      * Detailangaben zu den ungültigen Daten.
@@ -56,7 +56,7 @@ public final class UnsupportedTransactionTypeMessage
     public UnsupportedTransactionTypeMessage(final long position,
         final int unsupportedKey, final int unsupportedExt,
         final Textschluessel[] supportedTypes) throws PhysicalFileError {
-        
+
         super();
         this.position = position;
         this.unsupportedKey = unsupportedKey;
@@ -66,7 +66,7 @@ public final class UnsupportedTransactionTypeMessage
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code UnsupportedTransactionTypeMessage} Instanzen.
      *
@@ -81,55 +81,55 @@ public final class UnsupportedTransactionTypeMessage
      */
     public static UnsupportedTransactionTypeMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() ==
                 UnsupportedTransactionTypeMessage.class) {
-                
+
                 ret.add(messages[i]);
             }
         }
-        
+
         return (UnsupportedTransactionTypeMessage[]) ret.toArray(
             new UnsupportedTransactionTypeMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--UnsupportedTransactionTypeMessage---------------------------------------
-    
+
     /**
      * Absolute Datei-Position.
      * @serial
      */
     private final long position;
-    
+
     /**
      * Der nicht unterstütze Textschlüssel.
      * @serial
      */
     private final int unsupportedKey;
-    
+
     /**
      * Die nicht unterstütze Ergänzung.
      * @serial
      */
     private final int unsupportedExt;
-    
+
     /**
      * Die unterstützen Kennzeichnungen.
      * @serial
      */
     private final Textschluessel[] supportedTypes;
-    
+
     /**
      * Liest den Wert der Property {@code <position>}.
      *
@@ -138,7 +138,7 @@ public final class UnsupportedTransactionTypeMessage
     public long getPosition() {
         return this.position;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <unsupportedKey>}.
      *
@@ -147,7 +147,7 @@ public final class UnsupportedTransactionTypeMessage
     public int getUnsupportedKey() {
         return this.unsupportedKey;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <unsupportedExt>}.
      *
@@ -156,7 +156,7 @@ public final class UnsupportedTransactionTypeMessage
     public int getUnsupportedExt() {
         return this.unsupportedExt;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <supportedTypes>}.
      *
@@ -165,10 +165,10 @@ public final class UnsupportedTransactionTypeMessage
     public Textschluessel[] getSupportedTypes() {
         return this.supportedTypes;
     }
-    
+
     //---------------------------------------UnsupportedTransactionTypeMessage--
     //--Message-----------------------------------------------------------------
-    
+
     public Object[] getFormatArguments() {
         return new Object[] {
             new Long(this.getPosition()),
@@ -185,7 +185,7 @@ public final class UnsupportedTransactionTypeMessage
             Integer.valueOf(this.getUnsupportedExt())
         });
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

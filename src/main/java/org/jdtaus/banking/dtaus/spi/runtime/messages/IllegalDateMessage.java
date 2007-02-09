@@ -34,29 +34,29 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class IllegalDateMessage extends AbstractErrorMessage {
-    
+
     //--Konstanten--------------------------------------------------------------
-    
+
     /** 1. Januar 1980 00:00:00 CET. */
     private static final long VALID_DATES_START_MILLIS = 315529200000L;
-    
+
     /** 31. Dezember 2079 23:59:59 CET. */
     private static final long VALID_DATES_END_MILLIS = 3471289199999L;
-    
+
     /** 1. Januar 1980 00:00:00 CET. */
     private static final Date VALID_DATES_START =
         new Date(VALID_DATES_START_MILLIS);
-    
+
     /** 31. Dezember 2079 23:59:59 CET. */
     private static final Date VALID_DATES_END =
         new Date(VALID_DATES_END_MILLIS);
-    
+
     /** Ungültiges Datum. */
     private static final Date INVALID_DATE = new Date(0L);
-    
+
     //--------------------------------------------------------------Konstanten--
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code IllegalDateMessage} mit Angaben zu dem
      * ungültigen Datum.
@@ -71,7 +71,7 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
      */
     public IllegalDateMessage(final int field, final long position,
         final Date illegalDate) throws PhysicalFileError {
-        
+
         super();
         this.field = field;
         this.position = position;
@@ -80,7 +80,7 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code IllegalDateMessage} Instanzen.
      *
@@ -95,47 +95,47 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
      */
     public static IllegalDateMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == IllegalDateMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (IllegalDateMessage[]) ret.toArray(
             new IllegalDateMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--IllegalDateMessage------------------------------------------------------
-    
+
     /**
      * Wert von Property {@code <field>}.
      * @serial
      */
     private final int field;
-    
+
     /**
      * Wert von Property {@code <position>}.
      * @serial
      */
     private final long position;
-    
+
     /**
      * Wert von Property {@code <illegalDate>}.
      * @serial
      */
     private final Date illegalDate;
-    
+
     /**
      * Liest den Wert der Property {@code <field>}.
      *
@@ -146,7 +146,7 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
     public int getField() {
         return this.field;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <position>}.
      *
@@ -155,7 +155,7 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
     public long getPosition() {
         return this.position;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <illegalDate>}.
      *
@@ -164,7 +164,7 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
     public Date getIllegalDate() {
         return this.illegalDate;
     }
-    
+
     /**
      * Prüfung eines Datums.
      *
@@ -175,20 +175,20 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
      */
     public static boolean isDateValid(final Date date) {
         boolean ret = date != null;
-        
+
         if(ret) {
             final long millis = date.getTime();
             ret = millis >= IllegalDateMessage.VALID_DATES_START_MILLIS &&
                 millis <= IllegalDateMessage.VALID_DATES_END_MILLIS;
-            
+
         }
-        
+
         return ret;
     }
-    
+
     //------------------------------------------------------IllegalDateMessage--
     //--Message-----------------------------------------------------------------
-    
+
     public Object[] getFormatArguments() {
         return new Object[] {
             Integer.toHexString(this.getField()),
@@ -196,7 +196,7 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
             this.getIllegalDate()
         };
     }
-    
+
     /** {@inheritDoc} */
     public String getText(final Locale locale) {
         return IllegalDateMessageBundle.getIllegalDateMessage(locale).format(
@@ -209,7 +209,7 @@ public final class IllegalDateMessage extends AbstractErrorMessage {
             Long.valueOf(this.getPosition())
         });
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

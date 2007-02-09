@@ -33,21 +33,21 @@ import org.jdtaus.core.i18n.Message;
  * @version $Id$
  */
 public abstract class AbstractErrorMessage extends Message {
-    
+
     //--Konstanten--------------------------------------------------------------
-    
+
     /** Context-Schlüssel für Property {@code <fatal>}. */
     private static final String CTX_ERRORS_ENABLED =
         AbstractErrorMessage.class.getName() + ".errorsEnabled";
-    
+
     //--------------------------------------------------------------Konstanten--
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /** Erzeugt eine neue {@code AbstractErrorMessage}. */
     protected AbstractErrorMessage() {
         super();
     }
-    
+
     /**
      * Zugriff auf {@code AbstractErrorMessage} Instanzen.
      *
@@ -62,29 +62,29 @@ public abstract class AbstractErrorMessage extends Message {
      */
     public static AbstractErrorMessage[] getErrorMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i] instanceof AbstractErrorMessage) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (AbstractErrorMessage[]) ret.toArray(
             new AbstractErrorMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--AbstractErrorMessage----------------------------------------------------
-    
+
     /**
      * Auskunft ob Laufzeitfehler aktiviert sind.
      *
@@ -97,16 +97,16 @@ public abstract class AbstractErrorMessage extends Message {
     public static boolean isErrorsEnabled() throws ContextError {
         Boolean fatal = (Boolean) ContextFactory.getContext().
             getAttribute(AbstractErrorMessage.CTX_ERRORS_ENABLED);
-        
+
         if(fatal == null) {
             // Standard-Wert initialisieren.
             AbstractErrorMessage.setErrorsEnabled(true);
             fatal = Boolean.TRUE;
         }
-        
+
         return fatal.booleanValue();
     }
-    
+
     /**
      * Aktiviert oder unterdrückt Laufzeitfehler.
      *
@@ -118,13 +118,13 @@ public abstract class AbstractErrorMessage extends Message {
      */
     public static void setErrorsEnabled(
         final boolean enabled) throws ContextError {
-        
+
         ContextFactory.getContext().setAttribute(
             AbstractErrorMessage.CTX_ERRORS_ENABLED, enabled ?
                 Boolean.TRUE : Boolean.FALSE);
-        
+
     }
-    
+
     //----------------------------------------------------AbstractErrorMessage--
-    
+
 }

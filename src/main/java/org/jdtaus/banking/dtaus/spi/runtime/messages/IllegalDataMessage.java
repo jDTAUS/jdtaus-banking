@@ -33,42 +33,42 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class IllegalDataMessage extends AbstractErrorMessage {
-    
+
     //--Konstanten--------------------------------------------------------------
-    
+
     /**
      * Konstante für Zeichen des DTAUS-Alphabets.
      */
     public static final int ALPHA = 1;
-    
+
     /**
      * Konstante für Ziffern des DTAUS-Alphabets.
      */
     public static final int NUMERIC = 2;
-    
+
     /**
      * Konstante für Zeichen des alpha-numerischen DTAUS-Alphabets.
      */
     public static final int ALPHA_NUMERIC = 3;
-    
+
     /**
      * Konstante für EBCDIC gepackte Zahl.
      */
     public static final int PACKET_POSITIVE = 4;
-    
+
     /**
      * Konstante für konstante Werte.
      */
     public static final int CONSTANT = 5;
-    
+
     /**
      * Konstante für Reserve-Felder.
      */
     public static final int RESERVED = 6;
-    
+
     //--------------------------------------------------------------Konstanten--
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code IllegalDataMessage} mit Angaben zu den
      * ungültigen Daten.
@@ -86,7 +86,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public IllegalDataMessage(final int field, final int type,
         final long position, final Object invalidData) throws
         PhysicalFileError {
-        
+
         super();
         this.field = field;
         this.type = type;
@@ -97,7 +97,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code IllegalDataMessage} Instanzen.
      *
@@ -112,30 +112,30 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      */
     public static IllegalDataMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == IllegalDataMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (IllegalDataMessage[]) ret.toArray(
             new IllegalDataMessage[ret.size()]);
-        
+
     }
-    
+
     private static final int[] TYPES = {
         ALPHA, NUMERIC, ALPHA_NUMERIC, PACKET_POSITIVE, CONSTANT, RESERVED
     };
-    
+
     private void assertValidType() {
         boolean valid = false;
         for(int i = TYPES.length - 1; i >= 0 && !valid; i--) {
@@ -143,39 +143,39 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
                 valid = true;
             }
         }
-        
+
         if(!valid) {
             throw new IllegalArgumentException("type");
         }
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--IllegalDataMessage------------------------------------------------------
-    
+
     /**
      * Wert der Property {@code <field>}.
      * @serial
      */
     private final int field;
-    
+
     /**
      * Wert der Property {@code <position>}.
      * @serial
      */
     private final long position;
-    
+
     /**
      * Wert der Property {@code <type>}.
      * @serial
      */
     private final int type;
-    
+
     /**
      * Wert der Property {@code <invalidData>}.
      * @serial
      */
     private final Object invalidData;
-    
+
     /**
      * Liest den Wert der Property {@code <field>}.
      *
@@ -185,7 +185,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public int getField() {
         return this.field;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <position>}.
      *
@@ -194,7 +194,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public long getPosition() {
         return this.position;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <type>}.
      *
@@ -205,7 +205,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public int getType() {
         return this.type;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <invalidData>}.
      *
@@ -214,10 +214,10 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public Object getInvalidData() {
         return this.invalidData;
     }
-    
+
     //------------------------------------------------------IllegalDataMessage--
     //--Message-----------------------------------------------------------------
-    
+
     public Object[] getFormatArguments() {
         return new Object[] {
             Integer.toHexString(this.getField()).toUpperCase(),
@@ -225,15 +225,15 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
             this.getInvalidData()
         };
     }
-    
+
     /** {@inheritDoc} */
     public String getText(final Locale locale) {
         return IllegalDataMessageBundle.getIllegalDataMessage(locale).format(
             new Object[] { Integer.toHexString(this.getField()).toUpperCase(),
             Long.valueOf(this.getPosition()), this.getInvalidData() });
-        
+
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

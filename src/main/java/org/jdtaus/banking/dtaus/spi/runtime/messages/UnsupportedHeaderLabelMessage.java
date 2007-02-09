@@ -34,9 +34,9 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class UnsupportedHeaderLabelMessage extends AbstractErrorMessage {
-    
+
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code UnsupportedHeaderLabelMessage} Instanz mit
      * Detailangaben zu den ungültigen Daten.
@@ -52,7 +52,7 @@ public final class UnsupportedHeaderLabelMessage extends AbstractErrorMessage {
     public UnsupportedHeaderLabelMessage(final long position,
         final String unsupportedLabel,
         final LogicalFileType[] supportedLabels) throws PhysicalFileError {
-        
+
         super();
         this.position = position;
         this.unsupportedLabel = unsupportedLabel;
@@ -61,7 +61,7 @@ public final class UnsupportedHeaderLabelMessage extends AbstractErrorMessage {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code UnsupportedHeaderLabelMessage} Instanzen.
      *
@@ -76,47 +76,47 @@ public final class UnsupportedHeaderLabelMessage extends AbstractErrorMessage {
      */
     public static UnsupportedHeaderLabelMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == UnsupportedHeaderLabelMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (UnsupportedHeaderLabelMessage[]) ret.toArray(
             new UnsupportedHeaderLabelMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--UnsupportedHeaderLabelMessage-------------------------------------------
-    
+
     /**
      * Absolute Datei-Position.
      * @serial
      */
     private final long position;
-    
+
     /**
      * Die nicht unterstütze Kennzeichnung.
      * @serial
      */
     private final String unsupportedLabel;
-    
+
     /**
      * Die unterstützen Kennzeichnungen.
      * @serial
      */
     private final LogicalFileType[] supportedLabels;
-    
+
     /**
      * Liest den Wert der Property {@code <position>}.
      *
@@ -125,7 +125,7 @@ public final class UnsupportedHeaderLabelMessage extends AbstractErrorMessage {
     public long getPosition() {
         return this.position;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <unsupportedLabel>}.
      *
@@ -134,7 +134,7 @@ public final class UnsupportedHeaderLabelMessage extends AbstractErrorMessage {
     public String getUnsupportedLabel() {
         return this.unsupportedLabel;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <supportedLabels>}.
      *
@@ -143,14 +143,14 @@ public final class UnsupportedHeaderLabelMessage extends AbstractErrorMessage {
     public LogicalFileType[] getSupportedLabels() {
         return this.supportedLabels;
     }
-    
+
     //-------------------------------------------UnsupportedHeaderLabelMessage--
     //--Message-----------------------------------------------------------------
-    
+
     public Object[] getFormatArguments() {
         return new Object[] { new Long(position), this.getUnsupportedLabel() };
     }
-    
+
     /** {@inheritDoc} */
     public String getText(final Locale locale) {
         return UnsupportedHeaderLabelMessageBundle.
@@ -158,7 +158,7 @@ public final class UnsupportedHeaderLabelMessage extends AbstractErrorMessage {
             this.getUnsupportedLabel()
         });
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

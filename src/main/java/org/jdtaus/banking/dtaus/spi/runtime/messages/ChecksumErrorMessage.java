@@ -34,9 +34,9 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class ChecksumErrorMessage extends AbstractErrorMessage {
-    
+
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code ChecksumErrorMessage} Instanz.
      *
@@ -52,7 +52,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      */
     public ChecksumErrorMessage(final Checksum storedChecksum,
         final Checksum computedChecksum) throws PhysicalFileError {
-        
+
         if(storedChecksum == null) {
             throw new NullPointerException("storedChecksum");
         }
@@ -63,14 +63,14 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
             throw new IllegalArgumentException("storedChecksum=" +
                 storedChecksum + ", computedChecksum=" + computedChecksum);
         }
-        
+
         this.storedChecksum = storedChecksum;
         this.computedChecksum = computedChecksum;
         if(AbstractErrorMessage.isErrorsEnabled()) {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code ChecksumErrorMessage} Instanzen.
      *
@@ -85,41 +85,41 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      */
     public static ChecksumErrorMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == ChecksumErrorMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (ChecksumErrorMessage[]) ret.toArray(
             new ChecksumErrorMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--ChecksumErrorMessage----------------------------------------------------
-    
+
     /**
      * Gespeicherte Prüfsumme.
      * @serial
      */
     private final Checksum storedChecksum;
-    
+
     /**
      * Berechnete Prüfsumme.
      * @serial
      */
     private final Checksum computedChecksum;
-    
+
     /**
      * Liest den Wert der Property {@code <storedChecksum>}.
      *
@@ -130,7 +130,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public Checksum getStoredChecksum() {
         return this.storedChecksum;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <computedChecksum>}.
      *
@@ -141,10 +141,10 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public Checksum getComputedChecksum() {
         return this.computedChecksum;
     }
-    
+
     //----------------------------------------------------ChecksumErrorMessage--
     //--Message-----------------------------------------------------------------
-    
+
     public Object[] getFormatArguments() {
         return new Object[] {};
     }
@@ -153,7 +153,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public String getText(final Locale locale) {
         return ChecksumErrorMessageBundle.getChecksumErrorText(locale);
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

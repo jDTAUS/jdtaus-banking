@@ -33,9 +33,9 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class IllegalFileLengthMessage extends AbstractErrorMessage {
-    
+
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code IllegalFileLengthMessage} mit Angaben zur
      * ungültigen Dateilänge.
@@ -47,7 +47,7 @@ public final class IllegalFileLengthMessage extends AbstractErrorMessage {
      */
     public IllegalFileLengthMessage(final long fileLength,
         final int blockSize) throws PhysicalFileError {
-        
+
         super();
         this.fileLength = fileLength;
         this.blockSize = blockSize;
@@ -55,7 +55,7 @@ public final class IllegalFileLengthMessage extends AbstractErrorMessage {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code IllegalFileLengthMessage} Instanzen.
      *
@@ -70,41 +70,41 @@ public final class IllegalFileLengthMessage extends AbstractErrorMessage {
      */
     public static IllegalFileLengthMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == IllegalFileLengthMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (IllegalFileLengthMessage[]) ret.toArray(
             new IllegalFileLengthMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--IllegalFileLengthMessage------------------------------------------------
-    
+
     /**
      * Wert der Property {@code <fileLength>}.
      * @serial
      */
     private final long fileLength;
-    
+
     /**
      * Wert der Property {@code <blockSize>}.
      * @serial
      */
     private final int blockSize;
-    
+
     /**
      * Liest den Wert der Property {@code <fileLength>}.
      *
@@ -113,7 +113,7 @@ public final class IllegalFileLengthMessage extends AbstractErrorMessage {
     public long getFileLength() {
         return this.fileLength;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <blockSize>}.
      *
@@ -122,16 +122,16 @@ public final class IllegalFileLengthMessage extends AbstractErrorMessage {
     public int getBlockSize() {
         return this.blockSize;
     }
-    
+
     //------------------------------------------------IllegalFileLengthMessage--
     //--Message-----------------------------------------------------------------
-    
+
     public Object[] getFormatArguments() {
         return new Object[] {
             new Long(this.getFileLength()), new Integer(this.getBlockSize())
         };
     }
-    
+
     /** {@inheritDoc} */
     public String getText(final Locale locale) {
         return IllegalFileLengthMessageBundle.
@@ -140,7 +140,7 @@ public final class IllegalFileLengthMessage extends AbstractErrorMessage {
             Integer.valueOf(this.getBlockSize())
         });
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

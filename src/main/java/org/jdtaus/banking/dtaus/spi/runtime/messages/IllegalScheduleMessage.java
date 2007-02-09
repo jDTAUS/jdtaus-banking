@@ -38,19 +38,19 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class IllegalScheduleMessage extends AbstractErrorMessage {
-    
+
     //--Konstanten--------------------------------------------------------------
-    
+
     /**
      * Maximal erlaubte Anzahl Tage zwischen Erstellungs- und Ausführungsdatum
      * in Millisekunden.
      */
     private static final long MAX_SCHEDULEDAYS_MILLIS =
         15L * 24L * 60L * 60L * 1000L;
-    
+
     //--------------------------------------------------------------Konstanten--
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code IllegalScheduleMessage}.
      *
@@ -61,7 +61,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      */
     public IllegalScheduleMessage(final long position,
         final Header.Schedule schedule) throws PhysicalFileError {
-        
+
         super();
         this.position = position;
         this.schedule = schedule;
@@ -69,7 +69,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code IllegalScheduleMessage} Instanzen.
      *
@@ -84,41 +84,41 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      */
     public static IllegalScheduleMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == IllegalScheduleMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (IllegalScheduleMessage[]) ret.toArray(
             new IllegalScheduleMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--IllegalScheduleMessage--------------------------------------------------
-    
+
     /**
      * Wert der Property {@code <position>}.
      * @serial
      */
     private final long position;
-    
+
     /**
      * Wert der Property {@code <schedule>}.
      * @serial
      */
     private final Header.Schedule schedule;
-    
+
     /**
      * Liest den Wert der Property {@code <position>}.
      *
@@ -127,7 +127,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
     public long getPosition() {
         return this.position;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <createDate>}.
      *
@@ -136,7 +136,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
     public Header.Schedule getSchedule() {
         return this.schedule;
     }
-    
+
     /**
      * Prüfung einer Auftrags-Terminierung.
      *
@@ -147,23 +147,23 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      */
     public static boolean isScheduleValid(final Header.Schedule schedule) {
         boolean ret = schedule != null && schedule.getCreateDate() != null;
-        
+
         if(ret) {
             final long createMillis = schedule.getCreateDate().getTime();
             if(schedule.getExecutionDate() != null) {
                 final long executionMillis =
                     schedule.getExecutionDate().getTime();
-                
+
                 ret = executionMillis <= createMillis + MAX_SCHEDULEDAYS_MILLIS;
             }
         }
-        
+
         return ret;
     }
-    
+
     //--------------------------------------------------IllegalScheduleMessage--
     //--Message-----------------------------------------------------------------
-    
+
     public Object[] getFormatArguments() {
         return new Object[] {
             new Long(this.getPosition()),
@@ -171,7 +171,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
             this.getSchedule().getExecutionDate()
         };
     }
-    
+
     /** {@inheritDoc} */
     public String getText(final Locale locale) {
         return IllegalScheduleMessageBundle.
@@ -180,7 +180,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
             this.getSchedule().getExecutionDate()
         });
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }
