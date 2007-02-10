@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  jDTAUS - DTAUS fileformat.
+  Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document   : module.xml
+  Author     : Christian Schulte <cs@jdtaus.org>
+  Version    : $Id$
+  Description: Runtime configuration for the ${pom.name} module.
+        
+-->
+
+<jdtaus:module xmlns="http://jdtaus.org/common/container/model/xml"
+               xmlns:jdtaus="http://jdtaus.org/common/container/model/xml"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://jdtaus.org/common/container/model/xml http://www.jdtaus.org/${branch.version}/jdtaus-core-container/jdtaus-container-model-xml/jdtaus-module.xsd"
+               jdtaus:name="${pom.name}"
+               jdtaus:description="${pom.description}"
+               jdtaus:version="1.0">
+  
+  <jdtaus:implementations>
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.common.dtaus.impl.DefaultUtility"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+      
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.common.dtaus.Utility"/>
+      </jdtaus:implementedSpecifications>
+    </jdtaus:implementation>
+    
+    <!--                                                                     -->
+    <!-- DefaultPhysicalFileFactory                                          -->
+    <!--                                                                     -->
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.common.dtaus.impl.DefaultPhysicalFileFactory"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+      
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.common.dtaus.PhysicalFileFactory"/>
+      </jdtaus:implementedSpecifications>
+      <jdtaus:dependencies>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.io.StructuredFileOperations"
+                           jdtaus:implementationName="StructuredFileOperations"
+                           jdtaus:name="DiskStructuredFileOperations"
+                           jdtaus:bound="false">
+          
+          <jdtaus:properties>
+            <jdtaus:property jdtaus:name="blockSize"
+                             jdtaus:type="int"
+                             jdtaus:value="128"/>
+            
+            <jdtaus:property jdtaus:name="readAhead"
+                             jdtaus:type="int"
+                             jdtaus:value="6"/>
+            
+            <jdtaus:property jdtaus:name="minBufferedBlocks"
+                             jdtaus:type="int"
+                             jdtaus:value="1024"/>
+            
+          </jdtaus:properties>
+        </jdtaus:dependency>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.io.StructuredFileOperations"
+                           jdtaus:implementationName="StructuredFileOperations"
+                           jdtaus:name="TapeStructuredFileOperations"
+                           jdtaus:bound="false">
+          
+          <jdtaus:properties>
+            <jdtaus:property jdtaus:name="blockSize"
+                             jdtaus:type="int"
+                             jdtaus:value="150"/>
+            
+            <jdtaus:property jdtaus:name="readAhead"
+                             jdtaus:type="int"
+                             jdtaus:value="4"/>
+            
+            <jdtaus:property jdtaus:name="minBufferedBlocks"
+                             jdtaus:type="int"
+                             jdtaus:value="1024"/>
+            
+          </jdtaus:properties>
+        </jdtaus:dependency>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.logging.Logger"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="Logger"
+                           jdtaus:bound="true">
+          
+          <jdtaus:properties>
+            <jdtaus:property jdtaus:name="name" 
+                             jdtaus:type="java.lang.String"
+                             jdtaus:value="org.jdtaus.common.dtaus.impl.DefaultPhysicalFileFactory"
+                             jdtaus:api="true"/>
+            
+          </jdtaus:properties>
+        </jdtaus:dependency>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.monitor.MessageRecorder"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="MessageRecorder"
+                           jdtaus:bound="true"/>
+        
+      </jdtaus:dependencies>
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="defaultFormat"
+                         jdtaus:type="int"
+                         jdtaus:value="128"/>
+        
+      </jdtaus:properties>
+    </jdtaus:implementation>
+    
+    <!--                                                                     -->
+    <!-- DefaultPhysicalFile                                                 -->
+    <!--                                                                     -->
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.common.dtaus.impl.DefaultPhysicalFile"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+      
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.common.dtaus.PhysicalFile"/>
+      </jdtaus:implementedSpecifications>
+    </jdtaus:implementation>
+    
+    <!--                                                                     -->
+    <!-- DTAUSDisk                                                           -->
+    <!--                                                                     -->
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.common.dtaus.impl.DTAUSDisk"
+                           jdtaus:name="${pom.name} - Disk"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+      
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.common.dtaus.LogicalFile"/>
+      </jdtaus:implementedSpecifications>
+      <jdtaus:dependencies>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.dtaus.Utility"
+                           jdtaus:implementationName="${pom.name}" 
+                           jdtaus:name="Utility"
+                           jdtaus:bound="true"/>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.dtaus.Configuration"
+                           jdtaus:implementationName="${pom.name}"
+                           jdtaus:name="Configuration"
+                           jdtaus:bound="true"/>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.logging.Logger"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="Logger"
+                           jdtaus:bound="true">
+          
+          <jdtaus:properties>
+            <jdtaus:property jdtaus:name="name" 
+                             jdtaus:type="java.lang.String"
+                             jdtaus:value="org.jdtaus.common.dtaus.impl.DTAUSDisk"
+                             jdtaus:api="true"/>
+            
+          </jdtaus:properties>
+        </jdtaus:dependency>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.util.MemoryManager"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="MemoryManager"
+                           jdtaus:bound="true"/>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.monitor.MessageRecorder"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="MessageRecorder"
+                           jdtaus:bound="true"/>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.monitor.TaskMonitor"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="TaskMonitor"
+                           jdtaus:bound="true"/>
+        
+      </jdtaus:dependencies>
+    </jdtaus:implementation>
+    
+    <!--                                                                     -->
+    <!-- DTAUSTape                                                           -->
+    <!--                                                                     -->
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.common.dtaus.impl.DTAUSTape"
+                           jdtaus:name="${pom.name} - Tape"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+      
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.common.dtaus.LogicalFile"/>
+      </jdtaus:implementedSpecifications>
+      <jdtaus:dependencies>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.dtaus.Utility"
+                           jdtaus:implementationName="${pom.name}"
+                           jdtaus:name="Utility"
+                           jdtaus:bound="true"/>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.dtaus.Configuration"
+                           jdtaus:implementationName="${pom.name}"
+                           jdtaus:name="Configuration"
+                           jdtaus:bound="true"/>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.logging.Logger"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="Logger"
+                           jdtaus:bound="true">
+          
+          <jdtaus:properties>
+            <jdtaus:property jdtaus:name="name" 
+                             jdtaus:type="java.lang.String"
+                             jdtaus:value="org.jdtaus.common.dtaus.impl.DTAUSTape"
+                             jdtaus:api="true"/>
+            
+          </jdtaus:properties>
+        </jdtaus:dependency>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.util.MemoryManager"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="MemoryManager"
+                           jdtaus:bound="true"/>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.monitor.MessageRecorder"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="MessageRecorder"
+                           jdtaus:bound="true"/>
+        
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.common.monitor.TaskMonitor"
+                           jdtaus:implementationName="jDTAUS Utilities Implementation"
+                           jdtaus:name="TaskMonitor"
+                           jdtaus:bound="true"/>
+        
+      </jdtaus:dependencies>
+    </jdtaus:implementation>
+  </jdtaus:implementations>
+</jdtaus:module>
