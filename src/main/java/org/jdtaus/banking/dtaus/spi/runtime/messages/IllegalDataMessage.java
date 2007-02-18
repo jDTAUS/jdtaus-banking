@@ -17,14 +17,15 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.dtaus.messages;
+package org.jdtaus.banking.dtaus.spi.runtime.messages;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Locale;
 import org.jdtaus.banking.dtaus.PhysicalFileError;
-import org.jdtaus.common.i18n.Message;
+import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
+import org.jdtaus.core.text.Message;
 
 /**
  * Fehler-Meldung für ungültige Feld-Werte.
@@ -33,42 +34,90 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class IllegalDataMessage extends AbstractErrorMessage {
-
+    
     //--Konstanten--------------------------------------------------------------
-
+    
     /**
      * Konstante für Zeichen des DTAUS-Alphabets.
      */
-    public static final int ALPHA = 1;
-
+    public static final int TYPE_ALPHA = 1;
+    
     /**
      * Konstante für Ziffern des DTAUS-Alphabets.
      */
-    public static final int NUMERIC = 2;
-
+    public static final int TYPE_NUMERIC = 2;
+    
     /**
      * Konstante für Zeichen des alpha-numerischen DTAUS-Alphabets.
      */
-    public static final int ALPHA_NUMERIC = 3;
-
+    public static final int TYPE_ALPHA_NUMERIC = 3;
+    
     /**
      * Konstante für EBCDIC gepackte Zahl.
      */
-    public static final int PACKET_POSITIVE = 4;
-
+    public static final int TYPE_PACKET_POSITIVE = 4;
+    
     /**
      * Konstante für konstante Werte.
      */
-    public static final int CONSTANT = 5;
-
+    public static final int TYPE_CONSTANT = 5;
+    
     /**
      * Konstante für Reserve-Felder.
      */
-    public static final int RESERVED = 6;
+    public static final int TYPE_RESERVED = 6;
+    
+    /**
+     * Konstante für Datums-Felder mit zweistelliger Jahresangabe.
+     */
+    public static final int TYPE_SHORTDATE = 7;
+    
+    /**
+     * Konstante für Datums-Felder mit vierstelliger Jahresangabe.
+     */
+    public static final int TYPE_LONGDATE = 8;
+    
+    /**
+     * Konstante für Feld 3 des A-Datensatzes (Datei-Typ).
+     */
+    public static final int TYPE_FILETYPE = 9;
+    
+    /**
+     * Konstante für Bankleitzahlen-Felder.
+     */
+    public static final int TYPE_BANKLEITZAHL = 10;
+    
+    /**
+     * Konstante für Kontonummern-Felder.
+     */
+    public static final int TYPE_KONTONUMMER = 11;
+    
+    /**
+     * Konstante für Referenznummern-Felder.
+     */
+    public static final int TYPE_REFERENZNUMMER = 12;
+    
+    /**
+     * Konstante für Textschlüssel-Felder.
+     */
+    public static final int TYPE_TEXTSCHLUESSEL = 13;
+    
+    /**
+     * Konstante für Währungs-Felder.
+     */
+    public static final int TYPE_CURRENCY = 14;
 
+    /** Alle Typ-Konstanten. */
+    private static final int[] TYPES = {
+        TYPE_ALPHA, TYPE_NUMERIC, TYPE_ALPHA_NUMERIC, TYPE_PACKET_POSITIVE,
+        TYPE_CONSTANT, TYPE_RESERVED, TYPE_SHORTDATE, TYPE_LONGDATE,
+        TYPE_FILETYPE, TYPE_BANKLEITZAHL, TYPE_KONTONUMMER, TYPE_REFERENZNUMMER,
+        TYPE_TEXTSCHLUESSEL, TYPE_CURRENCY
+    };
+    
     //--------------------------------------------------------------Konstanten--
     //--Konstruktoren-----------------------------------------------------------
-
+    
     /**
      * Erzeugt eine neue {@code IllegalDataMessage} mit Angaben zu den
      * ungültigen Daten.
@@ -78,15 +127,17 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      * @param position absolute Datei-Position von {@code field}.
      * @param invalidData ungültige Daten.
      *
-     * @throws IllegalArgumentException bei ungültigen Angaben.
-     * @throws PhysicalFileError {@code if(isErrorsEnabled())}
+     * @throws IllegalArgumentException wenn {@code type} keiner der
+     * Konstanten {@link #TYPE_ALPHA TYPE_<i>XYZ</i>} entspricht.
+     * @throws PhysicalFileError wenn Property {@code errorsEnabled}
+     * {@code true} ist.
      *
-     * @see org.jdtaus.common.dtaus.Fields
+     * @see org.jdtaus.banking.dtaus.Fields
      */
     public IllegalDataMessage(final int field, final int type,
-        final long position, final Object invalidData) throws
+        final long position, final String invalidData) throws
         PhysicalFileError {
-
+        
         super();
         this.field = field;
         this.type = type;
@@ -97,7 +148,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
             throw new PhysicalFileError(this);
         }
     }
-
+    
     /**
      * Zugriff auf {@code IllegalDataMessage} Instanzen.
      *
@@ -112,70 +163,69 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      */
     public static IllegalDataMessage[] getMessages(
         final Message[] messages) {
-
+        
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-
+        
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-
+        
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == IllegalDataMessage.class) {
                 ret.add(messages[i]);
             }
         }
-
+        
         return (IllegalDataMessage[]) ret.toArray(
             new IllegalDataMessage[ret.size()]);
-
+        
     }
-
-    private static final int[] TYPES = {
-        ALPHA, NUMERIC, ALPHA_NUMERIC, PACKET_POSITIVE, CONSTANT, RESERVED
-    };
-
+    
     private void assertValidType() {
         boolean valid = false;
         for(int i = TYPES.length - 1; i >= 0 && !valid; i--) {
             if(TYPES[i] == this.type) {
                 valid = true;
+                break;
             }
         }
-
+        
         if(!valid) {
-            throw new IllegalArgumentException("type");
+            throw new IllegalArgumentException(
+                Integer.toString(this.getType()));
+            
         }
     }
-
+    
     //-----------------------------------------------------------Konstruktoren--
     //--IllegalDataMessage------------------------------------------------------
-
+    
     /**
      * Wert der Property {@code <field>}.
      * @serial
      */
     private final int field;
-
+    
     /**
      * Wert der Property {@code <position>}.
      * @serial
      */
     private final long position;
-
+    
     /**
      * Wert der Property {@code <type>}.
      * @serial
      */
     private final int type;
-
+    
     /**
      * Wert der Property {@code <invalidData>}.
      * @serial
      */
-    private final Object invalidData;
-
+    private final String invalidData;
+    
     /**
      * Liest den Wert der Property {@code <field>}.
      *
@@ -185,7 +235,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public int getField() {
         return this.field;
     }
-
+    
     /**
      * Liest den Wert der Property {@code <position>}.
      *
@@ -194,46 +244,58 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public long getPosition() {
         return this.position;
     }
-
+    
     /**
      * Liest den Wert der Property {@code <type>}.
      *
      * @return Beschreibung der erwarteten Daten.
      *
-     * @see #ALPHA Konstanten aus dieser Klasse
+     * @see #TYPE_ALPHA {@code TYPE_<i>XYZ</i>} Konstanten aus dieser Klasse
      */
     public int getType() {
         return this.type;
     }
-
+    
     /**
      * Liest den Wert der Property {@code <invalidData>}.
      *
      * @return vorgefundene ungültige Daten.
      */
-    public Object getInvalidData() {
+    public String getInvalidData() {
         return this.invalidData;
     }
-
+    
     //------------------------------------------------------IllegalDataMessage--
     //--Message-----------------------------------------------------------------
-
-    public Object[] getFormatArguments() {
+    
+    /**
+     * Argumente zur Formatierung des Meldungs-Textes.
+     *
+     * @return Argumente zur Formatierung des Meldungs-Textes. <p>Index 0:
+     * Feld-Name<br/>Index 1: absolute Position des Feldes<br/>Index 2:
+     * ungültige Daten</p>
+     */
+    public Object[] getFormatArguments(final Locale locale) {
         return new Object[] {
-            Integer.toHexString(this.getField()).toUpperCase(),
+            Integer.toHexString(this.getField()).toUpperCase(locale),
             new Long(this.getPosition()),
             this.getInvalidData()
         };
     }
-
-    /** {@inheritDoc} */
+    
+    /**
+     * Formatierter Standard-Text der Meldung.
+     *
+     * @param locale zu verwendende Lokalisierung.
+     *
+     * @return {@code "{2}" ist kein gültiger Wert für Feld {0} (Position {1, number}).}
+     */
     public String getText(final Locale locale) {
-        return IllegalDataMessageBundle.getIllegalDataMessage(locale).format(
-            new Object[] { Integer.toHexString(this.getField()).toUpperCase(),
-            Long.valueOf(this.getPosition()), this.getInvalidData() });
-
+        return IllegalDataMessageBundle.getIllegalDataMessage(locale).
+            format(this.getFormatArguments(locale));
+        
     }
-
+    
     //-----------------------------------------------------------------Message--
-
+    
 }

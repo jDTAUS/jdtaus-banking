@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.dtaus.messages;
+package org.jdtaus.banking.dtaus.spi.runtime.messages;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +25,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.PhysicalFileError;
-import org.jdtaus.common.i18n.Message;
+import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
+import org.jdtaus.core.text.Message;
 
 /**
  * Fehler-Meldung für eine ungültige Kombination von Dateierstellungs- und
@@ -38,38 +39,48 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class IllegalScheduleMessage extends AbstractErrorMessage {
-
-    //--Konstanten--------------------------------------------------------------
-
-    /**
-     * Maximal erlaubte Anzahl Tage zwischen Erstellungs- und Ausführungsdatum
-     * in Millisekunden.
-     */
-    private static final long MAX_SCHEDULEDAYS_MILLIS =
-        15L * 24L * 60L * 60L * 1000L;
-
-    //--------------------------------------------------------------Konstanten--
+    
     //--Konstruktoren-----------------------------------------------------------
-
+    
     /**
      * Erzeugt eine neue {@code IllegalScheduleMessage}.
      *
-     * @param position Datei-Position des A-Datensatzes.
-     * @param schedule ungültige A-Datensatz Terminierung.
+     * @param position absolute Position der logischen Datei.
+     * @param header A Datensatz mit ungültiger Terminierung.
+     *
+     * @throws NullPointerException wenn {@code header} {@code null} ist.
+     * @throws IllegalArgumentException wenn {@code position} negativ ist
+     * oder {@code header.getSchedule()} keiner ungültigen Auftragsterminierung
+     * entspricht.
      *
      * @throws PhysicalFileError {@code if(isErrorsEnabled())}
      */
     public IllegalScheduleMessage(final long position,
-        final Header.Schedule schedule) throws PhysicalFileError {
-
+        final Header header) throws PhysicalFileError {
+        
         super();
+        
+        if(header == null) {
+            throw new NullPointerException("header");
+        }
+        if(position < 0L) {
+            throw new IllegalArgumentException(Long.toString(position));
+        }
+        if(Header.Schedule.checkSchedule(header.getSchedule().getCreateDate(),
+            header.getSchedule().getExecutionDate())) {
+            
+            throw new IllegalArgumentException(
+                Long.toString(header.getSchedule().getCreateDate().getTime()));
+            
+        }
+        
         this.position = position;
-        this.schedule = schedule;
+        this.header = header;
         if(AbstractErrorMessage.isErrorsEnabled()) {
             throw new PhysicalFileError(this);
         }
     }
-
+    
     /**
      * Zugriff auf {@code IllegalScheduleMessage} Instanzen.
      *
@@ -84,103 +95,92 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      */
     public static IllegalScheduleMessage[] getMessages(
         final Message[] messages) {
-
+        
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-
+        
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-
+        
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == IllegalScheduleMessage.class) {
                 ret.add(messages[i]);
             }
         }
-
+        
         return (IllegalScheduleMessage[]) ret.toArray(
             new IllegalScheduleMessage[ret.size()]);
-
+        
     }
-
+    
     //-----------------------------------------------------------Konstruktoren--
     //--IllegalScheduleMessage--------------------------------------------------
-
+    
     /**
      * Wert der Property {@code <position>}.
      * @serial
      */
-    private final long position;
-
+    private long position;
+    
     /**
-     * Wert der Property {@code <schedule>}.
+     * Wert der Property {@code <header>}.
      * @serial
      */
-    private final Header.Schedule schedule;
-
+    private Header header;
+    
     /**
      * Liest den Wert der Property {@code <position>}.
      *
-     * @return absolute Datei-Position des A-Datensatzes.
+     * @return absolute Position der logischen Datei.
      */
     public long getPosition() {
         return this.position;
     }
-
+    
     /**
-     * Liest den Wert der Property {@code <createDate>}.
+     * Liest den Wert der Property {@code <header>}.
      *
-     * @return ungültiges Dateierstellungsdatum.
+     * @return A-Datensatz der logischen Datei mit ungültiger
+     * Auftrags-Terminierung.
      */
-    public Header.Schedule getSchedule() {
-        return this.schedule;
+    public Header getHeader() {
+        return this.header;
     }
-
-    /**
-     * Prüfung einer Auftrags-Terminierung.
-     *
-     * @param schedule zu prüfende Auftragsterminierung.
-     *
-     * @return {@code true} wenn {@code schedule} einer gültigen
-     * Auftragsterminierung enstpricht; {@code false} wenn nicht.
-     */
-    public static boolean isScheduleValid(final Header.Schedule schedule) {
-        boolean ret = schedule != null && schedule.getCreateDate() != null;
-
-        if(ret) {
-            final long createMillis = schedule.getCreateDate().getTime();
-            if(schedule.getExecutionDate() != null) {
-                final long executionMillis =
-                    schedule.getExecutionDate().getTime();
-
-                ret = executionMillis <= createMillis + MAX_SCHEDULEDAYS_MILLIS;
-            }
-        }
-
-        return ret;
-    }
-
+    
     //--------------------------------------------------IllegalScheduleMessage--
     //--Message-----------------------------------------------------------------
-
-    public Object[] getFormatArguments() {
+    
+    /**
+     * Argumente zur Formatierung des Meldungs-Textes.
+     *
+     * @return Argumente zur Formatierung des Meldungs-Textes.
+     * <p>Index 0: absolute Position der logischen Datei<br/>
+     * Index 1: Datei-Erstellungsdatum<br/>
+     * Index 2: Auftrags-Ausführungsdatum</p>
+     */
+    public Object[] getFormatArguments(final Locale locale) {
         return new Object[] {
             new Long(this.getPosition()),
-            this.getSchedule().getCreateDate(),
-            this.getSchedule().getExecutionDate()
+            this.getHeader().getSchedule().getCreateDate(),
+            this.getHeader().getSchedule().getExecutionDate()
         };
     }
-
-    /** {@inheritDoc} */
+    
+    /**
+     * Formatierter Standard-Text der Meldung.
+     *
+     * @param locale zu verwendende Lokalisierung.
+     *
+     * @return {@code "Das Ausführungsdatum "{2, date, medium}" liegt vor dem Dateierstellungsdatum "{1, date, medium}" oder mehr als 15 Kalendertage dahinter."}
+     */
     public String getText(final Locale locale) {
-        return IllegalScheduleMessageBundle.
-            getIllegalScheduleMessage(locale).format(new Object[] {
-            this.getSchedule().getCreateDate(),
-            this.getSchedule().getExecutionDate()
-        });
+        return IllegalScheduleMessageBundle.getIllegalScheduleMessage(locale).
+            format(this.getFormatArguments(locale));
+        
     }
-
+    
     //-----------------------------------------------------------------Message--
-
+    
 }

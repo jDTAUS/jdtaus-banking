@@ -1,6 +1,6 @@
 /*
  *  jDTAUS - DTAUS fileformat.
- *  Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+ *  Copyright (C) 2005 - 2007 Christian Schulte <cs@schulte.it>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.dtaus.messages;
+package org.jdtaus.banking.dtaus.spi.runtime.messages;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +25,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.PhysicalFileError;
-import org.jdtaus.common.i18n.Message;
+import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
+import org.jdtaus.core.text.Message;
 
 /**
  * Fehler-Meldung für Prüfsummenfehler.
@@ -34,25 +35,28 @@ import org.jdtaus.common.i18n.Message;
  * @version $Id$
  */
 public final class ChecksumErrorMessage extends AbstractErrorMessage {
-
+    
     //--Konstruktoren-----------------------------------------------------------
-
+    
     /**
      * Erzeugt eine neue {@code ChecksumErrorMessage} Instanz.
      *
      * @param storedChecksum in einer logischen Datei gespeicherte Prüfsumme.
      * @param computedChecksum aus derselben logischen Datei berrechnete
      * Prüfsumme.
+     * @param position absolute Position der logischen Datei.
      *
-     * @throws NullPointerException
-     * {@code if(storedChecksum == null || computedChecksum == null)}
-     * @throws IllegalArgumentException
-     * {@code if(storedChecksum.equals(computedChecksum))}
-     * @throws PhysicalFileError {@code if(isErrorsEnabled())}
+     * @throws NullPointerException wenn entweder {@code storedChecksum} oder
+     * {@code computedChecksum} {@code null} ist.
+     * @throws IllegalArgumentException wenn {@code storedChecksum} und
+     * {@code computedChecksum} gleich sind oder {@code position} negativ ist.
+     * @throws PhysicalFileError wenn Property {@code errorsEnabled}
+     * {@code true} ist.
      */
     public ChecksumErrorMessage(final Checksum storedChecksum,
-        final Checksum computedChecksum) throws PhysicalFileError {
-
+        final Checksum computedChecksum, final long position) throws
+        PhysicalFileError {
+        
         if(storedChecksum == null) {
             throw new NullPointerException("storedChecksum");
         }
@@ -60,17 +64,20 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
             throw new NullPointerException("computedChecksum");
         }
         if(storedChecksum.equals(computedChecksum)) {
-            throw new IllegalArgumentException("storedChecksum=" +
-                storedChecksum + ", computedChecksum=" + computedChecksum);
+            throw new IllegalArgumentException(computedChecksum.toString());
         }
-
+        if(position < 0L) {
+            throw new IllegalArgumentException(Long.toString(position));
+        }
+        
         this.storedChecksum = storedChecksum;
         this.computedChecksum = computedChecksum;
+        this.position = position;
         if(AbstractErrorMessage.isErrorsEnabled()) {
             throw new PhysicalFileError(this);
         }
     }
-
+    
     /**
      * Zugriff auf {@code ChecksumErrorMessage} Instanzen.
      *
@@ -81,79 +88,104 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      * ein leeres Array, wenn keine {@code ChecksumErrorMessage} Meldungen in
      * {@code messages} vorhanden sind.
      *
-     * @throws NullPointerException {@code if(messages == null)}
+     * @throws NullPointerException wenn {@code messages null} ist.
      */
     public static ChecksumErrorMessage[] getMessages(
         final Message[] messages) {
-
+        
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-
+        
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-
+        
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == ChecksumErrorMessage.class) {
                 ret.add(messages[i]);
             }
         }
-
+        
         return (ChecksumErrorMessage[]) ret.toArray(
             new ChecksumErrorMessage[ret.size()]);
-
+        
     }
-
+    
     //-----------------------------------------------------------Konstruktoren--
     //--ChecksumErrorMessage----------------------------------------------------
-
+    
+    /**
+     * Absolute Position der logischen Datei.
+     * @serial
+     */
+    private long position;
+    
     /**
      * Gespeicherte Prüfsumme.
      * @serial
      */
-    private final Checksum storedChecksum;
-
+    private Checksum storedChecksum;
+    
     /**
      * Berechnete Prüfsumme.
      * @serial
      */
-    private final Checksum computedChecksum;
-
+    private Checksum computedChecksum;
+    
     /**
-     * Liest den Wert der Property {@code <storedChecksum>}.
+     * Liest den Wert der Property {@code position}.
+     *
+     * @return absolute Position der logischen Datei.
+     */
+    public long getPosition() {
+        return this.position;
+    }
+    
+    /**
+     * Liest den Wert der Property {@code storedChecksum}.
      *
      * @return gespeicherte Prüfsumme.
-     *
-     * @post {@code getStoredChecksum() != null)}
      */
     public Checksum getStoredChecksum() {
         return this.storedChecksum;
     }
-
+    
     /**
-     * Liest den Wert der Property {@code <computedChecksum>}.
+     * Liest den Wert der Property {@code computedChecksum}.
      *
      * @return berrechnete Prüfsumme.
-     *
-     * @post {@code getComputedChecksum() != null)}
      */
     public Checksum getComputedChecksum() {
         return this.computedChecksum;
     }
-
+    
     //----------------------------------------------------ChecksumErrorMessage--
     //--Message-----------------------------------------------------------------
-
-    public Object[] getFormatArguments() {
-        return new Object[] {};
+    
+    /**
+     * Argumente zur Formatierung des Meldungs-Textes.
+     *
+     * @return Argumente zur Formatierung des Meldungs-Textes. <p>Index 0:
+     * absolute Position der logischen Datei</p>
+     */
+    public Object[] getFormatArguments(final Locale locale) {
+        return new Object[] { new Long(this.getPosition()) };
     }
-
-    /** {@inheritDoc} */
+    
+    /**
+     * Formatierter Standard-Text der Meldung.
+     *
+     * @param locale zu verwendende Lokalisierung.
+     *
+     * @return {@code "Die Prüfsumme der an Position {0, number} beginnenden Datei ist ungültig."}
+     */
     public String getText(final Locale locale) {
-        return ChecksumErrorMessageBundle.getChecksumErrorText(locale);
+        return ChecksumErrorMessageBundle.getChecksumErrorMessage(locale).
+            format(this.getFormatArguments(locale));
+        
     }
-
+    
     //-----------------------------------------------------------------Message--
-
+    
 }
