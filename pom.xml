@@ -133,7 +133,7 @@
       </snapshots>
       <id>jdtaus-releases</id>
       <name>jDTAUS Release Repository</name>
-      <url>http://maven2-repository.jdtaus.org/repos/releases</url>
+      <url>http://maven2-repository.jdtaus.org/releases</url>
     </repository>
   </repositories>
   <pluginRepositories>
@@ -148,7 +148,7 @@
       </snapshots>
       <id>jdtaus-releases</id>
       <name>jDTAUS Release Repository</name>
-      <url>http://maven2-repository.jdtaus.org/repos/releases</url>
+      <url>http://maven2-repository.jdtaus.org/releases</url>
     </pluginRepository>
   </pluginRepositories>
   <reporting>
@@ -182,7 +182,7 @@
         <groupId>org.jdtaus.runtime</groupId>
         <artifactId>jdtaus-core-client-container</artifactId>
         <version>RELEASE</version>
-        <scope>compile</scope>
+        <scope>runtime</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -190,16 +190,16 @@
     <repository>
       <id>jdtaus-releases</id>
       <name>jDTAUS Release Repository</name>
-      <url>scp://shell.sourceforge.net/home/groups/j/jd/jdtaus/htdocs/repos/releases</url>
+      <url>scp://web.rent-a-mailserver.de/var/httpd/D0001/maven2-repository.jdtaus.org/releases</url>
     </repository>
     <snapshotRepository>
       <id>jdtaus-snapshots</id>
       <name>jDTAUS Development Repository</name>
-      <url>scp://shell.sourceforge.net/home/groups/j/jd/jdtaus/htdocs/repos/snapshots</url>
+      <url>scp://web.rent-a-mailserver.de/var/httpd/D0001/maven2-repository.jdtaus.org/snapshots</url>
     </snapshotRepository>
     <site>
       <id>jdtaus-website</id>
-      <url>scp://shell.sourceforge.net/home/groups/j/jd/jdtaus/htdocs/jdtaus-banking/1.0.x</url>
+      <url>scp://web.rent-a-mailserver.de/var/httpd/D0001/maven2-repository.jdtaus.org/sites/jdtaus-banking/1.0.x</url>
     </site>
   </distributionManagement>
 </project>
