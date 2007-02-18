@@ -35,9 +35,9 @@ import org.jdtaus.core.text.Message;
  * @version $Id$
  */
 public final class ChecksumErrorMessage extends AbstractErrorMessage {
-    
+
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code ChecksumErrorMessage} Instanz.
      *
@@ -56,7 +56,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public ChecksumErrorMessage(final Checksum storedChecksum,
         final Checksum computedChecksum, final long position) throws
         PhysicalFileError {
-        
+
         if(storedChecksum == null) {
             throw new NullPointerException("storedChecksum");
         }
@@ -69,7 +69,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
         if(position < 0L) {
             throw new IllegalArgumentException(Long.toString(position));
         }
-        
+
         this.storedChecksum = storedChecksum;
         this.computedChecksum = computedChecksum;
         this.position = position;
@@ -77,7 +77,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code ChecksumErrorMessage} Instanzen.
      *
@@ -92,47 +92,47 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      */
     public static ChecksumErrorMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == ChecksumErrorMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (ChecksumErrorMessage[]) ret.toArray(
             new ChecksumErrorMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--ChecksumErrorMessage----------------------------------------------------
-    
+
     /**
      * Absolute Position der logischen Datei.
      * @serial
      */
     private long position;
-    
+
     /**
      * Gespeicherte Prüfsumme.
      * @serial
      */
     private Checksum storedChecksum;
-    
+
     /**
      * Berechnete Prüfsumme.
      * @serial
      */
     private Checksum computedChecksum;
-    
+
     /**
      * Liest den Wert der Property {@code position}.
      *
@@ -141,7 +141,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public long getPosition() {
         return this.position;
     }
-    
+
     /**
      * Liest den Wert der Property {@code storedChecksum}.
      *
@@ -150,7 +150,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public Checksum getStoredChecksum() {
         return this.storedChecksum;
     }
-    
+
     /**
      * Liest den Wert der Property {@code computedChecksum}.
      *
@@ -159,10 +159,10 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public Checksum getComputedChecksum() {
         return this.computedChecksum;
     }
-    
+
     //----------------------------------------------------ChecksumErrorMessage--
     //--Message-----------------------------------------------------------------
-    
+
     /**
      * Argumente zur Formatierung des Meldungs-Textes.
      *
@@ -172,7 +172,7 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public Object[] getFormatArguments(final Locale locale) {
         return new Object[] { new Long(this.getPosition()) };
     }
-    
+
     /**
      * Formatierter Standard-Text der Meldung.
      *
@@ -183,9 +183,9 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
     public String getText(final Locale locale) {
         return ChecksumErrorMessageBundle.getChecksumErrorMessage(locale).
             format(this.getFormatArguments(locale));
-        
+
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

@@ -64,9 +64,9 @@ import org.jdtaus.core.monitor.spi.TaskMonitor;
  * @version $Id$
  */
 public class DTAUSDisk extends AbstractLogicalFile {
-    
+
     //--Konstanten--------------------------------------------------------------
-    
+
     /**
      * Index = A Datensatz-Feld - 1,
      * Wert = Offset relativ zum Anfang des Satzabschnittes.
@@ -74,7 +74,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] ARECORD_OFFSETS = {
         0, 4, 5, 7, 15, 23, 50, 56, 60, 70, 80, 95, 103, 127
     };
-    
+
     /**
      * Index = A Datensatz-Feld - 1,
      * Wert = Länge des Feldes in Byte.
@@ -82,7 +82,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] ARECORD_LENGTH = {
         4, 1, 2, 8, 8, 27, 6, 4, 10, 10, 15, 8, 24, 1
     };
-    
+
     /**
      * Index = E Datensatz-Feld - 1,
      * Wert = Offset relativ zum Anfang des Satzabschnittes.
@@ -90,7 +90,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] ERECORD_OFFSETS = {
         0, 4, 5, 10, 17, 30, 47, 64, 77
     };
-    
+
     /**
      * Index = E Datensatz-Feld -1,
      * Wert = Länge des Feldes in Byte.
@@ -98,13 +98,13 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] ERECORD_LENGTH = {
         4, 1, 5, 7, 13, 17, 17, 13, 51
     };
-    
+
     /** Länge des konstanten Teiles eines C Datensatzes in Byte. */
     protected static final int CRECORD_CONST_LENGTH = 187;
-    
+
     /** Länge eines Erweiterungsteiles in Byte. */
     protected static final int CRECORD_EXT_LENGTH = 29;
-    
+
     /**
      * Index = C Datensatz-Feld - 1,
      * Wert = Offset relativ zum ersten Satzabschnitt.
@@ -112,7 +112,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_OFFSETS1 = {
         0, 4, 5, 13, 21, 32, 44, 49, 50, 61, 69, 79, 90, 93, 120
     };
-    
+
     /**
      * Index = C Datensatz-Feld - 1 (erster Satzabschnitt),
      * Wert = Länge des Feldes in Byte.
@@ -120,7 +120,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_LENGTH1 = {
         4, 1, 8, 8, 10, 11, 5, 1, 11, 8, 10, 11, 3, 27, 8
     };
-    
+
     /**
      * Index = C Datensatz-Feld des zweiten Satzabschnittes - 1,
      * Wert = Offset relativ zum zweiten Satzabschnitt.
@@ -128,7 +128,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_OFFSETS2 = {
         0, 27, 54, 55, 57, 59, 61, 88, 90, 117
     };
-    
+
     /**
      * Index = C Datensatz-Feld des zweiten Satzabschnittes - 1,
      * Wert = Länge des Feldes in Byte.
@@ -136,7 +136,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_LENGTH2 = {
         27, 27, 1, 2, 2, 2, 27, 2, 27, 11
     };
-    
+
     /**
      * Index = C Datensatz-Feld des 3., 4., 5. und 6. Satzabschnittes - 1,
      * Wert = Offset relativ zum Anfang des 3., 4., 5. und 6. Satzabschnittes.
@@ -144,7 +144,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_OFFSETS_EXT = {
         0, 2, 29, 31, 58, 60, 87, 89, 116
     };
-    
+
     /**
      * Index = C Datensatz-Feld des 3., 4., 5. und 6. Satzabschnittes - 1,
      * Wert = Länge des Feldes in Byte.
@@ -152,7 +152,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_LENGTH_EXT = {
         2, 27, 2, 27, 2, 27, 2, 27, 12
     };
-    
+
     /**
      * Index = Anzahl Erweiterungsteile,
      * Wert = Anzahl benötigter Satzabschnitte.
@@ -160,7 +160,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT = {
         2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6
     };
-    
+
     /**
      * Index = Index Erweiterungsteil,
      * Wert = Satzabschnitt-Offset zu Transaktionsbeginn.
@@ -168,7 +168,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_EXTINDEX_TO_BLOCKOFFSET = {
         1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5
     };
-    
+
     /**
      * Index = Index Erweiterungsteil,
      * Wert = Anfangsposition des Erweiterungsteils relativ zum Anfang des
@@ -185,7 +185,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         DTAUSDisk.CRECORD_OFFSETS_EXT[0], DTAUSDisk.CRECORD_OFFSETS_EXT[2],
         DTAUSDisk.CRECORD_OFFSETS_EXT[4], DTAUSDisk.CRECORD_OFFSETS_EXT[6]
     };
-    
+
     /**
      * Index = Index Erweiterungsteil,
      * Wert = Anfangsposition des Erweiterungsteils relativ zum Anfang des
@@ -202,7 +202,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         DTAUSDisk.CRECORD_LENGTH_EXT[0], DTAUSDisk.CRECORD_LENGTH_EXT[2],
         DTAUSDisk.CRECORD_LENGTH_EXT[4], DTAUSDisk.CRECORD_LENGTH_EXT[6]
     };
-    
+
     /**
      * Index = Index Erweiterungsteil,
      * Wert = Anfangsposition des Erweiterungsteils relativ zum Anfang des
@@ -219,7 +219,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         DTAUSDisk.CRECORD_OFFSETS_EXT[1], DTAUSDisk.CRECORD_OFFSETS_EXT[3],
         DTAUSDisk.CRECORD_OFFSETS_EXT[5], DTAUSDisk.CRECORD_OFFSETS_EXT[7]
     };
-    
+
     /**
      * Index = Index Erweiterungsteil,
      * Wert = Anfangsposition des Erweiterungsteils relativ zum Anfang des
@@ -236,7 +236,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         DTAUSDisk.CRECORD_LENGTH_EXT[1], DTAUSDisk.CRECORD_LENGTH_EXT[3],
         DTAUSDisk.CRECORD_LENGTH_EXT[5], DTAUSDisk.CRECORD_LENGTH_EXT[7]
     };
-    
+
     /**
      * Index = Index Erweiterungsteil,
      * Wert = Anzahl der folgenden Erweiterungsteile im selben Satzabschnitt.
@@ -244,7 +244,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     protected static final int[] CRECORD_EXTINDEX_TO_FOLLOWINGEXTENSIONS = {
         1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0
     };
-    
+
     /**
      * Index = Index Erweiterungsteil,
      * Wert = Feld-Konstante für das Typen-Feld des Erweiterungsteils.
@@ -258,7 +258,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         Fields.FIELD_C51, Fields.FIELD_C53, Fields.FIELD_C55,
         Fields.FIELD_C57, Fields.FIELD_C59
     };
-    
+
     /**
      * Index = Index Erweiterungsteil,
      * Wert = Feld-Konstante für das Werte-Feld des Erweiterungsteils.
@@ -272,7 +272,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         Fields.FIELD_C52, Fields.FIELD_C54, Fields.FIELD_C56,
         Fields.FIELD_C58
     };
-    
+
     //--------------------------------------------------------------Konstanten--
     //--Constructors------------------------------------------------------------
 
@@ -293,7 +293,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
 
     //------------------------------------------------------------Constructors--
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code DTAUSDisk} Instanz.
      *
@@ -305,24 +305,24 @@ public class DTAUSDisk extends AbstractLogicalFile {
      */
     protected DTAUSDisk(final long headerBlock,
         final StructuredFileOperations persistence) {
-        
+
         this(ModelFactory.getModel().getModules().
             getImplementation(DTAUSDisk.class.getName()));
-        
+
         if(persistence == null) {
             throw new NullPointerException("persistence");
         }
-        
+
         if(persistence.getBlockSize() != 128) {
             throw new IllegalArgumentException(
                 Long.toString(persistence.getBlockSize()));
-            
+
         }
-        
+
         this.setStructuredFile(persistence);
         this.setHeaderBlock(headerBlock);
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--Dependencies------------------------------------------------------------
 
@@ -535,53 +535,53 @@ public class DTAUSDisk extends AbstractLogicalFile {
 
     //------------------------------------------------------------Dependencies--
     //--AbstractLogicalFile-----------------------------------------------------
-    
+
     protected int checksumTransaction(final long block,
         final Transaction transaction, final Checksum checksum) throws
         PhysicalFileError {
-        
+
         int ret = 2;
         final long extCount = this.readNumber(Fields.FIELD_C18, block + 1,
             DTAUSDisk.CRECORD_OFFSETS2[4], DTAUSDisk.CRECORD_LENGTH2[4],
             AbstractLogicalFile.ENCODING_ASCII).longValue();
-        
+
         if(extCount != -1L) {
             final Transaction t = this.readTransaction(block, transaction);
             if(t.getAmount() != null) {
                 checksum.setSumAmount(checksum.getSumAmount() +
                     t.getAmount().longValue());
-                
+
             }
             if(t.getTargetAccount() != null) {
                 checksum.setSumTargetAccount(checksum.getSumTargetAccount() +
                     t.getTargetAccount().longValue());
-                
+
             }
             if(t.getTargetBank() != null) {
                 checksum.setSumTargetBank(checksum.getSumTargetBank() +
                     t.getTargetBank().longValue());
-                
+
             }
-            
+
             ret = CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[(int) extCount];
         }
-        
+
         return ret;
     }
-    
+
     protected char getBlockType(final long block) throws PhysicalFileError {
         // Feld 2
         final String str = this.readAlphaNumeric(Fields.FIELD_A2, block,
             DTAUSDisk.ARECORD_OFFSETS[1], DTAUSDisk.ARECORD_LENGTH[1],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         char ret;
         if(str == null || str.length() != 1) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_A2, IllegalDataMessage.TYPE_CONSTANT,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.ARECORD_OFFSETS[1], str));
-            
+
             ret = '?';
         } else if("A".equals(str)) {
             ret = 'A';
@@ -592,13 +592,13 @@ public class DTAUSDisk extends AbstractLogicalFile {
         } else {
             ret = str.toCharArray()[0];
         }
-        
+
         return ret;
     }
-    
+
     protected Header readHeader(final long headerBlock) throws
         PhysicalFileError {
-        
+
         Long num;
         String str;
         final Date createDate;
@@ -609,41 +609,41 @@ public class DTAUSDisk extends AbstractLogicalFile {
         final int blockSize;
         final Currency cur;
         boolean isBank = false;
-        
+
         ret = new Header();
         blockSize = this.persistence.getBlockSize();
-        
+
         // Feld 1
         num = this.readNumber(Fields.FIELD_A1, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[0], DTAUSDisk.ARECORD_LENGTH[0],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(num.intValue() != blockSize) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_A1, IllegalDataMessage.TYPE_CONSTANT,
                 headerBlock * this.persistence.getBlockSize() +
                 DTAUSDisk.ARECORD_OFFSETS[0], num.toString()));
-            
+
         }
-        
+
         // Feld 2
         str = this.readAlphaNumeric(Fields.FIELD_A2, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[1], DTAUSDisk.ARECORD_LENGTH[1],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'A')) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_A2, IllegalDataMessage.TYPE_CONSTANT,
                 headerBlock * this.persistence.getBlockSize() +
                 DTAUSDisk.ARECORD_OFFSETS[1], str));
-            
+
         }
-        
+
         // Feld 3
         str = this.readAlphaNumeric(Fields.FIELD_A3, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[2], DTAUSDisk.ARECORD_LENGTH[2],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null) {
             label = LogicalFileType.valueOf(str);
             if(label == null) {
@@ -652,35 +652,35 @@ public class DTAUSDisk extends AbstractLogicalFile {
                     IllegalDataMessage.TYPE_FILETYPE,
                     headerBlock * this.persistence.getBlockSize() +
                     DTAUSDisk.ARECORD_OFFSETS[2], str));
-                
+
             } else {
                 isBank = label.isSendByBank();
                 ret.setType(label);
             }
         }
-        
+
         // Feld 4
         num = this.readNumber(Fields.FIELD_A4, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[3], DTAUSDisk.ARECORD_LENGTH[3],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(!Bankleitzahl.checkBankleitzahl(num)) {
             ThreadLocalMessages.getMessages().addMessage(
                 new IllegalDataMessage(Fields.FIELD_A4,
                 IllegalDataMessage.TYPE_BANKLEITZAHL,
                 this.getHeaderBlock() * this.persistence.getBlockSize() +
                 DTAUSDisk.ARECORD_OFFSETS[3], num.toString()));
-            
+
         } else {
             ret.setBank(Bankleitzahl.valueOf(num));
         }
-        
+
         // Feld 5
         // Nur belegt wenn Absender Kreditinistitut ist, sonst 0.
         num = this.readNumber(Fields.FIELD_A5, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[4], DTAUSDisk.ARECORD_LENGTH[4],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(isBank) {
             if(!Bankleitzahl.checkBankleitzahl(num)) {
                 ThreadLocalMessages.getMessages().addMessage(
@@ -688,67 +688,67 @@ public class DTAUSDisk extends AbstractLogicalFile {
                     IllegalDataMessage.TYPE_BANKLEITZAHL,
                     this.getHeaderBlock() * this.persistence.getBlockSize() +
                     DTAUSDisk.ARECORD_OFFSETS[4], num.toString()));
-                
+
             } else {
                 ret.setBankData(Bankleitzahl.valueOf(num));
             }
         }
-        
+
         // Feld 6
         str = this.readAlphaNumeric(Fields.FIELD_A6, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[5], DTAUSDisk.ARECORD_LENGTH[5],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null) {
             ret.setCustomer(AlphaNumericText27.parse(str));
         }
-        
+
         // Feld 7
         createDate = this.readShortDate(Fields.FIELD_A7, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[6], AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 8
         // Nur belegt wenn Absender Kreditinistitut ist, sonst "".
         str = this.readAlphaNumeric(Fields.FIELD_A8, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[7], DTAUSDisk.ARECORD_LENGTH[7],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 9
         num = this.readNumber(Fields.FIELD_A9, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[8], DTAUSDisk.ARECORD_LENGTH[8],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(!Kontonummer.checkKontonummer(num)) {
             ThreadLocalMessages.getMessages().addMessage(
                 new IllegalDataMessage(Fields.FIELD_A9,
                 IllegalDataMessage.TYPE_KONTONUMMER,
                 this.getHeaderBlock() * this.persistence.getBlockSize() +
                 DTAUSDisk.ARECORD_OFFSETS[8], num.toString()));
-            
+
         } else {
             ret.setAccount(Kontonummer.valueOf(num));
         }
-        
+
         // Feld 10
         num = this.readNumber(Fields.FIELD_A10, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[9], DTAUSDisk.ARECORD_LENGTH[9],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(!Referenznummer.checkReferenznummer(num)) {
             ThreadLocalMessages.getMessages().addMessage(
                 new IllegalDataMessage(Fields.FIELD_A10,
                 IllegalDataMessage.TYPE_REFERENZNUMMER,
                 this.getHeaderBlock() * this.persistence.getBlockSize() +
                 DTAUSDisk.ARECORD_OFFSETS[9], num.toString()));
-            
+
         } else {
             ret.setReference(Referenznummer.valueOf(num));
         }
-        
+
         // Feld 11b
         executionDate = this.readLongDate(Fields.FIELD_A11B, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[11], AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(createDate != null) {
             if(!Header.Schedule.checkSchedule(createDate, executionDate)) {
                 ThreadLocalMessages.getMessages().addMessage(
@@ -756,24 +756,24 @@ public class DTAUSDisk extends AbstractLogicalFile {
                     this.persistence.getBlockSize() +
                     DTAUSDisk.ARECORD_OFFSETS[11],
                     this.getHeader()));
-                
+
             } else {
                 schedule = new Header.Schedule(createDate, executionDate);
                 ret.setSchedule(schedule);
             }
         }
-        
+
         // Feld 12
         str = this.readAlphaNumeric(Fields.FIELD_A12, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[13], DTAUSDisk.ARECORD_LENGTH[13],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null && str.length() != 1) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_A12, IllegalDataMessage.TYPE_CURRENCY,
                 headerBlock * this.persistence.getBlockSize() +
                 DTAUSDisk.ARECORD_OFFSETS[13], str));
-            
+
         } else {
             final char c = str.toCharArray()[0];
             if(c == ' ') {
@@ -783,7 +783,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
                     headerBlock * this.persistence.getBlockSize() +
                     DTAUSDisk.ARECORD_OFFSETS[13], c, cur),
                     MessageEvent.WARNING));
-                
+
             } else {
                 cur = this.getCurrencyDirectory().getCurrency(c);
                 if(cur == null) {
@@ -792,96 +792,96 @@ public class DTAUSDisk extends AbstractLogicalFile {
                         IllegalDataMessage.TYPE_CURRENCY,
                         headerBlock * this.persistence.getBlockSize() +
                         DTAUSDisk.ARECORD_OFFSETS[13], str));
-                    
+
                 }
             }
-            
+
             ret.setCurrency(cur);
         }
-        
+
         return ret;
     }
-    
+
     protected void writeHeader(final long headerBlock, final Header header) {
         final Header.Schedule schedule;
         final LogicalFileType label;
         final boolean isBank;
-        
+
         schedule = header.getSchedule();
         label = header.getType();
         isBank = label.isSendByBank();
-        
+
         // Feld 1
         this.writeNumber(Fields.FIELD_A1, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[0], DTAUSDisk.ARECORD_LENGTH[0],
             this.persistence.getBlockSize(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 2
         this.writeAlphaNumeric(Fields.FIELD_A2, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[1], DTAUSDisk.ARECORD_LENGTH[1], "A",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 3
         this.writeAlphaNumeric(Fields.FIELD_A3, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[2], DTAUSDisk.ARECORD_LENGTH[2],
             label.getCode(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 4
         this.writeNumber(Fields.FIELD_A4, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[3], DTAUSDisk.ARECORD_LENGTH[3],
             header.getBank().intValue(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 5
         this.writeNumber(Fields.FIELD_A5, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[4], DTAUSDisk.ARECORD_LENGTH[4],
             isBank && header.getBankData() != null ?
                 header.getBankData().intValue() : 0,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 6
         this.writeAlphaNumeric(Fields.FIELD_A6, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[5], DTAUSDisk.ARECORD_LENGTH[5],
             header.getCustomer().format(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 7
         this.writeShortDate(Fields.FIELD_A7, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[6], schedule.getCreateDate(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 8
         this.writeAlphaNumeric(Fields.FIELD_A8, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[7], DTAUSDisk.ARECORD_LENGTH[7],
             "", AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 9
         this.writeNumber(Fields.FIELD_A9, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[8], DTAUSDisk.ARECORD_LENGTH[8],
             header.getAccount().longValue(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 10
         this.writeNumber(Fields.FIELD_A10, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[9], DTAUSDisk.ARECORD_LENGTH[9],
             header.getReference() != null ?
                 header.getReference().longValue() : 0L,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 11a
         this.writeAlphaNumeric(Fields.FIELD_A11A, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[10], DTAUSDisk.ARECORD_LENGTH[10], "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 11b
         this.writeLongDate(Fields.FIELD_A11B, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[11], schedule.getExecutionDate(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 11c
         this.writeAlphaNumeric(Fields.FIELD_A11C, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[12], DTAUSDisk.ARECORD_LENGTH[12], "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 12
         this.writeAlphaNumeric(Fields.FIELD_A12, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[13], DTAUSDisk.ARECORD_LENGTH[13],
@@ -889,128 +889,128 @@ public class DTAUSDisk extends AbstractLogicalFile {
             ? this.getCurrencyDirectory().getCode(header.getCurrency())
             : ' '),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
     }
-    
+
     protected Checksum readChecksum(final long checksumBlock) throws
         PhysicalFileError {
-        
+
         Long num;
         final String str;
         final Checksum checksum;
-        
+
         checksum = new Checksum();
-        
+
         // Feld 1
         num = this.readNumber(Fields.FIELD_E1, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[0], DTAUSDisk.ERECORD_LENGTH[0],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(num.intValue() != this.persistence.getBlockSize()) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_E1, IllegalDataMessage.TYPE_CONSTANT,
                 checksumBlock * this.persistence.getBlockSize() +
                 DTAUSDisk.ERECORD_OFFSETS[0], num.toString()));
-            
+
         }
-        
+
         // Feld 2
         str = this.readAlphaNumeric(Fields.FIELD_E2, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[1], DTAUSDisk.ERECORD_LENGTH[1],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'E')) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_E2, IllegalDataMessage.TYPE_CONSTANT,
                 checksumBlock * this.persistence.getBlockSize()+
                 DTAUSDisk.ERECORD_OFFSETS[1], str));
-            
+
         }
-        
+
         // Feld 4
         num = this.readNumber(Fields.FIELD_E4, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[3], DTAUSDisk.ERECORD_LENGTH[3],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         checksum.setTransactionCount(num.intValue());
-        
+
         // Feld 6
         num = this.readNumber(Fields.FIELD_E6, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[5], DTAUSDisk.ERECORD_LENGTH[5],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         checksum.setSumTargetAccount(num.longValue());
-        
+
         // Feld 7
         num = this.readNumber(Fields.FIELD_E7, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[6], DTAUSDisk.ERECORD_LENGTH[6],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         checksum.setSumTargetBank(num.longValue());
-        
+
         // Feld 8
         num = this.readNumber(Fields.FIELD_E8, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[7], DTAUSDisk.ERECORD_LENGTH[7],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         checksum.setSumAmount(num.longValue());
         return checksum;
     }
-    
+
     protected void writeChecksum(final long checksumBlock,
         final Checksum checksum) {
-        
+
         // Feld 1
         this.writeNumber(Fields.FIELD_E1, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[0], DTAUSDisk.ERECORD_LENGTH[0],
             this.persistence.getBlockSize(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 2
         this.writeAlphaNumeric(Fields.FIELD_E2, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[1], DTAUSDisk.ERECORD_LENGTH[1], "E",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 3
         this.writeAlphaNumeric(Fields.FIELD_E3, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[2], DTAUSDisk.ERECORD_LENGTH[2], "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 4
         this.writeNumber(Fields.FIELD_E4, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[3], DTAUSDisk.ERECORD_LENGTH[3],
             checksum.getTransactionCount(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 5
         this.writeNumber(Fields.FIELD_E5, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[4], DTAUSDisk.ERECORD_LENGTH[4], 0L,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 6
         this.writeNumber(Fields.FIELD_E6, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[5], DTAUSDisk.ERECORD_LENGTH[5],
             checksum.getSumTargetAccount(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 7
         this.writeNumber(Fields.FIELD_E7, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[6], DTAUSDisk.ERECORD_LENGTH[6],
             checksum.getSumTargetBank(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 8
         this.writeNumber(Fields.FIELD_E8, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[7], DTAUSDisk.ERECORD_LENGTH[7],
             checksum.getSumAmount(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Feld 9
         this.writeAlphaNumeric(Fields.FIELD_E9, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[8], DTAUSDisk.ERECORD_LENGTH[8], "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
     }
-    
+
     protected Transaction readTransaction(final long block,
         final Transaction transaction) throws PhysicalFileError {
-        
+
         int search;
         long blockOffset;
         Long num;
@@ -1023,46 +1023,46 @@ public class DTAUSDisk extends AbstractLogicalFile {
         final Kontonummer targetAccount;
         final Bankleitzahl targetBank;
         final AlphaNumericText27 targetName;
-        
+
         transaction.setExecutiveExt(null);
         transaction.setTargetExt(null);
         extCount = this.readNumber(Fields.FIELD_C18, block + 1,
             DTAUSDisk.CRECORD_OFFSETS2[4], DTAUSDisk.CRECORD_LENGTH2[4],
             AbstractLogicalFile.ENCODING_ASCII).longValue();
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 1
         num = this.readNumber(Fields.FIELD_C1, block,
             DTAUSDisk.CRECORD_OFFSETS1[0], DTAUSDisk.CRECORD_LENGTH1[0],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(num.intValue() != DTAUSDisk.CRECORD_CONST_LENGTH +
             extCount * DTAUSDisk.CRECORD_EXT_LENGTH) {
-            
+
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C1, IllegalDataMessage.TYPE_NUMERIC,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[0], num.toString()));
-            
+
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 2
         str = this.readAlphaNumeric(Fields.FIELD_C2, block,
             DTAUSDisk.CRECORD_OFFSETS1[1], DTAUSDisk.CRECORD_LENGTH1[1],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'C')) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C2, IllegalDataMessage.TYPE_CONSTANT,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[1], str));
-            
+
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 3
         num = this.readNumber(Fields.FIELD_C3, block,
             DTAUSDisk.CRECORD_OFFSETS1[2], DTAUSDisk.CRECORD_LENGTH1[2],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(num.longValue() != 0L) {
             if(!Bankleitzahl.checkBankleitzahl(num)) {
                 ThreadLocalMessages.getMessages().addMessage(
@@ -1070,159 +1070,159 @@ public class DTAUSDisk extends AbstractLogicalFile {
                     IllegalDataMessage.TYPE_BANKLEITZAHL,
                     block * this.persistence.getBlockSize() +
                     DTAUSDisk.CRECORD_OFFSETS1[2], num.toString()));
-                
+
             } else {
                 transaction.setPrimaryBank(Bankleitzahl.valueOf(num));
             }
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 4
         num = this.readNumber(Fields.FIELD_C4, block,
             DTAUSDisk.CRECORD_OFFSETS1[3], DTAUSDisk.CRECORD_LENGTH1[3],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(!Bankleitzahl.checkBankleitzahl(num)) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C4, IllegalDataMessage.TYPE_BANKLEITZAHL,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[3], num.toString()));
-            
+
         } else {
             transaction.setTargetBank(Bankleitzahl.valueOf(num));
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 5
         num = this.readNumber(Fields.FIELD_C5, block,
             DTAUSDisk.CRECORD_OFFSETS1[4], DTAUSDisk.CRECORD_LENGTH1[4],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(!Kontonummer.checkKontonummer(num)) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C5, IllegalDataMessage.TYPE_KONTONUMMER,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[4], num.toString()));
-            
+
         } else {
             transaction.setTargetAccount(Kontonummer.valueOf(num));
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 6
         num = this.readNumber(Fields.FIELD_C6, block,
             DTAUSDisk.CRECORD_OFFSETS1[5], DTAUSDisk.CRECORD_LENGTH1[5],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(!Referenznummer.checkReferenznummer(num)) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C6, IllegalDataMessage.TYPE_REFERENZNUMMER,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[5], num.toString()));
-            
+
         } else {
             transaction.setReference(Referenznummer.valueOf(num));
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Felder 7a & 7b
         keyType = this.readNumber(Fields.FIELD_C7A, block,
             DTAUSDisk.CRECORD_OFFSETS1[6], 2,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         num = this.readNumber(Fields.FIELD_C7B, block,
             DTAUSDisk.CRECORD_OFFSETS1[6] + 2, DTAUSDisk.CRECORD_LENGTH1[6] - 2,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         type = this.getTextschluesselVerzeichnis().
             getTextschluessel(keyType.intValue(), num.intValue());
-        
+
         if(type == null
             || (type.isDebit() && !this.getHeader().getType().isDebitAllowed())
             || (type.isRemittance() && !this.getHeader().getType().
             isRemittanceAllowed())) {
-            
+
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C7A, IllegalDataMessage.TYPE_TEXTSCHLUESSEL,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[6], keyType.toString() +
                 num.toString()));
-            
+
         } else {
             transaction.setType(type);
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 10
         num = this.readNumber(Fields.FIELD_C10, block,
             DTAUSDisk.CRECORD_OFFSETS1[9], DTAUSDisk.CRECORD_LENGTH1[9],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(!Bankleitzahl.checkBankleitzahl(num)) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C10, IllegalDataMessage.TYPE_BANKLEITZAHL,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[9], num.toString()));
-            
+
         } else {
             transaction.setExecutiveBank(Bankleitzahl.valueOf(num));
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 11
         num = this.readNumber(Fields.FIELD_C11, block,
             DTAUSDisk.CRECORD_OFFSETS1[10], DTAUSDisk.CRECORD_LENGTH1[10],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(!Kontonummer.checkKontonummer(num)) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C11, IllegalDataMessage.TYPE_KONTONUMMER,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[10], num.toString()));
-            
+
         } else {
             transaction.setExecutiveAccount(Kontonummer.valueOf(num));
         }
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 12
         num = this.readNumber(Fields.FIELD_C12, block,
             DTAUSDisk.CRECORD_OFFSETS1[11], DTAUSDisk.CRECORD_LENGTH1[11],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         transaction.setAmount(new BigDecimal(num.longValue()));
-        
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 14a
         str = this.readAlphaNumeric(Fields.FIELD_C14A, block,
             DTAUSDisk.CRECORD_OFFSETS1[13], DTAUSDisk.CRECORD_LENGTH1[13],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null) {
             transaction.setTargetName(AlphaNumericText27.parse(str));
         }
-        
+
         // Konstanter Teil - Satzaschnitt 2 - Feld 15(1)
         str = this.readAlphaNumeric(Fields.FIELD_C15, block + 1,
             DTAUSDisk.CRECORD_OFFSETS2[0], DTAUSDisk.CRECORD_LENGTH2[0],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null) {
             transaction.setExecutiveName(AlphaNumericText27.parse(str));
         }
-        
+
         // Konstanter Teil - Satzaschnitt 2 - Feld 16(2)
         str = this.readAlphaNumeric(Fields.FIELD_C16, block + 1,
             DTAUSDisk.CRECORD_OFFSETS2[1], DTAUSDisk.CRECORD_LENGTH2[1],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null) {
             desc.addDescription(AlphaNumericText27.parse(str));
         }
-        
+
         // Konstanter Teil - Satzaschnitt 2 - Feld 17a(3)
         str = this.readAlphaNumeric(Fields.FIELD_C17A, block + 1,
             DTAUSDisk.CRECORD_OFFSETS2[2], DTAUSDisk.CRECORD_LENGTH2[2],
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         if(str != null && str.length() != 1) {
             ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
                 Fields.FIELD_C17A, IllegalDataMessage.TYPE_CURRENCY,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[10], str));
-            
+
         } else {
             final char c = str.toCharArray()[0];
             if(c == ' ') {
@@ -1232,7 +1232,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
                     this.getHeaderBlock() * this.persistence.getBlockSize() +
                     DTAUSDisk.CRECORD_OFFSETS1[10], c, cur),
                     MessageEvent.WARNING));
-                
+
             } else {
                 cur = this.getCurrencyDirectory().getCurrency(c);
                 if(cur == null) {
@@ -1241,39 +1241,39 @@ public class DTAUSDisk extends AbstractLogicalFile {
                         IllegalDataMessage.TYPE_CURRENCY,
                         block * this.persistence.getBlockSize() +
                         DTAUSDisk.CRECORD_OFFSETS1[10], str));
-                    
+
                 }
             }
-            
+
             transaction.setCurrency(cur);
         }
-        
+
         //if(header.getLabel().isBank()) {
         // Konstanter Teil - Satzaschnitt 1 - Feld 8
         //    num = this.readNumber(block, DTAUSDisk.CRECORD_OFFSETS1[7],
         //        DTAUSDisk.CRECORD_LENGTH1[7]);
-        
+
         //    transaction.set
         //
         //}
-        
+
         // Erweiterungsteile des 2., 3., 4., 5. und 6. Satzabschnittes.
         for(search = 0; search < extCount; search++) {
             blockOffset = block +
                 DTAUSDisk.CRECORD_EXTINDEX_TO_BLOCKOFFSET[search];
-            
+
             num = this.readNumber(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEFIELD[search], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPELENGTH[search],
                 AbstractLogicalFile.ENCODING_ASCII);
-            
+
             str = this.readAlphaNumeric(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEFIELD[search], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEOFFSET[search],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUELENGTH[search],
                 AbstractLogicalFile.ENCODING_ASCII);
-            
+
             if(num.longValue() == 1L) {
                 if(transaction.getTargetExt() != null) {
                     ThreadLocalMessages.getMessages().addMessage(
@@ -1283,7 +1283,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
                         block * this.persistence.getBlockSize() +
                         DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
                         num.toString()));
-                    
+
                 } else if(str != null) {
                     transaction.setTargetExt(AlphaNumericText27.parse(str));
                 }
@@ -1300,7 +1300,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
                         block * this.persistence.getBlockSize() +
                         DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
                         num.toString()));
-                    
+
                 } else if(str != null) {
                     transaction.setExecutiveExt(AlphaNumericText27.parse(str));
                 }
@@ -1312,17 +1312,17 @@ public class DTAUSDisk extends AbstractLogicalFile {
                     block * this.persistence.getBlockSize() +
                     DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
                     num.toString()));
-                
+
             }
         }
-        
+
         transaction.setDescription(desc);
         return transaction;
     }
-    
+
     protected void writeTransaction(final long block,
         final Transaction transaction) {
-        
+
         int i;
         int blockIndex = 1;
         long blockOffset;
@@ -1337,123 +1337,123 @@ public class DTAUSDisk extends AbstractLogicalFile {
         if(transaction.getExecutiveExt() != null) {
             extCount++;
         }
-        
+
         if(transaction.getTargetExt() != null) {
             extCount++;
         }
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 1
         this.writeNumber(Fields.FIELD_C1, block,
             DTAUSDisk.CRECORD_OFFSETS1[0], DTAUSDisk.CRECORD_LENGTH1[0],
             DTAUSDisk.CRECORD_CONST_LENGTH +
             extCount * DTAUSDisk.CRECORD_EXT_LENGTH,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 2
         this.writeAlphaNumeric(Fields.FIELD_C2, block,
             DTAUSDisk.CRECORD_OFFSETS1[1], DTAUSDisk.CRECORD_LENGTH1[1], "C",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 3
         this.writeNumber(Fields.FIELD_C3, block,
             DTAUSDisk.CRECORD_OFFSETS1[2], DTAUSDisk.CRECORD_LENGTH1[2],
             transaction.getPrimaryBank() != null ?
                 transaction.getPrimaryBank().intValue() : 0,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 4
         this.writeNumber(Fields.FIELD_C4, block,
             DTAUSDisk.CRECORD_OFFSETS1[3], DTAUSDisk.CRECORD_LENGTH1[3],
             transaction.getTargetBank().intValue(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 5
         this.writeNumber(Fields.FIELD_C5, block,
             DTAUSDisk.CRECORD_OFFSETS1[4], DTAUSDisk.CRECORD_LENGTH1[4],
             transaction.getTargetAccount().longValue(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 6
         // TODO -1
         this.writeNumber(-1, block, DTAUSDisk.CRECORD_OFFSETS1[5] - 1, 1, 0L,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         this.writeNumber(Fields.FIELD_C6, block,
             DTAUSDisk.CRECORD_OFFSETS1[5], DTAUSDisk.CRECORD_LENGTH1[5],
             transaction.getReference() != null ?
                 transaction.getReference().longValue() : 0L,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         this.writeNumber(-1, block, DTAUSDisk.CRECORD_OFFSETS1[6] - 1, 1, 0L,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Felder 7a & 7b
         // TODO -3, +/- 2
         this.writeNumber(Fields.FIELD_C7A, block,
             DTAUSDisk.CRECORD_OFFSETS1[6], DTAUSDisk.CRECORD_LENGTH1[6] - 3,
             type.getKey(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         this.writeNumber(Fields.FIELD_C7B, block,
             DTAUSDisk.CRECORD_OFFSETS1[6] + 2, DTAUSDisk.CRECORD_LENGTH1[6] - 2,
             type.getExtension(), AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 8
         this.writeAlphaNumeric(Fields.FIELD_C8, block,
             DTAUSDisk.CRECORD_OFFSETS1[7], DTAUSDisk.CRECORD_LENGTH1[7], "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 9
         this.writeNumber(Fields.FIELD_C9, block,
             DTAUSDisk.CRECORD_OFFSETS1[8], DTAUSDisk.CRECORD_LENGTH1[8], 0L,
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 10
         this.writeNumber(Fields.FIELD_C10, block,
             DTAUSDisk.CRECORD_OFFSETS1[9], DTAUSDisk.CRECORD_LENGTH1[9],
             transaction.getExecutiveBank().intValue(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 11
         this.writeNumber(Fields.FIELD_C11, block,
             DTAUSDisk.CRECORD_OFFSETS1[10], DTAUSDisk.CRECORD_LENGTH1[10],
             transaction.getExecutiveAccount().longValue(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 12
         this.writeNumber(Fields.FIELD_C12, block,
             DTAUSDisk.CRECORD_OFFSETS1[11], DTAUSDisk.CRECORD_LENGTH1[11],
             transaction.getAmount().longValue(),
             AbstractLogicalFile.ENCODING_ASCII); // TODO longValueExact()
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 13
         this.writeAlphaNumeric(Fields.FIELD_C13, block,
             DTAUSDisk.CRECORD_OFFSETS1[12], DTAUSDisk.CRECORD_LENGTH1[12], "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 14a
         this.writeAlphaNumeric(Fields.FIELD_C14A, block,
             DTAUSDisk.CRECORD_OFFSETS1[13], DTAUSDisk.CRECORD_LENGTH1[13],
             transaction.getTargetName().format(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 1. Satzabschnitt - Feld 14b
         this.writeAlphaNumeric(Fields.FIELD_C14B, block,
             DTAUSDisk.CRECORD_OFFSETS1[14], DTAUSDisk.CRECORD_LENGTH1[14], "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 2. Satzabschnitt - Feld 15(1)
         this.writeAlphaNumeric(Fields.FIELD_C15, block + 1L,
             DTAUSDisk.CRECORD_OFFSETS2[0], DTAUSDisk.CRECORD_LENGTH2[0],
             transaction.getExecutiveName().format(),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 2. Satzabschnitt - Feld 16(2)
         this.writeAlphaNumeric(Fields.FIELD_C16, block + 1L,
             DTAUSDisk.CRECORD_OFFSETS2[1], DTAUSDisk.CRECORD_LENGTH2[1],
             desc.getDescriptionCount() > 0 ?
                 desc.getDescription(0).format() : "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 2. Satzabschnitt - Feld 17a(3)
         this.writeAlphaNumeric(Fields.FIELD_C17A, block + 1L,
             DTAUSDisk.CRECORD_OFFSETS2[2], DTAUSDisk.CRECORD_LENGTH2[2],
@@ -1461,28 +1461,28 @@ public class DTAUSDisk extends AbstractLogicalFile {
             ? this.getCurrencyDirectory().getCode(transaction.getCurrency())
             : ' '),
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 2. Satzabschnitt - Feld 17b(4)
         this.writeAlphaNumeric(Fields.FIELD_C17B, block + 1L,
             DTAUSDisk.CRECORD_OFFSETS2[3], DTAUSDisk.CRECORD_LENGTH2[3], "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Konstanter Teil - 2. Satzabschnitt - Feld 18(5)
         this.writeNumber(Fields.FIELD_C18, block + 1L,
             DTAUSDisk.CRECORD_OFFSETS2[4], DTAUSDisk.CRECORD_LENGTH2[4],
             extCount, AbstractLogicalFile.ENCODING_ASCII);
-        
+
         // Erweiterungs-Teile im zweiten Satzabschnitt initialisieren.
         this.initializeExtensionBlock(blockIndex, block);
-        
+
         // Erweiterungs-Teile.
         extIndex = 0;
-        
+
         blockOffset = block +
             DTAUSDisk.CRECORD_EXTINDEX_TO_BLOCKOFFSET[extIndex];
-        
+
         lastBlockOffset = blockOffset;
-        
+
         // Erweiterung des beteiligten Kontos als ersten Erweiterungsteil.
         if((txt = transaction.getTargetExt()) != null) {
             this.writeNumber(
@@ -1490,111 +1490,111 @@ public class DTAUSDisk extends AbstractLogicalFile {
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPELENGTH[extIndex], 1L,
                 AbstractLogicalFile.ENCODING_ASCII);
-            
+
             this.writeAlphaNumeric(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEFIELD[extIndex], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUELENGTH[extIndex],
                 txt.format(), AbstractLogicalFile.ENCODING_ASCII);
-            
+
             extIndex++;
         }
-        
+
         // Verwendungszweck-Zeilen des 2., 3., 4., 5. und 6. Satzabschnittes.
         descCount = desc.getDescriptionCount();
         for(i = 1; i < descCount; i++, extIndex++) {
             blockOffset = block +
                 DTAUSDisk.CRECORD_EXTINDEX_TO_BLOCKOFFSET[extIndex];
-            
+
             if(blockOffset != lastBlockOffset) {
                 // Nächsten Satzabschnitt initialisieren.
                 this.initializeExtensionBlock(++blockIndex, block);
             }
-            
+
             this.writeNumber(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEFIELD[extIndex], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPELENGTH[extIndex], 2L,
                 AbstractLogicalFile.ENCODING_ASCII);
-            
+
             this.writeAlphaNumeric(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEFIELD[extIndex], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUELENGTH[extIndex],
                 desc.getDescription(i).format(),
                 AbstractLogicalFile.ENCODING_ASCII);
-            
+
             lastBlockOffset = blockOffset;
         }
-        
+
         // Erweiterung des Auftraggeber-Kontos im letzten Erweiterungsteil.
         if((txt = transaction.getExecutiveExt()) != null) {
             blockOffset = block +
                 DTAUSDisk.CRECORD_EXTINDEX_TO_BLOCKOFFSET[extIndex];
-            
+
             if(blockOffset != lastBlockOffset) {
                 // Nächsten Satzabschnitt initialisieren.
                 this.initializeExtensionBlock(++blockIndex, block);
             }
-            
+
             this.writeNumber(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEFIELD[extIndex], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPELENGTH[extIndex], 3L,
                 AbstractLogicalFile.ENCODING_ASCII);
-            
+
             this.writeAlphaNumeric(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEFIELD[extIndex], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUELENGTH[extIndex],
                 txt.format(), AbstractLogicalFile.ENCODING_ASCII);
-            
+
             extIndex++;
             lastBlockOffset = blockOffset;
         }
     }
-    
-    
-    
+
+
+
     protected int blockCount(final Transaction transaction) {
         int extCount = transaction.getDescription().getDescriptionCount() - 1;
         if(transaction.getExecutiveExt() != null) {
             extCount++;
         }
-        
+
         if(transaction.getTargetExt() != null) {
             extCount++;
         }
-        
+
         return DTAUSDisk.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
-    
+
     protected int blockCount(final long block) throws PhysicalFileError {
         int extCount = this.readNumber(Fields.FIELD_C18,
             block + 1L, DTAUSDisk.CRECORD_OFFSETS2[4],
             DTAUSDisk.CRECORD_LENGTH2[4], AbstractLogicalFile.ENCODING_ASCII).
             intValue();
-        
+
         if(extCount == -1) {
             extCount = 0;
         }
-        
+
         return DTAUSDisk.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
-    
+
     //-----------------------------------------------------AbstractLogicalFile--
     //--DTAUSDisk---------------------------------------------------------------
-    
+
     private void initializeExtensionBlock(final int blockIndex,
         final long block) {
-        
+
         int extIndex;
         int startingExt;
         int endingExt;
         int reservedField;
         int reservedOffset;
         int reservedLength;
-        
+
         if(blockIndex == 1) {
             startingExt = 0;
             endingExt = 1;
@@ -1628,53 +1628,53 @@ public class DTAUSDisk extends AbstractLogicalFile {
         } else {
             throw new IllegalArgumentException(Integer.toString(blockIndex));
         }
-        
+
         // Erweiterungsteile leeren.
         for(extIndex = startingExt; extIndex <= endingExt; extIndex++) {
             final long blockOffset = block +
                 DTAUSDisk.CRECORD_EXTINDEX_TO_BLOCKOFFSET[extIndex];
-            
+
             this.writeNumber(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEFIELD[extIndex], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_TYPELENGTH[extIndex], 0L,
                 AbstractLogicalFile.ENCODING_ASCII);
-            
+
             this.writeAlphaNumeric(
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEFIELD[extIndex], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUELENGTH[extIndex], "",
                 AbstractLogicalFile.ENCODING_ASCII);
-            
+
         }
-        
+
         // Reserve-Feld initialisieren.
         this.writeAlphaNumeric(reservedField, block + blockIndex,
             reservedOffset, reservedLength, "",
             AbstractLogicalFile.ENCODING_ASCII);
-        
+
     }
-    
+
     protected MemoryManager getMemoryManagerImpl() {
         return this.getMemoryManager();
     }
-    
+
     protected Logger getLoggerImpl() {
         return this.getLogger();
     }
-    
+
     protected TaskMonitor getTaskMonitorImpl() {
         return this.getTaskMonitor();
     }
-    
+
     protected TextschluesselVerzeichnis getTextschluesselVerzeichnisImpl() {
         return this.getTextschluesselVerzeichnis();
     }
-    
+
     protected ApplicationLogger getApplicationLoggerImpl() {
         return this.getApplicationLogger();
     }
-    
+
     //---------------------------------------------------------------DTAUSDisk--
-    
+
 }

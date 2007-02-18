@@ -34,74 +34,74 @@ import org.jdtaus.core.text.Message;
  * @version $Id$
  */
 public final class IllegalDataMessage extends AbstractErrorMessage {
-    
+
     //--Konstanten--------------------------------------------------------------
-    
+
     /**
      * Konstante für Zeichen des DTAUS-Alphabets.
      */
     public static final int TYPE_ALPHA = 1;
-    
+
     /**
      * Konstante für Ziffern des DTAUS-Alphabets.
      */
     public static final int TYPE_NUMERIC = 2;
-    
+
     /**
      * Konstante für Zeichen des alpha-numerischen DTAUS-Alphabets.
      */
     public static final int TYPE_ALPHA_NUMERIC = 3;
-    
+
     /**
      * Konstante für EBCDIC gepackte Zahl.
      */
     public static final int TYPE_PACKET_POSITIVE = 4;
-    
+
     /**
      * Konstante für konstante Werte.
      */
     public static final int TYPE_CONSTANT = 5;
-    
+
     /**
      * Konstante für Reserve-Felder.
      */
     public static final int TYPE_RESERVED = 6;
-    
+
     /**
      * Konstante für Datums-Felder mit zweistelliger Jahresangabe.
      */
     public static final int TYPE_SHORTDATE = 7;
-    
+
     /**
      * Konstante für Datums-Felder mit vierstelliger Jahresangabe.
      */
     public static final int TYPE_LONGDATE = 8;
-    
+
     /**
      * Konstante für Feld 3 des A-Datensatzes (Datei-Typ).
      */
     public static final int TYPE_FILETYPE = 9;
-    
+
     /**
      * Konstante für Bankleitzahlen-Felder.
      */
     public static final int TYPE_BANKLEITZAHL = 10;
-    
+
     /**
      * Konstante für Kontonummern-Felder.
      */
     public static final int TYPE_KONTONUMMER = 11;
-    
+
     /**
      * Konstante für Referenznummern-Felder.
      */
     public static final int TYPE_REFERENZNUMMER = 12;
-    
+
     /**
      * Konstante für Textschlüssel-Felder.
      */
     public static final int TYPE_TEXTSCHLUESSEL = 13;
-    
+
     /**
      * Konstante für Währungs-Felder.
      */
@@ -114,10 +114,10 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
         TYPE_FILETYPE, TYPE_BANKLEITZAHL, TYPE_KONTONUMMER, TYPE_REFERENZNUMMER,
         TYPE_TEXTSCHLUESSEL, TYPE_CURRENCY
     };
-    
+
     //--------------------------------------------------------------Konstanten--
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code IllegalDataMessage} mit Angaben zu den
      * ungültigen Daten.
@@ -137,7 +137,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public IllegalDataMessage(final int field, final int type,
         final long position, final String invalidData) throws
         PhysicalFileError {
-        
+
         super();
         this.field = field;
         this.type = type;
@@ -148,7 +148,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code IllegalDataMessage} Instanzen.
      *
@@ -163,26 +163,26 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      */
     public static IllegalDataMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == IllegalDataMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (IllegalDataMessage[]) ret.toArray(
             new IllegalDataMessage[ret.size()]);
-        
+
     }
-    
+
     private void assertValidType() {
         boolean valid = false;
         for(int i = TYPES.length - 1; i >= 0 && !valid; i--) {
@@ -191,41 +191,41 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
                 break;
             }
         }
-        
+
         if(!valid) {
             throw new IllegalArgumentException(
                 Integer.toString(this.getType()));
-            
+
         }
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--IllegalDataMessage------------------------------------------------------
-    
+
     /**
      * Wert der Property {@code <field>}.
      * @serial
      */
     private final int field;
-    
+
     /**
      * Wert der Property {@code <position>}.
      * @serial
      */
     private final long position;
-    
+
     /**
      * Wert der Property {@code <type>}.
      * @serial
      */
     private final int type;
-    
+
     /**
      * Wert der Property {@code <invalidData>}.
      * @serial
      */
     private final String invalidData;
-    
+
     /**
      * Liest den Wert der Property {@code <field>}.
      *
@@ -235,7 +235,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public int getField() {
         return this.field;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <position>}.
      *
@@ -244,7 +244,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public long getPosition() {
         return this.position;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <type>}.
      *
@@ -255,7 +255,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public int getType() {
         return this.type;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <invalidData>}.
      *
@@ -264,10 +264,10 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public String getInvalidData() {
         return this.invalidData;
     }
-    
+
     //------------------------------------------------------IllegalDataMessage--
     //--Message-----------------------------------------------------------------
-    
+
     /**
      * Argumente zur Formatierung des Meldungs-Textes.
      *
@@ -282,7 +282,7 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
             this.getInvalidData()
         };
     }
-    
+
     /**
      * Formatierter Standard-Text der Meldung.
      *
@@ -293,9 +293,9 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
     public String getText(final Locale locale) {
         return IllegalDataMessageBundle.getIllegalDataMessage(locale).
             format(this.getFormatArguments(locale));
-        
+
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

@@ -39,9 +39,9 @@ import org.jdtaus.core.text.Message;
  * @version $Id$
  */
 public final class IllegalScheduleMessage extends AbstractErrorMessage {
-    
+
     //--Konstruktoren-----------------------------------------------------------
-    
+
     /**
      * Erzeugt eine neue {@code IllegalScheduleMessage}.
      *
@@ -57,9 +57,9 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      */
     public IllegalScheduleMessage(final long position,
         final Header header) throws PhysicalFileError {
-        
+
         super();
-        
+
         if(header == null) {
             throw new NullPointerException("header");
         }
@@ -68,19 +68,19 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
         }
         if(Header.Schedule.checkSchedule(header.getSchedule().getCreateDate(),
             header.getSchedule().getExecutionDate())) {
-            
+
             throw new IllegalArgumentException(
                 Long.toString(header.getSchedule().getCreateDate().getTime()));
-            
+
         }
-        
+
         this.position = position;
         this.header = header;
         if(AbstractErrorMessage.isErrorsEnabled()) {
             throw new PhysicalFileError(this);
         }
     }
-    
+
     /**
      * Zugriff auf {@code IllegalScheduleMessage} Instanzen.
      *
@@ -95,41 +95,41 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      */
     public static IllegalScheduleMessage[] getMessages(
         final Message[] messages) {
-        
+
         if(messages == null) {
             throw new NullPointerException("messages");
         }
-        
+
         final int numMessages = messages.length;
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
-        
+
         for(int i = numMessages - 1; i >= 0; i--) {
             if(messages[i].getClass() == IllegalScheduleMessage.class) {
                 ret.add(messages[i]);
             }
         }
-        
+
         return (IllegalScheduleMessage[]) ret.toArray(
             new IllegalScheduleMessage[ret.size()]);
-        
+
     }
-    
+
     //-----------------------------------------------------------Konstruktoren--
     //--IllegalScheduleMessage--------------------------------------------------
-    
+
     /**
      * Wert der Property {@code <position>}.
      * @serial
      */
     private long position;
-    
+
     /**
      * Wert der Property {@code <header>}.
      * @serial
      */
     private Header header;
-    
+
     /**
      * Liest den Wert der Property {@code <position>}.
      *
@@ -138,7 +138,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
     public long getPosition() {
         return this.position;
     }
-    
+
     /**
      * Liest den Wert der Property {@code <header>}.
      *
@@ -148,10 +148,10 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
     public Header getHeader() {
         return this.header;
     }
-    
+
     //--------------------------------------------------IllegalScheduleMessage--
     //--Message-----------------------------------------------------------------
-    
+
     /**
      * Argumente zur Formatierung des Meldungs-Textes.
      *
@@ -167,7 +167,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
             this.getHeader().getSchedule().getExecutionDate()
         };
     }
-    
+
     /**
      * Formatierter Standard-Text der Meldung.
      *
@@ -178,9 +178,9 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
     public String getText(final Locale locale) {
         return IllegalScheduleMessageBundle.getIllegalScheduleMessage(locale).
             format(this.getFormatArguments(locale));
-        
+
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }

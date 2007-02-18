@@ -30,33 +30,33 @@ import org.jdtaus.core.text.Message;
  * @version $Id$
  */
 public class CurrencyViolationMessage extends Message {
-    
+
     //--CurrencyViolationMessage------------------------------------------------
-    
+
     /**
      * Feld-Konstante.
      * @serial
      */
     private Integer field;
-    
+
     /**
      * Absolute Position von {@code field}.
      * @serial
      */
     private Long position;
-    
+
     /**
      * Vorhandener DTAUS code.
      * @serial
      */
     private Character code;
-    
+
     /**
      * Property {@code code} entsprechende Währung.
      * @serial
      */
     private Currency currency;
-    
+
     /**
      * Erzeugt eine neue {@code CurrencyViolationMessage} Instanz.
      *
@@ -67,16 +67,16 @@ public class CurrencyViolationMessage extends Message {
      */
     public CurrencyViolationMessage(final int field, final long position,
         final char code, final Currency currency) {
-        
+
         this.field = new Integer(field);
         this.position = new Long(position);
         this.code = new Character(code);
         this.currency = currency;
     }
-    
+
     //------------------------------------------------CurrencyViolationMessage--
     //--Message-----------------------------------------------------------------
-    
+
     /**
      * Argumente zur Formatierung des Meldungs-Textes.
      *
@@ -96,14 +96,14 @@ public class CurrencyViolationMessage extends Message {
             this.currency == null ? "" : this.currency.getSymbol(locale)
         };
     }
-    
+
     public String getText(final Locale locale) {
         return CurrencyViolationMessageBundle.
             getCurrencyViolationMessage(locale).
             format( this.getFormatArguments(locale));
-        
+
     }
-    
+
     //-----------------------------------------------------------------Message--
-    
+
 }
