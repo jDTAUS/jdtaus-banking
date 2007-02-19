@@ -52,12 +52,8 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      * @throws IllegalArgumentException wenn {@code position} negativ ist
      * oder {@code header.getSchedule()} keiner ungültigen Auftragsterminierung
      * entspricht.
-     *
-     * @throws PhysicalFileError {@code if(isErrorsEnabled())}
      */
-    public IllegalScheduleMessage(final long position,
-        final Header header) throws PhysicalFileError {
-
+    public IllegalScheduleMessage(final long position, final Header header) {
         super();
 
         if(header == null) {
@@ -76,9 +72,6 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
 
         this.position = position;
         this.header = header;
-        if(AbstractErrorMessage.isErrorsEnabled()) {
-            throw new PhysicalFileError(this);
-        }
     }
 
     /**

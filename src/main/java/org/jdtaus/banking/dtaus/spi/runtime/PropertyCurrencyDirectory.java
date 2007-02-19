@@ -36,7 +36,9 @@ import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
+import org.jdtaus.core.container.ImplementationError;
 import org.jdtaus.core.container.ModelFactory;
+import org.jdtaus.core.container.PropertyError;
 import org.jdtaus.core.logging.spi.Logger;
 
 /**
@@ -137,7 +139,7 @@ public class PropertyCurrencyDirectory
     /** Mapping von ISO-Codes zu DTAUS-Codes. */
     private Map codes;
 
-    public void initialize() throws ContainerError {
+    public void initialize() {
         char code;
         this.codes = this.getProperties();
         final Currency[] currencies = this.getCurrencies();
@@ -145,7 +147,7 @@ public class PropertyCurrencyDirectory
         // Sanity check.
         for(int i = currencies.length - 1; i >= 0; i--) {
             if(this.getCurrency(this.getCode(currencies[i])) == null) {
-                throw new IllegalArgumentException(
+                throw new ImplementationError(META,
                     currencies[i].getCurrencyCode());
 
             }
@@ -179,7 +181,7 @@ public class PropertyCurrencyDirectory
                     PropertyCurrencyDirectory.ISO_LENGTH)));
 
             } else if(!key.startsWith(PropertyCurrencyDirectory.DTAUS_PREFIX)) {
-                throw new IllegalArgumentException(key);
+                throw new ImplementationError(META, key);
             }
         }
 
@@ -207,7 +209,7 @@ public class PropertyCurrencyDirectory
                 equals(currency.getCurrencyCode())) {
 
                 if(value == null || value.length() != 1) {
-                    throw new IllegalArgumentException(value);
+                    throw new ImplementationError(META, value);
                 }
 
                 ret = value.toCharArray()[0];
@@ -239,7 +241,7 @@ public class PropertyCurrencyDirectory
                 equals(Character.toString(code))) {
 
                 if(value == null || value.length() != 3) {
-                    throw new IllegalArgumentException(value);
+                    throw new ImplementationError(META, value);
                 }
 
                 ret = Currency.getInstance(value);
@@ -253,6 +255,11 @@ public class PropertyCurrencyDirectory
     //-------------------------------------------------------CurrencyDirectory--
     //--PropertyCurrencyDirectory-----------------------------------------------
 
+    /** Implementierungs Meta-Daten. */
+    private static final Implementation META =
+        ModelFactory.getModel().getModules().
+        getImplementation(PropertyCurrencyDirectory.class.getName());
+
     /**
      * Mapping von ISO Codes zu DTAUS Codes.
      *
@@ -261,18 +268,21 @@ public class PropertyCurrencyDirectory
      */
     protected Map getProperties() {
         Properties ret = null;
-        ClassLoader c = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader =
+            Thread.currentThread().getContextClassLoader();
 
         final URL rsrc;
 
-        if(c == null) {
-            c = ClassLoader.getSystemClassLoader();
+        if(classLoader == null) {
+            classLoader = ClassLoader.getSystemClassLoader();
         }
-        if(c == null) {
-            throw new IllegalStateException();
+        if(classLoader == null) {
+            throw new ImplementationError(META,
+                new NullPointerException("classLoader"));
+
         }
 
-        rsrc = c.getResource(this.getPropertiesResource());
+        rsrc = classLoader.getResource(this.getPropertiesResource());
         if(rsrc != null) {
             InputStream stream = null;
             try {
@@ -300,11 +310,13 @@ public class PropertyCurrencyDirectory
     /**
      * Prüft konfigurierte Properties.
      *
-     * @throws ContainerError bei ungültigen Property-Werten.
+     * @throws PropertyError bei ungültigen Property-Werten.
      */
     protected void assertValidProperties() {
         if(this.getProperties() == null) {
-            throw new ContainerError("propertiesResource");
+            throw new PropertyError("propertiesResource",
+                this.getPropertiesResource());
+
         }
     }
 

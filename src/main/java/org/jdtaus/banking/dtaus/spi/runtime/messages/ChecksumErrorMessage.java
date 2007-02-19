@@ -50,12 +50,9 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      * {@code computedChecksum} {@code null} ist.
      * @throws IllegalArgumentException wenn {@code storedChecksum} und
      * {@code computedChecksum} gleich sind oder {@code position} negativ ist.
-     * @throws PhysicalFileError wenn Property {@code errorsEnabled}
-     * {@code true} ist.
      */
     public ChecksumErrorMessage(final Checksum storedChecksum,
-        final Checksum computedChecksum, final long position) throws
-        PhysicalFileError {
+        final Checksum computedChecksum, final long position) {
 
         if(storedChecksum == null) {
             throw new NullPointerException("storedChecksum");
@@ -73,9 +70,6 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
         this.storedChecksum = storedChecksum;
         this.computedChecksum = computedChecksum;
         this.position = position;
-        if(AbstractErrorMessage.isErrorsEnabled()) {
-            throw new PhysicalFileError(this);
-        }
     }
 
     /**

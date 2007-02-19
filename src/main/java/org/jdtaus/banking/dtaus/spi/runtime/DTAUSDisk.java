@@ -34,6 +34,7 @@ import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.PhysicalFileError;
 import org.jdtaus.banking.dtaus.Transaction;
+import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
 import org.jdtaus.banking.dtaus.spi.CurrencyDirectory;
 import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.CurrencyViolationMessage;
@@ -46,6 +47,7 @@ import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ModelFactory;
+import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.MessageEvent;
 import org.jdtaus.core.text.spi.ApplicationLogger;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
@@ -272,6 +274,11 @@ public class DTAUSDisk extends AbstractLogicalFile {
         Fields.FIELD_C52, Fields.FIELD_C54, Fields.FIELD_C56,
         Fields.FIELD_C58
     };
+
+    /** Implementierungs Meta-Daten. */
+    private static final Implementation META =
+        ModelFactory.getModel().getModules().
+        getImplementation(DTAUSDisk.class.getName());
 
     //--------------------------------------------------------------Konstanten--
     //--Constructors------------------------------------------------------------
@@ -576,11 +583,18 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         char ret;
+        final Message msg;
         if(str == null || str.length() != 1) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_A2, IllegalDataMessage.TYPE_CONSTANT,
+            msg = new IllegalDataMessage(Fields.FIELD_A2,
+                IllegalDataMessage.TYPE_CONSTANT,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.ARECORD_OFFSETS[1], str));
+                DTAUSDisk.ARECORD_OFFSETS[1], str);
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
             ret = '?';
         } else if("A".equals(str)) {
@@ -609,6 +623,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         final int blockSize;
         final Currency cur;
         boolean isBank = false;
+        Message msg;
 
         ret = new Header();
         blockSize = this.persistence.getBlockSize();
@@ -619,11 +634,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(num.intValue() != blockSize) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_A1, IllegalDataMessage.TYPE_CONSTANT,
+            msg = new IllegalDataMessage(Fields.FIELD_A1,
+                IllegalDataMessage.TYPE_CONSTANT,
                 headerBlock * this.persistence.getBlockSize() +
-                DTAUSDisk.ARECORD_OFFSETS[0], num.toString()));
+                DTAUSDisk.ARECORD_OFFSETS[0], num.toString());
 
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
         }
 
         // Feld 2
@@ -632,11 +652,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'A')) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_A2, IllegalDataMessage.TYPE_CONSTANT,
+            msg = new IllegalDataMessage(Fields.FIELD_A2,
+                IllegalDataMessage.TYPE_CONSTANT,
                 headerBlock * this.persistence.getBlockSize() +
-                DTAUSDisk.ARECORD_OFFSETS[1], str));
+                DTAUSDisk.ARECORD_OFFSETS[1], str);
 
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
         }
 
         // Feld 3
@@ -647,11 +672,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
         if(str != null) {
             label = LogicalFileType.valueOf(str);
             if(label == null) {
-                ThreadLocalMessages.getMessages().addMessage(
-                    new IllegalDataMessage(Fields.FIELD_A3,
+                msg = new IllegalDataMessage(Fields.FIELD_A3,
                     IllegalDataMessage.TYPE_FILETYPE,
                     headerBlock * this.persistence.getBlockSize() +
-                    DTAUSDisk.ARECORD_OFFSETS[2], str));
+                    DTAUSDisk.ARECORD_OFFSETS[2], str);
+
+                if(AbstractErrorMessage.isErrorsEnabled()) {
+                    throw new PhysicalFileError(this.getMeta(), msg);
+                } else {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
 
             } else {
                 isBank = label.isSendByBank();
@@ -665,11 +695,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(!Bankleitzahl.checkBankleitzahl(num)) {
-            ThreadLocalMessages.getMessages().addMessage(
-                new IllegalDataMessage(Fields.FIELD_A4,
+            msg = new IllegalDataMessage(Fields.FIELD_A4,
                 IllegalDataMessage.TYPE_BANKLEITZAHL,
                 this.getHeaderBlock() * this.persistence.getBlockSize() +
-                DTAUSDisk.ARECORD_OFFSETS[3], num.toString()));
+                DTAUSDisk.ARECORD_OFFSETS[3], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             ret.setBank(Bankleitzahl.valueOf(num));
@@ -683,11 +718,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
 
         if(isBank) {
             if(!Bankleitzahl.checkBankleitzahl(num)) {
-                ThreadLocalMessages.getMessages().addMessage(
-                    new IllegalDataMessage(Fields.FIELD_A5,
+                msg = new IllegalDataMessage(Fields.FIELD_A5,
                     IllegalDataMessage.TYPE_BANKLEITZAHL,
                     this.getHeaderBlock() * this.persistence.getBlockSize() +
-                    DTAUSDisk.ARECORD_OFFSETS[4], num.toString()));
+                    DTAUSDisk.ARECORD_OFFSETS[4], num.toString());
+
+                if(AbstractErrorMessage.isErrorsEnabled()) {
+                    throw new PhysicalFileError(this.getMeta(), msg);
+                } else {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
 
             } else {
                 ret.setBankData(Bankleitzahl.valueOf(num));
@@ -719,11 +759,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(!Kontonummer.checkKontonummer(num)) {
-            ThreadLocalMessages.getMessages().addMessage(
-                new IllegalDataMessage(Fields.FIELD_A9,
+            msg = new IllegalDataMessage(Fields.FIELD_A9,
                 IllegalDataMessage.TYPE_KONTONUMMER,
                 this.getHeaderBlock() * this.persistence.getBlockSize() +
-                DTAUSDisk.ARECORD_OFFSETS[8], num.toString()));
+                DTAUSDisk.ARECORD_OFFSETS[8], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             ret.setAccount(Kontonummer.valueOf(num));
@@ -735,11 +780,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(!Referenznummer.checkReferenznummer(num)) {
-            ThreadLocalMessages.getMessages().addMessage(
-                new IllegalDataMessage(Fields.FIELD_A10,
+            msg = new IllegalDataMessage(Fields.FIELD_A10,
                 IllegalDataMessage.TYPE_REFERENZNUMMER,
                 this.getHeaderBlock() * this.persistence.getBlockSize() +
-                DTAUSDisk.ARECORD_OFFSETS[9], num.toString()));
+                DTAUSDisk.ARECORD_OFFSETS[9], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             ret.setReference(Referenznummer.valueOf(num));
@@ -751,11 +801,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
 
         if(createDate != null) {
             if(!Header.Schedule.checkSchedule(createDate, executionDate)) {
-                ThreadLocalMessages.getMessages().addMessage(
-                    new IllegalScheduleMessage(this.getHeaderBlock() *
+                msg = new IllegalScheduleMessage(this.getHeaderBlock() *
                     this.persistence.getBlockSize() +
                     DTAUSDisk.ARECORD_OFFSETS[11],
-                    this.getHeader()));
+                    this.getHeader());
+
+                if(AbstractErrorMessage.isErrorsEnabled()) {
+                    throw new PhysicalFileError(this.getMeta(), msg);
+                } else {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
 
             } else {
                 schedule = new Header.Schedule(createDate, executionDate);
@@ -769,10 +824,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(str != null && str.length() != 1) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_A12, IllegalDataMessage.TYPE_CURRENCY,
+            msg = new IllegalDataMessage(Fields.FIELD_A12,
+                IllegalDataMessage.TYPE_CURRENCY,
                 headerBlock * this.persistence.getBlockSize() +
-                DTAUSDisk.ARECORD_OFFSETS[13], str));
+                DTAUSDisk.ARECORD_OFFSETS[13], str);
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             final char c = str.toCharArray()[0];
@@ -787,11 +848,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             } else {
                 cur = this.getCurrencyDirectory().getCurrency(c);
                 if(cur == null) {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(Fields.FIELD_A12,
+                    msg = new IllegalDataMessage(Fields.FIELD_A12,
                         IllegalDataMessage.TYPE_CURRENCY,
                         headerBlock * this.persistence.getBlockSize() +
-                        DTAUSDisk.ARECORD_OFFSETS[13], str));
+                        DTAUSDisk.ARECORD_OFFSETS[13], str);
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                 }
             }
@@ -898,7 +964,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         Long num;
         final String str;
         final Checksum checksum;
-
+        Message msg;
         checksum = new Checksum();
 
         // Feld 1
@@ -907,10 +973,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(num.intValue() != this.persistence.getBlockSize()) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_E1, IllegalDataMessage.TYPE_CONSTANT,
+            msg = new IllegalDataMessage(Fields.FIELD_E1,
+                IllegalDataMessage.TYPE_CONSTANT,
                 checksumBlock * this.persistence.getBlockSize() +
-                DTAUSDisk.ERECORD_OFFSETS[0], num.toString()));
+                DTAUSDisk.ERECORD_OFFSETS[0], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         }
 
@@ -920,10 +992,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'E')) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_E2, IllegalDataMessage.TYPE_CONSTANT,
+            msg = new IllegalDataMessage(Fields.FIELD_E2,
+                IllegalDataMessage.TYPE_CONSTANT,
                 checksumBlock * this.persistence.getBlockSize()+
-                DTAUSDisk.ERECORD_OFFSETS[1], str));
+                DTAUSDisk.ERECORD_OFFSETS[1], str);
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         }
 
@@ -1016,6 +1094,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
         Long num;
         Long keyType;
         String str;
+        Message msg;
         final long extCount;
         final Currency cur;
         final Textschluessel type;
@@ -1038,10 +1117,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
         if(num.intValue() != DTAUSDisk.CRECORD_CONST_LENGTH +
             extCount * DTAUSDisk.CRECORD_EXT_LENGTH) {
 
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C1, IllegalDataMessage.TYPE_NUMERIC,
+            msg = new IllegalDataMessage(Fields.FIELD_C1,
+                IllegalDataMessage.TYPE_NUMERIC,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[0], num.toString()));
+                DTAUSDisk.CRECORD_OFFSETS1[0], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         }
 
@@ -1051,10 +1136,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'C')) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C2, IllegalDataMessage.TYPE_CONSTANT,
+            msg = new IllegalDataMessage(Fields.FIELD_C2,
+                IllegalDataMessage.TYPE_CONSTANT,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[1], str));
+                DTAUSDisk.CRECORD_OFFSETS1[1], str);
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         }
 
@@ -1065,11 +1156,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
 
         if(num.longValue() != 0L) {
             if(!Bankleitzahl.checkBankleitzahl(num)) {
-                ThreadLocalMessages.getMessages().addMessage(
-                    new IllegalDataMessage(Fields.FIELD_C3,
+                msg = new IllegalDataMessage(Fields.FIELD_C3,
                     IllegalDataMessage.TYPE_BANKLEITZAHL,
                     block * this.persistence.getBlockSize() +
-                    DTAUSDisk.CRECORD_OFFSETS1[2], num.toString()));
+                    DTAUSDisk.CRECORD_OFFSETS1[2], num.toString());
+
+                if(AbstractErrorMessage.isErrorsEnabled()) {
+                    throw new PhysicalFileError(this.getMeta(), msg);
+                } else {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
 
             } else {
                 transaction.setPrimaryBank(Bankleitzahl.valueOf(num));
@@ -1082,10 +1178,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(!Bankleitzahl.checkBankleitzahl(num)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C4, IllegalDataMessage.TYPE_BANKLEITZAHL,
+            msg = new IllegalDataMessage(Fields.FIELD_C4,
+                IllegalDataMessage.TYPE_BANKLEITZAHL,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[3], num.toString()));
+                DTAUSDisk.CRECORD_OFFSETS1[3], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             transaction.setTargetBank(Bankleitzahl.valueOf(num));
@@ -1097,10 +1199,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(!Kontonummer.checkKontonummer(num)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C5, IllegalDataMessage.TYPE_KONTONUMMER,
+            msg = new IllegalDataMessage(Fields.FIELD_C5,
+                IllegalDataMessage.TYPE_KONTONUMMER,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[4], num.toString()));
+                DTAUSDisk.CRECORD_OFFSETS1[4], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             transaction.setTargetAccount(Kontonummer.valueOf(num));
@@ -1112,10 +1220,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(!Referenznummer.checkReferenznummer(num)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C6, IllegalDataMessage.TYPE_REFERENZNUMMER,
+            msg = new IllegalDataMessage(Fields.FIELD_C6,
+                IllegalDataMessage.TYPE_REFERENZNUMMER,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[5], num.toString()));
+                DTAUSDisk.CRECORD_OFFSETS1[5], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             transaction.setReference(Referenznummer.valueOf(num));
@@ -1138,11 +1252,17 @@ public class DTAUSDisk extends AbstractLogicalFile {
             || (type.isRemittance() && !this.getHeader().getType().
             isRemittanceAllowed())) {
 
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C7A, IllegalDataMessage.TYPE_TEXTSCHLUESSEL,
+            msg = new IllegalDataMessage(Fields.FIELD_C7A,
+                IllegalDataMessage.TYPE_TEXTSCHLUESSEL,
                 block * this.persistence.getBlockSize() +
                 DTAUSDisk.CRECORD_OFFSETS1[6], keyType.toString() +
-                num.toString()));
+                num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             transaction.setType(type);
@@ -1154,10 +1274,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(!Bankleitzahl.checkBankleitzahl(num)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C10, IllegalDataMessage.TYPE_BANKLEITZAHL,
+            msg = new IllegalDataMessage(Fields.FIELD_C10,
+                IllegalDataMessage.TYPE_BANKLEITZAHL,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[9], num.toString()));
+                DTAUSDisk.CRECORD_OFFSETS1[9], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             transaction.setExecutiveBank(Bankleitzahl.valueOf(num));
@@ -1169,10 +1295,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(!Kontonummer.checkKontonummer(num)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C11, IllegalDataMessage.TYPE_KONTONUMMER,
+            msg = new IllegalDataMessage(Fields.FIELD_C11,
+                IllegalDataMessage.TYPE_KONTONUMMER,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[10], num.toString()));
+                DTAUSDisk.CRECORD_OFFSETS1[10], num.toString());
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             transaction.setExecutiveAccount(Kontonummer.valueOf(num));
@@ -1218,10 +1350,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             AbstractLogicalFile.ENCODING_ASCII);
 
         if(str != null && str.length() != 1) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                Fields.FIELD_C17A, IllegalDataMessage.TYPE_CURRENCY,
+            msg = new IllegalDataMessage(Fields.FIELD_C17A,
+                IllegalDataMessage.TYPE_CURRENCY,
                 block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[10], str));
+                DTAUSDisk.CRECORD_OFFSETS1[10], str);
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
 
         } else {
             final char c = str.toCharArray()[0];
@@ -1236,11 +1374,16 @@ public class DTAUSDisk extends AbstractLogicalFile {
             } else {
                 cur = this.getCurrencyDirectory().getCurrency(c);
                 if(cur == null) {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(Fields.FIELD_C17A,
+                    msg = new IllegalDataMessage(Fields.FIELD_C17A,
                         IllegalDataMessage.TYPE_CURRENCY,
                         block * this.persistence.getBlockSize() +
-                        DTAUSDisk.CRECORD_OFFSETS1[10], str));
+                        DTAUSDisk.CRECORD_OFFSETS1[10], str);
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                 }
             }
@@ -1276,13 +1419,18 @@ public class DTAUSDisk extends AbstractLogicalFile {
 
             if(num.longValue() == 1L) {
                 if(transaction.getTargetExt() != null) {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(
+                    msg = new IllegalDataMessage(
                         DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEFIELD[search],
                         IllegalDataMessage.TYPE_CONSTANT,
                         block * this.persistence.getBlockSize() +
                         DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
-                        num.toString()));
+                        num.toString());
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                 } else if(str != null) {
                     transaction.setTargetExt(AlphaNumericText27.parse(str));
@@ -1293,25 +1441,35 @@ public class DTAUSDisk extends AbstractLogicalFile {
                 }
             } else if(num.longValue() == 3L) {
                 if(transaction.getExecutiveExt() != null) {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(
+                    msg = new IllegalDataMessage(
                         DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEFIELD[search],
                         IllegalDataMessage.TYPE_CONSTANT,
                         block * this.persistence.getBlockSize() +
                         DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
-                        num.toString()));
+                        num.toString());
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                 } else if(str != null) {
                     transaction.setExecutiveExt(AlphaNumericText27.parse(str));
                 }
             } else {
-                ThreadLocalMessages.getMessages().addMessage(
-                    new IllegalDataMessage(
+                msg = new IllegalDataMessage(
                     DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEFIELD[search],
                     IllegalDataMessage.TYPE_CONSTANT,
                     block * this.persistence.getBlockSize() +
                     DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
-                    num.toString()));
+                    num.toString());
+
+                if(AbstractErrorMessage.isErrorsEnabled()) {
+                    throw new PhysicalFileError(this.getMeta(), msg);
+                } else {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
 
             }
         }
@@ -1673,6 +1831,10 @@ public class DTAUSDisk extends AbstractLogicalFile {
 
     protected ApplicationLogger getApplicationLoggerImpl() {
         return this.getApplicationLogger();
+    }
+
+    protected Implementation getMeta() {
+        return DTAUSDisk.META;
     }
 
     //---------------------------------------------------------------DTAUSDisk--

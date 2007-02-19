@@ -40,10 +40,12 @@ import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.PhysicalFileError;
 import org.jdtaus.banking.dtaus.Transaction;
+import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
 import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalScheduleMessage;
+import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.spi.ApplicationLogger;
 import org.jdtaus.core.io.IOError;
@@ -255,6 +257,8 @@ public abstract class AbstractLogicalFile implements LogicalFile {
     protected abstract TextschluesselVerzeichnis
         getTextschluesselVerzeichnisImpl();
 
+    protected abstract Implementation getMeta();
+
     //------------------------------------------------------------Dependencies--
     //--long readNumber(...)----------------------------------------------------
 
@@ -332,6 +336,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
 
         long ret = 0L;
         int read;
+        final Message msg;
         final byte space;
         final byte[] table;
         final byte[] revTable;
@@ -365,12 +370,17 @@ public abstract class AbstractLogicalFile implements LogicalFile {
                 if(!(this.buffer[read] >= table[0] &&
                     this.buffer[read] <= table[9])) {
 
-                    ThreadLocalMessages.getMessages().
-                        addMessage(new IllegalDataMessage(field,
+                    msg = new IllegalDataMessage(field,
                         IllegalDataMessage.TYPE_NUMERIC,
                         block * this.persistence.getBlockSize() + off,
                         new String(this.buffer, 0, len,
-                        AbstractLogicalFile.ENCODING_NAMES[encoding])));
+                        AbstractLogicalFile.ENCODING_NAMES[encoding]));
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                     ret = -1;
                     break;
@@ -495,6 +505,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         PhysicalFileError, IOError {
 
         String str;
+        final Message msg;
         final char[] c;
 
         if(encoding != AbstractLogicalFile.ENCODING_ASCII &&
@@ -512,10 +523,15 @@ public abstract class AbstractLogicalFile implements LogicalFile {
             c = str.toCharArray();
             for(int i = c.length - 1; i >= 0; i--) {
                 if(!AlphaNumericText27.checkAlphaNumeric(c[i])) {
-                    ThreadLocalMessages.getMessages().
-                        addMessage(new IllegalDataMessage(field,
+                    msg = new IllegalDataMessage(field,
                         IllegalDataMessage.TYPE_ALPHA_NUMERIC,
-                        block * this.persistence.getBlockSize() + off, str));
+                        block * this.persistence.getBlockSize() + off, str);
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                     str = null;
                     break;
@@ -645,6 +661,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         Date ret = null;
         String str = null;
         boolean legal = false;
+        Message msg;
 
         if(encoding != AbstractLogicalFile.ENCODING_ASCII &&
             encoding != AbstractLogicalFile.ENCODING_EBCDI) {
@@ -675,10 +692,15 @@ public abstract class AbstractLogicalFile implements LogicalFile {
                 ret = this.calendar.getTime();
 
                 if(!Header.Schedule.checkDate(ret)) {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(field,
+                    msg = new IllegalDataMessage(field,
                         IllegalDataMessage.TYPE_SHORTDATE,
-                        block * this.persistence.getBlockSize() + off, str));
+                        block * this.persistence.getBlockSize() + off, str);
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                     ret = null;
                 }
@@ -697,10 +719,15 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         }
 
         if(!legal) {
-            ThreadLocalMessages.getMessages().addMessage(
-                new IllegalDataMessage(field, IllegalDataMessage.TYPE_SHORTDATE,
-                block * this.persistence.getBlockSize() + off, str));
+            msg = new IllegalDataMessage(field,
+                IllegalDataMessage.TYPE_SHORTDATE,
+                block * this.persistence.getBlockSize() + off, str);
 
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
         }
 
         return ret;
@@ -827,6 +854,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         boolean legal = false;
         Date ret = null;
         String str = null;
+        Message msg;
 
         if(encoding != AbstractLogicalFile.ENCODING_ASCII &&
             encoding != AbstractLogicalFile.ENCODING_EBCDI) {
@@ -856,10 +884,15 @@ public abstract class AbstractLogicalFile implements LogicalFile {
 
                 ret = this.calendar.getTime();
                 if(!Header.Schedule.checkDate(ret)) {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(field,
+                    msg = new IllegalDataMessage(field,
                         IllegalDataMessage.TYPE_LONGDATE,
-                        block * this.persistence.getBlockSize() + off, str));
+                        block * this.persistence.getBlockSize() + off, str);
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                     ret = null;
                 }
@@ -879,10 +912,15 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         }
 
         if(!legal) {
-            ThreadLocalMessages.getMessages().addMessage(
-                new IllegalDataMessage(field, IllegalDataMessage.TYPE_LONGDATE,
-                block * this.persistence.getBlockSize() + off, str));
+            msg = new IllegalDataMessage(field,
+                IllegalDataMessage.TYPE_LONGDATE,
+                block * this.persistence.getBlockSize() + off, str);
 
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
         }
 
         return ret;
@@ -1010,6 +1048,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         int nibble = 0;
         int read = 0;
         int digit;
+        Message msg;
 
         this.persistence.readBlock(block, off, this.buffer, 0, len);
         for(; nibble < nibbles; nibble++, exp--) {
@@ -1029,22 +1068,32 @@ public abstract class AbstractLogicalFile implements LogicalFile {
             // Vorzeichen des letzten Nibbles.
             if(sign && exp < 0) {
                 if(digit != 0xC) {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(field,
+                    msg = new IllegalDataMessage(field,
                         IllegalDataMessage.TYPE_PACKET_POSITIVE,
                         block * this.persistence.getBlockSize() + off,
-                        Integer.toString(digit)));
+                        Integer.toString(digit));
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                     ret = -1L;
                     break;
                 }
             } else {
                 if(digit < 0 || digit > 9) {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(field,
+                    msg = new IllegalDataMessage(field,
                         IllegalDataMessage.TYPE_PACKET_POSITIVE,
                         block * this.persistence.getBlockSize() + off,
-                        Integer.toString(digit)));
+                        Integer.toString(digit));
+
+                    if(!AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                     ret = -1L;
                     break;
@@ -1238,226 +1287,6 @@ public abstract class AbstractLogicalFile implements LogicalFile {
     }
 
     //-----------------------------------------boolean checkTransactionId(...)--
-    //--void checkAccountCode(...)----------------------------------------------
-
-    /**
-     * Prüfung einer Kontonummer.
-     * <p>Sollte {@code accountCode} keiner gültigen Kontonummer entsprechen,
-     * so wird eine entsprechende {@code IllegalDataMessage} aufgezeichnet.</p>
-     *
-     * @param field Feld-Konstante des Feldes.
-     * @param block Satzabschnitt.
-     * @param off Position in {@code block} der die Ziffern zugeordnet sind.
-     * @param accountCode Wert für den geprüft werden soll, ob er einer gültigen
-     * Kontonummer entspricht.
-     * @param isMandatory {@code true} wenn bei der Prüfung vorausgesetzt werden
-     * soll, daß die Kontonummer eine Pflichtangabe ist; {@code false} wenn
-     * nicht.
-     */
-    protected final void checkAccountCode(final int field, final long block,
-        final int off, final long accountCode, final boolean isMandatory) {
-
-        if(!this.checkAccountCode(accountCode, isMandatory)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                field, IllegalDataMessage.TYPE_NUMERIC,
-                block * this.persistence.getBlockSize() + off,
-                Long.toString(accountCode)));
-
-        }
-    }
-
-    /**
-     * Prüfung einer Kontonummer.
-     *
-     * @param accountCode Wert für den geprüft werden soll, ob er einer gültigen
-     * Kontonummer entspricht.
-     * @param isMandatory {@code true} wenn bei der Prüfung vorausgesetzt werden
-     * soll, daß die Kontonummer einer Pflichtangabe ist; {@code false} wenn
-     * nicht.
-     *
-     * @return {@code true} wenn {@code account} einer gültigen Kontonummer
-     * entspricht; {@code false} sonst.
-     */
-    protected boolean checkAccountCode(final long accountCode,
-        final boolean isMandatory) {
-
-        return (isMandatory && Kontonummer.
-            checkKontonummer(new Long(accountCode))) ||
-            (!isMandatory && (accountCode == 0L || Kontonummer.
-            checkKontonummer(new Long(accountCode))));
-
-    }
-
-    //----------------------------------------------void checkAccountCode(...)--
-    //--void checkBankCode(...)-------------------------------------------------
-
-    /**
-     * Prüfung einer Bankleitzahl.
-     * <p/>
-     * Sollte {@code bankCode} keiner gültigen Bankleitzahl entsprechen,
-     * so wird eine entsprechende {@code IllegalDataMessage} aufgezeichnet.
-     *
-     * @param field Feld-Konstante des Feldes.
-     * @param block Satzabschnitt.
-     * @param off Position in {@code block} der die Ziffern zugeordnet sind.
-     * @param bankCode Wert für den geprüft werden soll, ob er einer gültigen
-     * Bankleitzahl entspricht.
-     * @param isMandatory {@code true}, wenn bei der Prüfung davon ausgegangen
-     * werden soll, daß eine Bankangabe Pflicht ist; {@code false}, wenn bei
-     * der Prüfung davon ausgegangen werden soll, daß eine Bankangabe optional
-     * ist.
-     */
-    protected final void checkBankCode(final int field, final long block,
-        final int off, final int bankCode, final boolean isMandatory) {
-
-        if(!this.checkBankCode(bankCode, isMandatory)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                field, IllegalDataMessage.TYPE_NUMERIC,
-                block * this.persistence.getBlockSize() + off,
-                Integer.toString(bankCode)));
-
-        }
-    }
-
-    /**
-     * Prüfung einer Bankleitzahl.
-     *
-     * @param bankCode Wert für den geprüft werden soll, ob er einer gültigen
-     * Bankleitzahl entspricht.
-     * @param isMandatory {@code true}, wenn bei der Prüfung davon ausgegangen
-     * werden soll, daß eine Bankangabe Pflicht ist; {@code false}, wenn bei
-     * der Prüfung davon ausgegangen werden soll, daß eine Bankangabe optional
-     * ist.
-     *
-     * @return {@code true} wenn {@code bankCode} einer gültigen Bankleitzahl
-     * entspricht; {@code false} wenn nicht.
-     */
-    protected boolean checkBankCode(final int bankCode,
-        final boolean isMandatory) {
-
-        boolean valid = bankCode >= 0;
-
-        if(valid) {
-            valid = (isMandatory && Bankleitzahl.
-                checkBankleitzahl(new Integer(bankCode))) ||
-                (!isMandatory && (bankCode == 0 || Bankleitzahl.
-                checkBankleitzahl(new Integer(bankCode))));
-
-        }
-
-        return valid;
-    }
-
-    //-------------------------------------------------void checkBankCode(...)--
-    //--void checkCreateDate(...)-----------------------------------------------
-
-    /**
-     * Prüfung eines Erstellungsdatums.
-     * <p/>
-     * Sollte {@code createDate} keinem gültigen Erstellungsdatum entsprechen,
-     * so wird eine entsprechende {@code IllegalDateMessage} erzeugt.
-     *
-     * @param field Feld-Konstante des Feldes des Erstellungsdatums.
-     * @param block Satzabschnitt.
-     * @param off Position in {@code block} der das Erstellungsdatum zugeordnet
-     * ist.
-     * @param createDate Erstellungsdatum.
-     *
-     * @throws PhysicalFileError bei technischen Fehlern.
-     */
-    protected final void checkCreateDate(final int field, final long block,
-        final int off, final Date createDate) throws PhysicalFileError {
-
-        if(createDate == null || !Header.Schedule.checkDate(createDate)) {
-            ThreadLocalMessages.getMessages().addMessage(
-                new IllegalDataMessage(field, IllegalDataMessage.TYPE_SHORTDATE,
-                block * this.persistence.getBlockSize() + off,
-                createDate != null ?
-                    Long.toString(createDate.getTime()) : null));
-
-
-        }
-    }
-
-    //-----------------------------------------------void checkCreateDate(...)--
-    //--void checkExecutionDate(...)--------------------------------------------
-
-    /**
-     * Prüfung eines Ausführungsdatums.
-     * <p/>
-     * Sollte {@code executionDate} keinem gültigen Ausführungssdatum
-     * entsprechen, so wird eine entsprechende {@code IllegalDataMessage}
-     * erzeugt.
-     *
-     * @param field Feld-Konstante des Feldes des Erstellungsdatums.
-     * @param block Satzabschnitt.
-     * @param off Position in {@code block} der das Erstellungsdatum zugeordnet
-     * ist.
-     * @param executionDate Ausführungsdatum.
-     *
-     * @throws PhysicalFileError bei technischen Fehlern.
-     */
-    protected final void checkExecutionDate(final int field, final long block,
-        final int off, final Date executionDate) throws PhysicalFileError {
-
-        if(executionDate != null && !Header.Schedule.checkDate(executionDate)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                field, IllegalDataMessage.TYPE_LONGDATE,
-                block * this.persistence.getBlockSize() + off,
-                Long.toString(executionDate.getTime())));
-
-        }
-    }
-
-    //--------------------------------------------void checkExecutionDate(...)--
-    //--void checkHeaderSchedule(...)-------------------------------------------
-
-    /**
-     * Prüfung eines Erstellungs- und Ausführungsdatums.
-     * <p/>
-     * Sollte {@code schedule} keiner gültigen Auftragsterminierung entsprechen,
-     * so wird eine entsprechende {@code IllegalDataMessage} aufgezeichnet.
-     *
-     * @param field Feld-Konstante des Feldes des Ausführungsdatums.
-     * @param block Satzabschnitt.
-     * @param off Position in {@code block} der das Ausführungsdatum zugeordnet
-     * ist.
-     * @param schedule Terminierung einer logischen DTAUS-Datei.
-     *
-     * @throws NullPointerException {@code if(schedule == null)}
-     */
-    protected final void checkHeaderSchedule(final int field, final long block,
-        final int off, final Header.Schedule schedule) {
-
-        if(!this.checkHeaderSchedule(schedule)) {
-            ThreadLocalMessages.getMessages().addMessage(
-                new IllegalScheduleMessage(
-                block * this.persistence.getBlockSize(), this.getHeader()));
-
-        }
-    }
-
-    /**
-     * Prüfung eines Erstellungs- und Ausführungsdatums.
-     *
-     * @param schedule Terminierung einer logischen DTAUS-Datei.
-     *
-     * @return {@code true} wenn {@code schedule} einer gültigen Terminierung
-     * entspricht; {@code false} wenn nicht.
-     *
-     * @throws NullPointerException {@code if(schedule == null)}
-     */
-    protected boolean checkHeaderSchedule(final Header.Schedule schedule) {
-        if(schedule == null) {
-            throw new NullPointerException("schedule");
-        }
-
-        return Header.Schedule.checkSchedule(schedule.getCreateDate(),
-            schedule.getExecutionDate());
-
-    }
-
-    //-------------------------------------------void checkHeaderSchedule(...)--
     //--void checkAmount(...)---------------------------------------------------
 
     /**
@@ -1477,12 +1306,18 @@ public abstract class AbstractLogicalFile implements LogicalFile {
     protected final void checkAmount(final int field, final long block,
         final int off, final long amount, final boolean isMandatory) {
 
-        if(!this.checkAmount(amount, isMandatory)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                field, IllegalDataMessage.TYPE_NUMERIC,
-                block * this.persistence.getBlockSize() + off,
-                Long.toString(amount)));
+        final Message msg;
 
+        if(!this.checkAmount(amount, isMandatory)) {
+            msg = new IllegalDataMessage(field, IllegalDataMessage.TYPE_NUMERIC,
+                block * this.persistence.getBlockSize() + off,
+                Long.toString(amount));
+
+            if(AbstractErrorMessage.isErrorsEnabled()) {
+                throw new PhysicalFileError(this.getMeta(), msg);
+            } else {
+                ThreadLocalMessages.getMessages().addMessage(msg);
+            }
         }
     }
 
@@ -1506,75 +1341,6 @@ public abstract class AbstractLogicalFile implements LogicalFile {
     }
 
     //---------------------------------------------------void checkAmount(...)--
-    //--void checkHolder(...)---------------------------------------------------
-
-    /**
-     * Prüfung von Kontoinhaber-Daten.
-     * <p/>
-     * Sollte {@code holder} keiner gültigen Konto-Inhaber-Angabe entsprechen,
-     * so wird eine entsprechende {@code IllegalDataMessage} aufgezeichnet.
-     *
-     * @param field Feld-Konstante des Feldes.
-     * @param block Block.
-     * @param off Position in {@code block} der die Ziffern zugeordnet sind.
-     * @param name Wert für den geprüft werden soll, ob er einer
-     * gültigen Kontoinhaber-Angabe entspricht.
-     * @param isMandatory {@code true} wenn bei der Prüfung davon ausgegangen
-     * werden soll, daß die Inhaberangabe Pflicht ist; {@code false} wenn
-     * nicht.
-     */
-    protected final void checkName(final int field, final long block,
-        final int off, final String holder, final boolean isMandatory) {
-
-        if(!this.checkName(holder, isMandatory)) {
-            ThreadLocalMessages.getMessages().addMessage(new IllegalDataMessage(
-                field, IllegalDataMessage.TYPE_ALPHA_NUMERIC,
-                block * this.persistence.getBlockSize() + off, holder));
-
-        }
-    }
-
-    /**
-     * Prüfung von Kontoinhaber-Daten.
-     *
-     * @param name Wert für den geprüft werden soll, ob er einer
-     * gültigen Kontoinhaber-Angabe entspricht.
-     * @param isMandatory {@code true} wenn bei der Prüfung davon ausgegangen
-     * werden soll, daß die Inhaberangabe Pflicht ist; {@code false} wenn
-     * nicht.
-     *
-     * @return {@code true} wenn {@code name} einer gültigen
-     * Kontoinhaber-Angabe entspricht; {@code false} sonst.
-     */
-    protected boolean checkName(final String name,
-        final boolean isMandatory) {
-
-        // Feld ist in beiden Formaten gleich lang.
-        boolean ret = true;
-
-        if(name != null) {
-            final char[] chars = name.toCharArray();
-            ret =  (!isMandatory && chars.length >= 0) ||
-                (isMandatory && chars.length > 0) &&
-                chars.length <= DTAUSDisk.CRECORD_LENGTH1[13];
-
-            if(ret) {
-                for(int i = chars.length - 1; i >= 0; i--) {
-                    if(!AlphaNumericText27.checkAlphaNumeric(chars[i])) {
-                        ret = false;
-                        break;
-                    }
-                }
-            }
-
-        } else if(isMandatory) {
-            ret = false;
-        }
-
-        return ret;
-    }
-
-    //---------------------------------------------------void checkHolder(...)--
     //--boolean checkDescriptionCount(...)--------------------------------------
 
     /**
@@ -1999,16 +1765,14 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         }
     }
 
-    public Header getHeader() throws PhysicalFileError, IOError {
+    public Header getHeader() {
         if(this.cachedHeader == null) {
             this.cachedHeader = this.readHeader(this.getHeaderBlock());
         }
         return (Header) this.cachedHeader.clone();
     }
 
-    public Header setHeader(final Header header) throws
-        PhysicalFileError, IOError {
-
+    public Header setHeader(final Header header) {
         this.checkHeader(header);
         final Checksum checksum = this.getChecksum();
         final Header old = this.getHeader();
@@ -2027,22 +1791,20 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         return old;
     }
 
-    public Checksum getChecksum() throws PhysicalFileError, IOError {
+    public Checksum getChecksum() {
         if(this.cachedChecksum == null) {
             this.cachedChecksum = this.readChecksum(this.getChecksumBlock());
         }
         return (Checksum) this.cachedChecksum.clone();
     }
 
-    protected void setChecksum(final Checksum checksum) throws
-        PhysicalFileError, IOError {
-
+    protected void setChecksum(final Checksum checksum) {
         this.writeChecksum(this.getChecksumBlock(), checksum);
         this.cachedChecksum = (Checksum) checksum.clone();
         this.persistence.flush();
     }
 
-    public void checksum() throws PhysicalFileError, IOError {
+    public void checksum() {
         char type;
         int count = 1;
         long block;
@@ -2052,6 +1814,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         final Transaction t = new Transaction();
         final long startBlock = this.getHeaderBlock();
         final ChecksumTask task = new ChecksumTask();
+        Message msg;
 
         try {
             task.setIndeterminate(true);
@@ -2061,11 +1824,16 @@ public abstract class AbstractLogicalFile implements LogicalFile {
             type = this.getBlockType(block++);
             this.setChecksumBlock(block);
             if(type != 'A') {
-                ThreadLocalMessages.getMessages().addMessage(
-                    new IllegalDataMessage(Fields.FIELD_A2,
+                msg = new IllegalDataMessage(Fields.FIELD_A2,
                     IllegalDataMessage.TYPE_CONSTANT,
                     block - 1L * this.persistence.getBlockSize() +
-                    DTAUSDisk.ARECORD_OFFSETS[1], Character.toString(type)));
+                    DTAUSDisk.ARECORD_OFFSETS[1], Character.toString(type));
+
+                if(AbstractErrorMessage.isErrorsEnabled()) {
+                    throw new PhysicalFileError(this.getMeta(), msg);
+                } else {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
 
             } else {
                 this.getHeader(); // A-Datensatz prüfen.
@@ -2086,19 +1854,29 @@ public abstract class AbstractLogicalFile implements LogicalFile {
                 if(type == 'E') {
                     stored = this.getChecksum();
                     if(!stored.equals(c)) {
-                        ThreadLocalMessages.getMessages().addMessage(
-                            new ChecksumErrorMessage(stored, c,
+                        msg = new ChecksumErrorMessage(stored, c,
                             this.getHeaderBlock() *
-                            this.persistence.getBlockSize()));
+                            this.persistence.getBlockSize());
+
+                        if(AbstractErrorMessage.isErrorsEnabled()) {
+                            throw new PhysicalFileError(this.getMeta(), msg);
+                        } else {
+                            ThreadLocalMessages.getMessages().addMessage(msg);
+                        }
 
                     }
                 } else {
-                    ThreadLocalMessages.getMessages().addMessage(
-                        new IllegalDataMessage(Fields.FIELD_E2,
+                    msg = new IllegalDataMessage(Fields.FIELD_E2,
                         IllegalDataMessage.TYPE_CONSTANT,
                         block * this.persistence.getBlockSize() +
                         DTAUSDisk.ERECORD_OFFSETS[1],
-                        Character.toString(type)));
+                        Character.toString(type));
+
+                    if(AbstractErrorMessage.isErrorsEnabled()) {
+                        throw new PhysicalFileError(this.getMeta(), msg);
+                    } else {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
 
                 }
             }
@@ -2107,9 +1885,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         }
     }
 
-    public void createTransaction(final Transaction transaction) throws
-        PhysicalFileError, IOError {
-
+    public void createTransaction(final Transaction transaction) {
         final int transactionId;
         final int blockCount;
         final Checksum checksum = this.getChecksum();
@@ -2146,9 +1922,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         this.persistence.flush();
     }
 
-    public Transaction getTransaction(final int index) throws
-        PhysicalFileError, IOError {
-
+    public Transaction getTransaction(final int index) {
         final Checksum checksum = this.getChecksum();
         if(!this.checkTransactionId(index, checksum)) {
             throw new ArrayIndexOutOfBoundsException(index);
@@ -2160,7 +1934,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
     }
 
     public Transaction setTransaction(final int index,
-        final Transaction transaction) throws PhysicalFileError, IOError {
+        final Transaction transaction) {
 
         final Checksum checksum = this.getChecksum();
         if(!this.checkTransactionId(index, checksum)) {
@@ -2226,9 +2000,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         return old;
     }
 
-    public Transaction removeTransaction(final int index) throws
-        PhysicalFileError, IOError {
-
+    public Transaction removeTransaction(final int index) {
         final Checksum checksum = this.getChecksum();
         if(!this.checkTransactionId(index, checksum)) {
             throw new ArrayIndexOutOfBoundsException(index);

@@ -129,14 +129,11 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      *
      * @throws IllegalArgumentException wenn {@code type} keiner der
      * Konstanten {@link #TYPE_ALPHA TYPE_<i>XYZ</i>} entspricht.
-     * @throws PhysicalFileError wenn Property {@code errorsEnabled}
-     * {@code true} ist.
      *
      * @see org.jdtaus.banking.dtaus.Fields
      */
     public IllegalDataMessage(final int field, final int type,
-        final long position, final String invalidData) throws
-        PhysicalFileError {
+        final long position, final String invalidData) {
 
         super();
         this.field = field;
@@ -144,9 +141,6 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
         this.position = position;
         this.invalidData = invalidData;
         this.assertValidType();
-        if(AbstractErrorMessage.isErrorsEnabled()) {
-            throw new PhysicalFileError(this);
-        }
     }
 
     /**

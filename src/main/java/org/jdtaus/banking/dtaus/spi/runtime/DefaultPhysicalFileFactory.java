@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import org.jdtaus.banking.dtaus.Fields;
 import org.jdtaus.banking.dtaus.PhysicalFile;
+import org.jdtaus.banking.dtaus.PhysicalFileError;
 import org.jdtaus.banking.dtaus.PhysicalFileException;
 import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
@@ -36,6 +37,7 @@ import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ModelFactory;
+import org.jdtaus.core.container.PropertyError;
 import org.jdtaus.core.io.FileOperations;
 import org.jdtaus.core.io.IOError;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
@@ -238,14 +240,20 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
     //--------------------------------------------------------------Properties--
     //--PhysicalFileFactory-----------------------------------------------------
 
+    /** Implementierungs Meta-Daten. */
+    private static final Implementation META =
+        ModelFactory.getModel().getModules().
+        getImplementation(DefaultPhysicalFileFactory.class.getName());
+
     public int analyse(final FileOperations fileOperations) throws
-        PhysicalFileException, IOError {
+        PhysicalFileException {
 
         int blockSize = -1;
         int read = 0;
         int ret = -1;
         int size = 0x000000FF;
         int total = 0;
+        Message msg;
 
         final Message[] messages;
         final byte[] buf = new byte[4];
@@ -288,10 +296,14 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
                         ret = PhysicalFileFactory.FORMAT_TAPE;
                         blockSize = 150;
                     } else {
-                        ThreadLocalMessages.getMessages().addMessage(
-                            new IllegalDataMessage(Fields.FIELD_A1,
-                            IllegalDataMessage.TYPE_CONSTANT, 0L, str));
+                        msg = new IllegalDataMessage(Fields.FIELD_A1,
+                            IllegalDataMessage.TYPE_CONSTANT, 0L, str);
 
+                        if(AbstractErrorMessage.isErrorsEnabled()) {
+                            throw new PhysicalFileError(META, msg);
+                        } else {
+                            ThreadLocalMessages.getMessages().addMessage(msg);
+                        }
                     }
                 }
             }
@@ -320,7 +332,7 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
     }
 
     public final PhysicalFile getPhysicalFile(final FileOperations ops) throws
-        PhysicalFileException, IOError {
+        PhysicalFileException {
 
         if(ops == null) {
             throw new NullPointerException("ops");
@@ -372,7 +384,9 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
         if(defaultFormat != PhysicalFileFactory.FORMAT_DISK &&
             defaultFormat != PhysicalFileFactory.FORMAT_TAPE) {
 
-            throw new ContainerError("defaultFormat=" + defaultFormat);
+            throw new PropertyError("defaultFormat",
+                new Integer(defaultFormat));
+
         }
     }
 

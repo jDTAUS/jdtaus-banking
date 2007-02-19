@@ -147,7 +147,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
     //------------------------------------------------------------Dependencies--
     //--PhysicalFile------------------------------------------------------------
 
-    protected void checksum() throws PhysicalFileError {
+    protected void checksum() {
         this.dtausCount = 0;
         int dtausIndex = 0;
         final long blockCount = this.getStructuredFile().getBlockCount();
@@ -169,7 +169,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
         return dtausId < this.dtausCount && dtausId >= 0;
     }
 
-    public LogicalFile add(final Header header) throws PhysicalFileError {
+    public LogicalFile add(final Header header) {
         if(header == null) {
             throw new NullPointerException("header");
         }
@@ -196,14 +196,14 @@ public class DefaultPhysicalFile implements PhysicalFile {
         return this.index[this.dtausCount++];
     }
 
-    public LogicalFile get(int dtausId) throws PhysicalFileError {
+    public LogicalFile get(int dtausId) {
         if(!this.checkLogicalFileExists(dtausId)) {
             throw new IllegalArgumentException("dtausId");
         }
         return this.index[dtausId];
     }
 
-    public void remove(int dtausId) throws PhysicalFileError {
+    public void remove(int dtausId) {
         if(!this.checkLogicalFileExists(dtausId)) {
             throw new IllegalArgumentException("dtausId");
         }
