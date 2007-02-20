@@ -32,7 +32,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
-import org.jdtaus.core.container.ContainerError;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContainerInitializer;
 import org.jdtaus.core.container.ContextFactory;
@@ -40,7 +39,10 @@ import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ImplementationError;
+import org.jdtaus.core.container.MissingDependencyException;
+import org.jdtaus.core.container.MissingPropertyException;
 import org.jdtaus.core.container.ModelFactory;
+import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyError;
 import org.jdtaus.core.logging.spi.Logger;
 import org.w3c.dom.Document;
@@ -105,12 +107,20 @@ public class XMLTextschluesselVerzeichnis implements
     */
     protected XMLTextschluesselVerzeichnis(final Implementation meta) {
         super();
-        this._resource = (java.lang.String) meta.getProperties().
-            getProperty("resource").getValue();
+        Property p;
+
+        p = meta.getProperties().getProperty("resource");
+        if(p == null) {
+            throw new MissingPropertyException(META, "resource");
+        }
+        this._resource = (java.lang.String) p.getValue();
 
 
-        this._dataDirectory = (java.lang.String) meta.getProperties().
-            getProperty("dataDirectory").getValue();
+        p = meta.getProperties().getProperty("dataDirectory");
+        if(p == null) {
+            throw new MissingPropertyException(META, "dataDirectory");
+        }
+        this._dataDirectory = (java.lang.String) p.getValue();
 
         this.assertValidProperties();
     }
@@ -119,12 +129,20 @@ public class XMLTextschluesselVerzeichnis implements
     */
     protected XMLTextschluesselVerzeichnis(final Dependency meta) {
         super();
-        this._resource = (java.lang.String) meta.getProperties().
-            getProperty("resource").getValue();
+        Property p;
+
+        p = meta.getProperties().getProperty("resource");
+        if(p == null) {
+            throw new MissingPropertyException(META, "resource");
+        }
+        this._resource = (java.lang.String) p.getValue();
 
 
-        this._dataDirectory = (java.lang.String) meta.getProperties().
-            getProperty("dataDirectory").getValue();
+        p = meta.getProperties().getProperty("dataDirectory");
+        if(p == null) {
+            throw new MissingPropertyException(META, "dataDirectory");
+        }
+        this._dataDirectory = (java.lang.String) p.getValue();
 
         this.assertValidProperties();
     }
@@ -148,7 +166,7 @@ public class XMLTextschluesselVerzeichnis implements
                 "Logger");
 
             if(ret == null) {
-                throw new ContainerError("Logger");
+                throw new MissingDependencyException("Logger");
             }
 
             if(ModelFactory.getModel().getModules().
