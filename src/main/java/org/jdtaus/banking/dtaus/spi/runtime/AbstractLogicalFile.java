@@ -20,7 +20,6 @@
 package org.jdtaus.banking.dtaus.spi.runtime;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -44,11 +43,9 @@ import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
 import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
-import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalScheduleMessage;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.spi.ApplicationLogger;
-import org.jdtaus.core.io.IOError;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
@@ -222,11 +219,11 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws NullPointerException wenn {@code structuredFile} {@code null}
      * ist.
-     * @throws IOError wenn zwischengespeicherte Änderungen der vorherigen
+     * @throws IOException wenn zwischengespeicherte Änderungen der vorherigen
      * Instanz nicht geschrieben werden können.
      */
     public void setStructuredFile(
-        final StructuredFileOperations structuredFile) throws IOError {
+        final StructuredFileOperations structuredFile) throws IOException {
 
         if(structuredFile == null) {
             throw new NullPointerException("structuredFile");
@@ -281,7 +278,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
      * gleich {@code true} ist.
-     * @throws IOError wenn nicht gelesen werden kann.
+     * @throws IOException wenn nicht gelesen werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
@@ -290,7 +287,8 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected Long readNumber(final int field, final long block, final int off,
-        final int len, final int encoding) throws PhysicalFileError, IOError {
+        final int len, final int encoding) throws PhysicalFileError,
+        IOException {
 
         return this.readNumber(field, block, off, len, encoding, false);
     }
@@ -322,7 +320,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
      * gleich {@code true} ist.
-     * @throws IOError wenn nicht gelesen werden kann.
+     * @throws IOException wenn nicht gelesen werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
@@ -332,7 +330,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      */
     protected Long readNumber(final int field, final long block, final int off,
         final int len, final int encoding, final boolean allowSpaces) throws
-        PhysicalFileError, IOError {
+        PhysicalFileError, IOException {
 
         long ret = 0L;
         int read;
@@ -356,49 +354,44 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         }
 
         this.persistence.readBlock(block, off, this.buffer, 0, len);
-        try {
-            for(read = 0; read < len; read++) {
-                if(allowSpaces && this.buffer[read] == space) {
-                    if(logViolation == null) {
-                        logViolation = new String(this.buffer, 0, len,
-                            AbstractLogicalFile.ENCODING_NAMES[encoding]);
+        for(read = 0; read < len; read++) {
+            if(allowSpaces && this.buffer[read] == space) {
+                if(logViolation == null) {
+                    logViolation = new String(this.buffer, 0, len,
+                        AbstractLogicalFile.ENCODING_NAMES[encoding]);
 
-                    }
-                    this.buffer[read] = table[0];
+                }
+                this.buffer[read] = table[0];
+            }
+
+            if(!(this.buffer[read] >= table[0] &&
+                this.buffer[read] <= table[9])) {
+
+                msg = new IllegalDataMessage(field,
+                    IllegalDataMessage.TYPE_NUMERIC,
+                    block * this.persistence.getBlockSize() + off,
+                    new String(this.buffer, 0, len,
+                    AbstractLogicalFile.ENCODING_NAMES[encoding]));
+
+                if(AbstractErrorMessage.isErrorsEnabled()) {
+                    throw new PhysicalFileError(this.getMeta(), msg);
+                } else {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
                 }
 
-                if(!(this.buffer[read] >= table[0] &&
-                    this.buffer[read] <= table[9])) {
+                ret = -1;
+                break;
+            } else {
+                if(this.buffer[read] < 0) {
+                    ret += revTable[this.buffer[read] + 256] *
+                        AbstractLogicalFile.EXP10[len - read - 1];
 
-                    msg = new IllegalDataMessage(field,
-                        IllegalDataMessage.TYPE_NUMERIC,
-                        block * this.persistence.getBlockSize() + off,
-                        new String(this.buffer, 0, len,
-                        AbstractLogicalFile.ENCODING_NAMES[encoding]));
-
-                    if(AbstractErrorMessage.isErrorsEnabled()) {
-                        throw new PhysicalFileError(this.getMeta(), msg);
-                    } else {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
-                    }
-
-                    ret = -1;
-                    break;
                 } else {
-                    if(this.buffer[read] < 0) {
-                        ret += revTable[this.buffer[read] + 256] *
-                            AbstractLogicalFile.EXP10[len - read - 1];
+                    ret += revTable[this.buffer[read]] *
+                        AbstractLogicalFile.EXP10[len - read - 1];
 
-                    } else {
-                        ret += revTable[this.buffer[read]] *
-                            AbstractLogicalFile.EXP10[len - read - 1];
-
-                    }
                 }
             }
-        } catch(UnsupportedEncodingException e) {
-            this.getLoggerImpl().error(e);
-            throw new IOError(e);
         }
 
         if(logViolation != null) {
@@ -433,15 +426,15 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws IllegalArgumentException wenn {@code number} nicht mit
      * {@code len} Ziffern darstellbar ist.
-     * @throws IOError wenn nicht geschrieben werden kann.
+     * @throws IOException wenn nicht geschrieben werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
      * @see org.jdtaus.banking.dtaus.Fields
      */
     protected void writeNumber(final int field, final long block,
-        final int off, final int len, long number, final int encoding) throws
-        IOError {
+        final int off, final int len, long number,
+        final int encoding) throws IOException {
 
         int i;
         int pos;
@@ -492,7 +485,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
      * gleich {@code true} ist.
-     * @throws IOError wenn nicht gelesen werden kann.
+     * @throws IOException wenn nicht gelesen werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
@@ -502,7 +495,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      */
     protected String readAlphaNumeric(final int field, final long block,
         final int off, final int len, final int encoding) throws
-        PhysicalFileError, IOError {
+        PhysicalFileError, IOException {
 
         String str;
         final Message msg;
@@ -516,33 +509,28 @@ public abstract class AbstractLogicalFile implements LogicalFile {
 
 
         this.persistence.readBlock(block, off, this.buffer, 0, len);
-        try {
-            str = new String(this.buffer, 0, len,
-                AbstractLogicalFile.ENCODING_NAMES[encoding]);
+        str = new String(this.buffer, 0, len,
+            AbstractLogicalFile.ENCODING_NAMES[encoding]);
 
-            c = str.toCharArray();
-            for(int i = c.length - 1; i >= 0; i--) {
-                if(!AlphaNumericText27.checkAlphaNumeric(c[i])) {
-                    msg = new IllegalDataMessage(field,
-                        IllegalDataMessage.TYPE_ALPHA_NUMERIC,
-                        block * this.persistence.getBlockSize() + off, str);
+        c = str.toCharArray();
+        for(int i = c.length - 1; i >= 0; i--) {
+            if(!AlphaNumericText27.checkAlphaNumeric(c[i])) {
+                msg = new IllegalDataMessage(field,
+                    IllegalDataMessage.TYPE_ALPHA_NUMERIC,
+                    block * this.persistence.getBlockSize() + off, str);
 
-                    if(AbstractErrorMessage.isErrorsEnabled()) {
-                        throw new PhysicalFileError(this.getMeta(), msg);
-                    } else {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
-                    }
-
-                    str = null;
-                    break;
+                if(AbstractErrorMessage.isErrorsEnabled()) {
+                    throw new PhysicalFileError(this.getMeta(), msg);
+                } else {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
                 }
-            }
 
-            return str;
-        } catch(UnsupportedEncodingException e) {
-            this.getLoggerImpl().error(e);
-            throw new IOError(e);
+                str = null;
+                break;
+            }
         }
+
+        return str;
     }
 
     //--------------------------------------------String readAlphaNumeric(...)--
@@ -564,7 +552,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @throws NullPointerException wenn {@code str null} ist.
      * @throws IllegalArgumentException wenn {@code str} länger als {@code len}
      * Zeichen lang ist oder ungültige Zeichen enthält.
-     * @throws IOError wenn nicht geschrieben werden kann.
+     * @throws IOException wenn nicht geschrieben werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
@@ -572,7 +560,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      */
     protected void writeAlphaNumeric(final int field, final long block,
         final int off, final int len, final String str,
-        final int encoding) throws IOError {
+        final int encoding) throws IOException {
 
         final int length;
         final int delta;
@@ -602,18 +590,13 @@ public abstract class AbstractLogicalFile implements LogicalFile {
             }
         }
 
-        try {
-            buf = str.getBytes(AbstractLogicalFile.ENCODING_NAMES[encoding]);
-            if(length < len) {
-                delta = len - length;
-                System.arraycopy(buf, 0, this.buffer, 0, buf.length);
-                Arrays.fill(this.buffer, buf.length, buf.length + delta, space);
-            } else {
-                System.arraycopy(buf, 0, this.buffer, 0, buf.length);
-            }
-        } catch(UnsupportedEncodingException e) {
-            this.getLoggerImpl().error(e);
-            throw new IOError(e);
+        buf = str.getBytes(AbstractLogicalFile.ENCODING_NAMES[encoding]);
+        if(length < len) {
+            delta = len - length;
+            System.arraycopy(buf, 0, this.buffer, 0, buf.length);
+            Arrays.fill(this.buffer, buf.length, buf.length + delta, space);
+        } else {
+            System.arraycopy(buf, 0, this.buffer, 0, buf.length);
         }
 
         this.persistence.writeBlock(block, off, this.buffer, 0, len);
@@ -645,7 +628,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
      * gleich {@code true} ist.
-     * @throws IOError wenn nicht gelesen werden kann.
+     * @throws IOException wenn nicht gelesen werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
@@ -654,7 +637,8 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected Date readShortDate(final int field, final long block,
-        final int off, final int encoding) throws PhysicalFileError, IOError {
+        final int off, final int encoding) throws PhysicalFileError,
+        IOException {
 
         final int len;
 
@@ -713,9 +697,6 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         } catch(NumberFormatException e) {
             ret = null;
             legal = false;
-        } catch(IOException e) {
-            this.getLoggerImpl().error(e);
-            throw new IOError(e);
         }
 
         if(!legal) {
@@ -755,14 +736,14 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws IllegalArgumentException wenn das Jahr von {@code date} nicht
      * größer oder gleich 1980 und kleiner oder gleich 2079 ist.
-     * @throws IOError wenn nicht geschrieben werden kann.
+     * @throws IOException wenn nicht geschrieben werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
      * @see org.jdtaus.banking.dtaus.Fields
      */
     protected void writeShortDate(final int field, final long block,
-        final int off, final Date date, final int encoding) throws IOError {
+        final int off, final Date date, final int encoding) throws IOException {
 
         int i;
         final byte[] buf;
@@ -772,49 +753,45 @@ public abstract class AbstractLogicalFile implements LogicalFile {
 
             throw new IllegalArgumentException(Integer.toString(encoding));
         }
-        try {
-            if(date != null) {
-                if(!Header.Schedule.checkDate(date)) {
-                    throw new IllegalArgumentException(
-                        Long.toString(date.getTime()));
 
-                }
-
-                this.shortDateBuffer.setLength(0);
-                this.calendar.clear();
-                this.calendar.setTime(date);
-                // Tag
-                i = this.calendar.get(Calendar.DAY_OF_MONTH);
-                if(i < 10) {
-                    this.shortDateBuffer.append('0');
-                }
-                this.shortDateBuffer.append(i);
-                // Monat
-                i = this.calendar.get(Calendar.MONTH) + 1;
-                if(i < 10) {
-                    this.shortDateBuffer.append('0');
-                }
-                this.shortDateBuffer.append(i);
-                // Jahr
-                i = this.calendar.get(Calendar.YEAR);
-                this.shortDateBuffer.append(i >= 2000 && i <= 2009 ? "0" : "");
-                this.shortDateBuffer.append(i >= 1980 && i < 2000 ?
-                    i - 1900 : i - 2000);
-
-                buf = this.shortDateBuffer.toString().getBytes(
-                    AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
-            } else {
-                buf = "      ".getBytes(
-                    AbstractLogicalFile.ENCODING_NAMES[encoding]);
+        if(date != null) {
+            if(!Header.Schedule.checkDate(date)) {
+                throw new IllegalArgumentException(
+                    Long.toString(date.getTime()));
 
             }
 
-            this.persistence.writeBlock(block, off, buf, 0, 6);
-        } catch(IOException e) {
-            this.getLoggerImpl().error(e);
-            throw new IOError(e);
+            this.shortDateBuffer.setLength(0);
+            this.calendar.clear();
+            this.calendar.setTime(date);
+            // Tag
+            i = this.calendar.get(Calendar.DAY_OF_MONTH);
+            if(i < 10) {
+                this.shortDateBuffer.append('0');
+            }
+            this.shortDateBuffer.append(i);
+            // Monat
+            i = this.calendar.get(Calendar.MONTH) + 1;
+            if(i < 10) {
+                this.shortDateBuffer.append('0');
+            }
+            this.shortDateBuffer.append(i);
+            // Jahr
+            i = this.calendar.get(Calendar.YEAR);
+            this.shortDateBuffer.append(i >= 2000 && i <= 2009 ? "0" : "");
+            this.shortDateBuffer.append(i >= 1980 && i < 2000 ?
+                i - 1900 : i - 2000);
+
+            buf = this.shortDateBuffer.toString().getBytes(
+                AbstractLogicalFile.ENCODING_NAMES[encoding]);
+
+        } else {
+            buf = "      ".getBytes(
+                AbstractLogicalFile.ENCODING_NAMES[encoding]);
+
         }
+
+        this.persistence.writeBlock(block, off, buf, 0, 6);
     }
 
     //------------------------------------------------void writeShortDate(...)--
@@ -838,7 +815,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
      * gleich {@code true} ist.
-     * @throws IOError wenn nicht gelesen werden kann.
+     * @throws IOException wenn nicht gelesen werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
@@ -847,7 +824,8 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected Date readLongDate(final int field, final long block,
-        final int off, final int encoding) throws PhysicalFileError, IOError {
+        final int off, final int encoding) throws PhysicalFileError,
+        IOException {
 
         final int len;
 
@@ -906,9 +884,6 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         } catch(NumberFormatException e) {
             legal = false;
             ret = null;
-        } catch(IOException e) {
-            this.getLoggerImpl().error(e);
-            throw new IOError(e);
         }
 
         if(!legal) {
@@ -946,7 +921,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws IllegalArgumentException wenn das Jahr von {@code date} nicht
      * größer oder gleich 1980 und kleiner oder gleich 2079 ist.
-     * @throws IOError wenn nicht geschrieben werden kann.
+     * @throws IOException wenn nicht geschrieben werden kann.
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
@@ -954,7 +929,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      */
     protected void writeLongDate(final int field, final long block,
         final int off, final Date date,
-        final int encoding) throws IOError {
+        final int encoding) throws IOException {
 
         int i;
         final byte[] buf;
@@ -965,47 +940,42 @@ public abstract class AbstractLogicalFile implements LogicalFile {
             throw new IllegalArgumentException(Integer.toString(encoding));
         }
 
-        try {
-            if(date != null) {
-                if(!Header.Schedule.checkDate(date)) {
-                    throw new IllegalArgumentException(
-                        Long.toString(date.getTime()));
-
-                }
-
-                this.longDateBuffer.setLength(0);
-                this.calendar.clear();
-                this.calendar.setTime(date);
-                // Tag
-                i = this.calendar.get(Calendar.DAY_OF_MONTH);
-                if(i < 10) {
-                    this.shortDateBuffer.append('0');
-                }
-                this.shortDateBuffer.append(i);
-                // Monat
-                i = this.calendar.get(Calendar.MONTH) + 1;
-                if(i < 10) {
-                    this.shortDateBuffer.append('0');
-                }
-                this.shortDateBuffer.append(i);
-                // Jahr
-                i = this.calendar.get(Calendar.YEAR);
-                this.shortDateBuffer.append(i);
-                buf = this.longDateBuffer.toString().getBytes(
-                    AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
-            } else {
-                buf = "        ".getBytes(
-                    AbstractLogicalFile.ENCODING_NAMES[encoding]);
+        if(date != null) {
+            if(!Header.Schedule.checkDate(date)) {
+                throw new IllegalArgumentException(
+                    Long.toString(date.getTime()));
 
             }
 
+            this.longDateBuffer.setLength(0);
+            this.calendar.clear();
+            this.calendar.setTime(date);
+            // Tag
+            i = this.calendar.get(Calendar.DAY_OF_MONTH);
+            if(i < 10) {
+                this.shortDateBuffer.append('0');
+            }
+            this.shortDateBuffer.append(i);
+            // Monat
+            i = this.calendar.get(Calendar.MONTH) + 1;
+            if(i < 10) {
+                this.shortDateBuffer.append('0');
+            }
+            this.shortDateBuffer.append(i);
+            // Jahr
+            i = this.calendar.get(Calendar.YEAR);
+            this.shortDateBuffer.append(i);
+            buf = this.longDateBuffer.toString().getBytes(
+                AbstractLogicalFile.ENCODING_NAMES[encoding]);
 
-            this.persistence.writeBlock(block, off, this.buffer, 0, 8);
-        } catch(IOException e) {
-            this.getLoggerImpl().error(e);
-            throw new IOError(e);
+        } else {
+            buf = "        ".getBytes(
+                AbstractLogicalFile.ENCODING_NAMES[encoding]);
+
         }
+
+
+        this.persistence.writeBlock(block, off, this.buffer, 0, 8);
     }
 
     //-------------------------------------------------void writeLongDate(...)--
@@ -1031,7 +1001,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
      * gleich {@code true} ist.
-     * @throws IOError wenn nicht gelesen werden kann.
+     * @throws IOException wenn nicht gelesen werden kann.
      *
      * @see org.jdtaus.banking.dtaus.Fields
      * @see org.jdtaus.banking.dtaus.spi.AbstractErrorMessage
@@ -1039,7 +1009,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      */
     protected long readNumberPackedPositive(final int field, final long block,
         final int off, final int len, final boolean sign) throws
-        PhysicalFileError, IOError {
+        PhysicalFileError, IOException {
 
         long ret = 0L;
         final int nibbles = 2 * len;
@@ -1124,13 +1094,13 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws IllegalArgumentException wenn {@code number} nicht mit
      * {@code len} Byte darstellbar ist.
-     * @throws IOError wenn nicht geschrieben werden kann.
+     * @throws IOException wenn nicht geschrieben werden kann.
      *
      * @see org.jdtaus.banking.dtaus.Fields
      */
     protected void writeNumberPackedPositive(final int field, final long block,
-        final int off, final int len, long number, final boolean sign) throws
-        IOError {
+        final int off, final int len, long number,
+        final boolean sign) throws IOException {
 
         int i;
         int pos = 0;
@@ -1185,12 +1155,12 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws IllegalArgumentException wenn {@code len} negativ, {@code 0} oder
      * größer als {@code 8} ist.
-     * @throws IOError wenn nicht gelesen werden kann.
+     * @throws IOException wenn nicht gelesen werden kann.
      *
      * @see org.jdtaus.banking.dtaus.Fields
      */
     protected long readNumberBinary(final int field, final long block,
-        final int off, final int len) throws IOError {
+        final int off, final int len) throws IOException {
 
         if(len <= 0 || len > 8) {
             throw new IllegalArgumentException(Integer.toString(len));
@@ -1229,12 +1199,12 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws IllegalArgumentException wenn {@code len} negativ, {@code 0} oder
      * größer als {@code 8} ist.
-     * @throws IOError wenn nicht geschrieben werden kann.
+     * @throws IOException wenn nicht geschrieben werden kann.
      *
      * @see org.jdtaus.banking.dtaus.Fields
      */
     protected void writeNumberBinary(final int field, final long block,
-        final int off, final int len, final long number) throws IOError {
+        final int off, final int len, final long number) throws IOException {
 
         if(len <= 0 || len > 8) {
             throw new IllegalArgumentException(Integer.toString(len));
@@ -1419,8 +1389,11 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws NullPointerException wenn Angaben fehlen.
      * @throws IllegalArgumentException wenn Angaben ungültig sind.
+     * @throws IOException wenn der Dateityp nicht gelesen werden kann.
      */
-    protected void checkTransaction(final Transaction transaction) {
+    protected void checkTransaction(
+        final Transaction transaction) throws IOException {
+
         int i;
         final Transaction.Description desc;
         final Kontonummer executiveAccount;
@@ -1548,8 +1521,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @return Datensatztyp des Satzabschnitts {@code block}.
      *
      * @throws PhysicalFileError bei technischen Fehlern.
+     * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract char getBlockType(long block) throws PhysicalFileError;
+    protected abstract char getBlockType(long block) throws
+        PhysicalFileError, IOException;
 
     //---------------------------------------------------int getBlockType(...)--
     //--void checksumTransaction(...)-------------------------------------------
@@ -1568,9 +1543,11 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @return Anzahl Satzabschnitte die von der Transaktion belegt werden.
      *
      * @throws PhysicalFileError bei technischen Fehlern.
+     * @throws IOException wenn nicht gelesen werden kann.
      */
     protected abstract int checksumTransaction(long block,
-        Transaction transaction, Checksum checksum) throws PhysicalFileError;
+        Transaction transaction, Checksum checksum) throws
+        PhysicalFileError, IOException;
 
     //-------------------------------------------void checksumTransaction(...)--
     //--int blockCount(...)-----------------------------------------------------
@@ -1593,8 +1570,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @return Anzahl der von der Transaktion in Satzabschnitt {@code block}
      * belegten Satzabschnitte.
+     *
+     * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract int blockCount(long block);
+    protected abstract int blockCount(long block) throws IOException;
 
     //-----------------------------------------------------int blockCount(...)--
 
@@ -1608,9 +1587,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @return A Datensatz.
      *
      * @throws PhysicalFileError bei technischen Fehlern.
+     * @throws IOException wenn nicht gelesen werden kann.
      */
     protected abstract Header readHeader(long headerBlock) throws
-        PhysicalFileError;
+        PhysicalFileError, IOException;
 
     /**
      * Schreibt den A Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1621,9 +1601,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @param header A Datensatz.
      *
      * @throws PhysicalFileError bei technischen Fehlern.
+     * @throws IOException wenn nicht geschrieben werden kann.
      */
     protected abstract void writeHeader(long headerBlock, Header header) throws
-        PhysicalFileError;
+        PhysicalFileError, IOException;
 
     /**
      * Liest den E Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1635,9 +1616,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @return E Datensatz.
      *
      * @throws PhysicalFileError bei technischen Fehlern.
+     * @throws IOException wenn nicht gelesen werden kann.
      */
     protected abstract Checksum readChecksum(long checksumBlock) throws
-        PhysicalFileError;
+        PhysicalFileError, IOException;
 
     /**
      * Schreibt den E Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1648,9 +1630,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @param checksum E Datensatz.
      *
      * @throws PhysicalFileError bei technischen Fehlern.
+     * @throws IOException wenn nicht geschrieben werden kann.     *
      */
     protected abstract void writeChecksum(long checksumBlock,
-        Checksum checksum) throws PhysicalFileError;
+        Checksum checksum) throws PhysicalFileError, IOException;
 
     /**
      * Liest einen C Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1662,9 +1645,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @return an {@code block} beginnender C Datensatz.
      *
      * @throws PhysicalFileError bei technischen Fehlern.
+     * @throws IOException wenn nicht gelesen werden kann.
      */
     protected abstract Transaction readTransaction(long block,
-        Transaction transaction) throws PhysicalFileError;
+        Transaction transaction) throws PhysicalFileError, IOException;
 
     /**
      * Schreibt einen C Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1675,9 +1659,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      * @param transaction Daten des C Datensatzes.
      *
      * @throws PhysicalFileError bei technischen Fehlern.
+     * @throws IOException wenn nicht geschrieben werden kann.
      */
     protected abstract void writeTransaction(long block,
-        Transaction transaction) throws PhysicalFileError;
+        Transaction transaction) throws PhysicalFileError, IOException;
 
     //--Property "headerBlock"--------------------------------------------------
 
@@ -1697,8 +1682,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws IllegalArgumentException wenn {@code headerBlock} negativ oder
      * größer als die Anzahl vorhandener Satzabschnitte ist.
+     * @throws IOException wenn die aktuelle Anzahl Satzabschnitte nicht
+     * ermittelt werden kann.
      */
-    protected void setHeaderBlock(final long headerBlock) {
+    protected void setHeaderBlock(final long headerBlock) throws IOException {
         if(headerBlock < 0L ||
             headerBlock > this.persistence.getBlockCount()) {
 
@@ -1727,8 +1714,12 @@ public abstract class AbstractLogicalFile implements LogicalFile {
      *
      * @throws IllegalArgumentException wenn {@code checksumBlock} negativ oder
      * größer als die vorhandene Anzahl Satzabschnitte ist.
+     * @throws IOException wenn die aktuelle Anzahl Satzabschnitte nicht
+     * ermittelt werden kann.
      */
-    protected void setChecksumBlock(final long checksumBlock) {
+    protected void setChecksumBlock(
+        final long checksumBlock) throws IOException {
+
         if(checksumBlock <= this.getHeaderBlock() ||
             checksumBlock > this.persistence.getBlockCount()) {
 
@@ -1765,14 +1756,14 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         }
     }
 
-    public Header getHeader() {
+    public Header getHeader() throws IOException {
         if(this.cachedHeader == null) {
             this.cachedHeader = this.readHeader(this.getHeaderBlock());
         }
         return (Header) this.cachedHeader.clone();
     }
 
-    public Header setHeader(final Header header) {
+    public Header setHeader(final Header header) throws IOException {
         this.checkHeader(header);
         final Checksum checksum = this.getChecksum();
         final Header old = this.getHeader();
@@ -1791,20 +1782,20 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         return old;
     }
 
-    public Checksum getChecksum() {
+    public Checksum getChecksum() throws IOException {
         if(this.cachedChecksum == null) {
             this.cachedChecksum = this.readChecksum(this.getChecksumBlock());
         }
         return (Checksum) this.cachedChecksum.clone();
     }
 
-    protected void setChecksum(final Checksum checksum) {
+    protected void setChecksum(final Checksum checksum) throws IOException {
         this.writeChecksum(this.getChecksumBlock(), checksum);
         this.cachedChecksum = (Checksum) checksum.clone();
         this.persistence.flush();
     }
 
-    public void checksum() {
+    public void checksum() throws IOException {
         char type;
         int count = 1;
         long block;
@@ -1885,7 +1876,9 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         }
     }
 
-    public void createTransaction(final Transaction transaction) {
+    public void createTransaction(
+        final Transaction transaction) throws IOException {
+
         final int transactionId;
         final int blockCount;
         final Checksum checksum = this.getChecksum();
@@ -1922,7 +1915,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         this.persistence.flush();
     }
 
-    public Transaction getTransaction(final int index) {
+    public Transaction getTransaction(final int index) throws IOException {
         final Checksum checksum = this.getChecksum();
         if(!this.checkTransactionId(index, checksum)) {
             throw new ArrayIndexOutOfBoundsException(index);
@@ -1934,7 +1927,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
     }
 
     public Transaction setTransaction(final int index,
-        final Transaction transaction) {
+        final Transaction transaction) throws IOException {
 
         final Checksum checksum = this.getChecksum();
         if(!this.checkTransactionId(index, checksum)) {
@@ -2000,7 +1993,7 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         return old;
     }
 
-    public Transaction removeTransaction(final int index) {
+    public Transaction removeTransaction(final int index) throws IOException {
         final Checksum checksum = this.getChecksum();
         if(!this.checkTransactionId(index, checksum)) {
             throw new ArrayIndexOutOfBoundsException(index);

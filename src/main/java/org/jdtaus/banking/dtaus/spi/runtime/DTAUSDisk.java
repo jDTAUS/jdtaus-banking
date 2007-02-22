@@ -19,6 +19,7 @@
  */
 package org.jdtaus.banking.dtaus.spi.runtime;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
@@ -315,9 +316,10 @@ public class DTAUSDisk extends AbstractLogicalFile {
      *
      * @throws NullPointerException {@code if(persistence == null)}
      * @throws IllegalArgumentException bei ungültigen Angaben.
+     * @throws IOException wenn nicht gelesen werden kann.
      */
     protected DTAUSDisk(final long headerBlock,
-        final StructuredFileOperations persistence) {
+        final StructuredFileOperations persistence) throws IOException {
 
         this(ModelFactory.getModel().getModules().
             getImplementation(DTAUSDisk.class.getName()));
@@ -354,10 +356,6 @@ public class DTAUSDisk extends AbstractLogicalFile {
                 getDependency(DTAUSDisk.class,
                 "CurrencyDirectory");
 
-            if(ret == null) {
-                throw new MissingDependencyException("CurrencyDirectory");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSDisk.class.getName()).
                 getDependencies().getDependency("CurrencyDirectory").
@@ -387,10 +385,6 @@ public class DTAUSDisk extends AbstractLogicalFile {
             ret = (TextschluesselVerzeichnis) ContainerFactory.getContainer().
                 getDependency(DTAUSDisk.class,
                 "TextschluesselVerzeichnis");
-
-            if(ret == null) {
-                throw new MissingDependencyException("TextschluesselVerzeichnis");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSDisk.class.getName()).
@@ -422,10 +416,6 @@ public class DTAUSDisk extends AbstractLogicalFile {
                 getDependency(DTAUSDisk.class,
                 "TaskMonitor");
 
-            if(ret == null) {
-                throw new MissingDependencyException("TaskMonitor");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSDisk.class.getName()).
                 getDependencies().getDependency("TaskMonitor").
@@ -455,10 +445,6 @@ public class DTAUSDisk extends AbstractLogicalFile {
             ret = (ApplicationLogger) ContainerFactory.getContainer().
                 getDependency(DTAUSDisk.class,
                 "ApplicationLogger");
-
-            if(ret == null) {
-                throw new MissingDependencyException("ApplicationLogger");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSDisk.class.getName()).
@@ -490,10 +476,6 @@ public class DTAUSDisk extends AbstractLogicalFile {
                 getDependency(DTAUSDisk.class,
                 "MemoryManager");
 
-            if(ret == null) {
-                throw new MissingDependencyException("MemoryManager");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSDisk.class.getName()).
                 getDependencies().getDependency("MemoryManager").
@@ -524,10 +506,6 @@ public class DTAUSDisk extends AbstractLogicalFile {
                 getDependency(DTAUSDisk.class,
                 "Logger");
 
-            if(ret == null) {
-                throw new MissingDependencyException("Logger");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSDisk.class.getName()).
                 getDependencies().getDependency("Logger").
@@ -551,7 +529,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
 
     protected int checksumTransaction(final long block,
         final Transaction transaction, final Checksum checksum) throws
-        PhysicalFileError {
+        PhysicalFileError, IOException {
 
         int ret = 2;
         final long extCount = this.readNumber(Fields.FIELD_C18, block + 1,
@@ -582,7 +560,9 @@ public class DTAUSDisk extends AbstractLogicalFile {
         return ret;
     }
 
-    protected char getBlockType(final long block) throws PhysicalFileError {
+    protected char getBlockType(final long block) throws
+        PhysicalFileError, IOException {
+
         // Feld 2
         final String str = this.readAlphaNumeric(Fields.FIELD_A2, block,
             DTAUSDisk.ARECORD_OFFSETS[1], DTAUSDisk.ARECORD_LENGTH[1],
@@ -617,7 +597,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     }
 
     protected Header readHeader(final long headerBlock) throws
-        PhysicalFileError {
+        PhysicalFileError, IOException {
 
         Long num;
         String str;
@@ -874,7 +854,9 @@ public class DTAUSDisk extends AbstractLogicalFile {
         return ret;
     }
 
-    protected void writeHeader(final long headerBlock, final Header header) {
+    protected void writeHeader(final long headerBlock,
+        final Header header) throws IOException {
+
         final Header.Schedule schedule;
         final LogicalFileType label;
         final boolean isBank;
@@ -965,7 +947,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     }
 
     protected Checksum readChecksum(final long checksumBlock) throws
-        PhysicalFileError {
+        PhysicalFileError, IOException {
 
         Long num;
         final String str;
@@ -1042,7 +1024,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     }
 
     protected void writeChecksum(final long checksumBlock,
-        final Checksum checksum) {
+        final Checksum checksum) throws IOException {
 
         // Feld 1
         this.writeNumber(Fields.FIELD_E1, checksumBlock,
@@ -1093,7 +1075,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     }
 
     protected Transaction readTransaction(final long block,
-        final Transaction transaction) throws PhysicalFileError {
+        final Transaction transaction) throws PhysicalFileError, IOException {
 
         int search;
         long blockOffset;
@@ -1485,7 +1467,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     }
 
     protected void writeTransaction(final long block,
-        final Transaction transaction) {
+        final Transaction transaction) throws IOException {
 
         int i;
         int blockIndex = 1;
@@ -1733,7 +1715,9 @@ public class DTAUSDisk extends AbstractLogicalFile {
         return DTAUSDisk.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
 
-    protected int blockCount(final long block) throws PhysicalFileError {
+    protected int blockCount(final long block) throws
+        PhysicalFileError, IOException {
+
         int extCount = this.readNumber(Fields.FIELD_C18,
             block + 1L, DTAUSDisk.CRECORD_OFFSETS2[4],
             DTAUSDisk.CRECORD_LENGTH2[4], AbstractLogicalFile.ENCODING_ASCII).
@@ -1750,7 +1734,7 @@ public class DTAUSDisk extends AbstractLogicalFile {
     //--DTAUSDisk---------------------------------------------------------------
 
     private void initializeExtensionBlock(final int blockIndex,
-        final long block) {
+        final long block) throws IOException {
 
         int extIndex;
         int startingExt;

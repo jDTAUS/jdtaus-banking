@@ -19,6 +19,7 @@
  */
 package org.jdtaus.banking.dtaus.spi.runtime;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Currency;
@@ -305,9 +306,10 @@ public class DTAUSTape extends AbstractLogicalFile {
      *
      * @throws NullPointerException {@code if(persistence == null)}
      * @throws IllegalArgumentException bei ungültigen Angaben.
+     * @throws IOException wenn nicht gelesen werden kann.
      */
     protected DTAUSTape(final long headerBlock,
-        final StructuredFileOperations persistence) {
+        final StructuredFileOperations persistence) throws IOException {
 
         this(ModelFactory.getModel().getModules().
             getImplementation(DTAUSTape.class.getName()));
@@ -346,10 +348,6 @@ public class DTAUSTape extends AbstractLogicalFile {
                 getDependency(DTAUSTape.class,
                 "CurrencyDirectory");
 
-            if(ret == null) {
-                throw new MissingDependencyException("CurrencyDirectory");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("CurrencyDirectory").
@@ -379,10 +377,6 @@ public class DTAUSTape extends AbstractLogicalFile {
             ret = (TextschluesselVerzeichnis) ContainerFactory.getContainer().
                 getDependency(DTAUSTape.class,
                 "TextschluesselVerzeichnis");
-
-            if(ret == null) {
-                throw new MissingDependencyException("TextschluesselVerzeichnis");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
@@ -414,10 +408,6 @@ public class DTAUSTape extends AbstractLogicalFile {
                 getDependency(DTAUSTape.class,
                 "TaskMonitor");
 
-            if(ret == null) {
-                throw new MissingDependencyException("TaskMonitor");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("TaskMonitor").
@@ -447,10 +437,6 @@ public class DTAUSTape extends AbstractLogicalFile {
             ret = (ApplicationLogger) ContainerFactory.getContainer().
                 getDependency(DTAUSTape.class,
                 "ApplicationLogger");
-
-            if(ret == null) {
-                throw new MissingDependencyException("ApplicationLogger");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
@@ -482,10 +468,6 @@ public class DTAUSTape extends AbstractLogicalFile {
                 getDependency(DTAUSTape.class,
                 "MemoryManager");
 
-            if(ret == null) {
-                throw new MissingDependencyException("MemoryManager");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("MemoryManager").
@@ -516,10 +498,6 @@ public class DTAUSTape extends AbstractLogicalFile {
                 getDependency(DTAUSTape.class,
                 "Logger");
 
-            if(ret == null) {
-                throw new MissingDependencyException("Logger");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("Logger").
@@ -543,7 +521,7 @@ public class DTAUSTape extends AbstractLogicalFile {
 
     protected int checksumTransaction(final long block,
         final Transaction transaction, final Checksum checksum) throws
-        PhysicalFileError {
+        PhysicalFileError, IOException {
 
         int ret = 1;
         // Konstanter Teil - 1. Satzabschnitt - Feld 18
@@ -577,7 +555,9 @@ public class DTAUSTape extends AbstractLogicalFile {
         return ret;
     }
 
-    protected char getBlockType(final long block) throws PhysicalFileError {
+    protected char getBlockType(final long block) throws
+        PhysicalFileError, IOException {
+
         // Feld 2
         final String str = this.readAlphaNumeric(Fields.FIELD_A2, block,
             DTAUSTape.ARECORD_OFFSETS[2], DTAUSTape.ARECORD_LENGTH[2],
@@ -623,7 +603,9 @@ public class DTAUSTape extends AbstractLogicalFile {
         return DTAUSTape.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
 
-    protected int blockCount(final long block) throws PhysicalFileError {
+    protected int blockCount(final long block) throws
+        PhysicalFileError, IOException {
+
         int extCount = (int) this.readNumberPackedPositive(
             Fields.FIELD_C18, block, DTAUSTape.CRECORD_OFFSETS1[21],
             DTAUSTape.CRECORD_LENGTH1[21], true);
@@ -635,7 +617,9 @@ public class DTAUSTape extends AbstractLogicalFile {
         return DTAUSTape.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
 
-    public Header readHeader(final long headerBlock) throws PhysicalFileError {
+    public Header readHeader(final long headerBlock) throws
+        PhysicalFileError, IOException {
+
         long num;
         Long Num;
         int cal;
@@ -902,7 +886,9 @@ public class DTAUSTape extends AbstractLogicalFile {
         return ret;
     }
 
-    public void writeHeader(final long headerBlock, final Header header) {
+    public void writeHeader(final long headerBlock,
+        final Header header) throws IOException {
+
         final Header.Schedule schedule;
         final LogicalFileType label;
         final boolean isBank;
@@ -1011,7 +997,7 @@ public class DTAUSTape extends AbstractLogicalFile {
     }
 
     public Checksum readChecksum(final long checksumBlock) throws
-        PhysicalFileError {
+        PhysicalFileError, IOException {
 
         long num;
         final String str;
@@ -1086,7 +1072,7 @@ public class DTAUSTape extends AbstractLogicalFile {
     }
 
     public void writeChecksum(final long checksumBlock,
-        final Checksum checksum) {
+        final Checksum checksum) throws IOException {
 
         // Feld 1
         this.writeNumberBinary(Fields.FIELD_E1, checksumBlock,
@@ -1141,7 +1127,7 @@ public class DTAUSTape extends AbstractLogicalFile {
     }
 
     public Transaction readTransaction(final long block,
-        final Transaction transaction) throws PhysicalFileError {
+        final Transaction transaction) throws PhysicalFileError, IOException {
 
         long num;
         Long Num;
@@ -1517,7 +1503,7 @@ public class DTAUSTape extends AbstractLogicalFile {
     }
 
     public void writeTransaction(final long block,
-        final Transaction transaction) {
+        final Transaction transaction) throws IOException {
 
         int i;
         long blockOffset;

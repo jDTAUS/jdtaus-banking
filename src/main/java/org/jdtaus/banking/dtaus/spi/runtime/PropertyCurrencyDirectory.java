@@ -35,12 +35,10 @@ import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ImplementationError;
-import org.jdtaus.core.container.MissingDependencyException;
-import org.jdtaus.core.container.MissingPropertyException;
+import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Property;
-import org.jdtaus.core.container.PropertyError;
+import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.logging.spi.Logger;
 
 /**
@@ -75,9 +73,6 @@ public class PropertyCurrencyDirectory
         Property p;
 
         p = meta.getProperties().getProperty("propertiesResource");
-        if(p == null) {
-            throw new MissingPropertyException(META, "propertiesResource");
-        }
         this._propertiesResource = (java.lang.String) p.getValue();
 
         this.assertValidProperties();
@@ -90,9 +85,6 @@ public class PropertyCurrencyDirectory
         Property p;
 
         p = meta.getProperties().getProperty("propertiesResource");
-        if(p == null) {
-            throw new MissingPropertyException(META, "propertiesResource");
-        }
         this._propertiesResource = (java.lang.String) p.getValue();
 
         this.assertValidProperties();
@@ -115,10 +107,6 @@ public class PropertyCurrencyDirectory
             ret = (Logger) ContainerFactory.getContainer().
                 getDependency(PropertyCurrencyDirectory.class,
                 "Logger");
-
-            if(ret == null) {
-                throw new MissingDependencyException("Logger");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(PropertyCurrencyDirectory.class.getName()).
@@ -161,18 +149,30 @@ public class PropertyCurrencyDirectory
     /** Mapping von ISO-Codes zu DTAUS-Codes. */
     private Map codes;
 
+    /**
+     * Liest eine Property-Datei, mit deren Hilfe DTAUS Codes auf ISO Codes
+     * abgebildet werden können und prüft den Inhalt der Datei.
+     *
+     * @throws ImplementationException wenn die Property-Datei nicht gelesen
+     * werden kann oder ihr Inhalt ungültig ist.
+     */
     public void initialize() {
         char code;
-        this.codes = this.getProperties();
-        final Currency[] currencies = this.getCurrencies();
 
-        // Sanity check.
-        for(int i = currencies.length - 1; i >= 0; i--) {
-            if(this.getCurrency(this.getCode(currencies[i])) == null) {
-                throw new ImplementationError(META,
-                    currencies[i].getCurrencyCode());
+        try {
+            this.codes = this.getProperties();
+            final Currency[] currencies = this.getCurrencies();
 
+            // Sanity check.
+            for(int i = currencies.length - 1; i >= 0; i--) {
+                if(this.getCurrency(this.getCode(currencies[i])) == null) {
+                    throw new ImplementationException(META,
+                        currencies[i].getCurrencyCode());
+
+                }
             }
+        } catch(IOException e) {
+            throw new ImplementationException(META, e);
         }
     }
 
@@ -203,7 +203,7 @@ public class PropertyCurrencyDirectory
                     PropertyCurrencyDirectory.ISO_LENGTH)));
 
             } else if(!key.startsWith(PropertyCurrencyDirectory.DTAUS_PREFIX)) {
-                throw new ImplementationError(META, key);
+                throw new ImplementationException(META, key);
             }
         }
 
@@ -231,7 +231,7 @@ public class PropertyCurrencyDirectory
                 equals(currency.getCurrencyCode())) {
 
                 if(value == null || value.length() != 1) {
-                    throw new ImplementationError(META, value);
+                    throw new ImplementationException(META, value);
                 }
 
                 ret = value.toCharArray()[0];
@@ -241,7 +241,9 @@ public class PropertyCurrencyDirectory
         }
 
         if(!valid) {
-            throw new IllegalArgumentException(currency.getCurrencyCode());
+            throw new ImplementationException(META,
+                new IllegalArgumentException(currency.getCurrencyCode()));
+
         }
 
         return ret;
@@ -263,7 +265,7 @@ public class PropertyCurrencyDirectory
                 equals(Character.toString(code))) {
 
                 if(value == null || value.length() != 3) {
-                    throw new ImplementationError(META, value);
+                    throw new ImplementationException(META, value);
                 }
 
                 ret = Currency.getInstance(value);
@@ -282,8 +284,10 @@ public class PropertyCurrencyDirectory
      *
      * @return Mapping von ISO Codes zu DTAUS Codes oder {@code null}, falls
      * die Konfiguration nicht gelesen werden konnte.
+     *
+     * @throws IOException wenn die Property-Datei nicht geladen werden kann.
      */
-    protected Map getProperties() {
+    protected Map getProperties() throws IOException {
         Properties ret = null;
         ClassLoader classLoader =
             Thread.currentThread().getContextClassLoader();
@@ -294,7 +298,7 @@ public class PropertyCurrencyDirectory
             classLoader = ClassLoader.getSystemClassLoader();
         }
         if(classLoader == null) {
-            throw new ImplementationError(META,
+            throw new ImplementationException(META,
                 new NullPointerException("classLoader"));
 
         }
@@ -306,17 +310,9 @@ public class PropertyCurrencyDirectory
                 stream = rsrc.openStream();
                 ret = new Properties();
                 ret.load(stream);
-            } catch(IOException e) {
-                this.getLogger().error(e);
-                ret = null;
             } finally {
                 if(stream != null) {
-                    try {
-                        stream.close();
-                    } catch(IOException e) {
-                        this.getLogger().error(e);
-                        ret = null;
-                    }
+                    stream.close();
                 }
             }
         }
@@ -327,13 +323,19 @@ public class PropertyCurrencyDirectory
     /**
      * Prüft konfigurierte Properties.
      *
-     * @throws PropertyError bei ungültigen Property-Werten.
+     * @throws PropertyException bei ungültigen Property-Werten.
+     * @throws ImplementationException wenn die Konfiguration nicht gelesen
+     * werden kann.
      */
     protected void assertValidProperties() {
-        if(this.getProperties() == null) {
-            throw new PropertyError("propertiesResource",
-                this.getPropertiesResource());
+        try {
+            if(this.getProperties() == null) {
+                throw new PropertyException("propertiesResource",
+                    this.getPropertiesResource());
 
+            }
+        } catch(IOException e) {
+            throw new ImplementationException(META, e);
         }
     }
 

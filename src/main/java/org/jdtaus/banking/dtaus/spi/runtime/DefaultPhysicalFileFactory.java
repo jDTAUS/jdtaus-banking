@@ -39,9 +39,8 @@ import org.jdtaus.core.container.MissingDependencyException;
 import org.jdtaus.core.container.MissingPropertyException;
 import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Property;
-import org.jdtaus.core.container.PropertyError;
+import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.io.FileOperations;
-import org.jdtaus.core.io.IOError;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.text.Message;
@@ -77,9 +76,6 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
         Property p;
 
         p = meta.getProperties().getProperty("defaultFormat");
-        if(p == null) {
-            throw new MissingPropertyException(META, "defaultFormat");
-        }
         this._defaultFormat = ((java.lang.Integer) p.getValue()).intValue();
 
         this.assertValidProperties();
@@ -92,9 +88,6 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
         Property p;
 
         p = meta.getProperties().getProperty("defaultFormat");
-        if(p == null) {
-            throw new MissingPropertyException(META, "defaultFormat");
-        }
         this._defaultFormat = ((java.lang.Integer) p.getValue()).intValue();
 
         this.assertValidProperties();
@@ -117,10 +110,6 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
             ret = (ApplicationLogger) ContainerFactory.getContainer().
                 getDependency(DefaultPhysicalFileFactory.class,
                 "ApplicationLogger");
-
-            if(ret == null) {
-                throw new MissingDependencyException("ApplicationLogger");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFileFactory.class.getName()).
@@ -152,10 +141,6 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
                 getDependency(DefaultPhysicalFileFactory.class,
                 "Logger");
 
-            if(ret == null) {
-                throw new MissingDependencyException("Logger");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFileFactory.class.getName()).
                 getDependencies().getDependency("Logger").
@@ -186,10 +171,6 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
                 getDependency(DefaultPhysicalFileFactory.class,
                 "TapeStructuredFileOperations");
 
-            if(ret == null) {
-                throw new MissingDependencyException("TapeStructuredFileOperations");
-            }
-
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFileFactory.class.getName()).
                 getDependencies().getDependency("TapeStructuredFileOperations").
@@ -219,10 +200,6 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
             ret = (StructuredFileOperations) ContainerFactory.getContainer().
                 getDependency(DefaultPhysicalFileFactory.class,
                 "DiskStructuredFileOperations");
-
-            if(ret == null) {
-                throw new MissingDependencyException("DiskStructuredFileOperations");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFileFactory.class.getName()).
@@ -263,7 +240,7 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
     //--PhysicalFileFactory-----------------------------------------------------
 
     public int analyse(final FileOperations fileOperations) throws
-        PhysicalFileException {
+        PhysicalFileException, IOException {
 
         int blockSize = -1;
         int read = 0;
@@ -292,7 +269,7 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
                 do {
                     read = fileOperations.read(buf, total, buf.length - total);
                     if(read == -1) {
-                        throw new IOError(new EOFException());
+                        throw new EOFException();
                     } else {
                         total += read;
                     }
@@ -340,16 +317,13 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
             }
 
             return ret;
-        } catch(IOException e) {
-            this.getLogger().error(e);
-            throw new IOError(e);
         } finally {
             AbstractErrorMessage.setErrorsEnabled(true);
         }
     }
 
     public final PhysicalFile getPhysicalFile(final FileOperations ops) throws
-        PhysicalFileException {
+        PhysicalFileException, IOException {
 
         if(ops == null) {
             throw new NullPointerException("ops");
@@ -401,7 +375,7 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
         if(defaultFormat != PhysicalFileFactory.FORMAT_DISK &&
             defaultFormat != PhysicalFileFactory.FORMAT_TAPE) {
 
-            throw new PropertyError("defaultFormat",
+            throw new PropertyException("defaultFormat",
                 new Integer(defaultFormat));
 
         }

@@ -19,6 +19,7 @@
  */
 package org.jdtaus.banking.dtaus.spi.runtime;
 
+import java.io.IOException;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
@@ -26,6 +27,7 @@ import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFileError;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
+import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.io.StructuredFileListener;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
@@ -84,9 +86,10 @@ public class DefaultPhysicalFile implements PhysicalFile {
      * operate on.
      *
      * @throws NullPointerException {@code if(structuredFile == null)}
+     * @throws IOException wenn nicht gelesen werden kann.
      */
     protected DefaultPhysicalFile(
-        final StructuredFileOperations structuredFile) {
+        final StructuredFileOperations structuredFile) throws IOException {
 
         this(ModelFactory.getModel().getModules().
             getImplementation(DefaultPhysicalFile.class.getName()));
@@ -99,7 +102,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
         this.structuredFile.addStructuredFileListener(
             new StructuredFileListener() {
 
-            public void blocksInserted(long l, long l0) {
+            public void blocksInserted(long l, long l0) throws IOException {
                 final int fileIndex;
 
                 if((fileIndex = this.getFileIndex(l)) >= 0) {
@@ -114,7 +117,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
                 }
             }
 
-            public void blocksDeleted(long l, long l0) {
+            public void blocksDeleted(long l, long l0) throws IOException {
                 final int fileIndex;
 
                 if((fileIndex = this.getFileIndex(l)) >= 0) {
@@ -153,7 +156,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
     //------------------------------------------------------------Dependencies--
     //--PhysicalFile------------------------------------------------------------
 
-    protected void checksum() {
+    protected void checksum() throws IOException {
         this.dtausCount = 0;
         int dtausIndex = 0;
         final long blockCount = this.getStructuredFile().getBlockCount();
@@ -175,7 +178,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
         return dtausId < this.dtausCount && dtausId >= 0;
     }
 
-    public LogicalFile add(final Header header) {
+    public LogicalFile add(final Header header) throws IOException {
         if(header == null) {
             throw new NullPointerException("header");
         }
@@ -209,7 +212,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
         return this.index[dtausId];
     }
 
-    public void remove(int dtausId) {
+    public void remove(int dtausId) throws IOException {
         if(!this.checkLogicalFileExists(dtausId)) {
             throw new IllegalArgumentException("dtausId");
         }
@@ -227,6 +230,11 @@ public class DefaultPhysicalFile implements PhysicalFile {
     //------------------------------------------------------------PhysicalFile--
     //--DefaultPhysicalFile-----------------------------------------------------
 
+    /** Implementierungs Meta-Daten. */
+    private static final Implementation META =
+        ModelFactory.getModel().getModules().
+        getImplementation(DefaultPhysicalFile.class.getName());
+
     /** <code>StructuredFile</code> requirement. **/
     private StructuredFileOperations structuredFile;
 
@@ -235,7 +243,9 @@ public class DefaultPhysicalFile implements PhysicalFile {
         return this.structuredFile;
     }
 
-    protected AbstractLogicalFile newLogicalFile(final long headerBlock) {
+    protected AbstractLogicalFile newLogicalFile(
+        final long headerBlock) throws IOException {
+
         final AbstractLogicalFile ret;
 
         switch(this.getStructuredFile().getBlockSize()) {
@@ -246,7 +256,8 @@ public class DefaultPhysicalFile implements PhysicalFile {
                 ret = new DTAUSTape(headerBlock, this.getStructuredFile());
                 break;
             default:
-                throw new IllegalStateException();
+                throw new ImplementationException(META,
+                    new IllegalStateException());
 
         }
 
