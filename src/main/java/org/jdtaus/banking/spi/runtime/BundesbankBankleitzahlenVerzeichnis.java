@@ -48,12 +48,10 @@ import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ImplementationError;
-import org.jdtaus.core.container.MissingDependencyException;
-import org.jdtaus.core.container.MissingPropertyException;
+import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Property;
-import org.jdtaus.core.container.PropertyError;
+import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.logging.spi.Logger;
 
 /**
@@ -92,23 +90,14 @@ public class BundesbankBankleitzahlenVerzeichnis
         Property p;
 
         p = meta.getProperties().getProperty("configuration");
-        if(p == null) {
-            throw new MissingPropertyException(META, "configuration");
-        }
         this._configuration = (java.lang.String) p.getValue();
 
 
         p = meta.getProperties().getProperty("dataDirectory");
-        if(p == null) {
-            throw new MissingPropertyException(META, "dataDirectory");
-        }
         this._dataDirectory = (java.lang.String) p.getValue();
 
 
         p = meta.getProperties().getProperty("encoding");
-        if(p == null) {
-            throw new MissingPropertyException(META, "encoding");
-        }
         this._encoding = (java.lang.String) p.getValue();
 
         this.assertValidProperties();
@@ -121,23 +110,14 @@ public class BundesbankBankleitzahlenVerzeichnis
         Property p;
 
         p = meta.getProperties().getProperty("configuration");
-        if(p == null) {
-            throw new MissingPropertyException(META, "configuration");
-        }
         this._configuration = (java.lang.String) p.getValue();
 
 
         p = meta.getProperties().getProperty("dataDirectory");
-        if(p == null) {
-            throw new MissingPropertyException(META, "dataDirectory");
-        }
         this._dataDirectory = (java.lang.String) p.getValue();
 
 
         p = meta.getProperties().getProperty("encoding");
-        if(p == null) {
-            throw new MissingPropertyException(META, "encoding");
-        }
         this._encoding = (java.lang.String) p.getValue();
 
         this.assertValidProperties();
@@ -160,10 +140,6 @@ public class BundesbankBankleitzahlenVerzeichnis
             ret = (BankleitzahlenDatei) ContainerFactory.getContainer().
                 getDependency(BundesbankBankleitzahlenVerzeichnis.class,
                 "BankleitzahlenDatei");
-
-            if(ret == null) {
-                throw new MissingDependencyException("BankleitzahlenDatei");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(BundesbankBankleitzahlenVerzeichnis.class.getName()).
@@ -194,10 +170,6 @@ public class BundesbankBankleitzahlenVerzeichnis
             ret = (Logger) ContainerFactory.getContainer().
                 getDependency(BundesbankBankleitzahlenVerzeichnis.class,
                 "Logger");
-
-            if(ret == null) {
-                throw new MissingDependencyException("Logger");
-            }
 
             if(ModelFactory.getModel().getModules().
                 getImplementation(BundesbankBankleitzahlenVerzeichnis.class.getName()).
@@ -288,7 +260,7 @@ public class BundesbankBankleitzahlenVerzeichnis
                 }
 
             } catch(ParseException e) {
-                throw new ImplementationError(META, e);
+                throw new ImplementationException(META, e);
             }
 
             return ret;
@@ -299,20 +271,24 @@ public class BundesbankBankleitzahlenVerzeichnis
      * Initializes the instance.
      *
      * @throws IOError if reading the files fails.
-     * @throws ImplementationError if initialization fails.
+     * @throws ImplementationException if initialization fails.
      */
     public void initialize() {
         BankleitzahlenDatei file;
 
-        final URL[] rsrc = this.getFileResources();
-        for(int i = 0; i < rsrc.length; i++) {
-            if(i == 0) {
-                this.read(rsrc[i]);
-            } else {
-                file = this.getBankleitzahlenDatei();
-                file.read(rsrc[i]);
-                this.update(file);
+        try {
+            final URL[] rsrc = this.getFileResources();
+            for(int i = 0; i < rsrc.length; i++) {
+                if(i == 0) {
+                    this.read(rsrc[i]);
+                } else {
+                    file = this.getBankleitzahlenDatei();
+                    file.read(rsrc[i]);
+                    this.update(file);
+                }
             }
+        } catch(IOException e) {
+            throw new ImplementationException(META, e);
         }
     }
 
@@ -415,7 +391,7 @@ public class BundesbankBankleitzahlenVerzeichnis
         return (BankleitzahlInfo) this.records.get(serialNumber);
     }
 
-    public final void read(final URL resource) {
+    public final void read(final URL resource) throws IOException {
         final BufferedReader reader;
 
         String line;
@@ -445,20 +421,16 @@ public class BundesbankBankleitzahlenVerzeichnis
                 rec.parse(line);
 
                 if(this.records.put(rec.getSerialNumber(), rec) != null) {
-                    throw new IllegalArgumentException(rec.toString());
+                    throw new ImplementationException(META,
+                        new IllegalArgumentException(rec.toString()));
+
                 }
             }
 
             this.cachedRecords = null;
-        } catch(IOException e) {
-            throw new ImplementationError(META, e);
         } finally {
-            try {
-                if(stream != null) {
-                    stream.close();
-                }
-            } catch(IOException e) {
-                throw new ImplementationError(META, e);
+            if(stream != null) {
+                stream.close();
             }
         }
     }
@@ -480,7 +452,9 @@ public class BundesbankBankleitzahlenVerzeichnis
                 if(this.records.put(
                     newVersion.getSerialNumber(), newVersion) != null) {
 
-                    throw new IllegalArgumentException(newVersion.toString());
+                    throw new ImplementationException(META,
+                        new IllegalArgumentException(newVersion.toString()));
+
                 }
 
                 if(logInfo) {
@@ -499,7 +473,9 @@ public class BundesbankBankleitzahlenVerzeichnis
                     get(newVersion.getSerialNumber());
 
                 if(oldVersion == null) {
-                    throw new IllegalArgumentException(newVersion.toString());
+                    throw new ImplementationException(META,
+                        new IllegalArgumentException(newVersion.toString()));
+
                 }
 
                 this.records.put(newVersion.getSerialNumber(), newVersion);
@@ -516,7 +492,9 @@ public class BundesbankBankleitzahlenVerzeichnis
 
             } else if('U' == newVersion.getChangeLabel()) {
                 if(!this.records.containsKey(newVersion.getSerialNumber())) {
-                    throw new IllegalArgumentException(newVersion.toString());
+                    throw new ImplementationException(META,
+                        new IllegalArgumentException(newVersion.toString()));
+
                 }
             }
         }
@@ -551,28 +529,32 @@ public class BundesbankBankleitzahlenVerzeichnis
     /**
      * Checks configured properties.
      *
-     * @throws PropertyError if configured properties hold invalid values.
+     * @throws PropertyException if configured properties hold invalid values.
      */
     protected void assertValidProperties() {
         if(this.getDataDirectory() == null ||
             this.getDataDirectory().length() == 0) {
 
-            throw new PropertyError("dataDirectory", this.getDataDirectory());
+            throw new PropertyException("dataDirectory",
+                this.getDataDirectory());
+
         }
         if(this.getConfiguration() == null ||
             this.getConfiguration().length() == 0 ||
             this.getConfigurationResource() == null) {
 
-            throw new PropertyError("configuration", this.getConfiguration());
+            throw new PropertyException("configuration",
+                this.getConfiguration());
+
         }
         if(this.getEncoding() == null || this.getEncoding().length() == 0) {
-            throw new PropertyError("encoding", this.getEncoding());
+            throw new PropertyException("encoding", this.getEncoding());
         }
 
         try {
             "".getBytes(this.getEncoding());
         } catch(UnsupportedEncodingException e) {
-            throw new PropertyError("encoding", this.getEncoding(), e);
+            throw new PropertyException("encoding", this.getEncoding(), e);
         }
     }
 
@@ -594,7 +576,7 @@ public class BundesbankBankleitzahlenVerzeichnis
      *
      * @return the files to be loaded sorted in ascending order.
      *
-     * @throws ImplementationError if reading configuration resources fails.
+     * @throws ImplementationException if reading configuration resources fails.
      */
     protected final URL[] getFileResources() {
         int i;
@@ -614,19 +596,19 @@ public class BundesbankBankleitzahlenVerzeichnis
                 rsrc = this.getDataDirectory() + '/' + it.next().toString();
                 ret[i] = this.getClassLoader().getResource(rsrc);
                 if(ret[i] == null) {
-                    throw new ImplementationError(META, rsrc);
+                    throw new ImplementationException(META, rsrc);
                 }
             }
 
             return ret;
         } catch(IOException e) {
-            throw new ImplementationError(META, e);
+            throw new ImplementationException(META, e);
         } finally {
             if(stream != null) {
                 try {
                     stream.close();
                 } catch(IOException e) {
-                    throw new ImplementationError(META, e);
+                    throw new ImplementationException(META, e);
                 }
             }
         }
@@ -654,7 +636,9 @@ public class BundesbankBankleitzahlenVerzeichnis
                 (rec.isHeadOffice() != branchOffices)) {
 
                 if(!col.add(rec)) {
-                    throw new IllegalStateException();
+                    throw new ImplementationException(META,
+                        new IllegalStateException());
+
                 }
             }
         }
@@ -672,7 +656,7 @@ public class BundesbankBankleitzahlenVerzeichnis
             classLoader = ClassLoader.getSystemClassLoader();
         }
         if(classLoader == null) {
-            throw new ImplementationError(META,
+            throw new ImplementationException(META,
                 new NullPointerException("classLoader"));
 
         }
