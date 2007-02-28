@@ -22,6 +22,14 @@
         <filtering>true</filtering>
         <directory>src/main/resources</directory>
       </resource>
+      <resource>
+        <filtering>false</filtering>
+        <directory>src/main/bankfiles</directory>
+        <targetPath>META-INF/jdtaus</targetPath>
+        <includes>
+          <include>*.txt</include>
+        </includes>
+      </resource>
     </resources>
     <plugins>
       <plugin>

@@ -59,12 +59,6 @@
           </jdtaus:properties>
           
         </jdtaus:dependency>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.BankleitzahlenDatei"
-                           jdtaus:implementationName="jDTAUS Banking SPI"
-                           jdtaus:name="BankleitzahlenDatei"
-                           jdtaus:bound="false">
-          
-        </jdtaus:dependency>
       </jdtaus:dependencies>
       
       <jdtaus:properties>
