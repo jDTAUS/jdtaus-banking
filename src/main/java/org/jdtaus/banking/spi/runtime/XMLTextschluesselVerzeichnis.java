@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -119,7 +120,6 @@ public class XMLTextschluesselVerzeichnis implements
         p = meta.getProperties().getProperty("dataDirectory");
         this._dataDirectory = (java.lang.String) p.getValue();
 
-        this.assertValidProperties();
     }
     /** Protected <code>XMLTextschluesselVerzeichnis</code> dependency constructor.
     * @param meta Dependency meta-data.
@@ -135,7 +135,6 @@ public class XMLTextschluesselVerzeichnis implements
         p = meta.getProperties().getProperty("dataDirectory");
         this._dataDirectory = (java.lang.String) p.getValue();
 
-        this.assertValidProperties();
     }
 
     //------------------------------------------------------------Constructors--
@@ -216,12 +215,14 @@ public class XMLTextschluesselVerzeichnis implements
      * @see #parseResources()
      */
     public void initialize() {
+        this.assertValidProperties();
+
         try {
             final Document docs[] = this.parseResources();
             final Collection col = new LinkedList();
 
             for(int i = docs.length - 1; i >= 0; i--) {
-                col.add(this.transformDocument(docs[i]));
+                col.addAll(Arrays.asList(this.transformDocument(docs[i])));
             }
 
             this.instances = (Textschluessel[]) col.

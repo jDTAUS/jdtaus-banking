@@ -22,6 +22,14 @@
         <filtering>true</filtering>
         <directory>src/main/resources</directory>
       </resource>
+      <resource>
+        <filtering>false</filtering>
+        <directory>src/site/resources</directory>
+        <targetPath>org/jdtaus/banking/xml</targetPath>
+        <includes>
+          <include>*.xsd</include>
+        </includes>
+      </resource>
     </resources>
     <plugins>
       <plugin>
@@ -51,7 +59,7 @@
           </execution>
         </executions>
       </plugin>
-
+      
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-container-mojo</artifactId>
