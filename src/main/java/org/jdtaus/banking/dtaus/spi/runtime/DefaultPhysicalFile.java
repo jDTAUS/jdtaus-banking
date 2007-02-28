@@ -196,7 +196,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
     //------------------------------------------------------------Dependencies--
     //--PhysicalFile------------------------------------------------------------
 
-    static class ChecksumMessage extends Message {
+    public static final class ChecksumMessage extends Message {
 
         private static final Object[] NO_ARGS = {};
 
@@ -209,7 +209,7 @@ public class DefaultPhysicalFile implements PhysicalFile {
         }
     }
 
-    static class ChecksumTask extends Task {
+    public static final class ChecksumTask extends Task {
 
         private final Message description = new ChecksumMessage();
 
