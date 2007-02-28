@@ -78,7 +78,6 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
         p = meta.getProperties().getProperty("defaultFormat");
         this._defaultFormat = ((java.lang.Integer) p.getValue()).intValue();
 
-        this.assertValidProperties();
     }
     /** Protected <code>DefaultPhysicalFileFactory</code> dependency constructor.
     * @param meta Dependency meta-data.
@@ -90,7 +89,6 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
         p = meta.getProperties().getProperty("defaultFormat");
         this._defaultFormat = ((java.lang.Integer) p.getValue()).intValue();
 
-        this.assertValidProperties();
     }
 
     //------------------------------------------------------------Constructors--

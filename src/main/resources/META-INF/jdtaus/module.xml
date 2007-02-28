@@ -67,7 +67,7 @@
         
       </jdtaus:properties>
     </jdtaus:implementation>
-
+    
     <!--                                                                     -->
     <!-- DefaultPhysicalFileFactory                                          -->
     <!--                                                                     -->
@@ -149,7 +149,7 @@
         
       </jdtaus:properties>
     </jdtaus:implementation>
-
+    
     <!--                                                                     -->
     <!-- DefaultPhysicalFile                                                 -->
     <!--                                                                     -->
@@ -161,6 +161,13 @@
       <jdtaus:implementedSpecifications>
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.PhysicalFile"/>
       </jdtaus:implementedSpecifications>
+      <jdtaus:dependencies>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                           jdtaus:implementationName="jDTAUS Core SPI"
+                           jdtaus:name="TaskMonitor"
+                           jdtaus:bound="true"/>
+        
+      </jdtaus:dependencies>
     </jdtaus:implementation>
     
     <!--                                                                     -->
@@ -203,17 +210,17 @@
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="TaskMonitor"
                            jdtaus:bound="true"/>
-
+        
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.TextschluesselVerzeichnis"
                            jdtaus:implementationName="jDTAUS Banking SPI"
                            jdtaus:name="TextschluesselVerzeichnis"
                            jdtaus:bound="true"/>
-
+        
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.dtaus.spi.CurrencyDirectory"
                            jdtaus:implementationName="jDTAUS Banking SPI"
                            jdtaus:name="CurrencyDirectory"
                            jdtaus:bound="true"/>
-
+        
       </jdtaus:dependencies>
     </jdtaus:implementation>
     
@@ -257,17 +264,17 @@
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="TaskMonitor"
                            jdtaus:bound="true"/>
-
+        
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.TextschluesselVerzeichnis"
                            jdtaus:implementationName="jDTAUS Banking SPI"
                            jdtaus:name="TextschluesselVerzeichnis"
                            jdtaus:bound="true"/>
-
+        
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.dtaus.spi.CurrencyDirectory"
                            jdtaus:implementationName="jDTAUS Banking SPI"
                            jdtaus:name="CurrencyDirectory"
                            jdtaus:bound="true"/>
-
+        
       </jdtaus:dependencies>
     </jdtaus:implementation>
   </jdtaus:implementations>

@@ -20,6 +20,7 @@
 package org.jdtaus.banking.dtaus.spi.runtime;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -131,6 +132,9 @@ public abstract class AbstractLogicalFile implements LogicalFile {
 
     /** Maximale Anzahl unterstützter Verwendungszweckzeilen. */
     protected static final int MAX_DESCRIPTIONS = 14;
+
+    /** {@code BigDecimal} 100. */
+    private static final BigDecimal BD100 = new BigDecimal(100L);
 
     //--------------------------------------------------------------Konstanten--
     //--Attribute---------------------------------------------------------------
@@ -1808,7 +1812,15 @@ public abstract class AbstractLogicalFile implements LogicalFile {
         Message msg;
 
         try {
-            task.setIndeterminate(true);
+            task.setIndeterminate(false);
+            task.setMinimum(startBlock > Integer.MAX_VALUE ?
+                Integer.MAX_VALUE : (int) startBlock);
+
+            task.setMaximum(
+                this.persistence.getBlockCount() > Integer.MAX_VALUE ?
+                    Integer.MAX_VALUE : (int) this.persistence.getBlockCount());
+
+            task.setProgress(task.getMinimum());
             this.getTaskMonitorImpl().monitor(task);
 
             block = startBlock;
@@ -1828,6 +1840,9 @@ public abstract class AbstractLogicalFile implements LogicalFile {
 
             } else {
                 this.getHeader(); // A-Datensatz prüfen.
+                task.setProgress(block > Integer.MAX_VALUE ?
+                    Integer.MAX_VALUE : (int) block);
+
                 while((type = this.getBlockType(block)) == 'C') {
                     final int id = count - 1;
                     final long blocks;
@@ -1839,6 +1854,9 @@ public abstract class AbstractLogicalFile implements LogicalFile {
                     blockOffset += blocks;
                     c.setTransactionCount(count++);
                     this.setChecksumBlock(block);
+                    task.setProgress(block > Integer.MAX_VALUE ?
+                        Integer.MAX_VALUE : (int) block);
+
                 }
 
                 this.setChecksumBlock(block);
@@ -1856,6 +1874,10 @@ public abstract class AbstractLogicalFile implements LogicalFile {
                         }
 
                     }
+
+                    task.setProgress(block > Integer.MAX_VALUE ?
+                        Integer.MAX_VALUE : (int) block);
+
                 } else {
                     msg = new IllegalDataMessage(Fields.FIELD_E2,
                         IllegalDataMessage.TYPE_CONSTANT,

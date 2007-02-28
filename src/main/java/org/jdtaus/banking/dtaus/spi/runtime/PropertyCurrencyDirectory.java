@@ -75,7 +75,6 @@ public class PropertyCurrencyDirectory
         p = meta.getProperties().getProperty("propertiesResource");
         this._propertiesResource = (java.lang.String) p.getValue();
 
-        this.assertValidProperties();
     }
     /** Protected <code>PropertyCurrencyDirectory</code> dependency constructor.
     * @param meta Dependency meta-data.
@@ -87,7 +86,6 @@ public class PropertyCurrencyDirectory
         p = meta.getProperties().getProperty("propertiesResource");
         this._propertiesResource = (java.lang.String) p.getValue();
 
-        this.assertValidProperties();
     }
 
     //------------------------------------------------------------Constructors--

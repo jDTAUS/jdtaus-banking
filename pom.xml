@@ -44,6 +44,7 @@
             <configuration>
               <bundles>
                 <bundle>org.jdtaus.banking.dtaus.spi.runtime.AbstractLogicalFile</bundle>
+                <bundle>org.jdtaus.banking.dtaus.spi.runtime.DefaultPhysicalFile</bundle>
                 <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.CurrencyViolationMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage</bundle>
