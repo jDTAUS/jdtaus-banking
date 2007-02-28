@@ -59,6 +59,12 @@
           </jdtaus:properties>
           
         </jdtaus:dependency>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                           jdtaus:implementationName="jDTAUS Core SPI"
+                           jdtaus:name="TaskMonitor"
+                           jdtaus:bound="true">
+          
+        </jdtaus:dependency>
       </jdtaus:dependencies>
       
       <jdtaus:properties>
