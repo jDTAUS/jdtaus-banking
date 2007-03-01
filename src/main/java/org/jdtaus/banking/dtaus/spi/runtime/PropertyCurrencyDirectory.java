@@ -49,7 +49,8 @@ import org.jdtaus.core.logging.spi.Logger;
  * @version $Id$
  */
 public class PropertyCurrencyDirectory
-    implements CurrencyDirectory, ContainerInitializer {
+    implements CurrencyDirectory, ContainerInitializer
+{
 
     //--Implementation----------------------------------------------------------
 
@@ -154,22 +155,28 @@ public class PropertyCurrencyDirectory
      * @throws ImplementationException wenn die Property-Datei nicht gelesen
      * werden kann oder ihr Inhalt ungültig ist.
      */
-    public void initialize() {
+    public void initialize()
+    {
         char code;
 
-        try {
+        try
+        {
             this.codes = this.getProperties();
             final Currency[] currencies = this.getCurrencies();
 
             // Sanity check.
-            for(int i = currencies.length - 1; i >= 0; i--) {
-                if(this.getCurrency(this.getCode(currencies[i])) == null) {
+            for(int i = currencies.length - 1; i >= 0; i--)
+            {
+                if(this.getCurrency(this.getCode(currencies[i])) == null)
+                {
                     throw new ImplementationException(META,
                         currencies[i].getCurrencyCode());
 
                 }
             }
-        } catch(IOException e) {
+        }
+        catch(IOException e)
+        {
             throw new ImplementationException(META, e);
         }
     }
@@ -185,22 +192,27 @@ public class PropertyCurrencyDirectory
     private static final String DTAUS_PREFIX = "dtaus.";
     private static final int DTAUS_LENGTH = DTAUS_PREFIX.length();
 
-    public Currency[] getCurrencies() {
+    public Currency[] getCurrencies()
+    {
         String key;
         String value;
 
         final Iterator it;
         final Collection col = new LinkedList();
 
-        for(it = this.codes.keySet().iterator(); it.hasNext();) {
+        for(it = this.codes.keySet().iterator(); it.hasNext();)
+        {
             key = (String) it.next();
             value = (String) this.codes.get(key);
 
-            if(key.startsWith(PropertyCurrencyDirectory.ISO_PREFIX)) {
+            if(key.startsWith(PropertyCurrencyDirectory.ISO_PREFIX))
+            {
                 col.add(Currency.getInstance(key.substring(
                     PropertyCurrencyDirectory.ISO_LENGTH)));
 
-            } else if(!key.startsWith(PropertyCurrencyDirectory.DTAUS_PREFIX)) {
+            }
+            else if(!key.startsWith(PropertyCurrencyDirectory.DTAUS_PREFIX))
+            {
                 throw new ImplementationException(META, key);
             }
         }
@@ -208,8 +220,10 @@ public class PropertyCurrencyDirectory
         return (Currency[]) col.toArray(new Currency[col.size()]);
     }
 
-    public char getCode(final Currency currency) {
-        if(currency == null) {
+    public char getCode(final Currency currency)
+    {
+        if(currency == null)
+        {
             throw new NullPointerException("currency");
         }
 
@@ -220,15 +234,18 @@ public class PropertyCurrencyDirectory
 
         final Iterator it;
 
-        for(it = this.codes.keySet().iterator(); it.hasNext();) {
+        for(it = this.codes.keySet().iterator(); it.hasNext();)
+        {
             key = (String) it.next();
             value = (String) this.codes.get(key);
 
             if(key.startsWith(PropertyCurrencyDirectory.ISO_PREFIX) &&
                 key.substring(PropertyCurrencyDirectory.ISO_LENGTH).
-                equals(currency.getCurrencyCode())) {
+                equals(currency.getCurrencyCode()))
+            {
 
-                if(value == null || value.length() != 1) {
+                if(value == null || value.length() != 1)
+                {
                     throw new ImplementationException(META, value);
                 }
 
@@ -238,7 +255,8 @@ public class PropertyCurrencyDirectory
             }
         }
 
-        if(!valid) {
+        if(!valid)
+        {
             throw new ImplementationException(META,
                 new IllegalArgumentException(currency.getCurrencyCode()));
 
@@ -247,22 +265,26 @@ public class PropertyCurrencyDirectory
         return ret;
     }
 
-    public Currency getCurrency(char code) {
+    public Currency getCurrency(char code)
+    {
         String key;
         String value;
         Currency ret = null;
 
         final Iterator it;
 
-        for(it = this.codes.keySet().iterator(); it.hasNext();) {
+        for(it = this.codes.keySet().iterator(); it.hasNext();)
+        {
             key = (String) it.next();
             value = (String) this.codes.get(key);
 
             if(key.startsWith(PropertyCurrencyDirectory.DTAUS_PREFIX) &&
                 key.substring(PropertyCurrencyDirectory.DTAUS_LENGTH).
-                equals(Character.toString(code))) {
+                equals(Character.toString(code)))
+            {
 
-                if(value == null || value.length() != 3) {
+                if(value == null || value.length() != 3)
+                {
                     throw new ImplementationException(META, value);
                 }
 
@@ -285,31 +307,39 @@ public class PropertyCurrencyDirectory
      *
      * @throws IOException wenn die Property-Datei nicht geladen werden kann.
      */
-    protected Map getProperties() throws IOException {
+    protected Map getProperties() throws IOException
+    {
         Properties ret = null;
         ClassLoader classLoader =
             Thread.currentThread().getContextClassLoader();
 
         final URL rsrc;
 
-        if(classLoader == null) {
+        if(classLoader == null)
+        {
             classLoader = ClassLoader.getSystemClassLoader();
         }
-        if(classLoader == null) {
+        if(classLoader == null)
+        {
             throw new ImplementationException(META,
                 new NullPointerException("classLoader"));
 
         }
 
         rsrc = classLoader.getResource(this.getPropertiesResource());
-        if(rsrc != null) {
+        if(rsrc != null)
+        {
             InputStream stream = null;
-            try {
+            try
+            {
                 stream = rsrc.openStream();
                 ret = new Properties();
                 ret.load(stream);
-            } finally {
-                if(stream != null) {
+            }
+            finally
+            {
+                if(stream != null)
+                {
                     stream.close();
                 }
             }
@@ -325,14 +355,19 @@ public class PropertyCurrencyDirectory
      * @throws ImplementationException wenn die Konfiguration nicht gelesen
      * werden kann.
      */
-    protected void assertValidProperties() {
-        try {
-            if(this.getProperties() == null) {
+    protected void assertValidProperties()
+    {
+        try
+        {
+            if(this.getProperties() == null)
+            {
                 throw new PropertyException("propertiesResource",
                     this.getPropertiesResource());
 
             }
-        } catch(IOException e) {
+        }
+        catch(IOException e)
+        {
             throw new ImplementationException(META, e);
         }
     }

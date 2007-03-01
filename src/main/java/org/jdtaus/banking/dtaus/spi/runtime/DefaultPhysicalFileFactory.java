@@ -52,7 +52,8 @@ import org.jdtaus.core.text.spi.ApplicationLogger;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
+public class DefaultPhysicalFileFactory implements PhysicalFileFactory
+{
 
     //--Implementation----------------------------------------------------------
 
@@ -238,7 +239,8 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
     //--PhysicalFileFactory-----------------------------------------------------
 
     public int analyse(final FileOperations fileOperations) throws
-        PhysicalFileException, IOException {
+        PhysicalFileException, IOException
+    {
 
         int blockSize = -1;
         int read = 0;
@@ -252,48 +254,64 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
         final String str;
         final long length;
 
-        if(fileOperations == null) {
+        if(fileOperations == null)
+        {
             throw new NullPointerException("fileOperations");
         }
 
         length = fileOperations.getLength();
-        try {
+        try
+        {
             ThreadLocalMessages.getMessages().clear();
             AbstractErrorMessage.setErrorsEnabled(false);
 
-            if(length >= 128) { // mindestens ein Satzabschnitt.
+            if(length >= 128)
+            { // mindestens ein Satzabschnitt.
                 // die ersten 4 Byte lesen.
                 fileOperations.setFilePointer(0L);
-                do {
+                do
+                {
                     read = fileOperations.read(buf, total, buf.length - total);
-                    if(read == -1) {
+                    if(read == -1)
+                    {
                         throw new EOFException();
-                    } else {
+                    }
+                    else
+                    {
                         total += read;
                     }
                 } while(total < buf.length);
 
                 // Diskettenformat prüfen "0128".
                 str = new String(buf, "DIN_66003");
-                if("0128".equals(str)) {
+                if("0128".equals(str))
+                {
                     ret = PhysicalFileFactory.FORMAT_DISK;
                     blockSize = 128;
-                } else {
+                }
+                else
+                {
                     size &= buf[0];
                     size <<= 8;
                     size |= 0xFF;
                     size &= buf[1];
 
-                    if(size == 150) {
+                    if(size == 150)
+                    {
                         ret = PhysicalFileFactory.FORMAT_TAPE;
                         blockSize = 150;
-                    } else {
+                    }
+                    else
+                    {
                         msg = new IllegalDataMessage(Fields.FIELD_A1,
                             IllegalDataMessage.TYPE_CONSTANT, 0L, str);
 
-                        if(AbstractErrorMessage.isErrorsEnabled()) {
+                        if(AbstractErrorMessage.isErrorsEnabled())
+                        {
                             throw new PhysicalFileError(META, msg);
-                        } else {
+                        }
+                        else
+                        {
                             ThreadLocalMessages.getMessages().addMessage(msg);
                         }
                     }
@@ -304,26 +322,32 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
             final BigDecimal decLength = BigDecimal.valueOf(length);
             final BigDecimal decBlockSize = BigDecimal.valueOf(blockSize);
             if(!decLength.divideAndRemainder(decBlockSize)[1].
-                equals(BigDecimal.ZERO)) {
+                equals(BigDecimal.ZERO))
+            {
 
                 throw new PhysicalFileException(null);
             }
 
             messages = ThreadLocalMessages.getMessages().getMessages();
-            if(messages.length > 0) {
+            if(messages.length > 0)
+            {
                 throw new PhysicalFileException(messages);
             }
 
             return ret;
-        } finally {
+        }
+        finally
+        {
             AbstractErrorMessage.setErrorsEnabled(true);
         }
     }
 
     public final PhysicalFile getPhysicalFile(final FileOperations ops) throws
-        PhysicalFileException, IOException {
+        PhysicalFileException, IOException
+    {
 
-        if(ops == null) {
+        if(ops == null)
+        {
             throw new NullPointerException("ops");
         }
 
@@ -333,7 +357,8 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
         final int format = ops.getLength() > 0 ?
             this.analyse(ops) : this.getDefaultFormat();
 
-        switch(format) {
+        switch(format)
+        {
             case PhysicalFileFactory.FORMAT_DISK:
                 sops = this.getDiskStructuredFileOperations();
                 break;
@@ -347,7 +372,8 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
 
         sops.setFileOperations(ops);
 
-        try {
+        try
+        {
             ThreadLocalMessages.getMessages().clear();
             AbstractErrorMessage.setErrorsEnabled(false);
 
@@ -355,12 +381,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
             ret.checksum();
 
             messages = ThreadLocalMessages.getMessages().getMessages();
-            if(messages.length > 0) {
+            if(messages.length > 0)
+            {
                 throw new PhysicalFileException(messages);
             }
 
             return ret;
-        } finally {
+        }
+        finally
+        {
             AbstractErrorMessage.setErrorsEnabled(true);
         }
     }
@@ -368,10 +397,12 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory {
     //-----------------------------------------------------PhysicalFileFactory--
     //--DefaultPhysicalFileFactory----------------------------------------------
 
-    protected void assertValidProperties() {
+    protected void assertValidProperties()
+    {
         final int defaultFormat = this.getDefaultFormat();
         if(defaultFormat != PhysicalFileFactory.FORMAT_DISK &&
-            defaultFormat != PhysicalFileFactory.FORMAT_TAPE) {
+            defaultFormat != PhysicalFileFactory.FORMAT_TAPE)
+        {
 
             throw new PropertyException("defaultFormat",
                 new Integer(defaultFormat));

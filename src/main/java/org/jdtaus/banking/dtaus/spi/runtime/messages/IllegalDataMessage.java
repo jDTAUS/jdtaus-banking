@@ -33,7 +33,8 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public final class IllegalDataMessage extends AbstractErrorMessage {
+public final class IllegalDataMessage extends AbstractErrorMessage
+{
 
     //--Konstanten--------------------------------------------------------------
 
@@ -133,7 +134,8 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      * @see org.jdtaus.banking.dtaus.Fields
      */
     public IllegalDataMessage(final int field, final int type,
-        final long position, final String invalidData) {
+        final long position, final String invalidData)
+    {
 
         super();
         this.field = field;
@@ -156,9 +158,11 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      * @throws NullPointerException {@code if(messages == null)}
      */
     public static IllegalDataMessage[] getMessages(
-        final Message[] messages) {
+        final Message[] messages)
+    {
 
-        if(messages == null) {
+        if(messages == null)
+        {
             throw new NullPointerException("messages");
         }
 
@@ -166,8 +170,10 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
 
-        for(int i = numMessages - 1; i >= 0; i--) {
-            if(messages[i].getClass() == IllegalDataMessage.class) {
+        for(int i = numMessages - 1; i >= 0; i--)
+        {
+            if(messages[i].getClass() == IllegalDataMessage.class)
+            {
                 ret.add(messages[i]);
             }
         }
@@ -177,16 +183,20 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
 
     }
 
-    private void assertValidType() {
+    private void assertValidType()
+    {
         boolean valid = false;
-        for(int i = TYPES.length - 1; i >= 0 && !valid; i--) {
-            if(TYPES[i] == this.type) {
+        for(int i = TYPES.length - 1; i >= 0 && !valid; i--)
+        {
+            if(TYPES[i] == this.type)
+            {
                 valid = true;
                 break;
             }
         }
 
-        if(!valid) {
+        if(!valid)
+        {
             throw new IllegalArgumentException(
                 Integer.toString(this.getType()));
 
@@ -226,7 +236,8 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      * @return Feld-Konstanten des Feldes, in dem die ungültigen Daten
      * vorgefunden wurden.
      */
-    public int getField() {
+    public int getField()
+    {
         return this.field;
     }
 
@@ -235,7 +246,8 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      *
      * @return absolute Position an der die ungültigen Daten vorgefunden wurden.
      */
-    public long getPosition() {
+    public long getPosition()
+    {
         return this.position;
     }
 
@@ -246,7 +258,8 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      *
      * @see #TYPE_ALPHA {@code TYPE_<i>XYZ</i>} Konstanten aus dieser Klasse
      */
-    public int getType() {
+    public int getType()
+    {
         return this.type;
     }
 
@@ -255,7 +268,8 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      *
      * @return vorgefundene ungültige Daten.
      */
-    public String getInvalidData() {
+    public String getInvalidData()
+    {
         return this.invalidData;
     }
 
@@ -269,7 +283,8 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      * Feld-Name<br/>Index 1: absolute Position des Feldes<br/>Index 2:
      * ungültige Daten</p>
      */
-    public Object[] getFormatArguments(final Locale locale) {
+    public Object[] getFormatArguments(final Locale locale)
+    {
         return new Object[] {
             Integer.toHexString(this.getField()).toUpperCase(locale),
             new Long(this.getPosition()),
@@ -284,7 +299,8 @@ public final class IllegalDataMessage extends AbstractErrorMessage {
      *
      * @return {@code "{2}" ist kein gültiger Wert für Feld {0} (Position {1, number}).}
      */
-    public String getText(final Locale locale) {
+    public String getText(final Locale locale)
+    {
         return IllegalDataMessageBundle.getIllegalDataMessage(locale).
             format(this.getFormatArguments(locale));
 

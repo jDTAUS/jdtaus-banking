@@ -29,7 +29,8 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class CurrencyViolationMessage extends Message {
+public class CurrencyViolationMessage extends Message
+{
 
     //--CurrencyViolationMessage------------------------------------------------
 
@@ -66,7 +67,8 @@ public class CurrencyViolationMessage extends Message {
      * @param currency {@code code} entsprechende Währung.
      */
     public CurrencyViolationMessage(final int field, final long position,
-        final char code, final Currency currency) {
+        final char code, final Currency currency)
+    {
 
         this.field = new Integer(field);
         this.position = new Long(position);
@@ -87,7 +89,8 @@ public class CurrencyViolationMessage extends Message {
      * DTAUS Daten<br/>Index 3: angenommener Währungs-Code<br/>
      * Index 4: Währungs-Symbol</p>
      */
-    public Object[] getFormatArguments(final Locale locale) {
+    public Object[] getFormatArguments(final Locale locale)
+    {
         return new Object[] {
             Integer.toHexString(this.field.intValue()).toUpperCase(locale),
             this.position,
@@ -97,7 +100,8 @@ public class CurrencyViolationMessage extends Message {
         };
     }
 
-    public String getText(final Locale locale) {
+    public String getText(final Locale locale)
+    {
         return CurrencyViolationMessageBundle.
             getCurrencyViolationMessage(locale).
             format( this.getFormatArguments(locale));

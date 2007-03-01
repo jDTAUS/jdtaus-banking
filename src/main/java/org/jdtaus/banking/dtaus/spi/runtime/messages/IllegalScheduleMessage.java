@@ -38,7 +38,8 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public final class IllegalScheduleMessage extends AbstractErrorMessage {
+public final class IllegalScheduleMessage extends AbstractErrorMessage
+{
 
     //--Konstruktoren-----------------------------------------------------------
 
@@ -53,17 +54,21 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      * oder {@code header.getSchedule()} keiner ungültigen Auftragsterminierung
      * entspricht.
      */
-    public IllegalScheduleMessage(final long position, final Header header) {
+    public IllegalScheduleMessage(final long position, final Header header)
+    {
         super();
 
-        if(header == null) {
+        if(header == null)
+        {
             throw new NullPointerException("header");
         }
-        if(position < 0L) {
+        if(position < 0L)
+        {
             throw new IllegalArgumentException(Long.toString(position));
         }
         if(Header.Schedule.checkSchedule(header.getSchedule().getCreateDate(),
-            header.getSchedule().getExecutionDate())) {
+            header.getSchedule().getExecutionDate()))
+        {
 
             throw new IllegalArgumentException(
                 Long.toString(header.getSchedule().getCreateDate().getTime()));
@@ -87,9 +92,11 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      * @throws NullPointerException {@code if(messages == null)}
      */
     public static IllegalScheduleMessage[] getMessages(
-        final Message[] messages) {
+        final Message[] messages)
+    {
 
-        if(messages == null) {
+        if(messages == null)
+        {
             throw new NullPointerException("messages");
         }
 
@@ -97,8 +104,10 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
 
-        for(int i = numMessages - 1; i >= 0; i--) {
-            if(messages[i].getClass() == IllegalScheduleMessage.class) {
+        for(int i = numMessages - 1; i >= 0; i--)
+        {
+            if(messages[i].getClass() == IllegalScheduleMessage.class)
+            {
                 ret.add(messages[i]);
             }
         }
@@ -128,7 +137,8 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      *
      * @return absolute Position der logischen Datei.
      */
-    public long getPosition() {
+    public long getPosition()
+    {
         return this.position;
     }
 
@@ -138,7 +148,8 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      * @return A-Datensatz der logischen Datei mit ungültiger
      * Auftrags-Terminierung.
      */
-    public Header getHeader() {
+    public Header getHeader()
+    {
         return this.header;
     }
 
@@ -153,7 +164,8 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      * Index 1: Datei-Erstellungsdatum<br/>
      * Index 2: Auftrags-Ausführungsdatum</p>
      */
-    public Object[] getFormatArguments(final Locale locale) {
+    public Object[] getFormatArguments(final Locale locale)
+    {
         return new Object[] {
             new Long(this.getPosition()),
             this.getHeader().getSchedule().getCreateDate(),
@@ -168,7 +180,8 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage {
      *
      * @return {@code "Das Ausführungsdatum "{2, date, medium}" liegt vor dem Dateierstellungsdatum "{1, date, medium}" oder mehr als 15 Kalendertage dahinter."}
      */
-    public String getText(final Locale locale) {
+    public String getText(final Locale locale)
+    {
         return IllegalScheduleMessageBundle.getIllegalScheduleMessage(locale).
             format(this.getFormatArguments(locale));
 

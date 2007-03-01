@@ -34,7 +34,8 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public final class ChecksumErrorMessage extends AbstractErrorMessage {
+public final class ChecksumErrorMessage extends AbstractErrorMessage
+{
 
     //--Konstruktoren-----------------------------------------------------------
 
@@ -52,18 +53,23 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      * {@code computedChecksum} gleich sind oder {@code position} negativ ist.
      */
     public ChecksumErrorMessage(final Checksum storedChecksum,
-        final Checksum computedChecksum, final long position) {
+        final Checksum computedChecksum, final long position)
+    {
 
-        if(storedChecksum == null) {
+        if(storedChecksum == null)
+        {
             throw new NullPointerException("storedChecksum");
         }
-        if(computedChecksum == null) {
+        if(computedChecksum == null)
+        {
             throw new NullPointerException("computedChecksum");
         }
-        if(storedChecksum.equals(computedChecksum)) {
+        if(storedChecksum.equals(computedChecksum))
+        {
             throw new IllegalArgumentException(computedChecksum.toString());
         }
-        if(position < 0L) {
+        if(position < 0L)
+        {
             throw new IllegalArgumentException(Long.toString(position));
         }
 
@@ -85,9 +91,11 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      * @throws NullPointerException wenn {@code messages null} ist.
      */
     public static ChecksumErrorMessage[] getMessages(
-        final Message[] messages) {
+        final Message[] messages)
+    {
 
-        if(messages == null) {
+        if(messages == null)
+        {
             throw new NullPointerException("messages");
         }
 
@@ -95,8 +103,10 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
         final Collection ret = numMessages == 0 ?
             Collections.EMPTY_LIST : new LinkedList();
 
-        for(int i = numMessages - 1; i >= 0; i--) {
-            if(messages[i].getClass() == ChecksumErrorMessage.class) {
+        for(int i = numMessages - 1; i >= 0; i--)
+        {
+            if(messages[i].getClass() == ChecksumErrorMessage.class)
+            {
                 ret.add(messages[i]);
             }
         }
@@ -132,7 +142,8 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      *
      * @return absolute Position der logischen Datei.
      */
-    public long getPosition() {
+    public long getPosition()
+    {
         return this.position;
     }
 
@@ -141,7 +152,8 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      *
      * @return gespeicherte Prüfsumme.
      */
-    public Checksum getStoredChecksum() {
+    public Checksum getStoredChecksum()
+    {
         return this.storedChecksum;
     }
 
@@ -150,7 +162,8 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      *
      * @return berrechnete Prüfsumme.
      */
-    public Checksum getComputedChecksum() {
+    public Checksum getComputedChecksum()
+    {
         return this.computedChecksum;
     }
 
@@ -163,7 +176,8 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      * @return Argumente zur Formatierung des Meldungs-Textes. <p>Index 0:
      * absolute Position der logischen Datei</p>
      */
-    public Object[] getFormatArguments(final Locale locale) {
+    public Object[] getFormatArguments(final Locale locale)
+    {
         return new Object[] { new Long(this.getPosition()) };
     }
 
@@ -174,7 +188,8 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage {
      *
      * @return {@code "Die Prüfsumme der an Position {0, number} beginnenden Datei ist ungültig."}
      */
-    public String getText(final Locale locale) {
+    public String getText(final Locale locale)
+    {
         return ChecksumErrorMessageBundle.getChecksumErrorMessage(locale).
             format(this.getFormatArguments(locale));
 

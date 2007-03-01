@@ -48,7 +48,8 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class DefaultPhysicalFile implements PhysicalFile {
+public class DefaultPhysicalFile implements PhysicalFile
+{
 
     //--Attribute---------------------------------------------------------------
 
@@ -99,26 +100,32 @@ public class DefaultPhysicalFile implements PhysicalFile {
      * @throws IOException wenn nicht gelesen werden kann.
      */
     protected DefaultPhysicalFile(
-        final StructuredFileOperations structuredFile) throws IOException {
+        final StructuredFileOperations structuredFile) throws IOException
+    {
 
         this(ModelFactory.getModel().getModules().
             getImplementation(DefaultPhysicalFile.class.getName()));
 
-        if(structuredFile == null) {
+        if(structuredFile == null)
+        {
             throw new NullPointerException("structuredFile");
         }
 
         this.structuredFile = structuredFile;
         this.structuredFile.addStructuredFileListener(
-            new StructuredFileListener() {
+            new StructuredFileListener()
+        {
 
-            public void blocksInserted(long l, long l0) throws IOException {
+            public void blocksInserted(long l, long l0) throws IOException
+            {
                 final int fileIndex;
 
-                if((fileIndex = this.getFileIndex(l)) >= 0) {
+                if((fileIndex = this.getFileIndex(l)) >= 0)
+                {
                     // Increment properties headerBlock and checksumBlock for
                     // all remaining files.
-                    for(int i = fileIndex + 1; i < dtausCount; i++) {
+                    for(int i = fileIndex + 1; i < dtausCount; i++)
+                    {
                         index[i].setHeaderBlock(index[i].getHeaderBlock() + l0);
                         index[i].setChecksumBlock(
                             index[i].getChecksumBlock() + l0);
@@ -127,13 +134,16 @@ public class DefaultPhysicalFile implements PhysicalFile {
                 }
             }
 
-            public void blocksDeleted(long l, long l0) throws IOException {
+            public void blocksDeleted(long l, long l0) throws IOException
+            {
                 final int fileIndex;
 
-                if((fileIndex = this.getFileIndex(l)) >= 0) {
+                if((fileIndex = this.getFileIndex(l)) >= 0)
+                {
                     // Decrement properties headerBlock and checksumBlock for
                     // all remaining files.
-                    for(int i = fileIndex + 1; i < dtausCount; i++) {
+                    for(int i = fileIndex + 1; i < dtausCount; i++)
+                    {
                         index[i].setHeaderBlock(index[i].getHeaderBlock() - l0);
                         index[i].setChecksumBlock(
                             index[i].getChecksumBlock() - l0);
@@ -142,11 +152,14 @@ public class DefaultPhysicalFile implements PhysicalFile {
                 }
             }
 
-            private int getFileIndex(final long block) {
+            private int getFileIndex(final long block)
+            {
                 int i;
-                for(i = dtausCount - 1; i >= 0; i--) {
+                for(i = dtausCount - 1; i >= 0; i--)
+                {
                     if(block >= index[i].getHeaderBlock() &&
-                        block <= index[i].getChecksumBlock()) {
+                        block <= index[i].getChecksumBlock())
+                    {
 
                         break;
                     }
@@ -196,29 +209,35 @@ public class DefaultPhysicalFile implements PhysicalFile {
     //------------------------------------------------------------Dependencies--
     //--PhysicalFile------------------------------------------------------------
 
-    public static final class ChecksumMessage extends Message {
+    public static final class ChecksumMessage extends Message
+    {
 
         private static final Object[] NO_ARGS = {};
 
-        public Object[] getFormatArguments(final Locale locale) {
+        public Object[] getFormatArguments(final Locale locale)
+        {
             return NO_ARGS;
         }
 
-        public String getText(final Locale locale) {
+        public String getText(final Locale locale)
+        {
             return DefaultPhysicalFileBundle.getChecksumTaskText(locale);
         }
     }
 
-    public static final class ChecksumTask extends Task {
+    public static final class ChecksumTask extends Task
+    {
 
         private final Message description = new ChecksumMessage();
 
-        public Message getDescription() {
+        public Message getDescription()
+        {
             return this.description;
         }
     }
 
-    protected void checksum() throws IOException {
+    protected void checksum() throws IOException
+    {
         this.dtausCount = 0;
         int dtausIndex = 0;
         final long blockCount = this.getStructuredFile().getBlockCount();
@@ -230,8 +249,10 @@ public class DefaultPhysicalFile implements PhysicalFile {
             Integer.MAX_VALUE : (int) blockCount);
 
         this.getTaskMonitor().monitor(task);
-        try {
-            for(long block = 0L; block < blockCount;) {
+        try
+        {
+            for(long block = 0L; block < blockCount;)
+            {
                 this.resizeIndex(dtausIndex);
                 this.index[dtausIndex] = this.newLogicalFile(block);
                 this.index[dtausIndex].checksum();
@@ -241,21 +262,27 @@ public class DefaultPhysicalFile implements PhysicalFile {
                     Integer.MAX_VALUE : (int) block);
 
             }
-        } finally {
+        }
+        finally
+        {
             this.getTaskMonitor().finish(task);
         }
     }
 
-    public int count() {
+    public int count()
+    {
         return this.dtausCount;
     }
 
-    protected boolean checkLogicalFileExists(int dtausId) {
+    protected boolean checkLogicalFileExists(int dtausId)
+    {
         return dtausId < this.dtausCount && dtausId >= 0;
     }
 
-    public LogicalFile add(final Header header) throws IOException {
-        if(header == null) {
+    public LogicalFile add(final Header header) throws IOException
+    {
+        if(header == null)
+        {
             throw new NullPointerException("header");
         }
         final Checksum newChecksum = new Checksum();
@@ -281,15 +308,19 @@ public class DefaultPhysicalFile implements PhysicalFile {
         return this.index[this.dtausCount++];
     }
 
-    public LogicalFile get(int dtausId) {
-        if(!this.checkLogicalFileExists(dtausId)) {
+    public LogicalFile get(int dtausId)
+    {
+        if(!this.checkLogicalFileExists(dtausId))
+        {
             throw new IllegalArgumentException("dtausId");
         }
         return this.index[dtausId];
     }
 
-    public void remove(int dtausId) throws IOException {
-        if(!this.checkLogicalFileExists(dtausId)) {
+    public void remove(int dtausId) throws IOException
+    {
+        if(!this.checkLogicalFileExists(dtausId))
+        {
             throw new IllegalArgumentException("dtausId");
         }
         this.getStructuredFile().deleteBlocks(
@@ -310,16 +341,19 @@ public class DefaultPhysicalFile implements PhysicalFile {
     private StructuredFileOperations structuredFile;
 
     /** StructuredFileOperations requirement getter method. */
-    protected StructuredFileOperations getStructuredFile() {
+    protected StructuredFileOperations getStructuredFile()
+    {
         return this.structuredFile;
     }
 
     protected AbstractLogicalFile newLogicalFile(
-        final long headerBlock) throws IOException {
+        final long headerBlock) throws IOException
+    {
 
         final AbstractLogicalFile ret;
 
-        switch(this.getStructuredFile().getBlockSize()) {
+        switch(this.getStructuredFile().getBlockSize())
+        {
             case 128:
                 ret = new DTAUSDisk(headerBlock, this.getStructuredFile());
                 break;
@@ -335,9 +369,12 @@ public class DefaultPhysicalFile implements PhysicalFile {
         return ret;
     }
 
-    protected void resizeIndex(int requested) {
-        if(this.index.length - 1 < requested) {
-            while(this.index.length - 1 <= requested) {
+    protected void resizeIndex(int requested)
+    {
+        if(this.index.length - 1 < requested)
+        {
+            while(this.index.length - 1 <= requested)
+            {
                 final int newLength = this.index.length * 2;
                 final AbstractLogicalFile[] newIndex =
                     new AbstractLogicalFile[newLength];
