@@ -64,7 +64,8 @@ import org.xml.sax.SAXParseException;
  * @version $Id$
  */
 public class XMLTextschluesselVerzeichnis implements
-    TextschluesselVerzeichnis, ContainerInitializer {
+    TextschluesselVerzeichnis, ContainerInitializer
+{
 
     //--Constants---------------------------------------------------------------
 
@@ -214,25 +215,34 @@ public class XMLTextschluesselVerzeichnis implements
      *
      * @see #parseResources()
      */
-    public void initialize() {
+    public void initialize()
+    {
         this.assertValidProperties();
 
-        try {
+        try
+        {
             final Document docs[] = this.parseResources();
             final Collection col = new LinkedList();
 
-            for(int i = docs.length - 1; i >= 0; i--) {
+            for(int i = docs.length - 1; i >= 0; i--)
+            {
                 col.addAll(Arrays.asList(this.transformDocument(docs[i])));
             }
 
             this.instances = (Textschluessel[]) col.
                 toArray(new Textschluessel[col.size()]);
 
-        } catch(IOException e) {
+        }
+        catch(IOException e)
+        {
             throw new ImplementationException(META, e);
-        } catch(ParserConfigurationException e) {
+        }
+        catch(ParserConfigurationException e)
+        {
             throw new ImplementationException(META, e);
-        } catch(SAXException e) {
+        }
+        catch(SAXException e)
+        {
             throw new ImplementationException(META, e);
         }
     }
@@ -240,23 +250,32 @@ public class XMLTextschluesselVerzeichnis implements
     //----------------------------------------------------ContainerInitializer--
     //--TextschluesselVerzeichnis-----------------------------------------------
 
-    public Textschluessel getTextschluessel(int key, int extension) {
-        if(key < 0 || key > 99) {
+    public Textschluessel getTextschluessel(int key, int extension)
+    {
+        if(key < 0 || key > 99)
+        {
             throw new IllegalArgumentException(Integer.toString(key));
         }
-        if(extension < 0 || extension > 999) {
+        if(extension < 0 || extension > 999)
+        {
             throw new IllegalArgumentException(Integer.toString(extension));
         }
 
         Textschluessel ret = null;
 
-        for(int i = this.instances.length - 1; i >= 0; i--) {
-            if(this.instances[i].getKey() == key) {
-                if(this.instances[i].isVariable()) {
+        for(int i = this.instances.length - 1; i >= 0; i--)
+        {
+            if(this.instances[i].getKey() == key)
+            {
+                if(this.instances[i].isVariable())
+                {
                     ret = (Textschluessel) this.instances[i].clone();
                     break;
-                } else {
-                    if(this.instances[i].getExtension() == extension) {
+                }
+                else
+                {
+                    if(this.instances[i].getExtension() == extension)
+                    {
                         ret = (Textschluessel) this.instances[i].clone();
                         break;
                     }
@@ -267,12 +286,15 @@ public class XMLTextschluesselVerzeichnis implements
         return ret;
     }
 
-    public Textschluessel[] search(boolean debit, boolean remittance) {
+    public Textschluessel[] search(boolean debit, boolean remittance)
+    {
         final Collection col = new ArrayList(this.instances.length);
 
-        for(int i = this.instances.length - 1; i >= 0; i--) {
+        for(int i = this.instances.length - 1; i >= 0; i--)
+        {
             if(this.instances[i].isDebit() == debit &&
-                this.instances[i].isRemittance() == remittance) {
+                this.instances[i].isRemittance() == remittance)
+            {
 
                 col.add(this.instances[i].clone());
             }
@@ -290,19 +312,25 @@ public class XMLTextschluesselVerzeichnis implements
      * @throws PropertyException if properties hold invalid values.
      * @throws ImplementationException if reading resources fails.
      */
-    protected void assertValidProperties() {
-        try {
-            if(this.getDataDirectory() == null) {
+    protected void assertValidProperties()
+    {
+        try
+        {
+            if(this.getDataDirectory() == null)
+            {
                 throw new PropertyException("dataDirectory",
                     this.getDataDirectory());
 
             }
             if(this.getResource() == null || this.getResource().length() <= 0 ||
-                this.getResources().length <= 0) {
+                this.getResources().length <= 0)
+            {
 
                 throw new PropertyException("resource", this.getResource());
             }
-        } catch(IOException e) {
+        }
+        catch(IOException e)
+        {
             throw new ImplementationException(META, e);
         }
     }
@@ -315,13 +343,15 @@ public class XMLTextschluesselVerzeichnis implements
      *
      * @throws IOException if getting the resources fails.
      */
-    protected URL[] getResources() throws IOException {
+    protected URL[] getResources() throws IOException
+    {
         final ClassLoader classLoader = this.getClassLoader();
         final Collection col = new LinkedList();
         final Enumeration en = classLoader.getResources(
             this.getDataDirectory() + '/' + this.getResource());
 
-        for(;en.hasMoreElements();) {
+        for(;en.hasMoreElements();)
+        {
             col.add(en.nextElement());
         }
 
@@ -342,7 +372,8 @@ public class XMLTextschluesselVerzeichnis implements
      * @throws SAXException if parsing fails.
      */
     protected final Document[] parseResources() throws
-        IOException, ParserConfigurationException, SAXException {
+        IOException, ParserConfigurationException, SAXException
+    {
 
         InputStream stream = null;
 
@@ -350,12 +381,17 @@ public class XMLTextschluesselVerzeichnis implements
         final DocumentBuilder parser = this.getDocumentBuilder();
         final Document[] ret = new Document[resources.length];
 
-        for(int i = resources.length - 1; i >= 0; i--) {
-            try {
+        for(int i = resources.length - 1; i >= 0; i--)
+        {
+            try
+            {
                 stream = resources[i].openStream();
                 ret[i] = parser.parse(stream);
-            } finally {
-                if(stream != null) {
+            }
+            finally
+            {
+                if(stream != null)
+                {
                     stream.close();
                     stream = null;
                 }
@@ -372,7 +408,8 @@ public class XMLTextschluesselVerzeichnis implements
      *
      * @return an array of Textschluessel instances from the given document.
      */
-    protected Textschluessel[] transformDocument(final Document doc) {
+    protected Textschluessel[] transformDocument(final Document doc)
+    {
         Element e;
         String str;
         NodeList l;
@@ -385,7 +422,8 @@ public class XMLTextschluesselVerzeichnis implements
         l = ((Element) l.item(0)).getElementsByTagNameNS(
             XMLTextschluesselVerzeichnis.MODEL_NS, "transactionType");
 
-        for(int i = l.getLength() - 1; i >= 0; i--) {
+        for(int i = l.getLength() - 1; i >= 0; i--)
+        {
             e = (Element) l.item(i);
             key = new Textschluessel();
             str = e.getAttributeNS(
@@ -405,10 +443,13 @@ public class XMLTextschluesselVerzeichnis implements
                 XMLTextschluesselVerzeichnis.MODEL_NS,
                 "extension");
 
-            if("VARIABLE".equals(str)) {
+            if("VARIABLE".equals(str))
+            {
                 key.setVariable(true);
                 key.setExtension(0);
-            } else {
+            }
+            else
+            {
                 key.setExtension(Integer.valueOf(str).intValue());
             }
 
@@ -440,14 +481,16 @@ public class XMLTextschluesselVerzeichnis implements
      * is available.
      */
     protected DocumentBuilder getDocumentBuilder() throws IOException,
-        ParserConfigurationException {
+        ParserConfigurationException
+    {
 
         final DocumentBuilder xmlBuilder;
         final DocumentBuilderFactory xmlFactory =
             DocumentBuilderFactory.newInstance();
 
         xmlFactory.setNamespaceAware(true);
-        try {
+        try
+        {
             xmlFactory.setValidating(true);
             xmlFactory.setAttribute(
                 XMLTextschluesselVerzeichnis.SCHEMA_LANGUAGE_KEY,
@@ -460,7 +503,9 @@ public class XMLTextschluesselVerzeichnis implements
                 XMLTextschluesselVerzeichnis.SCHEMA_SOURCE_KEY,
                 schema.openStream());
 
-        } catch(IllegalArgumentException e) {
+        }
+        catch(IllegalArgumentException e)
+        {
             this.getLogger().error(e);
             this.getLogger().warn(XMLTextschluesselVerzeichnisBundle.
                 getNoJAXPValidationWarningMessage(Locale.getDefault()).
@@ -470,15 +515,19 @@ public class XMLTextschluesselVerzeichnis implements
         }
 
         xmlBuilder = xmlFactory.newDocumentBuilder();
-        xmlBuilder.setErrorHandler(new ErrorHandler() {
-            public void warning(final SAXParseException e) {
+        xmlBuilder.setErrorHandler(new ErrorHandler()
+        {
+            public void warning(final SAXParseException e)
+            {
                 getLogger().warn(e);
             }
-            public void fatalError(final SAXParseException e) {
+            public void fatalError(final SAXParseException e)
+            {
                 getLogger().fatal(e);
                 throw new ImplementationException(META, e);
             }
-            public void error(final SAXParseException e) {
+            public void error(final SAXParseException e)
+            {
                 getLogger().error(e);
             }
         });
@@ -486,12 +535,15 @@ public class XMLTextschluesselVerzeichnis implements
         return xmlBuilder;
     }
 
-    private ClassLoader getClassLoader() {
+    private ClassLoader getClassLoader()
+    {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if(classLoader == null) {
+        if(classLoader == null)
+        {
             classLoader = ClassLoader.getSystemClassLoader();
         }
-        if(classLoader == null) {
+        if(classLoader == null)
+        {
             throw new ImplementationException(META,
                 new NullPointerException("classLoader"));
 
