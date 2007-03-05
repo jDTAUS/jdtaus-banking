@@ -413,7 +413,7 @@ public class XMLTextschluesselVerzeichnis implements
         Element e;
         String str;
         NodeList l;
-        Textschluessel key;
+        RITextschluessel key;
         final Collection col = new ArrayList(500);
 
         l = doc.getDocumentElement().getElementsByTagNameNS(
@@ -425,7 +425,7 @@ public class XMLTextschluesselVerzeichnis implements
         for(int i = l.getLength() - 1; i >= 0; i--)
         {
             e = (Element) l.item(i);
-            key = new Textschluessel();
+            key = new RITextschluessel();
             str = e.getAttributeNS(
                 XMLTextschluesselVerzeichnis.MODEL_NS,
                 "type");
@@ -453,10 +453,31 @@ public class XMLTextschluesselVerzeichnis implements
                 key.setExtension(Integer.valueOf(str).intValue());
             }
 
+            this.transformTextschluessel(key, e);
             col.add(key);
         }
 
         return (Textschluessel[]) col.toArray(new Textschluessel[col.size()]);
+    }
+
+    private void transformTextschluessel(final RITextschluessel key,
+        final Element xmlKey)
+    {
+        String lang;
+        String txt;
+        Element e;
+        final NodeList l = xmlKey.getElementsByTagNameNS(
+            XMLTextschluesselVerzeichnis.MODEL_NS, "description");
+
+        for(int i = l.getLength() - 1; i >= 0; i--)
+        {
+            e = (Element) l.item(i);
+            lang = e.getAttributeNS(XMLTextschluesselVerzeichnis.MODEL_NS,
+                "language");
+
+            txt = e.getFirstChild().getNodeValue();
+            key.updateShortDescription(new Locale(lang), txt);
+        }
     }
 
     /**
