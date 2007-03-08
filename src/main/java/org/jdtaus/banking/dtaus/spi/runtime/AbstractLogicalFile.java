@@ -1081,7 +1081,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         }
 
 
-        this.persistence.writeBlock(block, off, this.buffer, 0, 8);
+        this.persistence.writeBlock(block, off, buf, 0, 8);
     }
 
     //-------------------------------------------------void writeLongDate(...)--
