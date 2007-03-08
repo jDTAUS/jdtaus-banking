@@ -1056,19 +1056,19 @@ public abstract class AbstractLogicalFile implements LogicalFile
             i = this.calendar.get(Calendar.DAY_OF_MONTH);
             if(i < 10)
             {
-                this.shortDateBuffer.append('0');
+                this.longDateBuffer.append('0');
             }
-            this.shortDateBuffer.append(i);
+            this.longDateBuffer.append(i);
             // Monat
             i = this.calendar.get(Calendar.MONTH) + 1;
             if(i < 10)
             {
-                this.shortDateBuffer.append('0');
+                this.longDateBuffer.append('0');
             }
-            this.shortDateBuffer.append(i);
+            this.longDateBuffer.append(i);
             // Jahr
             i = this.calendar.get(Calendar.YEAR);
-            this.shortDateBuffer.append(i);
+            this.longDateBuffer.append(i);
             buf = this.longDateBuffer.toString().getBytes(
                 AbstractLogicalFile.ENCODING_NAMES[encoding]);
 
