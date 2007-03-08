@@ -1,9 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-alpha-1-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
@@ -94,7 +96,7 @@
     <dependency>
       <groupId>org.jdtaus.spi</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -151,10 +153,18 @@
           <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
           <links>
             <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-            <link>http://www.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-api/apidocs</link>
-            <link>http://www.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-spi/apidocs</link>
+            <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-api/apidocs</link>
+            <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-spi/apidocs</link>
+            <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-api/apidocs</link>
+            <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-spi/apidocs</link>
           </links>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jxr-plugin</artifactId>
       </plugin>
       <plugin>
         <artifactId>maven-pmd-plugin</artifactId>
@@ -163,8 +173,7 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>surefire-report-maven-plugin</artifactId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
       </plugin>
       <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
