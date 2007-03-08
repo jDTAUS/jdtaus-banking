@@ -28,7 +28,7 @@
   <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml"
       xmlns:jdtaus="http://jdtaus.org/banking/xml"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://jdtaus.org/banking/xml http://www.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-ri-textschluesselverzeichnis/jdtaus-textschluessel.xsd"
+      xsi:schemaLocation="http://jdtaus.org/banking/xml http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-ri-textschluesselverzeichnis/jdtaus-textschluessel.xsd"
       jdtaus:version="1.0">
 
   </jdtaus:textschluessel>
