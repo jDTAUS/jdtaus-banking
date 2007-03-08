@@ -21,6 +21,7 @@ package org.jdtaus.banking.dtaus.spi.runtime;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -799,7 +800,14 @@ public class DTAUSTape extends AbstractLogicalFile
 
         if(str != null)
         {
-            ret.setCustomer(AlphaNumericText27.parse(str));
+            try
+            {
+                ret.setCustomer(AlphaNumericText27.parse(str));
+            }
+            catch(ParseException e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
         // Feld 7
@@ -1507,7 +1515,14 @@ public class DTAUSTape extends AbstractLogicalFile
 
         if(str != null)
         {
-            transaction.setTargetName(AlphaNumericText27.parse(str));
+            try
+            {
+                transaction.setTargetName(AlphaNumericText27.parse(str));
+            }
+            catch(ParseException e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 15
@@ -1517,7 +1532,14 @@ public class DTAUSTape extends AbstractLogicalFile
 
         if(str != null)
         {
-            transaction.setExecutiveName(AlphaNumericText27.parse(str));
+            try
+            {
+                transaction.setExecutiveName(AlphaNumericText27.parse(str));
+            }
+            catch(ParseException e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 16
@@ -1527,7 +1549,14 @@ public class DTAUSTape extends AbstractLogicalFile
 
         if(str != null)
         {
-            desc.addDescription(AlphaNumericText27.parse(str));
+            try
+            {
+                desc.addDescription(AlphaNumericText27.parse(str));
+            }
+            catch(ParseException e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 17a
@@ -1637,14 +1666,28 @@ public class DTAUSTape extends AbstractLogicalFile
                 }
                 else if (str != null)
                 {
-                    transaction.setTargetExt(AlphaNumericText27.parse(str));
+                    try
+                    {
+                        transaction.setTargetExt(AlphaNumericText27.parse(str));
+                    }
+                    catch(ParseException e)
+                    {
+                        throw new IllegalStateException(e);
+                    }
                 }
             }
             else if(Num.longValue() == 2L)
             {
                 if(str != null)
                 {
-                    desc.addDescription(AlphaNumericText27.parse(str));
+                    try
+                    {
+                        desc.addDescription(AlphaNumericText27.parse(str));
+                    }
+                    catch(ParseException e)
+                    {
+                        throw new IllegalStateException(e);
+                    }
                 }
             }
             else if(Num.longValue() == 3L)
@@ -1669,7 +1712,16 @@ public class DTAUSTape extends AbstractLogicalFile
                 }
                 else
                 {
-                    transaction.setExecutiveExt(AlphaNumericText27.parse(str));
+                    try
+                    {
+                        transaction.setExecutiveExt(
+                            AlphaNumericText27.parse(str));
+
+                    }
+                    catch(ParseException e)
+                    {
+                        throw new IllegalStateException(e);
+                    }
                 }
             }
             else

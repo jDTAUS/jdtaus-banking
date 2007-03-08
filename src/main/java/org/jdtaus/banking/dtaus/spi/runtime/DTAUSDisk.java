@@ -21,6 +21,7 @@ package org.jdtaus.banking.dtaus.spi.runtime;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Currency;
 import java.util.Date;
 import org.jdtaus.banking.AlphaNumericText27;
@@ -777,7 +778,14 @@ public class DTAUSDisk extends AbstractLogicalFile
 
         if(str != null)
         {
-            ret.setCustomer(AlphaNumericText27.parse(str));
+            try
+            {
+                ret.setCustomer(AlphaNumericText27.parse(str));
+            }
+            catch(ParseException e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
         // Feld 7
@@ -1458,7 +1466,14 @@ public class DTAUSDisk extends AbstractLogicalFile
 
         if(str != null)
         {
-            transaction.setTargetName(AlphaNumericText27.parse(str));
+            try
+            {
+                transaction.setTargetName(AlphaNumericText27.parse(str));
+            }
+            catch(ParseException e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
         // Konstanter Teil - Satzaschnitt 2 - Feld 15(1)
@@ -1468,7 +1483,14 @@ public class DTAUSDisk extends AbstractLogicalFile
 
         if(str != null)
         {
-            transaction.setExecutiveName(AlphaNumericText27.parse(str));
+            try
+            {
+                transaction.setExecutiveName(AlphaNumericText27.parse(str));
+            }
+            catch(ParseException e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
         // Konstanter Teil - Satzaschnitt 2 - Feld 16(2)
@@ -1478,7 +1500,14 @@ public class DTAUSDisk extends AbstractLogicalFile
 
         if(str != null)
         {
-            desc.addDescription(AlphaNumericText27.parse(str));
+            try
+            {
+                desc.addDescription(AlphaNumericText27.parse(str));
+            }
+            catch(ParseException e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
         // Konstanter Teil - Satzaschnitt 2 - Feld 17a(3)
@@ -1591,14 +1620,30 @@ public class DTAUSDisk extends AbstractLogicalFile
                 }
                 else if(str != null)
                 {
-                    transaction.setTargetExt(AlphaNumericText27.parse(str));
+                    try
+                    {
+                        transaction.setTargetExt(
+                            AlphaNumericText27.parse(str));
+
+                    }
+                    catch(ParseException e)
+                    {
+                        throw new IllegalStateException(e);
+                    }
                 }
             }
             else if(num.longValue() == 2L)
             {
                 if(str != null)
                 {
-                    desc.addDescription(AlphaNumericText27.parse(str));
+                    try
+                    {
+                        desc.addDescription(AlphaNumericText27.parse(str));
+                    }
+                    catch(ParseException e)
+                    {
+                        throw new IllegalStateException(e);
+                    }
                 }
             }
             else if(num.longValue() == 3L)
@@ -1624,7 +1669,16 @@ public class DTAUSDisk extends AbstractLogicalFile
                 }
                 else if(str != null)
                 {
-                    transaction.setExecutiveExt(AlphaNumericText27.parse(str));
+                    try
+                    {
+                        transaction.setExecutiveExt(
+                            AlphaNumericText27.parse(str));
+
+                    }
+                    catch(ParseException e)
+                    {
+                        throw new IllegalStateException(e);
+                    }
                 }
             }
             else
@@ -1929,8 +1983,8 @@ public class DTAUSDisk extends AbstractLogicalFile
         return DTAUSDisk.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
 
-    //-----------------------------------------------------AbstractLogicalFile--
-    //--DTAUSDisk---------------------------------------------------------------
+//-----------------------------------------------------AbstractLogicalFile--
+//--DTAUSDisk---------------------------------------------------------------
 
     private void initializeExtensionBlock(final int blockIndex,
         final long block) throws IOException
@@ -2045,6 +2099,6 @@ public class DTAUSDisk extends AbstractLogicalFile
         return DTAUSDisk.META;
     }
 
-    //---------------------------------------------------------------DTAUSDisk--
+//---------------------------------------------------------------DTAUSDisk--
 
 }
