@@ -113,24 +113,7 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags</tagBase>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sign</id>
-            <phase>package</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-            <configuration>
-              <storepass>${storepass}</storepass>
-              <keypass>${keypass}</keypass>
-              <alias>Christian Schulte</alias>
-              <signedjar>${project.build.directory}/signed/${project.build.finalName}.jar</signedjar>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+
       <plugin>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -140,9 +123,13 @@
             <goals>
               <goal>sign</goal>
             </goals>
+            <configuration>
+              <passphrase>${gpg.passphrase}</passphrase>
+            </configuration>
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
   <modules>
