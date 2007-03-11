@@ -40,6 +40,41 @@
       </plugin>
       
       <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign</id>
+            <phase>package</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <configuration>
+              <storepass>${jarsign.storepass}</storepass>
+              <keypass>${jarsign.keypass}</keypass>
+              <alias>Christian Schulte</alias>
+              <signedjar>${project.build.directory}/signed/${project.build.finalName}.jar</signedjar>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <configuration>
+              <passphrase>${gpg.passphrase}</passphrase>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
         <version>RELEASE</version>
