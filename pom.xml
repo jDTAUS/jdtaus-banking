@@ -5,7 +5,7 @@
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.0-alpha-2-SNAPSHOT</version>
+  <version>1.0-alpha-2</version>
   <description><![CDATA[
   jDTAUS Banking provides a library for electronic banking facilities. This is
   the parent module for the library artifacts.]]>
@@ -68,9 +68,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-alpha-2</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-alpha-2</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-alpha-2</url>
   </scm>
   <organization>
     <name>jDTAUS</name>
