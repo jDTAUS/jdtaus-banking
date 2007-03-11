@@ -45,6 +45,7 @@ import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
 import org.jdtaus.core.container.Implementation;
+import org.jdtaus.core.nio.spi.Charsets;
 import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.spi.ApplicationLogger;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
@@ -122,11 +123,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * Wert = Ziffer.
      */
     protected static final byte[] EBCDI_TO_DIGITS = new byte[0xFA];
-
-    /** Zeichensatz-Namen. */
-    protected static final String[] ENCODING_NAMES = {
-        null, "DIN_66003", "IBM273"
-    };
 
     /** Konstante 10^7. */
     protected static final double EXP10_7 = Math.pow(10, 7);
@@ -352,6 +348,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final byte[] table;
         final byte[] revTable;
         final MessageFormat fmt;
+        final Integer cset;
         String logViolation = null; // Wenn != null wird der Verstoß geloggt.
 
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
@@ -359,12 +356,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
             table = AbstractLogicalFile.DIGITS_TO_ASCII;
             revTable = AbstractLogicalFile.ASCII_TO_DIGITS;
             space = (byte) 32;
+            cset = Charsets.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
             table = AbstractLogicalFile.DIGITS_TO_EBCDI;
             revTable = AbstractLogicalFile.EBCDI_TO_DIGITS;
             space = (byte) 0x40;
+            cset = Charsets.IBM273;
         }
         else
         {
@@ -378,9 +377,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             {
                 if(logViolation == null)
                 {
-                    logViolation = new String(this.buffer, 0, len,
-                        AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
+                    logViolation = Charsets.decode(this.buffer, 0, len, cset);
                 }
                 this.buffer[read] = table[0];
             }
@@ -392,8 +389,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 msg = new IllegalDataMessage(field,
                     IllegalDataMessage.TYPE_NUMERIC,
                     block * this.persistence.getBlockSize() + off,
-                    new String(this.buffer, 0, len,
-                    AbstractLogicalFile.ENCODING_NAMES[encoding]));
+                    Charsets.decode(this.buffer, 0, len, cset));
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
@@ -541,19 +537,23 @@ public abstract class AbstractLogicalFile implements LogicalFile
         String str;
         final Message msg;
         final char[] c;
+        final Integer cset;
 
-        if(encoding != AbstractLogicalFile.ENCODING_ASCII &&
-            encoding != AbstractLogicalFile.ENCODING_EBCDI)
+        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-
+            cset = Charsets.DIN66003;
+        }
+        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        {
+            cset = Charsets.IBM273;
+        }
+        else
+        {
             throw new IllegalArgumentException(Integer.toString(encoding));
         }
 
-
         this.persistence.readBlock(block, off, this.buffer, 0, len);
-        str = new String(this.buffer, 0, len,
-            AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
+        str = Charsets.decode(this.buffer, 0, len, cset);
         c = str.toCharArray();
         for(int i = c.length - 1; i >= 0; i--)
         {
@@ -615,6 +615,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final char[] c;
         final byte[] buf;
         final byte space;
+        final Integer cset;
 
         if(str == null)
         {
@@ -628,10 +629,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
             space = (byte) 32;
+            cset = Charsets.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
             space = (byte) 0x40;
+            cset = Charsets.IBM273;
         }
         else
         {
@@ -647,7 +650,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
         }
 
-        buf = str.getBytes(AbstractLogicalFile.ENCODING_NAMES[encoding]);
+        buf = Charsets.encode(str, cset);
         if(length < len)
         {
             delta = len - length;
@@ -702,25 +705,30 @@ public abstract class AbstractLogicalFile implements LogicalFile
     {
 
         final int len;
+        final Integer cset;
 
         Date ret = null;
         String str = null;
         boolean legal = false;
         Message msg;
 
-        if(encoding != AbstractLogicalFile.ENCODING_ASCII &&
-            encoding != AbstractLogicalFile.ENCODING_EBCDI)
+        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-
+            cset = Charsets.DIN66003;
+        }
+        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        {
+            cset = Charsets.IBM273;
+        }
+        else
+        {
             throw new IllegalArgumentException(Integer.toString(encoding));
         }
 
         try
         {
             this.persistence.readBlock(block, off, this.buffer, 0, 6);
-            str = new String(this.buffer, 0, 6,
-                AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
+            str = Charsets.decode(this.buffer, 0, 6, cset);
             len = str.trim().length();
             if(len == 6)
             {
@@ -823,11 +831,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         int i;
         final byte[] buf;
+        final Integer cset;
 
-        if(encoding != AbstractLogicalFile.ENCODING_ASCII &&
-            encoding != AbstractLogicalFile.ENCODING_EBCDI)
+        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-
+            cset = Charsets.DIN66003;
+        }
+        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        {
+            cset = Charsets.IBM273;
+        }
+        else
+        {
             throw new IllegalArgumentException(Integer.toString(encoding));
         }
 
@@ -863,15 +878,11 @@ public abstract class AbstractLogicalFile implements LogicalFile
             this.shortDateBuffer.append(i >= 1980 && i < 2000 ?
                 i - 1900 : i - 2000);
 
-            buf = this.shortDateBuffer.toString().getBytes(
-                AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
+            buf = Charsets.encode(this.shortDateBuffer.toString(), cset);
         }
         else
         {
-            buf = "      ".getBytes(
-                AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
+            buf = Charsets.encode("      ", cset);
         }
 
         this.persistence.writeBlock(block, off, buf, 0, 6);
@@ -910,27 +921,31 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int off, final int encoding) throws PhysicalFileError,
         IOException
     {
-
         final int len;
+        final Integer cset;
 
         boolean legal = false;
         Date ret = null;
         String str = null;
         Message msg;
 
-        if(encoding != AbstractLogicalFile.ENCODING_ASCII &&
-            encoding != AbstractLogicalFile.ENCODING_EBCDI)
+        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-
+            cset = Charsets.DIN66003;
+        }
+        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        {
+            cset = Charsets.IBM273;
+        }
+        else
+        {
             throw new IllegalArgumentException(Integer.toString(encoding));
         }
 
         try
         {
             this.persistence.readBlock(block, off, this.buffer, 0, 8);
-            str = new String(this.buffer, 0, 8,
-                AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
+            str = Charsets.decode(this.buffer, 0, 8, cset);
             len = str.trim().length();
             if(len == 8)
             {
@@ -1032,11 +1047,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         int i;
         final byte[] buf;
+        final Integer cset;
 
-        if(encoding != AbstractLogicalFile.ENCODING_ASCII
-            && encoding != AbstractLogicalFile.ENCODING_EBCDI)
+        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-
+            cset = Charsets.DIN66003;
+        }
+        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        {
+            cset = Charsets.IBM273;
+        }
+        else
+        {
             throw new IllegalArgumentException(Integer.toString(encoding));
         }
 
@@ -1069,17 +1091,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
             // Jahr
             i = this.calendar.get(Calendar.YEAR);
             this.longDateBuffer.append(i);
-            buf = this.longDateBuffer.toString().getBytes(
-                AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
+            buf = Charsets.encode(this.longDateBuffer.toString(), cset);
         }
         else
         {
-            buf = "        ".getBytes(
-                AbstractLogicalFile.ENCODING_NAMES[encoding]);
-
+            buf = Charsets.encode("        ", cset);
         }
-
 
         this.persistence.writeBlock(block, off, buf, 0, 8);
     }
