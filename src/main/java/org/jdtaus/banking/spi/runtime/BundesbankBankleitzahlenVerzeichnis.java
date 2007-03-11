@@ -406,7 +406,8 @@ public class BundesbankBankleitzahlenVerzeichnis
         }
         catch(PatternSyntaxException e)
         {
-            throw new IllegalArgumentException(e.getMessage(), e);
+            // TODO JDK 1.5: throw new IllegalArgumentException(e.getMessage(), e);
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -537,7 +538,7 @@ public class BundesbankBankleitzahlenVerzeichnis
                             BundesbankBankleitzahlenVerzeichnisBundle.
                             getAddRecordInfoMessage(Locale.getDefault()).
                             format(new Object[] {
-                            Character.valueOf(newVersion.getChangeLabel()),
+                            new Character(newVersion.getChangeLabel()),
                             newVersion.getSerialNumber() }));
 
                     }
@@ -565,7 +566,7 @@ public class BundesbankBankleitzahlenVerzeichnis
                             BundesbankBankleitzahlenVerzeichnisBundle.
                             getModifyRecordInfoMessage(Locale.getDefault()).
                             format(new Object[] {
-                            Character.valueOf(newVersion.getChangeLabel()),
+                            new Character(newVersion.getChangeLabel()),
                             newVersion.getSerialNumber() }));
 
                     }
@@ -617,7 +618,7 @@ public class BundesbankBankleitzahlenVerzeichnis
                                 BundesbankBankleitzahlenVerzeichnisBundle.
                                 getRemoveRecordInfoMessage(Locale.getDefault()).
                                 format(new Object[] {
-                                Character.valueOf(oldVersion.getChangeLabel()),
+                                new Character(oldVersion.getChangeLabel()),
                                 oldVersion.getSerialNumber() }));
 
                         }
