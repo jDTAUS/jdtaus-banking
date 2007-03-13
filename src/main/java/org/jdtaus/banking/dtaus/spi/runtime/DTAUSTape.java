@@ -33,13 +33,12 @@ import org.jdtaus.banking.Referenznummer;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
-import org.jdtaus.banking.dtaus.Fields;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFileType;
-import org.jdtaus.banking.dtaus.PhysicalFileError;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
 import org.jdtaus.banking.dtaus.spi.CurrencyDirectory;
+import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.CurrencyViolationMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
@@ -49,7 +48,7 @@ import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.MissingDependencyException;
+import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
@@ -524,10 +523,9 @@ public class DTAUSTape extends AbstractLogicalFile
     //--AbstractLogicalFile-----------------------------------------------------
 
     protected int checksumTransaction(final long block,
-        final Transaction transaction, final Checksum checksum) throws
-        PhysicalFileError, IOException
+        final Transaction transaction, final Checksum checksum)
+        throws IOException
     {
-
         int ret = 1;
         // Konstanter Teil - 1. Satzabschnitt - Feld 18
         final long extCount = this.readNumberPackedPositive(
@@ -564,10 +562,8 @@ public class DTAUSTape extends AbstractLogicalFile
         return ret;
     }
 
-    protected char getBlockType(final long block) throws
-        PhysicalFileError, IOException
+    protected char getBlockType(final long block) throws IOException
     {
-
         // Feld 2
         final String str = this.readAlphaNumeric(Fields.FIELD_A2, block,
             DTAUSTape.ARECORD_OFFSETS[2], DTAUSTape.ARECORD_LENGTH[2],
@@ -585,7 +581,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -628,10 +626,8 @@ public class DTAUSTape extends AbstractLogicalFile
         return DTAUSTape.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
 
-    protected int blockCount(final long block) throws
-        PhysicalFileError, IOException
+    protected int blockCount(final long block) throws IOException
     {
-
         int extCount = (int) this.readNumberPackedPositive(
             Fields.FIELD_C18, block, DTAUSTape.CRECORD_OFFSETS1[21],
             DTAUSTape.CRECORD_LENGTH1[21], true);
@@ -644,10 +640,8 @@ public class DTAUSTape extends AbstractLogicalFile
         return DTAUSTape.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
 
-    public Header readHeader(final long headerBlock) throws
-        PhysicalFileError, IOException
+    public Header readHeader(final long headerBlock) throws IOException
     {
-
         long num;
         Long Num;
         int cal;
@@ -677,7 +671,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -699,7 +695,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -724,7 +722,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -751,7 +751,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -780,7 +782,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -835,7 +839,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -862,7 +868,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -888,7 +896,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -918,7 +928,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -950,7 +962,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -970,7 +984,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1097,10 +1113,8 @@ public class DTAUSTape extends AbstractLogicalFile
 
     }
 
-    public Checksum readChecksum(final long checksumBlock) throws
-        PhysicalFileError, IOException
+    public Checksum readChecksum(final long checksumBlock) throws IOException
     {
-
         long num;
         final String str;
         final Checksum checksum;
@@ -1121,7 +1135,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1143,7 +1159,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1238,9 +1256,8 @@ public class DTAUSTape extends AbstractLogicalFile
     }
 
     public Transaction readTransaction(final long block,
-        final Transaction transaction) throws PhysicalFileError, IOException
+        final Transaction transaction) throws IOException
     {
-
         long num;
         Long Num;
         String str;
@@ -1275,7 +1292,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1297,7 +1316,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1320,7 +1341,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -1346,7 +1369,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1371,7 +1396,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1396,7 +1423,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1438,7 +1467,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1464,7 +1495,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1490,7 +1523,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1577,7 +1612,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1609,7 +1646,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1661,7 +1700,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1709,7 +1750,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1742,7 +1785,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {

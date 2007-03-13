@@ -34,17 +34,17 @@ import org.jdtaus.banking.Kontonummer;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
-import org.jdtaus.banking.dtaus.Fields;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
-import org.jdtaus.banking.dtaus.PhysicalFileError;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
+import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
 import org.jdtaus.core.container.Implementation;
+import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.nio.spi.Charsets;
 import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.spi.ApplicationLogger;
@@ -294,10 +294,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected Long readNumber(final int field, final long block, final int off,
-        final int len, final int encoding) throws PhysicalFileError,
-        IOException
+        final int len, final int encoding) throws IOException
     {
-
         return this.readNumber(field, block, off, len, encoding, false);
     }
 
@@ -337,10 +335,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected Long readNumber(final int field, final long block, final int off,
-        final int len, final int encoding, final boolean allowSpaces) throws
-        PhysicalFileError, IOException
+        final int len, final int encoding, final boolean allowSpaces)
+        throws IOException
     {
-
         long ret = 0L;
         int read;
         final Message msg;
@@ -393,7 +390,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -530,10 +529,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected String readAlphaNumeric(final int field, final long block,
-        final int off, final int len, final int encoding) throws
-        PhysicalFileError, IOException
+        final int off, final int len, final int encoding) throws IOException
     {
-
         String str;
         final Message msg;
         final char[] c;
@@ -565,7 +562,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -700,10 +699,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected Date readShortDate(final int field, final long block,
-        final int off, final int encoding) throws PhysicalFileError,
-        IOException
+        final int off, final int encoding) throws IOException
     {
-
         final int len;
         final Integer cset;
 
@@ -755,7 +752,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -786,7 +785,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -918,8 +919,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected Date readLongDate(final int field, final long block,
-        final int off, final int encoding) throws PhysicalFileError,
-        IOException
+        final int off, final int encoding) throws IOException
     {
         final int len;
         final Integer cset;
@@ -971,7 +971,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1003,7 +1005,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1131,10 +1135,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
     protected long readNumberPackedPositive(final int field, final long block,
-        final int off, final int len, final boolean sign) throws
-        PhysicalFileError, IOException
+        final int off, final int len, final boolean sign) throws IOException
     {
-
         long ret = 0L;
         final int nibbles = 2 * len;
         int exp = nibbles - (sign ? 2 : 1);
@@ -1178,7 +1180,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1200,7 +1204,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(!AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1448,7 +1454,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1722,11 +1730,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @return Datensatztyp des Satzabschnitts {@code block}.
      *
-     * @throws PhysicalFileError bei technischen Fehlern.
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract char getBlockType(long block) throws
-        PhysicalFileError, IOException;
+    protected abstract char getBlockType(long block) throws IOException;
 
     //---------------------------------------------------int getBlockType(...)--
     //--void checksumTransaction(...)-------------------------------------------
@@ -1744,12 +1750,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @return Anzahl Satzabschnitte die von der Transaktion belegt werden.
      *
-     * @throws PhysicalFileError bei technischen Fehlern.
      * @throws IOException wenn nicht gelesen werden kann.
      */
     protected abstract int checksumTransaction(long block,
-        Transaction transaction, Checksum checksum) throws
-        PhysicalFileError, IOException;
+        Transaction transaction, Checksum checksum) throws IOException;
 
     //-------------------------------------------void checksumTransaction(...)--
     //--int blockCount(...)-----------------------------------------------------
@@ -1788,11 +1792,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @return A Datensatz.
      *
-     * @throws PhysicalFileError bei technischen Fehlern.
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract Header readHeader(long headerBlock) throws
-        PhysicalFileError, IOException;
+    protected abstract Header readHeader(long headerBlock) throws IOException;
 
     /**
      * Schreibt den A Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1802,11 +1804,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * werden soll.
      * @param header A Datensatz.
      *
-     * @throws PhysicalFileError bei technischen Fehlern.
      * @throws IOException wenn nicht geschrieben werden kann.
      */
-    protected abstract void writeHeader(long headerBlock, Header header) throws
-        PhysicalFileError, IOException;
+    protected abstract void writeHeader(long headerBlock, Header header)
+    throws IOException;
 
     /**
      * Liest den E Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1817,11 +1818,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @return E Datensatz.
      *
-     * @throws PhysicalFileError bei technischen Fehlern.
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract Checksum readChecksum(long checksumBlock) throws
-        PhysicalFileError, IOException;
+    protected abstract Checksum readChecksum(long checksumBlock)
+    throws IOException;
 
     /**
      * Schreibt den E Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1831,11 +1831,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * werden soll.
      * @param checksum E Datensatz.
      *
-     * @throws PhysicalFileError bei technischen Fehlern.
      * @throws IOException wenn nicht geschrieben werden kann.     *
      */
     protected abstract void writeChecksum(long checksumBlock,
-        Checksum checksum) throws PhysicalFileError, IOException;
+        Checksum checksum) throws IOException;
 
     /**
      * Liest einen C Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1846,11 +1845,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @return an {@code block} beginnender C Datensatz.
      *
-     * @throws PhysicalFileError bei technischen Fehlern.
      * @throws IOException wenn nicht gelesen werden kann.
      */
     protected abstract Transaction readTransaction(long block,
-        Transaction transaction) throws PhysicalFileError, IOException;
+        Transaction transaction) throws IOException;
 
     /**
      * Schreibt einen C Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1860,11 +1858,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @param block Satzabschnitt, an dem der C Datensatz beginnen soll.
      * @param transaction Daten des C Datensatzes.
      *
-     * @throws PhysicalFileError bei technischen Fehlern.
      * @throws IOException wenn nicht geschrieben werden kann.
      */
     protected abstract void writeTransaction(long block,
-        Transaction transaction) throws PhysicalFileError, IOException;
+        Transaction transaction) throws IOException;
 
     //--Property "headerBlock"--------------------------------------------------
 
@@ -2053,7 +2050,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -2096,7 +2095,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                         if(AbstractErrorMessage.isErrorsEnabled())
                         {
-                            throw new PhysicalFileError(this.getMeta(), msg);
+                            throw new ImplementationException(this.getMeta(),
+                                msg.getText(Locale.getDefault()));
+
                         }
                         else
                         {
@@ -2119,7 +2120,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {

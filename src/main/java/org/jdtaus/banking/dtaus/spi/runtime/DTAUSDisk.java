@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Date;
+import java.util.Locale;
 import org.jdtaus.banking.AlphaNumericText27;
 import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.Kontonummer;
@@ -31,13 +32,12 @@ import org.jdtaus.banking.Referenznummer;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
-import org.jdtaus.banking.dtaus.Fields;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFileType;
-import org.jdtaus.banking.dtaus.PhysicalFileError;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
 import org.jdtaus.banking.dtaus.spi.CurrencyDirectory;
+import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.CurrencyViolationMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
@@ -47,15 +47,15 @@ import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.MissingDependencyException;
+import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.text.Message;
-import org.jdtaus.core.text.MessageEvent;
-import org.jdtaus.core.text.spi.ApplicationLogger;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
+import org.jdtaus.core.text.Message;
+import org.jdtaus.core.text.MessageEvent;
+import org.jdtaus.core.text.spi.ApplicationLogger;
 
 /**
  * Anlage 3 - 1.1 DTAUS0: Zahlungsverkehrssammelauftrag Diskettenformat.
@@ -532,8 +532,8 @@ public class DTAUSDisk extends AbstractLogicalFile
     //--AbstractLogicalFile-----------------------------------------------------
 
     protected int checksumTransaction(final long block,
-        final Transaction transaction, final Checksum checksum) throws
-        PhysicalFileError, IOException
+        final Transaction transaction, final Checksum checksum)
+        throws IOException
     {
 
         int ret = 2;
@@ -569,8 +569,7 @@ public class DTAUSDisk extends AbstractLogicalFile
         return ret;
     }
 
-    protected char getBlockType(final long block) throws
-        PhysicalFileError, IOException
+    protected char getBlockType(final long block) throws IOException
     {
 
         // Feld 2
@@ -589,7 +588,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -618,10 +619,8 @@ public class DTAUSDisk extends AbstractLogicalFile
         return ret;
     }
 
-    protected Header readHeader(final long headerBlock) throws
-        PhysicalFileError, IOException
+    protected Header readHeader(final long headerBlock) throws IOException
     {
-
         Long num;
         String str;
         final Date createDate;
@@ -651,7 +650,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -673,7 +674,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -698,7 +701,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -727,7 +732,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -757,7 +764,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -813,7 +822,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -840,7 +851,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -868,7 +881,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -897,7 +912,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -930,7 +947,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1039,10 +1058,8 @@ public class DTAUSDisk extends AbstractLogicalFile
 
     }
 
-    protected Checksum readChecksum(final long checksumBlock) throws
-        PhysicalFileError, IOException
+    protected Checksum readChecksum(final long checksumBlock) throws IOException
     {
-
         Long num;
         final String str;
         final Checksum checksum;
@@ -1063,7 +1080,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1086,7 +1105,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1178,9 +1199,8 @@ public class DTAUSDisk extends AbstractLogicalFile
     }
 
     protected Transaction readTransaction(final long block,
-        final Transaction transaction) throws PhysicalFileError, IOException
+        final Transaction transaction) throws IOException
     {
-
         int search;
         long blockOffset;
         Long num;
@@ -1217,7 +1237,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1240,7 +1262,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1265,7 +1289,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -1293,7 +1319,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1320,7 +1348,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1347,7 +1377,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1386,7 +1418,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1413,7 +1447,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1440,7 +1476,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1528,7 +1566,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new PhysicalFileError(this.getMeta(), msg);
+                throw new ImplementationException(this.getMeta(),
+                    msg.getText(Locale.getDefault()));
+
             }
             else
             {
@@ -1561,7 +1601,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1614,7 +1656,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1665,7 +1709,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new PhysicalFileError(this.getMeta(), msg);
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
                     }
                     else
                     {
@@ -1699,7 +1745,9 @@ public class DTAUSDisk extends AbstractLogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new PhysicalFileError(this.getMeta(), msg);
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
                 }
                 else
                 {
@@ -1716,7 +1764,6 @@ public class DTAUSDisk extends AbstractLogicalFile
     protected void writeTransaction(final long block,
         final Transaction transaction) throws IOException
     {
-
         int i;
         int blockIndex = 1;
         long blockOffset;
@@ -1973,10 +2020,8 @@ public class DTAUSDisk extends AbstractLogicalFile
         return DTAUSDisk.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
 
-    protected int blockCount(final long block) throws
-        PhysicalFileError, IOException
+    protected int blockCount(final long block) throws IOException
     {
-
         int extCount = this.readNumber(Fields.FIELD_C18,
             block + 1L, DTAUSDisk.CRECORD_OFFSETS2[4],
             DTAUSDisk.CRECORD_LENGTH2[4], AbstractLogicalFile.ENCODING_ASCII).
