@@ -285,13 +285,15 @@ public class DTAUSTape extends AbstractLogicalFile
     /** Protected <code>DTAUSTape</code> implementation constructor.
     * @param meta Implementation meta-data.
     */
-    protected DTAUSTape(final Implementation meta) {
+    protected DTAUSTape(final Implementation meta)
+    {
         super();
     }
     /** Protected <code>DTAUSTape</code> dependency constructor.
     * @param meta Dependency meta-data.
     */
-    protected DTAUSTape(final Dependency meta) {
+    protected DTAUSTape(final Dependency meta)
+    {
         super();
     }
 
@@ -342,11 +344,15 @@ public class DTAUSTape extends AbstractLogicalFile
     private transient CurrencyDirectory _dependency5;
 
     /** <code>CurrencyDirectory</code> implementation getter. */
-    private CurrencyDirectory getCurrencyDirectory() {
+    private CurrencyDirectory getCurrencyDirectory()
+    {
         CurrencyDirectory ret = null;
-        if(this._dependency5 != null) {
+        if(this._dependency5 != null)
+        {
            ret = this._dependency5;
-        } else {
+        }
+        else
+        {
             ret = (CurrencyDirectory) ContainerFactory.getContainer().
                 getDependency(DTAUSTape.class,
                 "CurrencyDirectory");
@@ -354,15 +360,15 @@ public class DTAUSTape extends AbstractLogicalFile
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("CurrencyDirectory").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency5 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -372,11 +378,15 @@ public class DTAUSTape extends AbstractLogicalFile
     private transient TextschluesselVerzeichnis _dependency4;
 
     /** <code>TextschluesselVerzeichnis</code> implementation getter. */
-    private TextschluesselVerzeichnis getTextschluesselVerzeichnis() {
+    private TextschluesselVerzeichnis getTextschluesselVerzeichnis()
+    {
         TextschluesselVerzeichnis ret = null;
-        if(this._dependency4 != null) {
+        if(this._dependency4 != null)
+        {
            ret = this._dependency4;
-        } else {
+        }
+        else
+        {
             ret = (TextschluesselVerzeichnis) ContainerFactory.getContainer().
                 getDependency(DTAUSTape.class,
                 "TextschluesselVerzeichnis");
@@ -384,15 +394,15 @@ public class DTAUSTape extends AbstractLogicalFile
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("TextschluesselVerzeichnis").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency4 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -402,11 +412,15 @@ public class DTAUSTape extends AbstractLogicalFile
     private transient TaskMonitor _dependency3;
 
     /** <code>TaskMonitor</code> implementation getter. */
-    private TaskMonitor getTaskMonitor() {
+    private TaskMonitor getTaskMonitor()
+    {
         TaskMonitor ret = null;
-        if(this._dependency3 != null) {
+        if(this._dependency3 != null)
+        {
            ret = this._dependency3;
-        } else {
+        }
+        else
+        {
             ret = (TaskMonitor) ContainerFactory.getContainer().
                 getDependency(DTAUSTape.class,
                 "TaskMonitor");
@@ -414,15 +428,15 @@ public class DTAUSTape extends AbstractLogicalFile
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("TaskMonitor").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency3 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -432,11 +446,15 @@ public class DTAUSTape extends AbstractLogicalFile
     private transient ApplicationLogger _dependency2;
 
     /** <code>ApplicationLogger</code> implementation getter. */
-    private ApplicationLogger getApplicationLogger() {
+    private ApplicationLogger getApplicationLogger()
+    {
         ApplicationLogger ret = null;
-        if(this._dependency2 != null) {
+        if(this._dependency2 != null)
+        {
            ret = this._dependency2;
-        } else {
+        }
+        else
+        {
             ret = (ApplicationLogger) ContainerFactory.getContainer().
                 getDependency(DTAUSTape.class,
                 "ApplicationLogger");
@@ -444,15 +462,15 @@ public class DTAUSTape extends AbstractLogicalFile
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("ApplicationLogger").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency2 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -462,11 +480,15 @@ public class DTAUSTape extends AbstractLogicalFile
     private transient MemoryManager _dependency1;
 
     /** <code>MemoryManager</code> implementation getter. */
-    private MemoryManager getMemoryManager() {
+    private MemoryManager getMemoryManager()
+    {
         MemoryManager ret = null;
-        if(this._dependency1 != null) {
+        if(this._dependency1 != null)
+        {
            ret = this._dependency1;
-        } else {
+        }
+        else
+        {
             ret = (MemoryManager) ContainerFactory.getContainer().
                 getDependency(DTAUSTape.class,
                 "MemoryManager");
@@ -474,15 +496,15 @@ public class DTAUSTape extends AbstractLogicalFile
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("MemoryManager").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency1 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -492,11 +514,15 @@ public class DTAUSTape extends AbstractLogicalFile
     private transient Logger _dependency0;
 
     /** <code>Logger</code> implementation getter. */
-    private Logger getLogger() {
+    private Logger getLogger()
+    {
         Logger ret = null;
-        if(this._dependency0 != null) {
+        if(this._dependency0 != null)
+        {
            ret = this._dependency0;
-        } else {
+        }
+        else
+        {
             ret = (Logger) ContainerFactory.getContainer().
                 getDependency(DTAUSTape.class,
                 "Logger");
@@ -504,15 +530,15 @@ public class DTAUSTape extends AbstractLogicalFile
             if(ModelFactory.getModel().getModules().
                 getImplementation(DTAUSTape.class.getName()).
                 getDependencies().getDependency("Logger").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency0 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 

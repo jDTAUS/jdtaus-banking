@@ -77,13 +77,15 @@ public class DefaultPhysicalFile implements PhysicalFile
     /** Protected <code>DefaultPhysicalFile</code> implementation constructor.
     * @param meta Implementation meta-data.
     */
-    protected DefaultPhysicalFile(final Implementation meta) {
+    protected DefaultPhysicalFile(final Implementation meta)
+    {
         super();
     }
     /** Protected <code>DefaultPhysicalFile</code> dependency constructor.
     * @param meta Dependency meta-data.
     */
-    protected DefaultPhysicalFile(final Dependency meta) {
+    protected DefaultPhysicalFile(final Dependency meta)
+    {
         super();
     }
 
@@ -179,11 +181,15 @@ public class DefaultPhysicalFile implements PhysicalFile
     private transient TaskMonitor _dependency0;
 
     /** <code>TaskMonitor</code> implementation getter. */
-    private TaskMonitor getTaskMonitor() {
+    private TaskMonitor getTaskMonitor()
+    {
         TaskMonitor ret = null;
-        if(this._dependency0 != null) {
+        if(this._dependency0 != null)
+        {
            ret = this._dependency0;
-        } else {
+        }
+        else
+        {
             ret = (TaskMonitor) ContainerFactory.getContainer().
                 getDependency(DefaultPhysicalFile.class,
                 "TaskMonitor");
@@ -191,15 +197,15 @@ public class DefaultPhysicalFile implements PhysicalFile
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFile.class.getName()).
                 getDependencies().getDependency("TaskMonitor").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency0 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 

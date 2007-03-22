@@ -71,7 +71,8 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
     /** Protected <code>DefaultPhysicalFileFactory</code> implementation constructor.
     * @param meta Implementation meta-data.
     */
-    protected DefaultPhysicalFileFactory(final Implementation meta) {
+    protected DefaultPhysicalFileFactory(final Implementation meta)
+    {
         super();
         Property p;
 
@@ -82,7 +83,8 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
     /** Protected <code>DefaultPhysicalFileFactory</code> dependency constructor.
     * @param meta Dependency meta-data.
     */
-    protected DefaultPhysicalFileFactory(final Dependency meta) {
+    protected DefaultPhysicalFileFactory(final Dependency meta)
+    {
         super();
         Property p;
 
@@ -100,11 +102,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
     private transient ApplicationLogger _dependency3;
 
     /** <code>ApplicationLogger</code> implementation getter. */
-    private ApplicationLogger getApplicationLogger() {
+    private ApplicationLogger getApplicationLogger()
+    {
         ApplicationLogger ret = null;
-        if(this._dependency3 != null) {
+        if(this._dependency3 != null)
+        {
            ret = this._dependency3;
-        } else {
+        }
+        else
+        {
             ret = (ApplicationLogger) ContainerFactory.getContainer().
                 getDependency(DefaultPhysicalFileFactory.class,
                 "ApplicationLogger");
@@ -112,15 +118,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFileFactory.class.getName()).
                 getDependencies().getDependency("ApplicationLogger").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency3 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -130,11 +136,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
     private transient Logger _dependency2;
 
     /** <code>Logger</code> implementation getter. */
-    private Logger getLogger() {
+    private Logger getLogger()
+    {
         Logger ret = null;
-        if(this._dependency2 != null) {
+        if(this._dependency2 != null)
+        {
            ret = this._dependency2;
-        } else {
+        }
+        else
+        {
             ret = (Logger) ContainerFactory.getContainer().
                 getDependency(DefaultPhysicalFileFactory.class,
                 "Logger");
@@ -142,15 +152,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFileFactory.class.getName()).
                 getDependencies().getDependency("Logger").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency2 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -160,11 +170,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
     private transient StructuredFileOperations _dependency1;
 
     /** <code>TapeStructuredFileOperations</code> implementation getter. */
-    private StructuredFileOperations getTapeStructuredFileOperations() {
+    private StructuredFileOperations getTapeStructuredFileOperations()
+    {
         StructuredFileOperations ret = null;
-        if(this._dependency1 != null) {
+        if(this._dependency1 != null)
+        {
            ret = this._dependency1;
-        } else {
+        }
+        else
+        {
             ret = (StructuredFileOperations) ContainerFactory.getContainer().
                 getDependency(DefaultPhysicalFileFactory.class,
                 "TapeStructuredFileOperations");
@@ -172,15 +186,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFileFactory.class.getName()).
                 getDependencies().getDependency("TapeStructuredFileOperations").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency1 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -190,11 +204,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
     private transient StructuredFileOperations _dependency0;
 
     /** <code>DiskStructuredFileOperations</code> implementation getter. */
-    private StructuredFileOperations getDiskStructuredFileOperations() {
+    private StructuredFileOperations getDiskStructuredFileOperations()
+    {
         StructuredFileOperations ret = null;
-        if(this._dependency0 != null) {
+        if(this._dependency0 != null)
+        {
            ret = this._dependency0;
-        } else {
+        }
+        else
+        {
             ret = (StructuredFileOperations) ContainerFactory.getContainer().
                 getDependency(DefaultPhysicalFileFactory.class,
                 "DiskStructuredFileOperations");
@@ -202,15 +220,15 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
             if(ModelFactory.getModel().getModules().
                 getImplementation(DefaultPhysicalFileFactory.class.getName()).
                 getDependencies().getDependency("DiskStructuredFileOperations").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency0 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -229,7 +247,8 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
     private int _defaultFormat;
 
     /** <code>defaultFormat</code> property getter. */
-    protected int getDefaultFormat() {
+    protected int getDefaultFormat()
+    {
         return this._defaultFormat;
     }
 

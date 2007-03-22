@@ -69,7 +69,8 @@ public class PropertyCurrencyDirectory
     /** Protected <code>PropertyCurrencyDirectory</code> implementation constructor.
     * @param meta Implementation meta-data.
     */
-    protected PropertyCurrencyDirectory(final Implementation meta) {
+    protected PropertyCurrencyDirectory(final Implementation meta)
+    {
         super();
         Property p;
 
@@ -80,7 +81,8 @@ public class PropertyCurrencyDirectory
     /** Protected <code>PropertyCurrencyDirectory</code> dependency constructor.
     * @param meta Dependency meta-data.
     */
-    protected PropertyCurrencyDirectory(final Dependency meta) {
+    protected PropertyCurrencyDirectory(final Dependency meta)
+    {
         super();
         Property p;
 
@@ -98,11 +100,15 @@ public class PropertyCurrencyDirectory
     private transient Logger _dependency0;
 
     /** <code>Logger</code> implementation getter. */
-    private Logger getLogger() {
+    private Logger getLogger()
+    {
         Logger ret = null;
-        if(this._dependency0 != null) {
+        if(this._dependency0 != null)
+        {
            ret = this._dependency0;
-        } else {
+        }
+        else
+        {
             ret = (Logger) ContainerFactory.getContainer().
                 getDependency(PropertyCurrencyDirectory.class,
                 "Logger");
@@ -110,15 +116,15 @@ public class PropertyCurrencyDirectory
             if(ModelFactory.getModel().getModules().
                 getImplementation(PropertyCurrencyDirectory.class.getName()).
                 getDependencies().getDependency("Logger").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency0 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -137,7 +143,8 @@ public class PropertyCurrencyDirectory
     private java.lang.String _propertiesResource;
 
     /** <code>propertiesResource</code> property getter. */
-    protected java.lang.String getPropertiesResource() {
+    protected java.lang.String getPropertiesResource()
+    {
         return this._propertiesResource;
     }
 
