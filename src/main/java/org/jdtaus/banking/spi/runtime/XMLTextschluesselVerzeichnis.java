@@ -110,7 +110,8 @@ public class XMLTextschluesselVerzeichnis implements
     /** Protected <code>XMLTextschluesselVerzeichnis</code> implementation constructor.
     * @param meta Implementation meta-data.
     */
-    protected XMLTextschluesselVerzeichnis(final Implementation meta) {
+    protected XMLTextschluesselVerzeichnis(final Implementation meta)
+    {
         super();
         Property p;
 
@@ -125,7 +126,8 @@ public class XMLTextschluesselVerzeichnis implements
     /** Protected <code>XMLTextschluesselVerzeichnis</code> dependency constructor.
     * @param meta Dependency meta-data.
     */
-    protected XMLTextschluesselVerzeichnis(final Dependency meta) {
+    protected XMLTextschluesselVerzeichnis(final Dependency meta)
+    {
         super();
         Property p;
 
@@ -147,11 +149,15 @@ public class XMLTextschluesselVerzeichnis implements
     private transient Logger _dependency0;
 
     /** <code>Logger</code> implementation getter. */
-    private Logger getLogger() {
+    private Logger getLogger()
+    {
         Logger ret = null;
-        if(this._dependency0 != null) {
+        if(this._dependency0 != null)
+        {
            ret = this._dependency0;
-        } else {
+        }
+        else
+        {
             ret = (Logger) ContainerFactory.getContainer().
                 getDependency(XMLTextschluesselVerzeichnis.class,
                 "Logger");
@@ -159,15 +165,15 @@ public class XMLTextschluesselVerzeichnis implements
             if(ModelFactory.getModel().getModules().
                 getImplementation(XMLTextschluesselVerzeichnis.class.getName()).
                 getDependencies().getDependency("Logger").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency0 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -186,7 +192,8 @@ public class XMLTextschluesselVerzeichnis implements
     private java.lang.String _resource;
 
     /** <code>resource</code> property getter. */
-    protected java.lang.String getResource() {
+    protected java.lang.String getResource()
+    {
         return this._resource;
     }
 
@@ -197,7 +204,8 @@ public class XMLTextschluesselVerzeichnis implements
     private java.lang.String _dataDirectory;
 
     /** <code>dataDirectory</code> property getter. */
-    protected java.lang.String getDataDirectory() {
+    protected java.lang.String getDataDirectory()
+    {
         return this._dataDirectory;
     }
 
