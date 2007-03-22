@@ -90,7 +90,8 @@ public class BundesbankBankleitzahlenVerzeichnis
     /** Protected <code>BundesbankBankleitzahlenVerzeichnis</code> implementation constructor.
     * @param meta Implementation meta-data.
     */
-    protected BundesbankBankleitzahlenVerzeichnis(final Implementation meta) {
+    protected BundesbankBankleitzahlenVerzeichnis(final Implementation meta)
+    {
         super();
         Property p;
 
@@ -109,7 +110,8 @@ public class BundesbankBankleitzahlenVerzeichnis
     /** Protected <code>BundesbankBankleitzahlenVerzeichnis</code> dependency constructor.
     * @param meta Dependency meta-data.
     */
-    protected BundesbankBankleitzahlenVerzeichnis(final Dependency meta) {
+    protected BundesbankBankleitzahlenVerzeichnis(final Dependency meta)
+    {
         super();
         Property p;
 
@@ -135,11 +137,15 @@ public class BundesbankBankleitzahlenVerzeichnis
     private transient TaskMonitor _dependency1;
 
     /** <code>TaskMonitor</code> implementation getter. */
-    private TaskMonitor getTaskMonitor() {
+    private TaskMonitor getTaskMonitor()
+    {
         TaskMonitor ret = null;
-        if(this._dependency1 != null) {
+        if(this._dependency1 != null)
+        {
            ret = this._dependency1;
-        } else {
+        }
+        else
+        {
             ret = (TaskMonitor) ContainerFactory.getContainer().
                 getDependency(BundesbankBankleitzahlenVerzeichnis.class,
                 "TaskMonitor");
@@ -147,15 +153,15 @@ public class BundesbankBankleitzahlenVerzeichnis
             if(ModelFactory.getModel().getModules().
                 getImplementation(BundesbankBankleitzahlenVerzeichnis.class.getName()).
                 getDependencies().getDependency("TaskMonitor").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency1 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -165,11 +171,15 @@ public class BundesbankBankleitzahlenVerzeichnis
     private transient Logger _dependency0;
 
     /** <code>Logger</code> implementation getter. */
-    private Logger getLogger() {
+    private Logger getLogger()
+    {
         Logger ret = null;
-        if(this._dependency0 != null) {
+        if(this._dependency0 != null)
+        {
            ret = this._dependency0;
-        } else {
+        }
+        else
+        {
             ret = (Logger) ContainerFactory.getContainer().
                 getDependency(BundesbankBankleitzahlenVerzeichnis.class,
                 "Logger");
@@ -177,15 +187,15 @@ public class BundesbankBankleitzahlenVerzeichnis
             if(ModelFactory.getModel().getModules().
                 getImplementation(BundesbankBankleitzahlenVerzeichnis.class.getName()).
                 getDependencies().getDependency("Logger").
-                isBound()) {
-
+                isBound())
+            {
                 this._dependency0 = ret;
             }
         }
 
         if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext())) {
-
+            isInitialized(ContextFactory.getContext()))
+        {
             ((ContextInitializer) ret).initialize(ContextFactory.getContext());
         }
 
@@ -204,7 +214,8 @@ public class BundesbankBankleitzahlenVerzeichnis
     private java.lang.String _configuration;
 
     /** <code>configuration</code> property getter. */
-    protected java.lang.String getConfiguration() {
+    protected java.lang.String getConfiguration()
+    {
         return this._configuration;
     }
 
@@ -215,7 +226,8 @@ public class BundesbankBankleitzahlenVerzeichnis
     private java.lang.String _dataDirectory;
 
     /** <code>dataDirectory</code> property getter. */
-    protected java.lang.String getDataDirectory() {
+    protected java.lang.String getDataDirectory()
+    {
         return this._dataDirectory;
     }
 
@@ -226,7 +238,8 @@ public class BundesbankBankleitzahlenVerzeichnis
     private java.lang.String _encoding;
 
     /** <code>encoding</code> property getter. */
-    protected java.lang.String getEncoding() {
+    protected java.lang.String getEncoding()
+    {
         return this._encoding;
     }
 
