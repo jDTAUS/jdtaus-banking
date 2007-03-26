@@ -65,7 +65,7 @@
           </execution>
         </executions>
       </plugin>
-
+      
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
@@ -128,6 +128,11 @@
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.runtime</groupId>
+      <artifactId>jdtaus-core-client-container</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
