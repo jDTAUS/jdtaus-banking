@@ -130,6 +130,13 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.common</groupId>
+      <artifactId>jdtaus-banking-api</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+      <classifier>tests</classifier>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.runtime</groupId>
       <artifactId>jdtaus-core-client-container</artifactId>
       <scope>test</scope>

@@ -17,12 +17,19 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.dtaus;
+package org.jdtaus.banking.dtaus.spi.runtime.test;
 
 import java.io.RandomAccessFile;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.jdtaus.banking.Referenznummer;
+import org.jdtaus.banking.dtaus.Header;
+import org.jdtaus.banking.dtaus.LogicalFile;
+import org.jdtaus.banking.dtaus.PhysicalFile;
+import org.jdtaus.banking.dtaus.PhysicalFileFactory;
+import org.jdtaus.banking.dtaus.Transaction;
+import org.jdtaus.banking.dtaus.test.HeaderTest;
+import org.jdtaus.banking.dtaus.test.TransactionTest;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.io.FileOperations;
 import org.jdtaus.core.io.RandomAccessFileOperations;
