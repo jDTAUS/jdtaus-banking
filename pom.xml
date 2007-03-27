@@ -113,7 +113,7 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags</tagBase>
         </configuration>
       </plugin>
-
+      
       <plugin>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -129,7 +129,7 @@
           </execution>
         </executions>
       </plugin>
-
+      
     </plugins>
   </build>
   <modules>
@@ -201,6 +201,30 @@
         <artifactId>jdtaus-core-client-container</artifactId>
         <version>RELEASE</version>
         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.runtime</groupId>
+        <artifactId>jdtaus-core-client-monitoring</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.runtime</groupId>
+        <artifactId>jdtaus-core-limiting-runtime</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.runtime</groupId>
+        <artifactId>jdtaus-core-application-logger</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.runtime</groupId>
+        <artifactId>jdtaus-core-jdk-logging</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
