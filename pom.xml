@@ -3,7 +3,7 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-alpha-2</version>
+    <version>1.0-alpha-3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
@@ -48,6 +48,13 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>never</forkMode>
+        </configuration>
       </plugin>
       
       <plugin>
@@ -124,21 +131,59 @@
   </build>
   <dependencies>
     <dependency>
+      <groupId>org.jdtaus.common</groupId>
+      <artifactId>jdtaus-banking-api</artifactId>
+      <version>1.0-alpha-10-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.spi</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.runtime</groupId>
+      <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.runtime</groupId>
+      <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-banking-api</artifactId>
-      <version>RELEASE</version>
+      <version>1.0-alpha-10-SNAPSHOT</version>
       <scope>test</scope>
       <classifier>tests</classifier>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.runtime</groupId>
       <artifactId>jdtaus-core-client-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.runtime</groupId>
+      <artifactId>jdtaus-core-client-monitoring</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.runtime</groupId>
+      <artifactId>jdtaus-core-limiting-runtime</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.runtime</groupId>
+      <artifactId>jdtaus-core-application-logger</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.runtime</groupId>
+      <artifactId>jdtaus-core-jdk-logging</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

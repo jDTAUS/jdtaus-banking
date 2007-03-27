@@ -42,7 +42,7 @@ import org.jdtaus.core.io.MemoryFileOperations;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class AbstractLogicalFileTest extends TestCase
+public class LogicalFileTest extends TestCase
 {
 
     //--DTAUS getDTAUSSingleHeader()--------------------------------------------
@@ -65,7 +65,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "dtaus0_valid_header_and_checksum"));
 
         return factory.getPhysicalFile(ops);
@@ -78,7 +78,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "dtaus0_unsupported_data_header"));
 
         return factory.getPhysicalFile(ops);
@@ -91,7 +91,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "dtaus0_illegal_format_header"));
 
         return factory.getPhysicalFile(ops);
@@ -104,7 +104,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "dtaus0_valid_header_and_checksum"));
 
         return factory.getPhysicalFile(ops);
@@ -117,7 +117,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "dtaus0_valid_header_illegal_format_checksum"));
 
         return factory.getPhysicalFile(ops);
@@ -130,7 +130,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             (extensions ? "dtaus0_valid_header_checksum_and_transaction_ext"
             : "dtaus0_valid_header_checksum_and_transaction")));
 
@@ -144,7 +144,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "dtaus0_valid_header_checksum_illegal_format_transaction"));
 
         return factory.getPhysicalFile(ops);
@@ -155,7 +155,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "empty_256"));
 
         return factory.getPhysicalFile(ops);
@@ -166,7 +166,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "empty_256_2"));
 
         return factory.getPhysicalFile(ops);
@@ -177,7 +177,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "empty_256_3"));
 
         return factory.getPhysicalFile(ops);
@@ -188,7 +188,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write(AbstractLogicalFileTest.class.getResourceAsStream(
+        ops.write(LogicalFileTest.class.getResourceAsStream(
             "illegal_file_length"));
 
         return factory.getPhysicalFile(ops);
@@ -233,7 +233,7 @@ public abstract class AbstractLogicalFileTest extends TestCase
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
         final Header h = file.get(0).getHeader();
-        Assert.assertTrue(h.getCustomer().equals(
+        Assert.assertTrue(h.getCustomer().format().equals(
             "ABCDEFGHUJKI.UHZGTÄÖÜß+ ,$&"));
 
         Assert.assertTrue(h.getAccount().longValue() == 1111111111L);

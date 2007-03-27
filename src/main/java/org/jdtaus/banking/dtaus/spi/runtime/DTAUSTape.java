@@ -29,7 +29,8 @@ import java.util.Locale;
 import org.jdtaus.banking.AlphaNumericText27;
 import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.Kontonummer;
-import org.jdtaus.banking.Referenznummer;
+import org.jdtaus.banking.Referenznummer10;
+import org.jdtaus.banking.Referenznummer11;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
@@ -736,6 +737,8 @@ public class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.ARECORD_OFFSETS[3], DTAUSTape.ARECORD_LENGTH[3],
             AbstractLogicalFile.ENCODING_EBCDI);
 
+        ret.setType(null);
+
         if(str != null)
         {
             label = LogicalFileType.valueOf(str);
@@ -797,6 +800,8 @@ public class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.ARECORD_OFFSETS[5], DTAUSTape.ARECORD_LENGTH[5],
             true);
 
+        ret.setBankData(null);
+
         if(isBank)
         {
             if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
@@ -836,8 +841,7 @@ public class DTAUSTape extends AbstractLogicalFile
             }
             catch(ParseException e)
             {
-                // TODO JDK 1.5: throw new IllegalStateException(e);
-                throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
             }
         }
 
@@ -913,7 +917,7 @@ public class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.ARECORD_OFFSETS[10], DTAUSTape.ARECORD_LENGTH[10],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(!Referenznummer.checkReferenznummer(new Long(num)))
+        if(!Referenznummer10.checkReferenznummer10(new Long(num)))
         {
             msg = new IllegalDataMessage(Fields.FIELD_A10,
                 IllegalDataMessage.TYPE_REFERENZNUMMER,
@@ -933,7 +937,7 @@ public class DTAUSTape extends AbstractLogicalFile
         }
         else
         {
-            ret.setReference(Referenznummer.valueOf(new Long(num)));
+            ret.setReference(Referenznummer10.valueOf(new Long(num)));
         }
 
         // Feld 11b
@@ -945,61 +949,67 @@ public class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.ARECORD_OFFSETS[14], DTAUSTape.ARECORD_LENGTH[14],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null && str.length() != 1)
+        ret.setCurrency(null);
+
+        if(str != null)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_A12,
-                IllegalDataMessage.TYPE_ALPHA_NUMERIC,
-                headerBlock * this.persistence.getBlockSize() +
-                DTAUSTape.ARECORD_OFFSETS[14], str);
+            if(str.length() != 1)
+            {
+                msg = new IllegalDataMessage(Fields.FIELD_A12,
+                    IllegalDataMessage.TYPE_ALPHA_NUMERIC,
+                    headerBlock * this.persistence.getBlockSize() +
+                    DTAUSTape.ARECORD_OFFSETS[14], str);
 
-            if(AbstractErrorMessage.isErrorsEnabled())
-            {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
-
-            }
-            else
-            {
-                ThreadLocalMessages.getMessages().addMessage(msg);
-            }
-        }
-        else
-        {
-            final char c = str.toCharArray()[0];
-            if(c == ' ')
-            {
-                cur = Currency.getInstance("EUR");
-                this.getApplicationLogger().log(new MessageEvent(this,
-                    new CurrencyViolationMessage(Fields.FIELD_A12,
-                    this.getHeaderBlock() * this.persistence.getBlockSize() +
-                    DTAUSTape.ARECORD_OFFSETS[14], c, cur),
-                    MessageEvent.WARNING));
-
-            }
-            else
-            {
-                cur = this.getCurrencyDirectory().getCurrency(c);
-                if(cur == null)
+                if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    msg = new IllegalDataMessage(Fields.FIELD_A12,
-                        IllegalDataMessage.TYPE_CURRENCY,
-                        headerBlock * this.persistence.getBlockSize() +
-                        DTAUSTape.ARECORD_OFFSETS[14], Character.toString(c));
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
 
-                    if(AbstractErrorMessage.isErrorsEnabled())
-                    {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
-
-                    }
-                    else
-                    {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
-                    }
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
                 }
             }
+            else
+            {
+                final char c = str.toCharArray()[0];
+                if(c == ' ')
+                {
+                    cur = Currency.getInstance("EUR");
+                    this.getApplicationLogger().log(new MessageEvent(this,
+                        new CurrencyViolationMessage(Fields.FIELD_A12,
+                        this.getHeaderBlock() *
+                        this.persistence.getBlockSize() + DTAUSTape.
+                        ARECORD_OFFSETS[14], c, cur), MessageEvent.WARNING));
 
-            ret.setCurrency(cur);
+                }
+                else
+                {
+                    cur = this.getCurrencyDirectory().getCurrency(c);
+                    if(cur == null)
+                    {
+                        msg = new IllegalDataMessage(Fields.FIELD_A12,
+                            IllegalDataMessage.TYPE_CURRENCY,
+                            headerBlock * this.persistence.getBlockSize() +
+                            DTAUSTape.ARECORD_OFFSETS[14],
+                            Character.toString(c));
+
+                        if(AbstractErrorMessage.isErrorsEnabled())
+                        {
+                            throw new ImplementationException(this.getMeta(),
+                                msg.getText(Locale.getDefault()));
+
+                        }
+                        else
+                        {
+                            ThreadLocalMessages.getMessages().addMessage(msg);
+                        }
+                    }
+                }
+
+                ret.setCurrency(cur);
+            }
         }
 
         if(!Header.Schedule.checkSchedule(createDate, executionDate))
@@ -1356,6 +1366,8 @@ public class DTAUSTape extends AbstractLogicalFile
         num = this.readNumberPackedPositive(Fields.FIELD_C3, block,
             DTAUSTape.CRECORD_OFFSETS1[3], DTAUSTape.CRECORD_LENGTH1[3], true);
 
+        transaction.setPrimaryBank(null);
+
         if(num != 0L)
         {
             if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
@@ -1440,7 +1452,7 @@ public class DTAUSTape extends AbstractLogicalFile
         num = this.readNumberPackedPositive(Fields.FIELD_C6A, block,
             DTAUSTape.CRECORD_OFFSETS1[6], DTAUSTape.CRECORD_LENGTH1[6], false);
 
-        if(!Referenznummer.checkReferenznummer(new Long(num)))
+        if(!Referenznummer11.checkReferenznummer11(new Long(num)))
         {
             msg = new IllegalDataMessage(Fields.FIELD_C6A,
                 IllegalDataMessage.TYPE_REFERENZNUMMER,
@@ -1460,7 +1472,7 @@ public class DTAUSTape extends AbstractLogicalFile
         }
         else
         {
-            transaction.setReference(Referenznummer.valueOf(new Long(num)));
+            transaction.setReference(Referenznummer11.valueOf(new Long(num)));
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 6b
@@ -1479,12 +1491,13 @@ public class DTAUSTape extends AbstractLogicalFile
         type = this.getTextschluesselVerzeichnis().
             getTextschluessel(keyType, (int) num);
 
+        transaction.setType(null);
+
         if(type == null
             || (type.isDebit() && !this.getHeader().getType().isDebitAllowed())
             || (type.isRemittance() && !this.getHeader().getType().
             isRemittanceAllowed()))
         {
-
             msg = new IllegalDataMessage(Fields.FIELD_C7A,
                 IllegalDataMessage.TYPE_TEXTSCHLUESSEL,
                 block * this.persistence.getBlockSize() +
@@ -1583,8 +1596,7 @@ public class DTAUSTape extends AbstractLogicalFile
             }
             catch(ParseException e)
             {
-                // TODO JDK 1.5: throw new IllegalStateException(e);
-                throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
             }
         }
 
@@ -1601,8 +1613,7 @@ public class DTAUSTape extends AbstractLogicalFile
             }
             catch(ParseException e)
             {
-                // TODO JDK 1.5: throw new IllegalStateException(e);
-                throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
             }
         }
 
@@ -1619,8 +1630,7 @@ public class DTAUSTape extends AbstractLogicalFile
             }
             catch(ParseException e)
             {
-                // TODO JDK 1.5: throw new IllegalStateException(e);
-                throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
             }
         }
 
@@ -1629,61 +1639,65 @@ public class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.CRECORD_OFFSETS1[19], DTAUSTape.CRECORD_LENGTH1[19],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null && str.length() != 1)
+        if(str != null)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_C17A,
-                IllegalDataMessage.TYPE_CURRENCY,
-                block * this.persistence.getBlockSize() +
-                DTAUSTape.CRECORD_OFFSETS1[19], str);
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(str.length() != 1)
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
-
-            }
-            else
-            {
-                ThreadLocalMessages.getMessages().addMessage(msg);
-            }
-        }
-        else
-        {
-            final char c = str.toCharArray()[0];
-            if(c == ' ')
-            {
-                cur = Currency.getInstance("EUR");
-                this.getApplicationLogger().log(new MessageEvent(this,
-                    new CurrencyViolationMessage(Fields.FIELD_C17A,
+                msg = new IllegalDataMessage(Fields.FIELD_C17A,
+                    IllegalDataMessage.TYPE_CURRENCY,
                     block * this.persistence.getBlockSize() +
-                    DTAUSTape.CRECORD_OFFSETS1[19], c, cur),
-                    MessageEvent.WARNING));
+                    DTAUSTape.CRECORD_OFFSETS1[19], str);
 
-            }
-            else
-            {
-                cur = this.getCurrencyDirectory().getCurrency(c);
-                if(cur == null)
+                if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    msg = new IllegalDataMessage(Fields.FIELD_A12,
-                        IllegalDataMessage.TYPE_CURRENCY,
-                        block * this.persistence.getBlockSize() +
-                        DTAUSTape.CRECORD_OFFSETS1[19], Character.toString(c));
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
 
-                    if(AbstractErrorMessage.isErrorsEnabled())
-                    {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
-
-                    }
-                    else
-                    {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
-                    }
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
                 }
             }
+            else
+            {
+                final char c = str.toCharArray()[0];
+                if(c == ' ')
+                {
+                    cur = Currency.getInstance("EUR");
+                    this.getApplicationLogger().log(new MessageEvent(this,
+                        new CurrencyViolationMessage(Fields.FIELD_C17A,
+                        block * this.persistence.getBlockSize() +
+                        DTAUSTape.CRECORD_OFFSETS1[19], c, cur),
+                        MessageEvent.WARNING));
 
-            transaction.setCurrency(cur);
+                }
+                else
+                {
+                    cur = this.getCurrencyDirectory().getCurrency(c);
+                    if(cur == null)
+                    {
+                        msg = new IllegalDataMessage(Fields.FIELD_A12,
+                            IllegalDataMessage.TYPE_CURRENCY,
+                            block * this.persistence.getBlockSize() +
+                            DTAUSTape.CRECORD_OFFSETS1[19],
+                            Character.toString(c));
+
+                        if(AbstractErrorMessage.isErrorsEnabled())
+                        {
+                            throw new ImplementationException(this.getMeta(),
+                                msg.getText(Locale.getDefault()));
+
+                        }
+                        else
+                        {
+                            ThreadLocalMessages.getMessages().addMessage(msg);
+                        }
+                    }
+                }
+
+                transaction.setCurrency(cur);
+            }
         }
 
         //if(header.getLabel().isBank()) {
@@ -1743,8 +1757,7 @@ public class DTAUSTape extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                        // TODO JDK 1.5: throw new IllegalStateException(e);
-                        throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }
@@ -1758,8 +1771,7 @@ public class DTAUSTape extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                        // TODO JDK 1.5: throw new IllegalStateException(e);
-                        throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }
@@ -1795,8 +1807,7 @@ public class DTAUSTape extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                        // TODO JDK 1.5: throw new IllegalStateException(e);
-                        throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }

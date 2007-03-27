@@ -28,7 +28,8 @@ import java.util.Locale;
 import org.jdtaus.banking.AlphaNumericText27;
 import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.Kontonummer;
-import org.jdtaus.banking.Referenznummer;
+import org.jdtaus.banking.Referenznummer10;
+import org.jdtaus.banking.Referenznummer11;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
@@ -715,6 +716,7 @@ public class DTAUSDisk extends AbstractLogicalFile
             DTAUSDisk.ARECORD_OFFSETS[2], DTAUSDisk.ARECORD_LENGTH[2],
             AbstractLogicalFile.ENCODING_ASCII);
 
+        ret.setType(null);
         if(str != null)
         {
             label = LogicalFileType.valueOf(str);
@@ -779,6 +781,8 @@ public class DTAUSDisk extends AbstractLogicalFile
             DTAUSDisk.ARECORD_OFFSETS[4], DTAUSDisk.ARECORD_LENGTH[4],
             AbstractLogicalFile.ENCODING_ASCII);
 
+        ret.setBankData(null);
+
         if(isBank)
         {
             if(!Bankleitzahl.checkBankleitzahl(num))
@@ -819,8 +823,7 @@ public class DTAUSDisk extends AbstractLogicalFile
             }
             catch(ParseException e)
             {
-                // TODO JDK 1.5: throw new IllegalStateException(e);
-                throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
             }
         }
 
@@ -868,7 +871,7 @@ public class DTAUSDisk extends AbstractLogicalFile
             DTAUSDisk.ARECORD_OFFSETS[9], DTAUSDisk.ARECORD_LENGTH[9],
             AbstractLogicalFile.ENCODING_ASCII);
 
-        if(!Referenznummer.checkReferenznummer(num))
+        if(!Referenznummer10.checkReferenznummer10(num))
         {
             msg = new IllegalDataMessage(Fields.FIELD_A10,
                 IllegalDataMessage.TYPE_REFERENZNUMMER,
@@ -889,7 +892,7 @@ public class DTAUSDisk extends AbstractLogicalFile
         }
         else
         {
-            ret.setReference(Referenznummer.valueOf(num));
+            ret.setReference(Referenznummer10.valueOf(num));
         }
 
         // Feld 11b
@@ -929,63 +932,65 @@ public class DTAUSDisk extends AbstractLogicalFile
             DTAUSDisk.ARECORD_OFFSETS[13], DTAUSDisk.ARECORD_LENGTH[13],
             AbstractLogicalFile.ENCODING_ASCII);
 
-        if(str != null && str.length() != 1)
+        ret.setCurrency(null);
+        if(str != null)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_A12,
-                IllegalDataMessage.TYPE_CURRENCY,
-                headerBlock * this.persistence.getBlockSize() +
-                DTAUSDisk.ARECORD_OFFSETS[13], str);
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(str.length() != 1)
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
-
-            }
-            else
-            {
-                ThreadLocalMessages.getMessages().addMessage(msg);
-            }
-
-        }
-        else
-        {
-            final char c = str.toCharArray()[0];
-            if(c == ' ')
-            {
-                cur = Currency.getInstance("EUR");
-                this.getApplicationLogger().log(new MessageEvent(this,
-                    new CurrencyViolationMessage(Fields.FIELD_A12,
+                msg = new IllegalDataMessage(Fields.FIELD_A12,
+                    IllegalDataMessage.TYPE_CURRENCY,
                     headerBlock * this.persistence.getBlockSize() +
-                    DTAUSDisk.ARECORD_OFFSETS[13], c, cur),
-                    MessageEvent.WARNING));
+                    DTAUSDisk.ARECORD_OFFSETS[13], str);
 
-            }
-            else
-            {
-                cur = this.getCurrencyDirectory().getCurrency(c);
-                if(cur == null)
+                if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    msg = new IllegalDataMessage(Fields.FIELD_A12,
-                        IllegalDataMessage.TYPE_CURRENCY,
-                        headerBlock * this.persistence.getBlockSize() +
-                        DTAUSDisk.ARECORD_OFFSETS[13], str);
-
-                    if(AbstractErrorMessage.isErrorsEnabled())
-                    {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
-
-                    }
-                    else
-                    {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
-                    }
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
 
                 }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
+            else
+            {
+                final char c = str.toCharArray()[0];
+                if(c == ' ')
+                {
+                    cur = Currency.getInstance("EUR");
+                    this.getApplicationLogger().log(new MessageEvent(this,
+                        new CurrencyViolationMessage(Fields.FIELD_A12,
+                        headerBlock * this.persistence.getBlockSize() +
+                        DTAUSDisk.ARECORD_OFFSETS[13], c, cur),
+                        MessageEvent.WARNING));
 
-            ret.setCurrency(cur);
+                }
+                else
+                {
+                    cur = this.getCurrencyDirectory().getCurrency(c);
+                    if(cur == null)
+                    {
+                        msg = new IllegalDataMessage(Fields.FIELD_A12,
+                            IllegalDataMessage.TYPE_CURRENCY,
+                            headerBlock * this.persistence.getBlockSize() +
+                            DTAUSDisk.ARECORD_OFFSETS[13], str);
+
+                        if(AbstractErrorMessage.isErrorsEnabled())
+                        {
+                            throw new ImplementationException(this.getMeta(),
+                                msg.getText(Locale.getDefault()));
+
+                        }
+                        else
+                        {
+                            ThreadLocalMessages.getMessages().addMessage(msg);
+                        }
+                    }
+                }
+
+                ret.setCurrency(cur);
+            }
         }
 
         return ret;
@@ -1304,6 +1309,8 @@ public class DTAUSDisk extends AbstractLogicalFile
             DTAUSDisk.CRECORD_OFFSETS1[2], DTAUSDisk.CRECORD_LENGTH1[2],
             AbstractLogicalFile.ENCODING_ASCII);
 
+        transaction.setPrimaryBank(null);
+
         if(num.longValue() != 0L)
         {
             if(!Bankleitzahl.checkBankleitzahl(num))
@@ -1353,7 +1360,6 @@ public class DTAUSDisk extends AbstractLogicalFile
             {
                 ThreadLocalMessages.getMessages().addMessage(msg);
             }
-
         }
         else
         {
@@ -1382,7 +1388,6 @@ public class DTAUSDisk extends AbstractLogicalFile
             {
                 ThreadLocalMessages.getMessages().addMessage(msg);
             }
-
         }
         else
         {
@@ -1394,7 +1399,7 @@ public class DTAUSDisk extends AbstractLogicalFile
             DTAUSDisk.CRECORD_OFFSETS1[5], DTAUSDisk.CRECORD_LENGTH1[5],
             AbstractLogicalFile.ENCODING_ASCII);
 
-        if(!Referenznummer.checkReferenznummer(num))
+        if(!Referenznummer11.checkReferenznummer11(num))
         {
             msg = new IllegalDataMessage(Fields.FIELD_C6,
                 IllegalDataMessage.TYPE_REFERENZNUMMER,
@@ -1411,11 +1416,10 @@ public class DTAUSDisk extends AbstractLogicalFile
             {
                 ThreadLocalMessages.getMessages().addMessage(msg);
             }
-
         }
         else
         {
-            transaction.setReference(Referenznummer.valueOf(num));
+            transaction.setReference(Referenznummer11.valueOf(num));
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Felder 7a & 7b
@@ -1430,12 +1434,13 @@ public class DTAUSDisk extends AbstractLogicalFile
         type = this.getTextschluesselVerzeichnis().
             getTextschluessel(keyType.intValue(), num.intValue());
 
+        transaction.setType(null);
+
         if(type == null
             || (type.isDebit() && !this.getHeader().getType().isDebitAllowed())
             || (type.isRemittance() && !this.getHeader().getType().
             isRemittanceAllowed()))
         {
-
             msg = new IllegalDataMessage(Fields.FIELD_C7A,
                 IllegalDataMessage.TYPE_TEXTSCHLUESSEL,
                 block * this.persistence.getBlockSize() +
@@ -1452,7 +1457,6 @@ public class DTAUSDisk extends AbstractLogicalFile
             {
                 ThreadLocalMessages.getMessages().addMessage(msg);
             }
-
         }
         else
         {
@@ -1481,7 +1485,6 @@ public class DTAUSDisk extends AbstractLogicalFile
             {
                 ThreadLocalMessages.getMessages().addMessage(msg);
             }
-
         }
         else
         {
@@ -1510,7 +1513,6 @@ public class DTAUSDisk extends AbstractLogicalFile
             {
                 ThreadLocalMessages.getMessages().addMessage(msg);
             }
-
         }
         else
         {
@@ -1537,8 +1539,7 @@ public class DTAUSDisk extends AbstractLogicalFile
             }
             catch(ParseException e)
             {
-                // TODO JDK 1.5: throw new IllegalStateException(e);
-                throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
             }
         }
 
@@ -1555,8 +1556,7 @@ public class DTAUSDisk extends AbstractLogicalFile
             }
             catch(ParseException e)
             {
-                // TODO JDK 1.5: throw new IllegalStateException(e);
-                throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
             }
         }
 
@@ -1573,8 +1573,7 @@ public class DTAUSDisk extends AbstractLogicalFile
             }
             catch(ParseException e)
             {
-                // TODO JDK 1.5: throw new IllegalStateException(e);
-                throw new IllegalStateException(e.toString());
+                throw new ImplementationException(this.getMeta(), e);
             }
         }
 
@@ -1583,63 +1582,66 @@ public class DTAUSDisk extends AbstractLogicalFile
             DTAUSDisk.CRECORD_OFFSETS2[2], DTAUSDisk.CRECORD_LENGTH2[2],
             AbstractLogicalFile.ENCODING_ASCII);
 
-        if(str != null && str.length() != 1)
+        transaction.setCurrency(null);
+
+        if(str != null)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_C17A,
-                IllegalDataMessage.TYPE_CURRENCY,
-                block * this.persistence.getBlockSize() +
-                DTAUSDisk.CRECORD_OFFSETS1[10], str);
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(str.length() != 1)
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_C17A,
+                    IllegalDataMessage.TYPE_CURRENCY,
+                    block * this.persistence.getBlockSize() +
+                    DTAUSDisk.CRECORD_OFFSETS1[10], str);
 
-            }
-            else
-            {
-                ThreadLocalMessages.getMessages().addMessage(msg);
-            }
-
-        }
-        else
-        {
-            final char c = str.toCharArray()[0];
-            if(c == ' ')
-            {
-                cur = Currency.getInstance("EUR");
-                this.getApplicationLogger().log(new MessageEvent(this,
-                    new CurrencyViolationMessage(Fields.FIELD_C17A,
-                    this.getHeaderBlock() * this.persistence.getBlockSize() +
-                    DTAUSDisk.CRECORD_OFFSETS1[10], c, cur),
-                    MessageEvent.WARNING));
-
-            }
-            else
-            {
-                cur = this.getCurrencyDirectory().getCurrency(c);
-                if(cur == null)
+                if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    msg = new IllegalDataMessage(Fields.FIELD_C17A,
-                        IllegalDataMessage.TYPE_CURRENCY,
-                        block * this.persistence.getBlockSize() +
-                        DTAUSDisk.CRECORD_OFFSETS1[10], str);
-
-                    if(AbstractErrorMessage.isErrorsEnabled())
-                    {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
-
-                    }
-                    else
-                    {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
-                    }
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
 
                 }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
+            else
+            {
+                final char c = str.toCharArray()[0];
+                if(c == ' ')
+                {
+                    cur = Currency.getInstance("EUR");
+                    this.getApplicationLogger().log(new MessageEvent(this,
+                        new CurrencyViolationMessage(Fields.FIELD_C17A,
+                        this.getHeaderBlock() * this.persistence.getBlockSize() +
+                        DTAUSDisk.CRECORD_OFFSETS1[10], c, cur),
+                        MessageEvent.WARNING));
 
-            transaction.setCurrency(cur);
+                }
+                else
+                {
+                    cur = this.getCurrencyDirectory().getCurrency(c);
+                    if(cur == null)
+                    {
+                        msg = new IllegalDataMessage(Fields.FIELD_C17A,
+                            IllegalDataMessage.TYPE_CURRENCY,
+                            block * this.persistence.getBlockSize() +
+                            DTAUSDisk.CRECORD_OFFSETS1[10], str);
+
+                        if(AbstractErrorMessage.isErrorsEnabled())
+                        {
+                            throw new ImplementationException(this.getMeta(),
+                                msg.getText(Locale.getDefault()));
+
+                        }
+                        else
+                        {
+                            ThreadLocalMessages.getMessages().addMessage(msg);
+                        }
+                    }
+                }
+
+                transaction.setCurrency(cur);
+            }
         }
 
         //if(header.getLabel().isBank()) {
@@ -1702,8 +1704,7 @@ public class DTAUSDisk extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                        // TODO JDK 1.5: throw new IllegalStateException(e);
-                        throw new IllegalStateException(e.toString());
+                        throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }
@@ -1717,8 +1718,7 @@ public class DTAUSDisk extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                        // TODO JDK 1.5: throw new IllegalStateException(e);
-                        throw new IllegalStateException(e.toString());
+                        throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }
@@ -1755,8 +1755,7 @@ public class DTAUSDisk extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                        // TODO JDK 1.5: throw new IllegalStateException(e);
-                        throw new IllegalStateException(e.toString());
+                        throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }
