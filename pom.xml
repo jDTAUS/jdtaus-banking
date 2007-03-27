@@ -133,7 +133,7 @@
     <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-banking-api</artifactId>
-      <version>1.0-alpha-10-SNAPSHOT</version>
+      <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -157,7 +157,7 @@
     <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-banking-api</artifactId>
-      <version>1.0-alpha-10-SNAPSHOT</version>
+      <version>RELEASE</version>
       <scope>test</scope>
       <classifier>tests</classifier>
     </dependency>
