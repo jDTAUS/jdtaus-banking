@@ -9,12 +9,12 @@
   <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI Textschluesselverzeichnis</name>
-  <version>1.0-alpha-5</version>
+  <version>1.0-alpha-6-SNAPSHOT</version>
   <description>jDTAUS TextschluesselVerzeichnis reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/1.0-alpha-5</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/1.0-alpha-5</developerConnection>
-    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/1.0-alpha-5</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</url>
   </scm>
   <build>
     <resources>
