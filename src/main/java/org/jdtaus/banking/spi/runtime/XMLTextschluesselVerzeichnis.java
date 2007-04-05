@@ -512,7 +512,6 @@ public class XMLTextschluesselVerzeichnis implements
     protected DocumentBuilder getDocumentBuilder() throws IOException,
         ParserConfigurationException
     {
-
         final DocumentBuilder xmlBuilder;
         final DocumentBuilderFactory xmlFactory =
             DocumentBuilderFactory.newInstance();
@@ -535,7 +534,6 @@ public class XMLTextschluesselVerzeichnis implements
         }
         catch(IllegalArgumentException e)
         {
-            this.getLogger().error(e);
             this.getLogger().warn(XMLTextschluesselVerzeichnisBundle.
                 getNoJAXPValidationWarningMessage(Locale.getDefault()).
                 format(new Object[] { e.getMessage() }));
