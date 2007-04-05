@@ -13,9 +13,11 @@
         urchinTracker();
       </script>
     </head>
-
-    <menu ref="parent"/>
-    <menu ref="modules"/>
+    
+    <menu name="jDTAUS Banking">
+      <item name="About" href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/index.html"/>
+    </menu>
+    
     <menu ref="reports"/>
   </body>
 </project>
