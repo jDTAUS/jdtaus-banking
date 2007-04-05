@@ -1,13 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-alpha-3</version>
+    <version>1.0-alpha-4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
-  <groupId>org.jdtaus.runtime</groupId>
+  <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI Textschluesselverzeichnis</name>
   <version>1.0-alpha-4-SNAPSHOT</version>
   <description>jDTAUS TextschluesselVerzeichnis reference implementation.</description>
@@ -73,7 +75,7 @@
           </execution>
         </executions>
       </plugin>
-
+      
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
@@ -82,6 +84,7 @@
           <execution>
             <id>default</id>
             <goals>
+              <goal>test-messageformat</goal>
               <goal>generate-bundles</goal>
             </goals>
             <configuration>
@@ -99,15 +102,18 @@
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-container-mojo</artifactId>
         <version>RELEASE</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.jdtaus.runtime</groupId>
-            <artifactId>jdtaus-core-client-container</artifactId>
-            <version>RELEASE</version>
-            <scope>runtime</scope>
-          </dependency>
-        </dependencies>
         <executions>
+          <execution>
+            <id>clean</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>clean-sources</goal>
+            </goals>
+            <configuration>
+              <encoding>UTF-8</encoding>
+              <classPathElementsExcludeRegexp>.*jdtaus-core-api.*jar</classPathElementsExcludeRegexp>
+            </configuration>
+          </execution>
           <execution>
             <id>default</id>
             <goals>
@@ -127,7 +133,13 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>org.jdtaus.spi</groupId>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-spi</artifactId>
+      <version>RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
@@ -149,7 +161,7 @@
       </snapshots>
       <id>jdtaus-releases</id>
       <name>jDTAUS Release Repository</name>
-      <url>http://maven2-repository.jdtaus.org/releases</url>
+      <url>http://repository.jdtaus.org/releases</url>
     </repository>
   </repositories>
   <pluginRepositories>
@@ -164,7 +176,7 @@
       </snapshots>
       <id>jdtaus-releases</id>
       <name>jDTAUS Release Repository</name>
-      <url>http://maven2-repository.jdtaus.org/releases</url>
+      <url>http://repository.jdtaus.org/releases</url>
     </pluginRepository>
   </pluginRepositories>
   <reporting>
