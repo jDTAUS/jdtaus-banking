@@ -499,7 +499,7 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.getMessage());
+            System.err.println(e.toString());
         }
     }
 
@@ -512,7 +512,7 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.getMessage());
+            System.err.println(e.toString());
         }
     }
 
@@ -525,7 +525,7 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.getMessage());
+            System.err.println(e.toString());
         }
     }
 
@@ -538,7 +538,7 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.getMessage());
+            System.err.println(e.toString());
         }
     }
 

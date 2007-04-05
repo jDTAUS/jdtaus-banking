@@ -29,6 +29,7 @@ import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
+import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalFileLengthMessage;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
@@ -341,7 +342,17 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
             // Datei-Länge prüfen.
             if(length % blockSize != 0)
             {
-                throw new PhysicalFileException(null);
+                msg = new IllegalFileLengthMessage(length, blockSize);
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(META,
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
 
             messages = ThreadLocalMessages.getMessages().getMessages();

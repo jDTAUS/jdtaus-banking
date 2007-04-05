@@ -91,6 +91,7 @@
                 <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.CurrencyViolationMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalFileLengthMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalScheduleMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
