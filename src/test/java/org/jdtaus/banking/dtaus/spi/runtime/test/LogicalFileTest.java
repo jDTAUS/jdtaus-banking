@@ -376,7 +376,7 @@ public class LogicalFileTest extends TestCase
 
         Assert.assertTrue(t.getExecutiveBank().intValue() == 55555555);
         Assert.assertTrue(t.getExecutiveAccount().longValue() == 6666666666L);
-        Assert.assertTrue(t.getAmount().longValueExact() == 77777777777L);
+        Assert.assertTrue(t.getAmount().longValue() == 77777777777L); // TODO longValueExact()
         Assert.assertTrue(t.getTargetName().format().
             equals("ABCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
 
