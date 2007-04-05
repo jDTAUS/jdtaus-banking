@@ -1,13 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-alpha-3</version>
+    <version>1.0-alpha-4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
-  <groupId>org.jdtaus.runtime</groupId>
+  <groupId>org.jdtaus.banking.dtaus</groupId>
   <name>jDTAUS Banking RI DTAUS</name>
   <version>1.0-alpha-8-SNAPSHOT</version>
   <description>jDTAUS DTAUS file format reference implementation.</description>
@@ -81,6 +83,7 @@
           <execution>
             <id>default</id>
             <goals>
+              <goal>test-messageformat</goal>
               <goal>generate-bundles</goal>
             </goals>
             <configuration>
@@ -103,15 +106,18 @@
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-container-mojo</artifactId>
         <version>RELEASE</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.jdtaus.runtime</groupId>
-            <artifactId>jdtaus-core-client-container</artifactId>
-            <version>RELEASE</version>
-            <scope>runtime</scope>
-          </dependency>
-        </dependencies>
         <executions>
+          <execution>
+            <id>clean</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>clean-sources</goal>
+            </goals>
+            <configuration>
+              <encoding>UTF-8</encoding>
+              <classPathElementsExcludeRegexp>.*jdtaus-core-api.*jar</classPathElementsExcludeRegexp>
+            </configuration>
+          </execution>
           <execution>
             <id>default</id>
             <goals>
@@ -131,25 +137,31 @@
   </build>
   <dependencies>
     <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-spi</artifactId>
+      <version>RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-banking-api</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.spi</groupId>
+      <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.runtime</groupId>
+      <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
       <version>RELEASE</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.runtime</groupId>
+      <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
       <version>RELEASE</version>
       <scope>test</scope>
@@ -162,27 +174,27 @@
       <classifier>tests</classifier>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.runtime</groupId>
+      <groupId>org.jdtaus.core.container</groupId>
       <artifactId>jdtaus-core-client-container</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.runtime</groupId>
+      <groupId>org.jdtaus.core.monitor</groupId>
       <artifactId>jdtaus-core-client-monitoring</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.runtime</groupId>
+      <groupId>org.jdtaus.core.lang</groupId>
       <artifactId>jdtaus-core-limiting-runtime</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.runtime</groupId>
+      <groupId>org.jdtaus.core.text</groupId>
       <artifactId>jdtaus-core-application-logger</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.runtime</groupId>
+      <groupId>org.jdtaus.core.logging</groupId>
       <artifactId>jdtaus-core-jdk-logging</artifactId>
       <scope>test</scope>
     </dependency>
@@ -203,7 +215,7 @@
       </snapshots>
       <id>jdtaus-releases</id>
       <name>jDTAUS Release Repository</name>
-      <url>http://maven2-repository.jdtaus.org/releases</url>
+      <url>http://repository.jdtaus.org/releases</url>
     </repository>
   </repositories>
   <pluginRepositories>
@@ -218,7 +230,7 @@
       </snapshots>
       <id>jdtaus-releases</id>
       <name>jDTAUS Release Repository</name>
-      <url>http://maven2-repository.jdtaus.org/releases</url>
+      <url>http://repository.jdtaus.org/releases</url>
     </pluginRepository>
   </pluginRepositories>
   <reporting>
