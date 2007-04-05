@@ -17,7 +17,7 @@
   </issueManagement>
   <ciManagement>
     <system>Continuum</system>
-    <url>http://continuum.jdtaus.org/continuum</url>
+    <url>http://continuum.jdtaus.org/continuum/</url>
     <notifiers>
       <notifier>
         <type>mail</type>
