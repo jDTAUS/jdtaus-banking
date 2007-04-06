@@ -105,8 +105,7 @@ public class DefaultPhysicalFile implements PhysicalFile
         final StructuredFileOperations structuredFile) throws IOException
     {
 
-        this(ModelFactory.getModel().getModules().
-            getImplementation(DefaultPhysicalFile.class.getName()));
+        this(DefaultPhysicalFile.META);
 
         if(structuredFile == null)
         {
@@ -162,7 +161,6 @@ public class DefaultPhysicalFile implements PhysicalFile
                     if(block >= index[i].getHeaderBlock() &&
                         block <= index[i].getChecksumBlock())
                     {
-
                         break;
                     }
                 }

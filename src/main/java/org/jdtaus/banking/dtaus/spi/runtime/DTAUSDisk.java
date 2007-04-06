@@ -324,8 +324,7 @@ public class DTAUSDisk extends AbstractLogicalFile
         final StructuredFileOperations persistence) throws IOException
     {
 
-        this(ModelFactory.getModel().getModules().
-            getImplementation(DTAUSDisk.class.getName()));
+        this(DTAUSDisk.META);
 
         if(persistence == null)
         {
@@ -560,7 +559,6 @@ public class DTAUSDisk extends AbstractLogicalFile
         final Transaction transaction, final Checksum checksum)
         throws IOException
     {
-
         int ret = 2;
         final long extCount = this.readNumber(Fields.FIELD_C18, block + 1,
             DTAUSDisk.CRECORD_OFFSETS2[4], DTAUSDisk.CRECORD_LENGTH2[4],
@@ -596,7 +594,6 @@ public class DTAUSDisk extends AbstractLogicalFile
 
     protected char getBlockType(final long block) throws IOException
     {
-
         // Feld 2
         final String str = this.readAlphaNumeric(Fields.FIELD_A2, block,
             DTAUSDisk.ARECORD_OFFSETS[1], DTAUSDisk.ARECORD_LENGTH[1],
@@ -997,7 +994,6 @@ public class DTAUSDisk extends AbstractLogicalFile
     protected void writeHeader(final long headerBlock,
         final Header header) throws IOException
     {
-
         final Header.Schedule schedule;
         final LogicalFileType label;
         final boolean isBank;
@@ -1178,7 +1174,6 @@ public class DTAUSDisk extends AbstractLogicalFile
     protected void writeChecksum(final long checksumBlock,
         final Checksum checksum) throws IOException
     {
-
         // Feld 1
         this.writeNumber(Fields.FIELD_E1, checksumBlock,
             DTAUSDisk.ERECORD_OFFSETS[0], DTAUSDisk.ERECORD_LENGTH[0],
@@ -1258,7 +1253,6 @@ public class DTAUSDisk extends AbstractLogicalFile
         if(num.intValue() != DTAUSDisk.CRECORD_CONST_LENGTH +
             extCount * DTAUSDisk.CRECORD_EXT_LENGTH)
         {
-
             msg = new IllegalDataMessage(Fields.FIELD_C1,
                 IllegalDataMessage.TYPE_NUMERIC,
                 block * this.persistence.getBlockSize() +
@@ -1797,7 +1791,9 @@ public class DTAUSDisk extends AbstractLogicalFile
         final Transaction.Description desc = transaction.getDescription();
         final Textschluessel type = transaction.getType();
         final int descCount;
-        int extCount = desc.getDescriptionCount() - 1;
+        int extCount = desc.getDescriptionCount() > 0 ?
+            desc.getDescriptionCount() - 1 : 0;
+
         if(transaction.getExecutiveExt() != null)
         {
             extCount++;
@@ -2025,11 +2021,11 @@ public class DTAUSDisk extends AbstractLogicalFile
         }
     }
 
-
-
     protected int blockCount(final Transaction transaction)
     {
-        int extCount = transaction.getDescription().getDescriptionCount() - 1;
+        int extCount = transaction.getDescription().getDescriptionCount() > 0
+            ? transaction.getDescription().getDescriptionCount() - 1 : 0;
+
         if(transaction.getExecutiveExt() != null)
         {
             extCount++;
@@ -2058,13 +2054,12 @@ public class DTAUSDisk extends AbstractLogicalFile
         return DTAUSDisk.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
     }
 
-//-----------------------------------------------------AbstractLogicalFile--
-//--DTAUSDisk---------------------------------------------------------------
+    //-----------------------------------------------------AbstractLogicalFile--
+    //--DTAUSDisk---------------------------------------------------------------
 
     private void initializeExtensionBlock(final int blockIndex,
         final long block) throws IOException
     {
-
         int extIndex;
         int startingExt;
         int endingExt;

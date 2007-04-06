@@ -312,9 +312,7 @@ public class DTAUSTape extends AbstractLogicalFile
     protected DTAUSTape(final long headerBlock,
         final StructuredFileOperations persistence) throws IOException
     {
-
-        this(ModelFactory.getModel().getModules().
-            getImplementation(DTAUSTape.class.getName()));
+        this(DTAUSTape.META);
 
         if(persistence == null)
         {
@@ -639,7 +637,9 @@ public class DTAUSTape extends AbstractLogicalFile
 
     protected int blockCount(final Transaction transaction)
     {
-        int extCount = transaction.getDescription().getDescriptionCount() - 1;
+        int extCount = transaction.getDescription().getDescriptionCount() > 0 ?
+            transaction.getDescription().getDescriptionCount() - 1 : 0;
+
         if(transaction.getExecutiveExt() != null)
         {
             extCount++;
@@ -1039,7 +1039,6 @@ public class DTAUSTape extends AbstractLogicalFile
     public void writeHeader(final long headerBlock,
         final Header header) throws IOException
     {
-
         final Header.Schedule schedule;
         final LogicalFileType label;
         final boolean isBank;
@@ -1236,7 +1235,6 @@ public class DTAUSTape extends AbstractLogicalFile
     public void writeChecksum(final long checksumBlock,
         final Checksum checksum) throws IOException
     {
-
         // Feld 1
         this.writeNumberBinary(Fields.FIELD_E1, checksumBlock,
             DTAUSTape.ERECORD_OFFSETS[0], DTAUSTape.ERECORD_LENGTH[0],
@@ -1755,7 +1753,7 @@ public class DTAUSTape extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                throw new ImplementationException(this.getMeta(), e);
+                        throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }
@@ -1769,7 +1767,7 @@ public class DTAUSTape extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                throw new ImplementationException(this.getMeta(), e);
+                        throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }
@@ -1805,7 +1803,7 @@ public class DTAUSTape extends AbstractLogicalFile
                     }
                     catch(ParseException e)
                     {
-                throw new ImplementationException(this.getMeta(), e);
+                        throw new ImplementationException(this.getMeta(), e);
                     }
                 }
             }
@@ -1838,7 +1836,6 @@ public class DTAUSTape extends AbstractLogicalFile
     public void writeTransaction(final long block,
         final Transaction transaction) throws IOException
     {
-
         int i;
         long blockOffset;
         int extIndex;
@@ -1848,7 +1845,9 @@ public class DTAUSTape extends AbstractLogicalFile
         final Textschluessel type = transaction.getType();
         final Transaction.Description desc = transaction.getDescription();
         final int descCount;
-        int extCount = desc.getDescriptionCount() - 1;
+        int extCount = desc.getDescriptionCount() > 0 ?
+            desc.getDescriptionCount() - 1 : 0;
+
         if(transaction.getExecutiveExt() != null)
         {
             extCount++;
