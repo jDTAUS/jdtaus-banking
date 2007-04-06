@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Locale;
-import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
+import org.jdtaus.banking.dtaus.spi.runtime.AbstractErrorMessage;
 import org.jdtaus.core.text.Message;
 
 /**

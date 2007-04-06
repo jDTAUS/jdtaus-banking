@@ -38,21 +38,19 @@ import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
-import org.jdtaus.banking.dtaus.spi.AbstractErrorMessage;
 import org.jdtaus.banking.dtaus.spi.Fields;
-import org.jdtaus.banking.dtaus.spi.ThreadLocalMessages;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ImplementationException;
-import org.jdtaus.core.nio.spi.Charsets;
-import org.jdtaus.core.text.Message;
-import org.jdtaus.core.text.spi.ApplicationLogger;
 import org.jdtaus.core.io.spi.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.monitor.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
+import org.jdtaus.core.nio.spi.Charsets;
+import org.jdtaus.core.text.Message;
+import org.jdtaus.core.text.spi.ApplicationLogger;
 
 /**
  * Abstrakte Klasse für {@code LogicalFile}-Implementierungen.
