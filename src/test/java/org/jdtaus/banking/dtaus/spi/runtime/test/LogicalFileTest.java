@@ -194,6 +194,17 @@ public class LogicalFileTest extends TestCase
         return factory.getPhysicalFile(ops);
     }
 
+    protected static PhysicalFile getIllegalFileLength2() throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write(LogicalFileTest.class.getResourceAsStream(
+            "illegal_file_length_2"));
+
+        return factory.getPhysicalFile(ops);
+    }
+
     //--------------------------------------------DTAUS getDTAUSSingleHeader()--
     //--Tests-------------------------------------------------------------------
 
@@ -534,6 +545,19 @@ public class LogicalFileTest extends TestCase
         try
         {
             getIllegalFileLength();
+            this.fail();
+        }
+        catch(PhysicalFileException e)
+        {
+            System.err.println(e.toString());
+        }
+    }
+
+    public void testIllegalFileLength2() throws Exception
+    {
+        try
+        {
+            getIllegalFileLength2();
             this.fail();
         }
         catch(PhysicalFileException e)

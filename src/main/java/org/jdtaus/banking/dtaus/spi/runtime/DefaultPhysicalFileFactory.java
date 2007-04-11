@@ -258,10 +258,10 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
     public int analyse(final FileOperations fileOperations) throws
         PhysicalFileException, IOException
     {
-
-        int blockSize = -1;
+        int blockSize = 128;
+        long remainder = 0;
         int read = 0;
-        int ret = -1;
+        int ret = PhysicalFileFactory.FORMAT_DISK;
         int size = 0x000000FF;
         int total = 0;
         Message msg;
@@ -303,8 +303,7 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
                 str = Charsets.decode(buf, Charsets.DIN66003);
                 if("0128".equals(str))
                 {
-                    ret = PhysicalFileFactory.FORMAT_DISK;
-                    blockSize = 128;
+                    remainder = length % blockSize;
                 }
                 else
                 {
@@ -317,6 +316,7 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
                     {
                         ret = PhysicalFileFactory.FORMAT_TAPE;
                         blockSize = 150;
+                        remainder = length % blockSize;
                     }
                     else
                     {
@@ -336,9 +336,22 @@ public class DefaultPhysicalFileFactory implements PhysicalFileFactory
                     }
                 }
             }
+            else
+            {
+                msg = new IllegalFileLengthMessage(length, blockSize);
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(META,
+                        msg.getText(Locale.getDefault()));
 
-            // Datei-Länge prüfen.
-            if(length % blockSize != 0)
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
+            }
+
+            if(remainder > 0)
             {
                 msg = new IllegalFileLengthMessage(length, blockSize);
                 if(AbstractErrorMessage.isErrorsEnabled())

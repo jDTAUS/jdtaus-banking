@@ -461,7 +461,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int off, final int len, long number,
         final int encoding) throws IOException
     {
-
         int i;
         int pos;
         final long maxValue =  AbstractLogicalFile.EXP10[len] - 1L;
@@ -606,7 +605,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int off, final int len, final String str,
         final int encoding) throws IOException
     {
-
         final int length;
         final int delta;
         final char[] c;
@@ -827,7 +825,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected void writeShortDate(final int field, final long block,
         final int off, final Date date, final int encoding) throws IOException
     {
-
         int i;
         final byte[] buf;
         final Integer cset;
@@ -1046,7 +1043,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int off, final Date date,
         final int encoding) throws IOException
     {
-
         int i;
         final byte[] buf;
         final Integer cset;
@@ -1248,7 +1244,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int off, final int len, long number,
         final boolean sign) throws IOException
     {
-
         int i;
         int pos = 0;
         final int nibbles = len * 2;
@@ -1317,7 +1312,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected long readNumberBinary(final int field, final long block,
         final int off, final int len) throws IOException
     {
-
         if(len <= 0 || len > 8)
         {
             throw new IllegalArgumentException(Integer.toString(len));
@@ -1365,7 +1359,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected void writeNumberBinary(final int field, final long block,
         final int off, final int len, final long number) throws IOException
     {
-
         if(len <= 0 || len > 8)
         {
             throw new IllegalArgumentException(Integer.toString(len));
@@ -1396,7 +1389,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected boolean checkTransactionId(final int id,
         final Checksum checksum)
     {
-
         if(checksum == null)
         {
             throw new NullPointerException("checksum");
@@ -1441,7 +1433,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected final void checkAmount(final int field, final long block,
         final int off, final long amount, final boolean isMandatory)
     {
-
         final Message msg;
 
         if(!this.checkAmount(amount, isMandatory))
@@ -1477,7 +1468,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected boolean checkAmount(final long amount,
         final boolean isMandatory)
     {
-
         return (isMandatory ? amount > 0L : amount >= 0L) &&
             amount < 100000000000L;
 
@@ -1577,7 +1567,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected void checkTransaction(
         final Transaction transaction) throws IOException
     {
-
         int i;
         final Transaction.Description desc;
         final Kontonummer executiveAccount;
@@ -1591,7 +1580,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final Textschluessel[] allowedTypes =
             this.getTextschluesselVerzeichnisImpl().
             search(lFileType.isDebitAllowed(), lFileType.isRemittanceAllowed());
-
 
         if(transaction == null)
         {
@@ -1937,29 +1925,40 @@ public abstract class AbstractLogicalFile implements LogicalFile
     //------------------------------------------------Property "checksumBlock"--
     //--LogicalFile-------------------------------------------------------------
 
-    static class ChecksumMessage extends Message
+    /**
+     * {@code Task} Implementierung für die sequentielle Prüfsummenberechnung.
+     */
+    public static class ChecksumTask extends Task
     {
-
-        private static final Object[] NO_ARGS = {};
-
-        public Object[] getFormatArguments(final Locale locale)
+        /** Beschreibung des {@code ChecksumTask} .*/
+        public static final class Description extends Message
         {
-            return NO_ARGS;
+            private static final Object[] NO_ARGS = {};
+
+            public Object[] getFormatArguments(final Locale locale)
+            {
+                return NO_ARGS;
+            }
+
+            public String getText(final Locale locale)
+            {
+                return AbstractLogicalFileBundle.getChecksumTaskText(locale);
+            }
         }
 
-        public String getText(final Locale locale)
-        {
-            return AbstractLogicalFileBundle.getChecksumTaskText(locale);
-        }
-    }
-
-    static class ChecksumTask extends Task
-    {
-
-        private final Message description = new ChecksumMessage();
+        /**
+         * Beschreibung des {@code ChecksumTask}.
+         * @serial
+         */
+        private Message description;
 
         public Message getDescription()
         {
+            if(this.description == null)
+            {
+                this.description = new ChecksumTask.Description();
+            }
+
             return this.description;
         }
     }
@@ -2152,15 +2151,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         this.checkTransaction(transaction);
 
         checksum.setTransactionCount(newCount);
-        checksum.setSumAmount(checksum.getSumAmount() +
-            transaction.getAmount().longValue());
-
-        checksum.setSumTargetAccount(checksum.getSumTargetAccount() +
-            transaction.getTargetAccount().longValue());
-
-        checksum.setSumTargetBank(checksum.getSumTargetBank() +
-            transaction.getTargetBank().intValue());
-
+        checksum.add(transaction);
         transactionId = checksum.getTransactionCount() - 1;
         blockCount = this.blockCount(transaction);
         this.persistence.insertBlocks(this.getChecksumBlock(), blockCount);
@@ -2207,15 +2198,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int delta;
         int i;
 
-        checksum.setSumAmount(checksum.getSumAmount() -
-            old.getAmount().longValue());
-
-        checksum.setSumTargetAccount(checksum.getSumTargetAccount() -
-            old.getTargetAccount().longValue());
-
-        checksum.setSumTargetBank(checksum.getSumTargetBank() -
-            old.getTargetBank().intValue());
-
+        checksum.substract(old);
+        checksum.add(transaction);
         oldBlocks = this.blockCount(old);
         newBlocks = this.blockCount(transaction);
         if(oldBlocks < newBlocks)
@@ -2251,15 +2235,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         this.writeTransaction(this.getHeaderBlock() + this.index[index],
             transaction);
 
-        checksum.setSumTargetAccount(checksum.getSumTargetAccount() +
-            transaction.getTargetAccount().longValue());
-
-        checksum.setSumAmount(checksum.getSumAmount() +
-            transaction.getAmount().longValue());
-
-        checksum.setSumTargetBank(checksum.getSumTargetBank() +
-            transaction.getTargetBank().intValue());
-
         this.writeChecksum(this.getChecksumBlock(), checksum);
         this.cachedChecksum = checksum;
         this.persistence.flush();
@@ -2276,14 +2251,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         final Transaction removed = this.getTransaction(index);
         checksum.setTransactionCount(checksum.getTransactionCount() - 1);
-        checksum.setSumAmount(checksum.getSumAmount() -
-            removed.getAmount().longValue());
-
-        checksum.setSumTargetAccount(checksum.getSumTargetAccount() -
-            removed.getTargetAccount().longValue());
-
-        checksum.setSumTargetBank(checksum.getSumTargetBank() -
-            removed.getTargetBank().intValue());
+        checksum.substract(removed);
 
         final int blockCount = this.blockCount(
             this.getHeaderBlock() + this.index[index]);

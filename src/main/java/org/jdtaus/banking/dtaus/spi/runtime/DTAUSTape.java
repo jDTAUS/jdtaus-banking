@@ -559,24 +559,10 @@ public class DTAUSTape extends AbstractLogicalFile
         {
             final Transaction t = this.readTransaction(block, transaction);
 
-            if(t.getAmount() != null)
+            if(t.getAmount() != null && t.getTargetAccount() != null &&
+                t.getTargetBank() != null)
             {
-                checksum.setSumAmount(checksum.getSumAmount() +
-                    t.getAmount().longValue()); // TODO longValueExact()
-            }
-
-            if(t.getTargetAccount() != null)
-            {
-                checksum.setSumTargetAccount(checksum.getSumTargetAccount() +
-                    t.getTargetAccount().longValue());
-
-            }
-
-            if(t.getTargetBank() != null)
-            {
-                checksum.setSumTargetBank(checksum.getSumTargetBank() +
-                    t.getTargetBank().intValue());
-
+                checksum.add(t);
             }
 
             ret = CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[(int) extCount];
