@@ -17,13 +17,13 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.dtaus.spi.runtime.messages;
+package org.jdtaus.banking.dtaus.ri.zka.messages;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Locale;
-import org.jdtaus.banking.dtaus.spi.runtime.AbstractErrorMessage;
+import org.jdtaus.banking.dtaus.ri.zka.AbstractErrorMessage;
 import org.jdtaus.core.text.Message;
 
 /**

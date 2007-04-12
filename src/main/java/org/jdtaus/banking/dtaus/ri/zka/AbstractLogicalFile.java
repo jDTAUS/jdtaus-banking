@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.dtaus.spi.runtime;
+package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -39,8 +39,8 @@ import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.Fields;
-import org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage;
-import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.io.util.StructuredFileOperations;

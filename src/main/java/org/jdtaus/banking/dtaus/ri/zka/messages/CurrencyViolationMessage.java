@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.dtaus.spi.runtime.messages;
+package org.jdtaus.banking.dtaus.ri.zka.messages;
 
 import java.util.Currency;
 import java.util.Locale;

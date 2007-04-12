@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.dtaus.spi.runtime;
+package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -26,8 +26,8 @@ import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFileException;
 import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.spi.Fields;
-import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
-import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalFileLengthMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalFileLengthMessage;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;

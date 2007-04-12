@@ -37,7 +37,7 @@
     <!--                                                                     -->
     <!-- PropertyCurrencyDirectory                                           -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.spi.runtime.PropertyCurrencyDirectory"
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.PropertyCurrencyDirectory"
                            jdtaus:name="jDTAUS Banking SPI"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
@@ -54,7 +54,7 @@
           <jdtaus:properties>
             <jdtaus:property jdtaus:name="name" 
                              jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.dtaus.spi.runtime.PropertyCurrencyDirectory"
+                             jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.PropertyCurrencyDirectory"
                              jdtaus:api="true"/>
             
           </jdtaus:properties>
@@ -71,7 +71,7 @@
     <!--                                                                     -->
     <!-- DefaultPhysicalFileFactory                                          -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.spi.runtime.DefaultPhysicalFileFactory"
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory"
                            jdtaus:name="${pom.name}"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
@@ -130,7 +130,7 @@
           <jdtaus:properties>
             <jdtaus:property jdtaus:name="name" 
                              jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.dtaus.spi.runtime.DefaultPhysicalFileFactory"
+                             jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory"
                              jdtaus:api="true"/>
             
           </jdtaus:properties>
@@ -153,7 +153,7 @@
     <!--                                                                     -->
     <!-- DefaultPhysicalFile                                                 -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.spi.runtime.DefaultPhysicalFile"
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile"
                            jdtaus:name="${pom.name}"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
@@ -173,7 +173,7 @@
     <!--                                                                     -->
     <!-- DTAUSDisk                                                           -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.spi.runtime.DTAUSDisk"
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"
                            jdtaus:name="${pom.name} - Disk"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
@@ -190,7 +190,7 @@
           <jdtaus:properties>
             <jdtaus:property jdtaus:name="name" 
                              jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.dtaus.spi.runtime.DTAUSDisk"
+                             jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"
                              jdtaus:api="true"/>
             
           </jdtaus:properties>
@@ -227,7 +227,7 @@
     <!--                                                                     -->
     <!-- DTAUSTape                                                           -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.spi.runtime.DTAUSTape"
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"
                            jdtaus:name="${pom.name} - Tape"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
@@ -244,7 +244,7 @@
           <jdtaus:properties>
             <jdtaus:property jdtaus:name="name" 
                              jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.dtaus.spi.runtime.DTAUSTape"
+                             jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"
                              jdtaus:api="true"/>
             
           </jdtaus:properties>

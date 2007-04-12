@@ -3,7 +3,7 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-alpha-4</version>
+    <version>1.0-alpha-5</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
@@ -86,13 +86,13 @@
             </goals>
             <configuration>
               <bundles>
-                <bundle>org.jdtaus.banking.dtaus.spi.runtime.AbstractLogicalFile</bundle>
-                <bundle>org.jdtaus.banking.dtaus.spi.runtime.DefaultPhysicalFile</bundle>
-                <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.CurrencyViolationMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalFileLengthMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalScheduleMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyViolationMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalFileLengthMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
@@ -136,12 +136,6 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>org.jdtaus.core</groupId>
-      <artifactId>jdtaus-core-utilities</artifactId>
-      <version>RELEASE</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>RELEASE</version>
@@ -167,13 +161,21 @@
       <classifier>tests</classifier>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-utilities</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-spi</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.core.container</groupId>
       <artifactId>jdtaus-core-client-container</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.monitor</groupId>
-      <artifactId>jdtaus-core-client-monitoring</artifactId>
+      <artifactId>jdtaus-core-server-monitoring</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -247,6 +249,7 @@
             <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
             <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-api/apidocs</link>
             <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-spi/apidocs</link>
+            <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-utilities/apidocs</link>
             <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-api/apidocs</link>
             <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-spi/apidocs</link>
           </links>
