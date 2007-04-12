@@ -33,7 +33,7 @@ import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.io.StructuredFileListener;
-import org.jdtaus.core.io.spi.StructuredFileOperations;
+import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.monitor.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
 import org.jdtaus.core.text.Message;

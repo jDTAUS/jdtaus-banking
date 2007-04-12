@@ -34,7 +34,7 @@ import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.test.HeaderTest;
 import org.jdtaus.banking.dtaus.test.TransactionTest;
 import org.jdtaus.core.container.ContainerFactory;
-import org.jdtaus.core.io.MemoryFileOperations;
+import org.jdtaus.core.io.util.MemoryFileOperations;
 
 /**
  * jUnit tests for {@link LogicalFile} implementations.

@@ -43,7 +43,7 @@ import org.jdtaus.banking.dtaus.spi.runtime.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.spi.runtime.messages.IllegalDataMessage;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ImplementationException;
-import org.jdtaus.core.io.spi.StructuredFileOperations;
+import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.monitor.Task;

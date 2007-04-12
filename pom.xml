@@ -10,7 +10,7 @@
   <groupId>org.jdtaus.banking.dtaus</groupId>
   <name>jDTAUS Banking RI DTAUS</name>
   <version>1.0-alpha-13-SNAPSHOT</version>
-  <description>jDTAUS DTAUS file format reference implementation.</description>
+  <description>jDTAUS DTAUS reference implementation.</description>
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/trunk</connection>
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/trunk</developerConnection>
@@ -137,13 +137,7 @@
   <dependencies>
     <dependency>
       <groupId>org.jdtaus.core</groupId>
-      <artifactId>jdtaus-core-spi</artifactId>
-      <version>RELEASE</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jdtaus.common</groupId>
-      <artifactId>jdtaus-banking-api</artifactId>
+      <artifactId>jdtaus-core-utilities</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>

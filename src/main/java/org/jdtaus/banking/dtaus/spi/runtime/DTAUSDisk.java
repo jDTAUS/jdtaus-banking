@@ -48,7 +48,7 @@ import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.io.spi.StructuredFileOperations;
+import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.monitor.spi.TaskMonitor;

@@ -38,7 +38,7 @@ import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.io.FileOperations;
-import org.jdtaus.core.io.spi.StructuredFileOperations;
+import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.nio.spi.Charsets;
 import org.jdtaus.core.text.Message;

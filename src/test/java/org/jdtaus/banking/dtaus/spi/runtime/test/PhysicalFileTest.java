@@ -34,7 +34,7 @@ import org.jdtaus.banking.dtaus.test.HeaderTest;
 import org.jdtaus.banking.dtaus.test.TransactionTest;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.io.FileOperations;
-import org.jdtaus.core.io.RandomAccessFileOperations;
+import org.jdtaus.core.io.util.RandomAccessFileOperations;
 
 /**
  * Tests für {@link org.jdtaus.common.dtaus.PhysicalFile}.

@@ -80,7 +80,7 @@
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"/>
       </jdtaus:implementedSpecifications>
       <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.io.spi.StructuredFileOperations"
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.io.util.StructuredFileOperations"
                            jdtaus:implementationName="StructuredFileOperations"
                            jdtaus:name="DiskStructuredFileOperations"
                            jdtaus:bound="false">
@@ -101,7 +101,7 @@
           </jdtaus:properties>
         </jdtaus:dependency>
         
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.io.spi.StructuredFileOperations"
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.io.util.StructuredFileOperations"
                            jdtaus:implementationName="StructuredFileOperations"
                            jdtaus:name="TapeStructuredFileOperations"
                            jdtaus:bound="false">
