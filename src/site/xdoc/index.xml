@@ -8,8 +8,10 @@
     <section name="Introduction">
       <p>
         jDTAUS Banking provides a common application programming interface to
-        payment system specifications. It is split into various artifacts
-        providing flexible integration facilities. The
+        payment system specifications based on
+        <a href="sites.jdtaus.org/jdtaus-core/1.0.x/index.html">jDTAUS Core</a>.
+        It is split into various artifacts providing flexible integration
+        facilities. The
         <a href="jdtaus-banking-api/project-summary.html">Banking API artifact
         </a> provides <a href="jdtaus-banking-api/apidocs/index.html">interfaces
         </a> to various payment system specifications. Although not targeted
