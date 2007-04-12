@@ -3,7 +3,7 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-alpha-4</version>
+    <version>1.0-alpha-5</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
@@ -87,7 +87,7 @@
             </goals>
             <configuration>
               <bundles>
-                <bundle>org.jdtaus.banking.spi.runtime.XMLTextschluesselVerzeichnis</bundle>
+                <bundle>org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
@@ -131,16 +131,14 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>org.jdtaus.core</groupId>
-      <artifactId>jdtaus-core-spi</artifactId>
-      <version>RELEASE</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-spi</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

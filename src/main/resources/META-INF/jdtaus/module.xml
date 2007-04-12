@@ -34,7 +34,7 @@
                jdtaus:version="1.0">
 
   <jdtaus:implementations>
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.spi.runtime.XMLTextschluesselVerzeichnis"
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis"
                            jdtaus:name="jDTAUS Banking SPI"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
@@ -52,7 +52,7 @@
           <jdtaus:properties>
             <jdtaus:property jdtaus:name="name" 
                              jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.spi.runtime.XMLTextschluesselVerzeichnis"
+                             jdtaus:value="org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis"
                              jdtaus:api="true"/>
             
           </jdtaus:properties>
