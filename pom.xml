@@ -5,7 +5,7 @@
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.0-alpha-5-SNAPSHOT</version>
+  <version>1.0-alpha-5</version>
   <description><![CDATA[
   jDTAUS Banking provides a library for electronic banking facilities. This is
   the parent module for the library artifacts.]]>
@@ -17,7 +17,7 @@
   </issueManagement>
   <ciManagement>
     <system>Continuum</system>
-    <url>http://continuum.jdtaus.org/continuum</url>
+    <url>http://continuum.jdtaus.org/continuum/</url>
     <notifiers>
       <notifier>
         <type>mail</type>
@@ -68,9 +68,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-alpha-5</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-alpha-5</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-alpha-5</url>
   </scm>
   <organization>
     <name>jDTAUS</name>
@@ -197,14 +197,32 @@
         <scope>compile</scope>
       </dependency>
       <dependency>
+        <groupId>org.jdtaus.core</groupId>
+        <artifactId>jdtaus-core-utilities</artifactId>
+        <version>RELEASE</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
         <groupId>org.jdtaus.core.container</groupId>
         <artifactId>jdtaus-core-client-container</artifactId>
         <version>RELEASE</version>
-        <scope>runtime</scope>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core.container</groupId>
+        <artifactId>jdtaus-core-servlet-container</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core.monitor</groupId>
         <artifactId>jdtaus-core-client-monitoring</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core.monitor</groupId>
+        <artifactId>jdtaus-core-server-monitoring</artifactId>
         <version>RELEASE</version>
         <scope>test</scope>
       </dependency>
@@ -223,6 +241,18 @@
       <dependency>
         <groupId>org.jdtaus.core.logging</groupId>
         <artifactId>jdtaus-core-jdk-logging</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core.logging</groupId>
+        <artifactId>jdtaus-core-commons-logging</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core.logging</groupId>
+        <artifactId>jdtaus-core-log4j-logging</artifactId>
         <version>RELEASE</version>
         <scope>test</scope>
       </dependency>
