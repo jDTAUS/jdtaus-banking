@@ -197,14 +197,32 @@
         <scope>compile</scope>
       </dependency>
       <dependency>
+        <groupId>org.jdtaus.core</groupId>
+        <artifactId>jdtaus-core-utilities</artifactId>
+        <version>RELEASE</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
         <groupId>org.jdtaus.core.container</groupId>
         <artifactId>jdtaus-core-client-container</artifactId>
         <version>RELEASE</version>
-        <scope>runtime</scope>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core.container</groupId>
+        <artifactId>jdtaus-core-servlet-container</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core.monitor</groupId>
         <artifactId>jdtaus-core-client-monitoring</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core.monitor</groupId>
+        <artifactId>jdtaus-core-server-monitoring</artifactId>
         <version>RELEASE</version>
         <scope>test</scope>
       </dependency>
@@ -223,6 +241,18 @@
       <dependency>
         <groupId>org.jdtaus.core.logging</groupId>
         <artifactId>jdtaus-core-jdk-logging</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core.logging</groupId>
+        <artifactId>jdtaus-core-commons-logging</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core.logging</groupId>
+        <artifactId>jdtaus-core-log4j-logging</artifactId>
         <version>RELEASE</version>
         <scope>test</scope>
       </dependency>
