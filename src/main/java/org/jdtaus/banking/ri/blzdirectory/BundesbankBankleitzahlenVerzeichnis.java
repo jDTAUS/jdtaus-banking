@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.spi.runtime;
+package org.jdtaus.banking.ri.blzdirectory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
