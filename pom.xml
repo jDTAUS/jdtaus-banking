@@ -9,12 +9,12 @@
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI Bankleitzahlenverzeichnis</name>
-  <version>1.0-beta-2-SNAPSHOT</version>
+  <version>1.0-beta-1</version>
   <description>jDTAUS BankleitzahlenVerzeichnis reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/tags/1.0-beta-1-ibiblio</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/tags/1.0-beta-1-ibiblio</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/tags/1.0-beta-1-ibiblio</url>
   </scm>
   <build>
     <resources>
@@ -144,36 +144,6 @@
       <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
-      <id>jdtaus-releases</id>
-      <name>jDTAUS Release Repository</name>
-      <url>http://repository.jdtaus.org/releases</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
-      <id>jdtaus-releases</id>
-      <name>jDTAUS Release Repository</name>
-      <url>http://repository.jdtaus.org/releases</url>
-    </pluginRepository>
-  </pluginRepositories>
   <reporting>
     <plugins>
       <plugin>
