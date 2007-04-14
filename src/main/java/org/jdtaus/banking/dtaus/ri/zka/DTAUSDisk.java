@@ -20,7 +20,7 @@
 package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Date;
@@ -1503,7 +1503,7 @@ public class DTAUSDisk extends AbstractLogicalFile
             DTAUSDisk.CRECORD_OFFSETS1[11], DTAUSDisk.CRECORD_LENGTH1[11],
             AbstractLogicalFile.ENCODING_ASCII);
 
-        transaction.setAmount(new BigDecimal(num.longValue()));
+        transaction.setAmount(BigInteger.valueOf(num.longValue()));
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 14a
         str = this.readAlphaNumeric(Fields.FIELD_C14A, block,

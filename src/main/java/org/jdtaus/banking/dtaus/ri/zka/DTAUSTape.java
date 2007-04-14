@@ -20,7 +20,7 @@
 package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Currency;
@@ -1563,7 +1563,7 @@ public class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.CRECORD_OFFSETS1[14], DTAUSTape.CRECORD_LENGTH1[14],
             true);
 
-        transaction.setAmount(new BigDecimal(num));
+        transaction.setAmount(BigInteger.valueOf(num));
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 14
         str = this.readAlphaNumeric(Fields.FIELD_C14, block,
