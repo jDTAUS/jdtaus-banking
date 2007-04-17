@@ -245,26 +245,28 @@ public class DefaultPhysicalFile implements PhysicalFile
         this.dtausCount = 0;
         int dtausIndex = 0;
         final long blockCount = this.getStructuredFile().getBlockCount();
+        final int maximumProgress = blockCount > Integer.MAX_VALUE ?
+            Integer.MAX_VALUE : (int) blockCount;
+
         final Task task = new ChecksumTask();
 
         task.setMinimum(0);
         task.setProgress(0);
-        task.setMaximum(blockCount > Integer.MAX_VALUE ?
-            Integer.MAX_VALUE : (int) blockCount);
+        task.setMaximum(maximumProgress);
 
         this.getTaskMonitor().monitor(task);
         try
         {
             for(long block = 0L; block < blockCount;)
             {
+                task.setProgress(block > maximumProgress ?
+                    maximumProgress : (int) block);
+
                 this.resizeIndex(dtausIndex);
                 this.index[dtausIndex] = this.newLogicalFile(block);
                 this.index[dtausIndex].checksum();
                 block = this.index[dtausIndex++].getChecksumBlock() + 1L;
                 this.dtausCount++;
-                task.setProgress(block > Integer.MAX_VALUE ?
-                    Integer.MAX_VALUE : (int) block);
-
             }
         }
         finally

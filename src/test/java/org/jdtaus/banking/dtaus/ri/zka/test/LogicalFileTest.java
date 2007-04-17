@@ -205,6 +205,65 @@ public class LogicalFileTest extends TestCase
         return factory.getPhysicalFile(ops);
     }
 
+    protected static PhysicalFile getLegalHeaderStandalone() throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write(LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_legal_header_standalone"));
+
+        return factory.getPhysicalFile(ops);
+    }
+
+    protected static PhysicalFile
+        getLegalHeaderAndTransactionButMissingChecksum() throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write(LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_legal_header_and_transaction_but_missing_checksum"));
+
+        return factory.getPhysicalFile(ops);
+    }
+
+    protected static PhysicalFile
+        getMissingHeaderLegalTransactionAndLegalChecksum() throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write(LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_missing_header_legal_transaction_and_checksum"));
+
+        return factory.getPhysicalFile(ops);
+    }
+
+    protected static PhysicalFile
+        getLegalChecksumStandalone() throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write(LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_legal_checksum_standalone"));
+
+        return factory.getPhysicalFile(ops);
+    }
+
+    protected static PhysicalFile
+        getLegalTransactionStandalone() throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write(LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_legal_transaction_standalone"));
+
+        return factory.getPhysicalFile(ops);
+    }
+
     //--------------------------------------------DTAUS getDTAUSSingleHeader()--
     //--Tests-------------------------------------------------------------------
 
@@ -229,7 +288,7 @@ public class LogicalFileTest extends TestCase
         }
         catch (PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
         }
 
         try
@@ -239,7 +298,7 @@ public class LogicalFileTest extends TestCase
         }
         catch (PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
         }
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
@@ -300,7 +359,7 @@ public class LogicalFileTest extends TestCase
         }
         catch (PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
         }
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
@@ -371,7 +430,7 @@ public class LogicalFileTest extends TestCase
         }
         catch (PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
         }
 
         PhysicalFile file = getDTAUSValidHeaderChecksumAndTransaction(true);
@@ -510,7 +569,7 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
         }
     }
 
@@ -523,7 +582,7 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
         }
     }
 
@@ -536,7 +595,7 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
         }
     }
 
@@ -549,7 +608,7 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
         }
     }
 
@@ -562,7 +621,74 @@ public class LogicalFileTest extends TestCase
         }
         catch(PhysicalFileException e)
         {
-            System.err.println(e.toString());
+            System.out.println(e.toString());
+        }
+    }
+
+    public void testLegalHeaderStandalone() throws Exception
+    {
+        try
+        {
+            getLegalHeaderStandalone();
+            this.fail();
+        }
+        catch(PhysicalFileException e)
+        {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void
+        testLegalHeaderAndTransactionButMissingChecksum() throws Exception
+    {
+        try
+        {
+            getLegalHeaderAndTransactionButMissingChecksum();
+            this.fail();
+        }
+        catch(PhysicalFileException e)
+        {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void
+        testMissingHeaderLegalTransactionAndLegalChecksum() throws Exception
+    {
+        try
+        {
+            getMissingHeaderLegalTransactionAndLegalChecksum();
+            this.fail();
+        }
+        catch(PhysicalFileException e)
+        {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void testLegalChecksumStandalone() throws Exception
+    {
+        try
+        {
+            getLegalChecksumStandalone();
+            this.fail();
+        }
+        catch(PhysicalFileException e)
+        {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void testLegalTransactionStandalone() throws Exception
+    {
+        try
+        {
+            getLegalTransactionStandalone();
+            this.fail();
+        }
+        catch(PhysicalFileException e)
+        {
+            System.out.println(e.toString());
         }
     }
 

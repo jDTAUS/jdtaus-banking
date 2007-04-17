@@ -2024,14 +2024,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         try
         {
+            final long blockCount = this.persistence.getBlockCount();
+            final int maximumProgress = blockCount > Integer.MAX_VALUE ?
+                Integer.MAX_VALUE : (int) blockCount;
+
             task.setIndeterminate(false);
             task.setMinimum(startBlock > Integer.MAX_VALUE ?
                 Integer.MAX_VALUE : (int) startBlock);
 
-            task.setMaximum(
-                this.persistence.getBlockCount() > Integer.MAX_VALUE ?
-                    Integer.MAX_VALUE : (int) this.persistence.getBlockCount());
-
+            task.setMaximum(maximumProgress);
             task.setProgress(task.getMinimum());
             this.getTaskMonitorImpl().monitor(task);
 
@@ -2055,15 +2056,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 {
                     ThreadLocalMessages.getMessages().addMessage(msg);
                 }
-
             }
             else
             {
                 this.getHeader(); // A-Datensatz prüfen.
-                task.setProgress(block > Integer.MAX_VALUE ?
-                    Integer.MAX_VALUE : (int) block);
+                task.setProgress(block > maximumProgress ?
+                    maximumProgress : (int) block);
 
-                while((type = this.getBlockType(block)) == 'C')
+                while(block < blockCount &&
+                    (type = this.getBlockType(block)) == 'C')
                 {
                     final int id = count - 1;
                     final long blocks;
@@ -2075,8 +2076,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
                     blockOffset += blocks;
                     c.setTransactionCount(count++);
                     this.setChecksumBlock(block);
-                    task.setProgress(block > Integer.MAX_VALUE ?
-                        Integer.MAX_VALUE : (int) block);
+
+                    task.setProgress(block > maximumProgress ?
+                        maximumProgress : (int) block);
 
                 }
 
@@ -2100,12 +2102,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                         {
                             ThreadLocalMessages.getMessages().addMessage(msg);
                         }
-
                     }
-
-                    task.setProgress(block > Integer.MAX_VALUE ?
-                        Integer.MAX_VALUE : (int) block);
-
                 }
                 else
                 {
@@ -2127,6 +2124,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
                     }
 
                 }
+
+                task.setProgress(block > maximumProgress ?
+                    maximumProgress : (int) block);
+
             }
         }
         finally
