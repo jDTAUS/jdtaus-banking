@@ -1,0 +1,17 @@
+<document>
+  <properties>
+    <title>jDTAUS Editor Changelog</title>
+    <author email="cs@jdtaus.org">Christian Schulte</author>
+  </properties>
+  <body>
+    <release version="1.0-beta-2" date="2007-06-01"
+             description="Second beta release">
+      
+      <action dev="schulte2005" type="fix"><![CDATA[
+        Fixed <code>IllegalArgumentException</code> thrown when scanning DTAUS
+        files starting with valid records but missing mandatory records at the
+        end.]]>
+      </action>
+    </release>
+  </body>
+</document>
