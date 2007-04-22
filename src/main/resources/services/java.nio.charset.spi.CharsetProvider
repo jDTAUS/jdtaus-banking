@@ -1,0 +1,2 @@
+org.jdtaus.banking.charsets.spi.DIN66003CharsetProvider
+org.jdtaus.banking.charsets.spi.IBM273CharsetProvider

@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.core.nio.util.spi;
+package org.jdtaus.banking.charsets.spi;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
