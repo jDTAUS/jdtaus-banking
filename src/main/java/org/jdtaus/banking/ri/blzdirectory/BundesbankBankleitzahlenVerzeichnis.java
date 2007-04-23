@@ -68,7 +68,7 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class BundesbankBankleitzahlenVerzeichnis
+public final class BundesbankBankleitzahlenVerzeichnis
     implements BankleitzahlenVerzeichnis, BankleitzahlenDatei,
     ContainerInitializer
 {
@@ -375,7 +375,7 @@ public class BundesbankBankleitzahlenVerzeichnis
     //----------------------------------------------------ContainerInitializer--
     //--BankleitzahlenVerzeichnis-----------------------------------------------
 
-    public final BankleitzahlInfo getHeadOffice(final Bankleitzahl bankCode)
+    public BankleitzahlInfo getHeadOffice(final Bankleitzahl bankCode)
     {
         if(bankCode == null)
         {
@@ -394,7 +394,7 @@ public class BundesbankBankleitzahlenVerzeichnis
         return ret;
     }
 
-    public final BankleitzahlInfo[] getBranchOffices(
+    public BankleitzahlInfo[] getBranchOffices(
         final Bankleitzahl bankCode)
     {
 
@@ -406,11 +406,9 @@ public class BundesbankBankleitzahlenVerzeichnis
         return this.findByBankCode(bankCode.intValue(), true);
     }
 
-    public final BankleitzahlInfo[]
-        search(final String name, final String postalCode, final String city,
-        final boolean branchOffices)
+    public BankleitzahlInfo[] search(final String name, final String postalCode,
+        final String city, final boolean branchOffices)
     {
-
         BankleitzahlInfo rec;
 
         final Iterator it;
@@ -472,7 +470,7 @@ public class BundesbankBankleitzahlenVerzeichnis
     private Map records = new HashMap(5000);
     private BankleitzahlInfo[] cachedRecords;
 
-    public final BankleitzahlInfo[] getRecords()
+    public BankleitzahlInfo[] getRecords()
     {
         if(this.cachedRecords == null)
         {
@@ -484,7 +482,7 @@ public class BundesbankBankleitzahlenVerzeichnis
         return this.cachedRecords;
     }
 
-    public final BankleitzahlInfo getRecord(final Integer serialNumber)
+    public BankleitzahlInfo getRecord(final Integer serialNumber)
     {
         if(serialNumber == null)
         {
@@ -494,7 +492,7 @@ public class BundesbankBankleitzahlenVerzeichnis
         return (BankleitzahlInfo) this.records.get(serialNumber);
     }
 
-    public final void read(final URL resource) throws IOException
+    public void read(final URL resource) throws IOException
     {
         final BufferedReader reader;
 
@@ -547,7 +545,7 @@ public class BundesbankBankleitzahlenVerzeichnis
         }
     }
 
-    public final void update(final BankleitzahlenDatei file)
+    public void update(final BankleitzahlenDatei file)
     {
         if(file == null)
         {
@@ -768,7 +766,7 @@ public class BundesbankBankleitzahlenVerzeichnis
      * {@code null} if property {@code configuration} does not point to a
      * resource.
      */
-    protected final URL getConfigurationResource()
+    protected URL getConfigurationResource()
     {
         return this.getClassLoader().getResource(this.getConfiguration());
     }
@@ -781,7 +779,7 @@ public class BundesbankBankleitzahlenVerzeichnis
      *
      * @throws ImplementationException if reading configuration resources fails.
      */
-    protected final URL[] getFileResources()
+    protected URL[] getFileResources()
     {
         int i;
         String rsrc;
@@ -838,10 +836,9 @@ public class BundesbankBankleitzahlenVerzeichnis
      * matching {@code bankCode}; {@code false} to return all known head
      * offices matching {@code bankCode}.
      */
-    protected final BankleitzahlInfo[]
-        findByBankCode(final int bankCode, final boolean branchOffices)
+    protected BankleitzahlInfo[] findByBankCode(
+        final int bankCode, final boolean branchOffices)
     {
-
         BankleitzahlInfo rec;
         final Iterator it;
         final Collection col = new ArrayList(this.records.size());
@@ -867,7 +864,7 @@ public class BundesbankBankleitzahlenVerzeichnis
 
     }
 
-    private final ClassLoader getClassLoader()
+    private ClassLoader getClassLoader()
     {
         ClassLoader classLoader = Thread.currentThread().
             getContextClassLoader();
