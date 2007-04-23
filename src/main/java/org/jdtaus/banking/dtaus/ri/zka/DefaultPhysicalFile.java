@@ -274,6 +274,10 @@ public class DefaultPhysicalFile implements PhysicalFile
     public static final class ChecksumTask extends Task
     {
 
+        /**
+         * Description of the task.
+         * @serial
+         */
         private final Message description = new ChecksumMessage();
 
         public Message getDescription()
