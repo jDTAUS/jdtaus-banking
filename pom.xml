@@ -130,6 +130,11 @@
   </build>
   <dependencies>
     <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-utilities</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>

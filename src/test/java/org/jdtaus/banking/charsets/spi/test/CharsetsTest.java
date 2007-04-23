@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.core.nio.util.test;
+package org.jdtaus.banking.charsets.spi.test;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -34,12 +34,19 @@ public class CharsetsTest extends TestCase
     //--Tests-------------------------------------------------------------------
 
     private static final String TEST =
-        "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789";
+        "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789äöüß";
 
-    public void testUSASCII() throws Exception
+    public void testISO646DE() throws Exception
     {
-        final byte[] encoded = Charsets.encode(TEST, "US-ASCII");
-        final String decoded = Charsets.decode(encoded, "US-ASCII");
+        final byte[] encoded = Charsets.encode(TEST, "ISO646-DE");
+        final String decoded = Charsets.decode(encoded, "ISO646-DE");
+        Assert.assertEquals(TEST, decoded);
+    }
+
+    public void testIBM273() throws Exception
+    {
+        final byte[] encoded = Charsets.encode(TEST, "IBM273");
+        final String decoded = Charsets.decode(encoded, "IBM273");
         Assert.assertEquals(TEST, decoded);
     }
 
