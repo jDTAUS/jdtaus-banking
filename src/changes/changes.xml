@@ -10,7 +10,7 @@
       <action dev="schulte2005" type="fix"><![CDATA[
         Fixed <code>IllegalArgumentException</code> thrown when scanning DTAUS
         files starting with valid records but missing mandatory records at the
-        end.]]>
+        end. Updated to latest container hooks.]]>
       </action>
     </release>
   </body>

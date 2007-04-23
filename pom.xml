@@ -3,7 +3,7 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-beta-1</version>
+    <version>1.0-beta-2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
@@ -159,12 +159,22 @@
       <classifier>tests</classifier>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-charsets</artifactId>
+      <version>1.0-beta-1-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.core</groupId>
       <artifactId>jdtaus-core-utilities</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core</groupId>
       <artifactId>jdtaus-core-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.common</groupId>
+      <artifactId>jdtaus-core-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.container</groupId>
@@ -178,7 +188,7 @@
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.lang</groupId>
-      <artifactId>jdtaus-core-limiting-runtime</artifactId>
+      <artifactId>jdtaus-core-memory-manager</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

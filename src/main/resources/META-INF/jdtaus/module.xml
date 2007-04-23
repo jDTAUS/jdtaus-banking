@@ -80,48 +80,6 @@
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"/>
       </jdtaus:implementedSpecifications>
       <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.io.util.StructuredFileOperations"
-                           jdtaus:implementationName="StructuredFileOperations"
-                           jdtaus:name="DiskStructuredFileOperations"
-                           jdtaus:bound="false">
-          
-          <jdtaus:properties>
-            <jdtaus:property jdtaus:name="blockSize"
-                             jdtaus:type="int"
-                             jdtaus:value="128"/>
-            
-            <jdtaus:property jdtaus:name="readAhead"
-                             jdtaus:type="int"
-                             jdtaus:value="6"/>
-            
-            <jdtaus:property jdtaus:name="minBufferedBlocks"
-                             jdtaus:type="int"
-                             jdtaus:value="1024"/>
-            
-          </jdtaus:properties>
-        </jdtaus:dependency>
-        
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.io.util.StructuredFileOperations"
-                           jdtaus:implementationName="StructuredFileOperations"
-                           jdtaus:name="TapeStructuredFileOperations"
-                           jdtaus:bound="false">
-          
-          <jdtaus:properties>
-            <jdtaus:property jdtaus:name="blockSize"
-                             jdtaus:type="int"
-                             jdtaus:value="150"/>
-            
-            <jdtaus:property jdtaus:name="readAhead"
-                             jdtaus:type="int"
-                             jdtaus:value="4"/>
-            
-            <jdtaus:property jdtaus:name="minBufferedBlocks"
-                             jdtaus:type="int"
-                             jdtaus:value="1024"/>
-            
-          </jdtaus:properties>
-        </jdtaus:dependency>
-        
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="Logger"

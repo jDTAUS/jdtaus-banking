@@ -48,7 +48,7 @@ import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.monitor.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
-import org.jdtaus.core.nio.spi.Charsets;
+import org.jdtaus.core.nio.util.Charsets;
 import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.spi.ApplicationLogger;
 
@@ -130,6 +130,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     /** {@code BigDecimal} 100. */
     private static final BigDecimal BD100 = new BigDecimal(100L);
+
+    /** Charset name for the disk format. */
+    protected static final String DIN66003 = "ISO646-DE";
+
+    /** Charset name for the tap format. */
+    protected static final String IBM273 = "IBM273";
 
     //--------------------------------------------------------------Konstanten--
     //--Attribute---------------------------------------------------------------
@@ -343,7 +349,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final byte[] table;
         final byte[] revTable;
         final MessageFormat fmt;
-        final Integer cset;
+        final String cset;
         String logViolation = null; // Wenn != null wird der Verstoß geloggt.
 
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
@@ -351,14 +357,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
             table = AbstractLogicalFile.DIGITS_TO_ASCII;
             revTable = AbstractLogicalFile.ASCII_TO_DIGITS;
             space = (byte) 32;
-            cset = Charsets.DIN66003;
+            cset = AbstractLogicalFile.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
             table = AbstractLogicalFile.DIGITS_TO_EBCDI;
             revTable = AbstractLogicalFile.EBCDI_TO_DIGITS;
             space = (byte) 0x40;
-            cset = Charsets.IBM273;
+            cset = AbstractLogicalFile.IBM273;
         }
         else
         {
@@ -531,15 +537,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
         String str;
         final Message msg;
         final char[] c;
-        final Integer cset;
+        final String cset;
 
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-            cset = Charsets.DIN66003;
+            cset = AbstractLogicalFile.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
-            cset = Charsets.IBM273;
+            cset = AbstractLogicalFile.IBM273;
         }
         else
         {
@@ -610,7 +616,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final char[] c;
         final byte[] buf;
         final byte space;
-        final Integer cset;
+        final String cset;
 
         if(str == null)
         {
@@ -624,12 +630,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
             space = (byte) 32;
-            cset = Charsets.DIN66003;
+            cset = AbstractLogicalFile.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
             space = (byte) 0x40;
-            cset = Charsets.IBM273;
+            cset = AbstractLogicalFile.IBM273;
         }
         else
         {
@@ -698,7 +704,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int off, final int encoding) throws IOException
     {
         final int len;
-        final Integer cset;
+        final String cset;
 
         Date ret = null;
         String str = null;
@@ -707,11 +713,11 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-            cset = Charsets.DIN66003;
+            cset = AbstractLogicalFile.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
-            cset = Charsets.IBM273;
+            cset = AbstractLogicalFile.IBM273;
         }
         else
         {
@@ -827,15 +833,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
     {
         int i;
         final byte[] buf;
-        final Integer cset;
+        final String cset;
 
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-            cset = Charsets.DIN66003;
+            cset = AbstractLogicalFile.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
-            cset = Charsets.IBM273;
+            cset = AbstractLogicalFile.IBM273;
         }
         else
         {
@@ -917,7 +923,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int off, final int encoding) throws IOException
     {
         final int len;
-        final Integer cset;
+        final String cset;
 
         boolean legal = false;
         Date ret = null;
@@ -926,11 +932,11 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-            cset = Charsets.DIN66003;
+            cset = AbstractLogicalFile.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
-            cset = Charsets.IBM273;
+            cset = AbstractLogicalFile.IBM273;
         }
         else
         {
@@ -1045,15 +1051,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
     {
         int i;
         final byte[] buf;
-        final Integer cset;
+        final String cset;
 
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
-            cset = Charsets.DIN66003;
+            cset = AbstractLogicalFile.DIN66003;
         }
         else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
         {
-            cset = Charsets.IBM273;
+            cset = AbstractLogicalFile.IBM273;
         }
         else
         {
