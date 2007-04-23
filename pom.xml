@@ -70,7 +70,7 @@
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-beta-2-ibiblio</connection>
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-beta-2-ibiblio</developerConnection>
-    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-beta-2-ibiblio</url>
+    <url>https://svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/1.0-beta-2-ibiblio</url>
   </scm>
   <organization>
     <name>jDTAUS</name>
