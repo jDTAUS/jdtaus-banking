@@ -45,8 +45,6 @@ import java.util.NoSuchElementException;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
- *
- * @see org.jdtaus.core.nio.util.Charsets
  */
 public class DIN66003CharsetProvider extends CharsetProvider
 {

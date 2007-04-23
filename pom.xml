@@ -152,7 +152,6 @@
           <doctitle>${pom.name} Specification ${pom.version}</doctitle>
           <linksource>true</linksource>
           <nodeprecated>true</nodeprecated>
-          <overview>${project.build.sourceDirectory}/overview.html</overview>
           <quiet>false</quiet>
           <verbose>false</verbose>
           <serialwarn>true</serialwarn>
