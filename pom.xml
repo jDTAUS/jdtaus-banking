@@ -133,6 +133,7 @@
     </plugins>
   </build>
   <modules>
+    <module>jdtaus-banking-charsets</module>
     <module>jdtaus-banking-api</module>
     <module>jdtaus-banking-spi</module>
     <module>jdtaus-banking-ri-bankleitzahlenverzeichnis</module>
@@ -198,7 +199,7 @@
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core.lang</groupId>
-        <artifactId>jdtaus-core-limiting-runtime</artifactId>
+        <artifactId>jdtaus-core-memory-manager</artifactId>
         <version>RELEASE</version>
         <scope>test</scope>
       </dependency>
