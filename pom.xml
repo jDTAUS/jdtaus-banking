@@ -188,6 +188,19 @@
       <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
+      <plugin>
+        <artifactId>maven-changes-plugin</artifactId>
+        <configuration>
+          <issueLinkTemplate>http://bugzilla.jdtaus.org/cgi-bin/bugzilla/show_bug.cgi?id=%ISSUE%</issueLinkTemplate>
+          <reportSets>
+            <reportSet>
+              <reports>
+                <report>changes-report</report>
+              </reports>
+            </reportSet>
+          </reportSets>          
+        </configuration>
+      </plugin>
     </plugins>
   </reporting>
 </project>
