@@ -13,5 +13,22 @@
         end. Updated to latest container hooks.]]>
       </action>
     </release>
+    <release version="1.0-beta-3" date="2007-06-01"
+             description="Third beta release">
+      
+      <action dev="schulte2005" type="fix"><![CDATA[
+        Added support for the DEM currency. A space character in a DTAUS file
+        is now taken as the DTAUS code for the DEM currency for files whose
+        createdate is before 01/01/2002. Files with createdate after 01/01/2002
+        and space characters in currency fields will now lead to a
+        <code>PhysicalFileException</code>. When writing DTAUS files the DTAUS
+        code (space character) for the DEM currency is written when the currency
+        property of <code>Header</code> or <code>Transaction</code> holds a
+        reference to the DEM currency. An <code>IllegalArgumentException</code>
+        is thrown for <code>Header</code> and <code>Transaction</code> instances
+        with property currency set to DEM if the corresponding createdate
+        is after 01/01/2002.]]>
+      </action>
+    </release>
   </body>
 </document>

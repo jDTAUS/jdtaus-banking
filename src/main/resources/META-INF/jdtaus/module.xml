@@ -32,42 +32,8 @@
                jdtaus:name="${pom.name}"
                jdtaus:description="${pom.description}"
                jdtaus:version="1.0">
-
+  
   <jdtaus:implementations>
-    <!--                                                                     -->
-    <!-- PropertyCurrencyDirectory                                           -->
-    <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.PropertyCurrencyDirectory"
-                           jdtaus:name="jDTAUS Banking SPI"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}">
-      
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.spi.CurrencyDirectory"/>
-      </jdtaus:implementedSpecifications>
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
-                           jdtaus:implementationName="jDTAUS Core SPI"
-                           jdtaus:name="Logger"
-                           jdtaus:bound="true">
-          
-          <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name" 
-                             jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.PropertyCurrencyDirectory"
-                             jdtaus:api="true"/>
-            
-          </jdtaus:properties>
-        </jdtaus:dependency>
-      </jdtaus:dependencies>
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="propertiesResource"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="META-INF/jdtaus/currencies.properties"/>
-        
-      </jdtaus:properties>
-    </jdtaus:implementation>
-    
     <!--                                                                     -->
     <!-- DefaultPhysicalFileFactory                                          -->
     <!--                                                                     -->
@@ -116,9 +82,6 @@
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
       
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.PhysicalFile"/>
-      </jdtaus:implementedSpecifications>
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
                            jdtaus:implementationName="jDTAUS Core SPI"
@@ -136,9 +99,6 @@
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
       
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.LogicalFile"/>
-      </jdtaus:implementedSpecifications>
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
                            jdtaus:implementationName="jDTAUS Core SPI"
@@ -174,9 +134,9 @@
                            jdtaus:name="TextschluesselVerzeichnis"
                            jdtaus:bound="true"/>
         
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.dtaus.spi.CurrencyDirectory"
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
                            jdtaus:implementationName="jDTAUS Banking SPI"
-                           jdtaus:name="CurrencyDirectory"
+                           jdtaus:name="CurrencyMapper"
                            jdtaus:bound="true"/>
         
       </jdtaus:dependencies>
@@ -190,9 +150,6 @@
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
       
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.LogicalFile"/>
-      </jdtaus:implementedSpecifications>
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
                            jdtaus:implementationName="jDTAUS Core SPI"
@@ -228,9 +185,9 @@
                            jdtaus:name="TextschluesselVerzeichnis"
                            jdtaus:bound="true"/>
         
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.dtaus.spi.CurrencyDirectory"
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
                            jdtaus:implementationName="jDTAUS Banking SPI"
-                           jdtaus:name="CurrencyDirectory"
+                           jdtaus:name="CurrencyMapper"
                            jdtaus:bound="true"/>
         
       </jdtaus:dependencies>

@@ -138,6 +138,34 @@ public class LogicalFileTest extends TestCase
     }
 
     protected static PhysicalFile
+        getDTAUSValidHeaderChecksumAndTransactionMissingCurrency()
+        throws Exception
+    {
+
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write(LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_valid_header_checksum_and_transaction_missing_currency"));
+
+        return factory.getPhysicalFile(ops);
+    }
+
+    protected static PhysicalFile
+        getDTAUSValidHeaderChecksumAndTransactionMissingCurrencyValid()
+        throws Exception
+    {
+
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write(LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_valid_header_checksum_and_transaction_missing_currency_valid"));
+
+        return factory.getPhysicalFile(ops);
+    }
+
+    protected static PhysicalFile
         getDTAUSValidHeaderChecksumIllegalFormatTransaction() throws Exception
     {
 
@@ -690,6 +718,26 @@ public class LogicalFileTest extends TestCase
         {
             System.out.println(e.toString());
         }
+    }
+
+    public void testValidHeaderChecksumAndTransactionMissingCurrency()
+    throws Exception
+    {
+        try
+        {
+            getDTAUSValidHeaderChecksumAndTransactionMissingCurrency();
+            this.fail();
+        }
+        catch(PhysicalFileException e)
+        {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void testValidHeaderChecksumAndTransactionMissingCurrencyValid()
+    throws Exception
+    {
+        getDTAUSValidHeaderChecksumAndTransactionMissingCurrencyValid();
     }
 
     //-------------------------------------------------------------------Tests--

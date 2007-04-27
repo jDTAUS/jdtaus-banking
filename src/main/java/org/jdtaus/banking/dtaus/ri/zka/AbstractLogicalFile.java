@@ -41,6 +41,7 @@ import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
+import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.io.util.StructuredFileOperations;
@@ -230,10 +231,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @throws IOException wenn zwischengespeicherte Änderungen der vorherigen
      * Instanz nicht geschrieben werden können.
      */
-    public void setStructuredFile(
+    protected void setStructuredFile(
         final StructuredFileOperations structuredFile) throws IOException
     {
-
         if(structuredFile == null)
         {
             throw new NullPointerException("structuredFile");
@@ -266,6 +266,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
         getTextschluesselVerzeichnisImpl();
 
     protected abstract Implementation getMeta();
+
+    protected abstract CurrencyMapper getCurrencyMapperImpl();
 
     //------------------------------------------------------------Dependencies--
     //--long readNumber(...)----------------------------------------------------
@@ -1548,14 +1550,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
         {
             throw new NullPointerException("account");
         }
-        /*
-        if(type.isSendByBank() &&
-            !this.checkBankCode(header.getBankData5(), false)) {
+        if(header.getCurrency() == null)
+        {
+            throw new NullPointerException("currency");
+        }
 
-            throw new IllegalArgumentException("bankData5=" +
-                header.getBankData5());
+        this.getCurrencyMapperImpl().getDtausCode(header.getCurrency(),
+            schedule.getCreateDate());
 
-        }*/
     }
 
     //---------------------------------------------------void checkHeader(...)--
@@ -1623,6 +1625,11 @@ public abstract class AbstractLogicalFile implements LogicalFile
         {
             throw new NullPointerException("type");
         }
+        if(transaction.getCurrency() == null)
+        {
+            throw new NullPointerException("currency");
+        }
+
         if(allowedTypes != null)
         {
             for(i = allowedTypes.length - 1; i >= 0; i--)
@@ -1643,16 +1650,19 @@ public abstract class AbstractLogicalFile implements LogicalFile
         }
         if(!this.checkAmount(transaction.getAmount().longValue(), true))
         {
-            throw new IllegalArgumentException("amount=" +
-                transaction.getAmount());
+            throw new IllegalArgumentException(transaction.getAmount().
+                toString());
 
         }
         if(!this.checkDescriptionCount(desc.getDescriptionCount()))
         {
-            throw new IllegalArgumentException("descriptionCount=" +
-                desc.getDescriptionCount());
+            throw new IllegalArgumentException(Integer.toString(
+                desc.getDescriptionCount()));
 
         }
+
+        this.getCurrencyMapperImpl().getDtausCode(transaction.getCurrency(),
+            this.getHeader().getSchedule().getCreateDate());
     }
 
     //----------------------------------------------void checkTransaction(...)--
@@ -2015,7 +2025,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         this.persistence.flush();
     }
 
-    public void checksum() throws IOException
+    protected void checksum() throws IOException
     {
         char type;
         int count = 1;

@@ -152,6 +152,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-banking-api</artifactId>
       <version>RELEASE</version>
@@ -179,27 +185,22 @@
     <dependency>
       <groupId>org.jdtaus.core.container</groupId>
       <artifactId>jdtaus-core-client-container</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.monitor</groupId>
       <artifactId>jdtaus-core-server-monitoring</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.lang</groupId>
       <artifactId>jdtaus-core-memory-manager</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.text</groupId>
       <artifactId>jdtaus-core-application-logger</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.logging</groupId>
       <artifactId>jdtaus-core-jdk-logging</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -219,7 +220,7 @@
           <doctitle>${pom.name} Specification ${pom.version}</doctitle>
           <linksource>true</linksource>
           <nodeprecated>true</nodeprecated>
-          <quiet>true</quiet>
+          <quiet>false</quiet>
           <verbose>false</verbose>
           <serialwarn>true</serialwarn>
           <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
