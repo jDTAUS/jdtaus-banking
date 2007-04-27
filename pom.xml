@@ -25,7 +25,7 @@
       <resource>
         <filtering>false</filtering>
         <directory>src/site/resources</directory>
-        <targetPath>org/jdtaus/banking/xml</targetPath>
+        <targetPath>org/jdtaus/banking/xml/currencies</targetPath>
         <includes>
           <include>*.xsd</include>
         </includes>
@@ -74,7 +74,7 @@
         </executions>
       </plugin>
       
-      <!-- plugin>
+      <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
         <executions>
@@ -86,7 +86,8 @@
             </goals>
             <configuration>
               <bundles>
-                <bundle>org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis</bundle>
+                <bundle>org.jdtaus.banking.ri.currencydir.XMLCurrencyDirectory</bundle>
+                <bundle>org.jdtaus.banking.ri.currencydir.DuplicateCurrencyException</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
@@ -124,7 +125,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin -->
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -135,8 +136,22 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-it</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.core</groupId>
       <artifactId>jdtaus-core-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core.container</groupId>
+      <artifactId>jdtaus-core-client-container</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core.logging</groupId>
+      <artifactId>jdtaus-core-jdk-logging</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -160,6 +175,7 @@
           <verbose>false</verbose>
           <serialwarn>true</serialwarn>
           <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
+          <source>1.4</source>
           <links>
             <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
             <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-api/apidocs</link>
