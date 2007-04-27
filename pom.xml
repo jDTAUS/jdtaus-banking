@@ -6,16 +6,20 @@
     <version>1.0-beta-2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>jdtaus-banking-spi</artifactId>
+  <artifactId>jdtaus-banking-utilities</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking Utilities</name>
   <version>1.0-beta-1-SNAPSHOT</version>
   <description>jDTAUS banking utility components.</description>
   <dependencies>
     <dependency>
-      <groupId>org.jdtaus.common</groupId>
-      <artifactId>jdtaus-banking-api</artifactId>
-      <version>1.0-beta-3-SNAPSHOT</version>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-spi</artifactId>
+      <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -76,6 +80,27 @@
       
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
+        <artifactId>jdtaus-resource-mojo</artifactId>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>test-messageformat</goal>
+              <goal>generate-bundles</goal>
+            </goals>
+            <configuration>
+              <bundles>
+                <bundle>org.jdtaus.banking.util.BankleitzahlenDatei</bundle>
+              </bundles>
+              <encoding>UTF-8</encoding>
+              <locale>en</locale>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-container-mojo</artifactId>
         <executions>
           <execution>
@@ -124,13 +149,13 @@
           <serialwarn>true</serialwarn>
           <show>public</show>
           <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
-          <overview>${project.build.sourceDirectory}/overview.html</overview>
+          <source>1.4</source>
           <links>
             <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
             <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-api/apidocs</link>
-	    <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-spi/apidocs</link>
+            <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-spi/apidocs</link>
             <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-api/apidocs</link>
-	    <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-spi/apidocs</link>
+            <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-spi/apidocs</link>
           </links>
         </configuration>
       </plugin>
