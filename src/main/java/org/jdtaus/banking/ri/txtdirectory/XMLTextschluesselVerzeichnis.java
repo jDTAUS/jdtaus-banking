@@ -26,8 +26,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -58,16 +61,15 @@ import org.xml.sax.SAXParseException;
  * Textschlüssel instances. Property {@code resource} holds the name of the
  * XML resources to load and property {@code dataDir} holds the directory in
  * which to look for these resources. See
- * <a href="http://www.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-ri-textschluesselverzeichnis/jdtaus-textschluessel.xsd">
- * jdtaus-textschluessel.xsd</a> for further information</p>
+ * <a href="http://www.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.0.xsd">
+ * jdtaus-textschluessel-1.0.xsd</a> for further information</p>
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public final class XMLTextschluesselVerzeichnis implements
-    TextschluesselVerzeichnis, ContainerInitializer
+public final class XMLTextschluesselVerzeichnis
+    implements TextschluesselVerzeichnis, ContainerInitializer
 {
-
     //--Constants---------------------------------------------------------------
 
     /** JAXP configuration key to the Schema implementation attribute. */
@@ -84,11 +86,11 @@ public final class XMLTextschluesselVerzeichnis implements
 
     /** jDTAUS {@code Model} namespace URI. */
     public static final String MODEL_NS =
-        "http://jdtaus.org/banking/xml";
+        "http://jdtaus.org/banking/xml/textschluessel";
 
-    /** Location of the jdtaus-textschluessel.xsd schema. */
+    /** Location of the jdtaus-textschluessel-1.0.xsd schema. */
     public static final String MODEL_XSD =
-        "org/jdtaus/banking/xml/jdtaus-textschluessel.xsd";
+        "org/jdtaus/banking/xml/textschluessel/jdtaus-textschluessel-1.0.xsd";
 
     /** Version supported by this implementation. */
     public static final String SUPPORTED_VERSION = "1.0";
@@ -259,7 +261,9 @@ public final class XMLTextschluesselVerzeichnis implements
      *
      * @throws ImplementationException if no XML resources can be parsed.
      *
+     * @see #assertValidProperties()
      * @see #parseResources()
+     * @see #transformDocument(Document)
      */
     public void initialize()
     {
@@ -275,8 +279,32 @@ public final class XMLTextschluesselVerzeichnis implements
                 col.addAll(Arrays.asList(this.transformDocument(docs[i])));
             }
 
-            this.instances = (Textschluessel[]) col.
-                toArray(new Textschluessel[col.size()]);
+            final Map types = new HashMap(col.size());
+            final Collection checked = new ArrayList(col.size());
+
+            for(Iterator it = col.iterator(); it.hasNext();)
+            {
+                Map keys;
+                final Textschluessel i = (Textschluessel) it.next();
+                final Integer key = new Integer(i.getKey());
+                final Integer ext = new Integer(i.getExtension());
+
+                if((keys = (Map) types.get(key)) == null)
+                {
+                    keys = new HashMap();
+                    types.put(key, keys);
+                }
+
+                if(keys.put(ext, i) != null)
+                {
+                    throw new DuplicateTextschluesselException(i);
+                }
+
+                checked.add(i);
+            }
+
+            this.instances = (Textschluessel[]) checked.
+                toArray(new Textschluessel[checked.size()]);
 
         }
         catch(IOException e)
@@ -341,7 +369,6 @@ public final class XMLTextschluesselVerzeichnis implements
             if(this.instances[i].isDebit() == debit &&
                 this.instances[i].isRemittance() == remittance)
             {
-
                 col.add(this.instances[i].clone());
             }
         }
@@ -352,8 +379,15 @@ public final class XMLTextschluesselVerzeichnis implements
     //-----------------------------------------------TextschluesselVerzeichnis--
     //--XMLTextschluesselVerzeichnis--------------------------------------------
 
+    /** Creates a new {@code XMLTextschluesselVerzeichnis} instance. */
+    public XMLTextschluesselVerzeichnis()
+    {
+        this(XMLTextschluesselVerzeichnis.META);
+        this.initialize();
+    }
+
     /**
-     * Checks configure properties.
+     * Checks configured properties.
      *
      * @throws PropertyException if properties hold invalid values.
      * @throws ImplementationException if reading resources fails.
@@ -388,6 +422,8 @@ public final class XMLTextschluesselVerzeichnis implements
      * {@code getDataDirectory() + '/' + getResource()}.
      *
      * @throws IOException if getting the resources fails.
+     *
+     * @see #getClassLoader()
      */
     protected URL[] getResources() throws IOException
     {
@@ -396,7 +432,7 @@ public final class XMLTextschluesselVerzeichnis implements
         final Enumeration en = classLoader.getResources(
             this.getDataDirectory() + '/' + this.getResource());
 
-        for(;en.hasMoreElements();)
+        while(en.hasMoreElements())
         {
             col.add(en.nextElement());
         }
@@ -448,11 +484,13 @@ public final class XMLTextschluesselVerzeichnis implements
     }
 
     /**
-     * Transforms a XML resource to the Textschluessel instances it contains.
+     * Transforms a XML document to the Textschluessel instances it contains.
      *
      * @param doc the document to transform.
      *
      * @return an array of Textschluessel instances from the given document.
+     *
+     * @see #transformTextschluessel(RITextschluessel, Element)
      */
     protected Textschluessel[] transformDocument(final Document doc)
     {
@@ -506,7 +544,17 @@ public final class XMLTextschluesselVerzeichnis implements
         return (Textschluessel[]) col.toArray(new Textschluessel[col.size()]);
     }
 
-    private void transformTextschluessel(final RITextschluessel key,
+    /**
+     * Transforms a {@code &lt;transactionType&gt;} element to the corresponding
+     * {@code RITextschluessel} instance.
+     *
+     * @param key the instance to be populated with data.
+     * @param xmlKey the XML element to read the data for {@code key} from.
+     *
+     * @throws NullPointerException if either {@code key} or {@code xmlKey} is
+     * {@code null}.
+     */
+    protected void transformTextschluessel(final RITextschluessel key,
         final Element xmlKey)
     {
         String lang;
@@ -540,8 +588,8 @@ public final class XMLTextschluesselVerzeichnis implements
      * </ul> When setting one of these properties fails, a non-validating
      * {@code DocumentBuilder} is returned and a warning message is logged.</p>
      *
-     * @return a new {@code DocumentBuilder} to be used for parsing the
-     * Textschlüssel XML resources.
+     * @return a new {@code DocumentBuilder} to be used for parsing the XML
+     * resources.
      *
      * @throws IOException if reading the schema fails.
      * @throws ParserConfigurationException if no supported XML parser runtime
@@ -600,19 +648,24 @@ public final class XMLTextschluesselVerzeichnis implements
         return xmlBuilder;
     }
 
-    private ClassLoader getClassLoader()
+    /**
+     * Gets the classloader used for loading XML resources.
+     * <p>The reference implementation will use the current thread's context
+     * classloader and will fall back to the system classloader if the
+     * current thread has no context classloader set.</p>
+     *
+     * @return the classloader to be used for loading XML resources.
+     */
+    protected ClassLoader getClassLoader()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if(classLoader == null)
         {
             classLoader = ClassLoader.getSystemClassLoader();
         }
-        if(classLoader == null)
-        {
-            throw new ImplementationException(META,
-                new NullPointerException("classLoader"));
 
-        }
+        assert classLoader != null :
+            "Expected ClassLoader.getSystemClassLoader() to not return null.";
 
         return classLoader;
     }

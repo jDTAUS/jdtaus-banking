@@ -18,21 +18,17 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Note:
-  This schema is deprecated. Use of the jdtaus-textschluessel-1.0.xsd schema
-  is recommended.
-  
-  Document    : jdtaus-textschluessel.xsd
+  Document    : jdtaus-textschluessel-1.0.xsd
   Autor       : Christian Schulte <cs@jdtaus.org>
   Beschreibung: Schema for the XML model of the TextschluesselVerzeichnis.
 
   Beispiel:
 
   <?xml version="1.0" encoding="UTF-8"?>
-  <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml"
-      xmlns:jdtaus="http://jdtaus.org/banking/xml"
+  <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml/textschluessel"
+      xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://jdtaus.org/banking/xml http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel.xsd"
+      xsi:schemaLocation="http://jdtaus.org/banking/xml/textschluessel http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.0.xsd"
       jdtaus:version="1.0">
 
   </jdtaus:textschluessel>
@@ -41,9 +37,9 @@
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:jdtaus="http://jdtaus.org/banking/xml"
-            targetNamespace="http://jdtaus.org/banking/xml"
-            xmlns="http://jdtaus.org/banking/xml"
+            xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
+            targetNamespace="http://jdtaus.org/banking/xml/textschluessel"
+            xmlns="http://jdtaus.org/banking/xml/textschluessel"
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
   

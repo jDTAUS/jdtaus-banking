@@ -12,5 +12,19 @@
         latest container hooks.]]>
       </action>
     </release>
+    <release version="1.0-beta-3" date="2007-06-01"
+             description="Third beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+        Documentation updates. Added tests.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[
+        Changed the target XML namespace of the <code>textschluessel.xsd</code>
+        schema from <code>http://jdtaus.org/banking/xml</code> to
+        <code>http://jdtaus.org/banking/xml/textschluessel</code>.
+        Additionally fixed wrong <code>schemaLocation</code> in
+        <code>textschluessel.xml</code>.]]>
+      </action>
+    </release>
   </body>
 </document>

@@ -25,9 +25,9 @@
       <resource>
         <filtering>false</filtering>
         <directory>src/site/resources</directory>
-        <targetPath>org/jdtaus/banking/xml</targetPath>
+        <targetPath>org/jdtaus/banking/xml/textschluessel</targetPath>
         <includes>
-          <include>*.xsd</include>
+          <include>jdtaus-textschluessel-1.0.xsd</include>
         </includes>
       </resource>
     </resources>
@@ -87,6 +87,7 @@
             <configuration>
               <bundles>
                 <bundle>org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis</bundle>
+                <bundle>org.jdtaus.banking.ri.txtdirectory.DuplicateTextschluesselException</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
@@ -135,8 +136,22 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-it</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.core</groupId>
       <artifactId>jdtaus-core-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core.container</groupId>
+      <artifactId>jdtaus-core-client-container</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core.logging</groupId>
+      <artifactId>jdtaus-core-jdk-logging</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -160,6 +175,7 @@
           <verbose>false</verbose>
           <serialwarn>true</serialwarn>
           <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
+          <source>1.4</source>
           <links>
             <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
             <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-api/apidocs</link>
