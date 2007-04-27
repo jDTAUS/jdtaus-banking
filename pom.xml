@@ -14,7 +14,7 @@
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/trunk</connection>
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/trunk</developerConnection>
-    <url>https://svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/trunk</url>
+    <url>http://svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/trunk</url>
   </scm>
   <build>
     <resources>
