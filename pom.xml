@@ -3,13 +3,13 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-beta-2</version>
+    <version>1.0-beta-3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-utilities</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking Utilities</name>
-  <version>1.0-beta-1-SNAPSHOT</version>
+  <version>1.0-beta-1</version>
   <description>jDTAUS banking utility components.</description>
   <dependencies>
     <dependency>
@@ -24,9 +24,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-utilities/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/1.0-beta-1-ibiblio</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/1.0-beta-1-ibiblio</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/1.0-beta-1-ibiblio</url>
   </scm>
   <build>
     <resources>
