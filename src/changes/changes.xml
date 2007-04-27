@@ -12,5 +12,14 @@
         latest container hooks.]]>
       </action>
     </release>
+    <release version="1.0-beta-3" date="2007-06-01"
+             description="Third beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+        Documentation updates. Refactored to use the
+        <code>org.jdtaus.banking.util.BankleitzahlenDatei</code> utility
+        component. Added various unit tests.]]>
+      </action>
+    </release>
   </body>
 </document>

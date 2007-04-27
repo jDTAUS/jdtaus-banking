@@ -41,6 +41,9 @@
       
       <jdtaus:implementedSpecifications>
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"/>
+        <!--                                                                 -->
+        <!-- Deprecated specifications.                                      -->
+        <!--                                                                 -->
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.spi.BankleitzahlenDatei"/>
       </jdtaus:implementedSpecifications>
       
@@ -59,19 +62,9 @@
           </jdtaus:properties>
           
         </jdtaus:dependency>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
-                           jdtaus:implementationName="jDTAUS Core SPI"
-                           jdtaus:name="TaskMonitor"
-                           jdtaus:bound="true">
-          
-        </jdtaus:dependency>
       </jdtaus:dependencies>
       
       <jdtaus:properties>
-        <jdtaus:property jdtaus:name="encoding"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="ISO-8859-1"/>
-        
         <jdtaus:property jdtaus:name="dataDirectory"
                          jdtaus:type="java.lang.String"
                          jdtaus:value="META-INF/jdtaus"/>

@@ -131,13 +131,31 @@
   <dependencies>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
-      <artifactId>jdtaus-banking-spi</artifactId>
+      <artifactId>jdtaus-banking-utilities</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-it</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.core</groupId>
       <artifactId>jdtaus-core-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core.container</groupId>
+      <artifactId>jdtaus-core-client-container</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core.logging</groupId>
+      <artifactId>jdtaus-core-jdk-logging</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core.monitor</groupId>
+      <artifactId>jdtaus-core-client-monitoring</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -157,10 +175,11 @@
           <doctitle>${pom.name} Specification ${pom.version}</doctitle>
           <linksource>true</linksource>
           <nodeprecated>true</nodeprecated>
-          <quiet>true</quiet>
+          <quiet>false</quiet>
           <verbose>false</verbose>
           <serialwarn>true</serialwarn>
           <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
+          <source>1.4</source>
           <links>
             <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
             <link>http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-api/apidocs</link>
