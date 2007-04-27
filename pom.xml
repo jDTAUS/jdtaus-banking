@@ -133,10 +133,13 @@
     </plugins>
   </build>
   <modules>
-    <module>jdtaus-banking-charsets</module>
     <module>jdtaus-banking-api</module>
     <module>jdtaus-banking-spi</module>
+    <module>jdtaus-banking-charsets</module>
+    <module>jdtaus-banking-it</module>
+    <module>jdtaus-banking-utilities</module>
     <module>jdtaus-banking-ri-bankleitzahlenverzeichnis</module>
+    <module>jdtaus-banking-ri-currencydirectory</module>
     <module>jdtaus-banking-ri-textschluesselverzeichnis</module>
     <module>jdtaus-banking-ri-dtaus</module>
   </modules>

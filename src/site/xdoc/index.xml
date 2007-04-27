@@ -16,16 +16,33 @@
         </a> provides <a href="jdtaus-banking-api/apidocs/index.html">interfaces
         </a> to various payment system specifications. Although not targeted
         solely on the german national payment system, currently most of the
-        types are implementing concepts of it. As with all jDTAUS API artifacts
-        the corresponding application runtime needs to be assembled manually.
-        Whenever the Banking API artifact is used at compile time (whether
-        pulled in transitively or requested), the application assembler needs to
-        provide additional runtime artifacts (see below) for proper operation.
+        types are implementing concepts of it. The
+        <a href="jdtaus-banking-utilities/project-summary.html">
+        Banking Utilities artifact</a> provides
+        <a href="jdtaus-banking-utilities/apidocs/index.html">banking utility
+        implementations</a> which may be used together with the Banking API
+        artifact if desired.
       </p>
+      <p>
+        As with all jDTAUS API artifacts the corresponding application runtime
+        needs to be assembled manually. Whenever the Banking API artifact is
+        used at compile time (whether pulled in transitively or requested), the
+        application assembler needs to provide additional runtime artifacts
+        (see below) for proper operation.
+      </p>
+      <subsection name="Currency Directory">
+        <p>
+          The <a href="jdtaus-banking-ri-currencydirectory/project-summary.html">
+          Currency Directory artifact</a> provides the jDTAUS CurrencyDirectory
+          <a href="jdtaus-banking-ri-currencydirectory/apidocs/index.html">
+          reference implementation</a> which is backed by classpath XML
+          resources holding the runtime currency instances.
+        </p>
+      </subsection>
       <subsection name="Textschlüssel Verzeichnis">
         <p>
           The <a href="jdtaus-banking-ri-textschluesselverzeichnis/project-summary.html">
-          "Textschlüssel Verzeichnis" artifact</a> provides the jDTAUS
+          Textschluessel Verzeichnis artifact</a> provides the jDTAUS
           TextschluesselVerzeichnis
           <a href="jdtaus-banking-ri-textschluesselverzeichnis/apidocs/index.html">
           reference implementation</a> which is backed by classpath XML
@@ -35,18 +52,28 @@
       <subsection name="Bankleitzahlen Verzeichnis">
         <p>
           The <a href="jdtaus-banking-ri-bankleitzahlenverzeichnis/project-summary.html">
-          "Bankleitzahlen Verzeichnis" artifact</a> provides the jDTAUS
+          Bankleitzahlen Verzeichnis artifact</a> provides the jDTAUS
           BankleitzahlenVerzeichnis
           <a href="jdtaus-banking-ri-bankleitzahlenverzeichnis/apidocs/index.html">
-          reference implementation</a>.
+          reference implementation</a> backed by Bundesbank bankfiles.
         </p>
       </subsection>
       <subsection name="DTAUS">
         <p>
           The <a href="jdtaus-banking-ri-dtaus/project-summary.html">
-          "DTAUS" artifact</a> provides the jDTAUS DTAUS
+          DTAUS artifact</a> provides the jDTAUS DTAUS
           <a href="jdtaus-banking-ri-dtaus/apidocs/index.html">reference
           implementation</a>.
+        </p>
+      </subsection>
+      <subsection name="Implementation programming interfaces">
+        <p>
+          The <a href="jdtaus-banking-spi/project-summary.html">
+          Banking SPI artifact</a> provides interfaces to be used by
+          banking implementations to interface with applications. The above
+          runtime artifacts all share the Banking SPI artifact at compile time
+          so that it will almost ever be pulled in transitively during
+          application assembly.
         </p>
       </subsection>
       <subsection name="Maven 2 Repository">
