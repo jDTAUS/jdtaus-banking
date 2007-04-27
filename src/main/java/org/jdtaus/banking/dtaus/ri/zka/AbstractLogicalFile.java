@@ -26,8 +26,12 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import org.jdtaus.banking.AlphaNumericText27;
 import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.Kontonummer;
@@ -176,6 +180,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     /** Calendar der Instanz. */
     protected final Calendar calendar = Calendar.getInstance(Locale.GERMANY);
+
+    /**
+     * Abbildung von ISO Währungs-Codes zur Anzahl der vorhandenen Zahlungen
+     * mit der entsprechenden Währung.
+     */
+    protected Map currencyMap = new HashMap(10);
 
     //---------------------------------------------------------------Attribute--
     //--Konstruktoren-----------------------------------------------------------
@@ -1995,14 +2005,50 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final Header old = this.getHeader();
         final LogicalFileType oldLabel = old.getType();
         final LogicalFileType newLabel = header.getType();
+
         if(oldLabel != null && checksum.getTransactionCount() > 0 &&
             (oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed()) ||
             (oldLabel.isRemittanceAllowed() &&
             !newLabel.isRemittanceAllowed()))
         {
-
             throw new IllegalArgumentException(newLabel.toString());
         }
+
+        final Currency[] oldCurrencies = this.getCurrencyMapperImpl().
+            getDtausCurrencies(old.getSchedule().getCreateDate());
+
+        final Currency[] newCurrencies = this.getCurrencyMapperImpl().
+            getDtausCurrencies(header.getSchedule().getCreateDate());
+
+        if(!Arrays.equals(oldCurrencies, newCurrencies))
+        {
+            for(Iterator it = this.currencyMap.keySet().
+                iterator(); it.hasNext();)
+            {
+                final String isoCode = (String) it.next();
+                final Long currencyCount = (Long) this.currencyMap.get(isoCode);
+
+                if(currencyCount != null && currencyCount.longValue() > 0)
+                {
+                    boolean currencyKept = false;
+
+                    for(int i = newCurrencies.length - 1; i >= 0; i--)
+                    {
+                        if(newCurrencies[i].getCurrencyCode().equals(isoCode))
+                        {
+                            currencyKept = true;
+                            break;
+                        }
+                    }
+
+                    if(!currencyKept)
+                    {
+                        throw new IllegalArgumentException(isoCode);
+                    }
+                }
+            }
+        }
+
         this.writeHeader(this.getHeaderBlock(), header);
         this.cachedHeader = (Header) header.clone();
         this.persistence.flush();
@@ -2079,6 +2125,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 task.setProgress(block > maximumProgress ?
                     maximumProgress : (int) block);
 
+                this.currencyMap.clear();
+
                 while(block < blockCount &&
                     (type = this.getBlockType(block)) == 'C')
                 {
@@ -2088,6 +2136,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
                     this.resizeIndex(id, c);
                     this.index[id] = blockOffset;
                     blocks = this.checksumTransaction(block, t, c);
+
+                    if(t.getCurrency() != null)
+                    {
+                        final Long currencyCount = (Long) this.currencyMap.get(
+                            t.getCurrency().getCurrencyCode());
+
+                        this.currencyMap.put(t.getCurrency().getCurrencyCode(),
+                            new Long(currencyCount == null ? 1L :
+                                currencyCount.longValue() + 1L));
+
+                    }
+
                     block += blocks;
                     blockOffset += blocks;
                     c.setTransactionCount(count++);
@@ -2167,6 +2227,13 @@ public abstract class AbstractLogicalFile implements LogicalFile
         }
         this.checkTransaction(transaction);
 
+        final Long currencyCount = (Long) this.currencyMap.get(
+            transaction.getCurrency().getCurrencyCode());
+
+        this.currencyMap.put(transaction.getCurrency().getCurrencyCode(),
+            new Long(currencyCount == null ? 1L :
+                currencyCount.longValue() + 1L));
+
         checksum.setTransactionCount(newCount);
         checksum.add(transaction);
         transactionId = checksum.getTransactionCount() - 1;
@@ -2210,6 +2277,25 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         this.checkTransaction(transaction);
         final Transaction old = this.getTransaction(index);
+
+        if(!old.getCurrency().equals(transaction.getCurrency()))
+        {
+            final Long oldCurrencyCount = (Long) this.currencyMap.
+                get(old.getCurrency().getCurrencyCode());
+
+            final Long newCurrencyCount = (Long) this.currencyMap.
+                get(transaction.getCurrency().getCurrencyCode());
+
+            this.currencyMap.put(old.getCurrency().getCurrencyCode(),
+                new Long(oldCurrencyCount == null ? 0L :
+                    oldCurrencyCount.longValue() - 1L));
+
+            this.currencyMap.put(transaction.getCurrency().getCurrencyCode(),
+                new Long(newCurrencyCount == null ? 1L :
+                    newCurrencyCount.longValue() + 1L));
+
+        }
+
         final int oldBlocks;
         final int newBlocks;
         final int delta;
@@ -2267,6 +2353,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
         }
 
         final Transaction removed = this.getTransaction(index);
+
+        final Long currencyCount = (Long) this.currencyMap.get(
+            removed.getCurrency().getCurrencyCode());
+
+        this.currencyMap.put(removed.getCurrency().getCurrencyCode(),
+            new Long(currencyCount == null ? 0L :
+                currencyCount.longValue() - 1L));
+
         checksum.setTransactionCount(checksum.getTransactionCount() - 1);
         checksum.substract(removed);
 
@@ -2292,6 +2386,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         return removed;
     }
 
-    //-------------------------------------------------------------LogicalFile--
+//-------------------------------------------------------------LogicalFile--
 
 }

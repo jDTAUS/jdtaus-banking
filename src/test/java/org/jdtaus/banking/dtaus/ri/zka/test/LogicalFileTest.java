@@ -588,6 +588,70 @@ public class LogicalFileTest extends TestCase
         Assert.assertTrue(dt.getChecksum().getTransactionCount() == oldCount - 1);
     }
 
+    /**
+     * Testet die korrekte Behandlung von Änderungen des Erstellungsdatums,
+     * wenn sich durch die Datums-Änderung die Liste der gültigen Währungen
+     * verändert.
+     */
+    public void testCurrencyConstraints() throws Exception
+    {
+        final PhysicalFile pFile =
+            this.getDTAUSValidHeaderChecksumAndTransaction(true);
+
+        final Header eurHeader = pFile.get(0).getHeader();
+        final Header demHeader = pFile.get(0).getHeader();
+
+        final Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.MONTH, 0);
+        cal.set(Calendar.YEAR, 2001);
+
+        final Header.Schedule demSchedule =
+            new Header.Schedule(cal.getTime(), null);
+
+        cal.set(Calendar.YEAR, 2002);
+
+        final Header.Schedule eurSchedule =
+            new Header.Schedule(cal.getTime(), null);
+
+        eurHeader.setSchedule(eurSchedule);
+        demHeader.setSchedule(demSchedule);
+
+        pFile.get(0).setHeader(demHeader);
+
+        final Transaction eurTransaction = pFile.get(0).getTransaction(0);
+        final Transaction demTransaction = pFile.get(0).getTransaction(0);
+        demTransaction.setCurrency(Currency.getInstance("DEM"));
+
+        pFile.get(0).setTransaction(0, demTransaction);
+
+        try
+        {
+            pFile.get(0).setHeader(eurHeader);
+            throw new AssertionError();
+        }
+        catch(IllegalArgumentException e)
+        {}
+
+        for(int i = 10; i > 0; i--)
+        {
+
+            pFile.get(0).createTransaction(demTransaction);
+            pFile.get(0).createTransaction(eurTransaction);
+        }
+
+        while(pFile.get(0).getChecksum().getTransactionCount() > 0)
+        {
+            final int index = pFile.get(0).getChecksum().
+                getTransactionCount() - 1;
+
+            pFile.get(0).setTransaction(index, eurTransaction);
+            pFile.get(0).removeTransaction(index);
+        }
+
+        pFile.get(0).setHeader(eurHeader);
+    }
+
     public void testEmptyFile() throws Exception
     {
         try

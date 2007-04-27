@@ -30,5 +30,14 @@
         is after 01/01/2002.]]>
       </action>
     </release>
+    <release version="1.0-beta-4" date="2007-06-01"
+             description="Fourth beta release">
+      
+      <action dev="schulte2005" type="fix"><![CDATA[
+        Fixed a bug where changing the create date of an A record to a value
+        which leads to currencies of the C records getting invalid lead to
+        invalid files.]]>
+      </action>
+    </release>
   </body>
 </document>
