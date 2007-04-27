@@ -171,6 +171,7 @@ public class DIN66003CharsetProvider extends CharsetProvider
 
     //---------------------------------------------------------CharsetProvider--
 
+    /** DIN-66003 {@code Charset} implementation. */
     public static class DIN66003Charset extends Charset
     {
 

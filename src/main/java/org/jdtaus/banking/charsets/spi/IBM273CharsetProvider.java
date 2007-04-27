@@ -436,6 +436,7 @@ public class IBM273CharsetProvider extends CharsetProvider
 
     //---------------------------------------------------------CharsetProvider--
 
+    /** IBM273 {@code Charset} implementation. */
     public static class IBM273Charset extends Charset
     {
 
