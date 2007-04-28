@@ -42,9 +42,23 @@ public class RITextschluessel extends Textschluessel
             locale = Locale.getDefault();
         }
 
-        final MessageFormat fmt =
-            new MessageFormat((String) this.shortDescriptions.
-            get(locale.getLanguage()));
+        String description = (String) this.shortDescriptions.
+            get(locale.getLanguage());
+
+        if(description == null)
+        {
+            // English per default - fall back to a default message just stating
+            // key and extension.
+            description = (String) this.shortDescriptions.get("en");
+            if(description == null)
+            {
+                description = RITextschluesselBundle.
+                    getDefaultDescriptionText(locale);
+
+            }
+        }
+
+        final MessageFormat fmt = new MessageFormat(description);
 
         return fmt.format(new Object[] {
             new Integer(this.getKey()),

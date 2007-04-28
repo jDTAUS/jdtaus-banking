@@ -26,5 +26,15 @@
         <code>textschluessel.xml</code>.]]>
       </action>
     </release>
+    <release version="1.0-beta-4" date="2007-06-01"
+             description="Fourth beta release">
+      
+      <action dev="schulte2005" type="fix"><![CDATA[
+        Updated class <code>RITextschluessel</code> to fall back to either
+        an english short description or a default description for properties key
+        and extension if the language given by the default locale is not
+        supported.]]>
+      </action>
+    </release>
   </body>
 </document>
