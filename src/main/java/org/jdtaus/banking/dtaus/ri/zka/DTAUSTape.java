@@ -38,14 +38,12 @@ import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.Fields;
-import org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyViolationMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
-import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
@@ -56,7 +54,6 @@ import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
 import org.jdtaus.core.text.Message;
-import org.jdtaus.core.text.MessageEvent;
 import org.jdtaus.core.text.spi.ApplicationLogger;
 
 /**
@@ -585,7 +582,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             Fields.FIELD_C18, block, DTAUSTape.CRECORD_OFFSETS1[21],
             DTAUSTape.CRECORD_LENGTH1[21], true);
 
-        if(extCount != -1L)
+        if(extCount != AbstractLogicalFile.NO_NUMBER)
         {
             final Transaction t = this.readTransaction(block, transaction);
 
@@ -669,16 +666,16 @@ public final class DTAUSTape extends AbstractLogicalFile
 
     protected int blockCount(final long block) throws IOException
     {
-        int extCount = (int) this.readNumberPackedPositive(
+        long extCount = this.readNumberPackedPositive(
             Fields.FIELD_C18, block, DTAUSTape.CRECORD_OFFSETS1[21],
             DTAUSTape.CRECORD_LENGTH1[21], true);
 
-        if(extCount == -1)
+        if(extCount == AbstractLogicalFile.NO_NUMBER)
         {
             extCount = 0;
         }
 
-        return DTAUSTape.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount];
+        return DTAUSTape.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[(int) extCount];
     }
 
     public Header readHeader(final long headerBlock) throws IOException
@@ -785,45 +782,15 @@ public final class DTAUSTape extends AbstractLogicalFile
         num = this.readNumberPackedPositive(Fields.FIELD_A4, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[4], DTAUSTape.ARECORD_LENGTH[4], true);
 
-        if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
-        {
-            msg = new IllegalDataMessage(Fields.FIELD_A4,
-                IllegalDataMessage.TYPE_BANKLEITZAHL,
-                headerBlock * this.persistence.getBlockSize() +
-                DTAUSTape.ARECORD_OFFSETS[4], str);
-
-            if(AbstractErrorMessage.isErrorsEnabled())
-            {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
-
-            }
-            else
-            {
-                ThreadLocalMessages.getMessages().addMessage(msg);
-            }
-        }
-        else
-        {
-            ret.setBank(Bankleitzahl.valueOf(new Long(num)));
-        }
-
-        // Feld 5
-        // Nur belegt wenn Absender Kreditinistitut ist, sonst 0.
-        num = this.readNumberPackedPositive(Fields.FIELD_A5, headerBlock,
-            DTAUSTape.ARECORD_OFFSETS[5], DTAUSTape.ARECORD_LENGTH[5],
-            true);
-
-        ret.setBankData(null);
-
-        if(isBank)
+        ret.setBank(null);
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
             if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
             {
-                msg = new IllegalDataMessage(Fields.FIELD_A5,
+                msg = new IllegalDataMessage(Fields.FIELD_A4,
                     IllegalDataMessage.TYPE_BANKLEITZAHL,
-                    this.getHeaderBlock() * this.persistence.getBlockSize() +
-                    DTAUSTape.ARECORD_OFFSETS[5], Long.toString(num));
+                    headerBlock * this.persistence.getBlockSize() +
+                    DTAUSTape.ARECORD_OFFSETS[4], str);
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
@@ -838,7 +805,43 @@ public final class DTAUSTape extends AbstractLogicalFile
             }
             else
             {
-                ret.setBankData(Bankleitzahl.valueOf(new Long(num)));
+                ret.setBank(Bankleitzahl.valueOf(new Long(num)));
+            }
+        }
+
+        // Feld 5
+        // Nur belegt wenn Absender Kreditinistitut ist, sonst 0.
+        num = this.readNumberPackedPositive(Fields.FIELD_A5, headerBlock,
+            DTAUSTape.ARECORD_OFFSETS[5], DTAUSTape.ARECORD_LENGTH[5],
+            true);
+
+        ret.setBankData(null);
+        if(num != AbstractLogicalFile.NO_NUMBER)
+        {
+            if(isBank)
+            {
+                if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
+                {
+                    msg = new IllegalDataMessage(Fields.FIELD_A5,
+                        IllegalDataMessage.TYPE_BANKLEITZAHL,
+                        this.getHeaderBlock() * this.persistence.getBlockSize()
+                        + DTAUSTape.ARECORD_OFFSETS[5], Long.toString(num));
+
+                    if(AbstractErrorMessage.isErrorsEnabled())
+                    {
+                        throw new ImplementationException(this.getMeta(),
+                            msg.getText(Locale.getDefault()));
+
+                    }
+                    else
+                    {
+                        ThreadLocalMessages.getMessages().addMessage(msg);
+                    }
+                }
+                else
+                {
+                    ret.setBankData(Bankleitzahl.valueOf(new Long(num)));
+                }
             }
         }
 
@@ -860,37 +863,43 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
         // Feld 7
-        this.calendar.clear();
         num = this.readNumberPackedPositive(Fields.FIELD_A7, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[7], DTAUSTape.ARECORD_LENGTH[7], true);
 
-        cal = (int) Math.floor(num / AbstractLogicalFile.EXP10[4]);
-        num -= (cal * AbstractLogicalFile.EXP10[4]);
-        this.calendar.set(Calendar.DAY_OF_MONTH, cal);
-        cal = (int) Math.floor(num / AbstractLogicalFile.EXP10[2]);
-        num -= (cal * AbstractLogicalFile.EXP10[2]);
-        this.calendar.set(Calendar.MONTH, cal - 1);
-        num = num <= 79L ? 2000L + num : 1900L + num;
-        this.calendar.set(Calendar.YEAR, (int) num);
-        createDate = this.calendar.getTime();
-
-        if(!Header.Schedule.checkDate(createDate))
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_A7,
-                IllegalDataMessage.TYPE_SHORTDATE,
-                this.getHeaderBlock() * this.persistence.getBlockSize() +
-                DTAUSTape.ARECORD_OFFSETS[7], Long.toString(num));
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            this.calendar.clear();
+            cal = (int) Math.floor(num / AbstractLogicalFile.EXP10[4]);
+            num -= (cal * AbstractLogicalFile.EXP10[4]);
+            this.calendar.set(Calendar.DAY_OF_MONTH, cal);
+            cal = (int) Math.floor(num / AbstractLogicalFile.EXP10[2]);
+            num -= (cal * AbstractLogicalFile.EXP10[2]);
+            this.calendar.set(Calendar.MONTH, cal - 1);
+            num = num <= 79L ? 2000L + num : 1900L + num;
+            this.calendar.set(Calendar.YEAR, (int) num);
+            createDate = this.calendar.getTime();
+            if(!Header.Schedule.checkDate(createDate))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_A7,
+                    IllegalDataMessage.TYPE_SHORTDATE,
+                    this.getHeaderBlock() * this.persistence.getBlockSize() +
+                    DTAUSTape.ARECORD_OFFSETS[7], Long.toString(num));
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
-            else
-            {
-                ThreadLocalMessages.getMessages().addMessage(msg);
-            }
+        }
+        else
+        {
+            createDate = null;
         }
 
         // Feld 8
@@ -903,27 +912,31 @@ public final class DTAUSTape extends AbstractLogicalFile
         num = this.readNumberPackedPositive(Fields.FIELD_A9, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[9], DTAUSTape.ARECORD_LENGTH[9], true);
 
-        if(!Kontonummer.checkKontonummer(new Long(num)))
+        ret.setAccount(null);
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_A9,
-                IllegalDataMessage.TYPE_KONTONUMMER,
-                this.getHeaderBlock() * this.persistence.getBlockSize() +
-                DTAUSTape.ARECORD_OFFSETS[9], Long.toString(num));
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(!Kontonummer.checkKontonummer(new Long(num)))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_A9,
+                    IllegalDataMessage.TYPE_KONTONUMMER,
+                    this.getHeaderBlock() * this.persistence.getBlockSize() +
+                    DTAUSTape.ARECORD_OFFSETS[9], Long.toString(num));
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                ret.setAccount(Kontonummer.valueOf(new Long(num)));
             }
-        }
-        else
-        {
-            ret.setAccount(Kontonummer.valueOf(new Long(num)));
         }
 
         // Feld 10
@@ -931,54 +944,62 @@ public final class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.ARECORD_OFFSETS[10], DTAUSTape.ARECORD_LENGTH[10],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(!Referenznummer10.checkReferenznummer10(new Long(num)))
+        num = Num.longValue();
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_A10,
-                IllegalDataMessage.TYPE_REFERENZNUMMER,
-                this.getHeaderBlock() * this.persistence.getBlockSize() +
-                DTAUSTape.ARECORD_OFFSETS[10], Long.toString(num));
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(!Referenznummer10.checkReferenznummer10(Num))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_A10,
+                    IllegalDataMessage.TYPE_REFERENZNUMMER,
+                    this.getHeaderBlock() * this.persistence.getBlockSize() +
+                    DTAUSTape.ARECORD_OFFSETS[10], Num.toString());
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                ret.setReference(Referenznummer10.valueOf(Num));
             }
-        }
-        else
-        {
-            ret.setReference(Referenznummer10.valueOf(new Long(num)));
         }
 
         // Feld 11b
         executionDate = this.readLongDate(Fields.FIELD_A11B, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[12], AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(!Header.Schedule.checkSchedule(createDate, executionDate))
+        ret.setSchedule(null);
+        if(createDate != null)
         {
-            msg = new IllegalScheduleMessage(this.getHeaderBlock() *
-                this.persistence.getBlockSize() + DTAUSTape.ARECORD_OFFSETS[12],
-                this.getHeader());
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(!Header.Schedule.checkSchedule(createDate, executionDate))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalScheduleMessage(this.getHeaderBlock() *
+                    this.persistence.getBlockSize() +
+                    DTAUSTape.ARECORD_OFFSETS[12], createDate, executionDate);
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                schedule = new Header.Schedule(createDate, executionDate);
+                ret.setSchedule(schedule);
             }
-        }
-        else
-        {
-            schedule = new Header.Schedule(createDate, executionDate);
-            ret.setSchedule(schedule);
         }
 
         // Feld 12
@@ -1297,7 +1318,7 @@ public final class DTAUSTape extends AbstractLogicalFile
         Long Num;
         String str;
         int search;
-        int keyType;
+        long keyType;
         long blockOffset;
         final long extCount;
         final Currency cur;
@@ -1316,10 +1337,10 @@ public final class DTAUSTape extends AbstractLogicalFile
         num = this.readNumberBinary(Fields.FIELD_C1, block,
             DTAUSTape.CRECORD_OFFSETS1[0], DTAUSTape.CRECORD_LENGTH1[0]);
 
-        if(num != DTAUSTape.CRECORD_CONST_LENGTH +
+        if(extCount != AbstractLogicalFile.NO_NUMBER &&
+            num != DTAUSTape.CRECORD_CONST_LENGTH +
             extCount * DTAUSTape.CRECORD_EXT_LENGTH)
         {
-
             msg = new IllegalDataMessage(Fields.FIELD_C1,
                 IllegalDataMessage.TYPE_NUMERIC,
                 block * this.persistence.getBlockSize() +
@@ -1366,8 +1387,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.CRECORD_OFFSETS1[3], DTAUSTape.CRECORD_LENGTH1[3], true);
 
         transaction.setPrimaryBank(null);
-
-        if(num != 0L)
+        if(num != AbstractLogicalFile.NO_NUMBER && num != 0L)
         {
             if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
             {
@@ -1397,81 +1417,93 @@ public final class DTAUSTape extends AbstractLogicalFile
         num = this.readNumberPackedPositive(Fields.FIELD_C4, block,
             DTAUSTape.CRECORD_OFFSETS1[4], DTAUSTape.CRECORD_LENGTH1[4], true);
 
-        if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
+        transaction.setTargetBank(null);
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_C4,
-                IllegalDataMessage.TYPE_BANKLEITZAHL,
-                block * this.persistence.getBlockSize() +
-                DTAUSTape.CRECORD_OFFSETS1[4], Long.toString(num));
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_C4,
+                    IllegalDataMessage.TYPE_BANKLEITZAHL,
+                    block * this.persistence.getBlockSize() +
+                    DTAUSTape.CRECORD_OFFSETS1[4], Long.toString(num));
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                transaction.setTargetBank(Bankleitzahl.valueOf(new Long(num)));
             }
-        }
-        else
-        {
-            transaction.setTargetBank(Bankleitzahl.valueOf(new Long(num)));
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 5
         num = this.readNumberPackedPositive(Fields.FIELD_C5, block,
             DTAUSTape.CRECORD_OFFSETS1[5], DTAUSTape.CRECORD_LENGTH1[5], true);
 
-        if(!Kontonummer.checkKontonummer(new Long(num)))
+        transaction.setTargetAccount(null);
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_C5,
-                IllegalDataMessage.TYPE_KONTONUMMER,
-                block * this.persistence.getBlockSize() +
-                DTAUSTape.CRECORD_OFFSETS1[5], Long.toString(num));
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(!Kontonummer.checkKontonummer(new Long(num)))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_C5,
+                    IllegalDataMessage.TYPE_KONTONUMMER,
+                    block * this.persistence.getBlockSize() +
+                    DTAUSTape.CRECORD_OFFSETS1[5], Long.toString(num));
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                transaction.setTargetAccount(Kontonummer.valueOf(new Long(num)));
             }
-        }
-        else
-        {
-            transaction.setTargetAccount(Kontonummer.valueOf(new Long(num)));
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 6a
         num = this.readNumberPackedPositive(Fields.FIELD_C6A, block,
             DTAUSTape.CRECORD_OFFSETS1[6], DTAUSTape.CRECORD_LENGTH1[6], false);
 
-        if(!Referenznummer11.checkReferenznummer11(new Long(num)))
+        transaction.setReference(null);
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_C6A,
-                IllegalDataMessage.TYPE_REFERENZNUMMER,
-                block * this.persistence.getBlockSize() +
-                DTAUSTape.CRECORD_OFFSETS1[6], Long.toString(num));
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(!Referenznummer11.checkReferenznummer11(new Long(num)))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_C6A,
+                    IllegalDataMessage.TYPE_REFERENZNUMMER,
+                    block * this.persistence.getBlockSize() +
+                    DTAUSTape.CRECORD_OFFSETS1[6], Long.toString(num));
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                transaction.setReference(Referenznummer11.valueOf(new Long(num)));
             }
-        }
-        else
-        {
-            transaction.setReference(Referenznummer11.valueOf(new Long(num)));
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 6b
@@ -1479,44 +1511,46 @@ public final class DTAUSTape extends AbstractLogicalFile
         //    DTAUSTape.CRECORD_OFFSETS1[7], DTAUSTape.CRECORD_LENGTH1[7], true);
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 7a
-        keyType = (int) this.readNumberPackedPositive(Fields.FIELD_C7A,
-            block, DTAUSTape.CRECORD_OFFSETS1[8], DTAUSTape.CRECORD_LENGTH1[8],
-            false);
+        keyType = this.readNumberPackedPositive(Fields.FIELD_C7A, block,
+            DTAUSTape.CRECORD_OFFSETS1[8], DTAUSTape.CRECORD_LENGTH1[8], false);
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 7b
         num = this.readNumberPackedPositive(Fields.FIELD_C7B, block,
             DTAUSTape.CRECORD_OFFSETS1[9], DTAUSTape.CRECORD_LENGTH1[9], true);
 
-        type = this.getTextschluesselVerzeichnis().
-            getTextschluessel(keyType, (int) num);
-
         transaction.setType(null);
-
-        if(type == null
-            || (type.isDebit() && !this.getHeader().getType().isDebitAllowed())
-            || (type.isRemittance() && !this.getHeader().getType().
-            isRemittanceAllowed()))
+        if(num != AbstractLogicalFile.NO_NUMBER &&
+            keyType != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_C7A,
-                IllegalDataMessage.TYPE_TEXTSCHLUESSEL,
-                block * this.persistence.getBlockSize() +
-                DTAUSTape.CRECORD_OFFSETS1[8], Integer.toString(keyType) +
-                Long.toString(num));
+            type = this.getTextschluesselVerzeichnis().
+                getTextschluessel((int) keyType, (int) num);
 
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(type == null
+                || (type.isDebit() && !this.getHeader().getType().isDebitAllowed())
+                || (type.isRemittance() && !this.getHeader().getType().
+                isRemittanceAllowed()))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_C7A,
+                    IllegalDataMessage.TYPE_TEXTSCHLUESSEL,
+                    block * this.persistence.getBlockSize() +
+                    DTAUSTape.CRECORD_OFFSETS1[8], Long.toString(keyType) +
+                    Long.toString(num));
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                transaction.setType(type);
             }
-        }
-        else
-        {
-            transaction.setType(type);
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 10
@@ -1524,27 +1558,33 @@ public final class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.CRECORD_OFFSETS1[12], DTAUSTape.CRECORD_LENGTH1[12],
             true);
 
-        if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
+        transaction.setExecutiveBank(null);
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_C10,
-                IllegalDataMessage.TYPE_BANKLEITZAHL,
-                block * this.persistence.getBlockSize() +
-                DTAUSTape.CRECORD_OFFSETS1[12], Long.toString(num));
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(!Bankleitzahl.checkBankleitzahl(new Long(num)))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_C10,
+                    IllegalDataMessage.TYPE_BANKLEITZAHL,
+                    block * this.persistence.getBlockSize() +
+                    DTAUSTape.CRECORD_OFFSETS1[12], Long.toString(num));
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                transaction.setExecutiveBank(
+                    Bankleitzahl.valueOf(new Long(num)));
+
             }
-        }
-        else
-        {
-            transaction.setExecutiveBank(Bankleitzahl.valueOf(new Long(num)));
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 11
@@ -1552,27 +1592,33 @@ public final class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.CRECORD_OFFSETS1[13], DTAUSTape.CRECORD_LENGTH1[13],
             true);
 
-        if(!Kontonummer.checkKontonummer(new Long(num)))
+        transaction.setExecutiveAccount(null);
+        if(num != AbstractLogicalFile.NO_NUMBER)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_C11,
-                IllegalDataMessage.TYPE_KONTONUMMER,
-                block * this.persistence.getBlockSize() +
-                DTAUSTape.CRECORD_OFFSETS1[13], Long.toString(num));
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(!Kontonummer.checkKontonummer(new Long(num)))
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                msg = new IllegalDataMessage(Fields.FIELD_C11,
+                    IllegalDataMessage.TYPE_KONTONUMMER,
+                    block * this.persistence.getBlockSize() +
+                    DTAUSTape.CRECORD_OFFSETS1[13], Long.toString(num));
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new ImplementationException(this.getMeta(),
+                        msg.getText(Locale.getDefault()));
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                transaction.setExecutiveAccount(
+                    Kontonummer.valueOf(new Long(num)));
+
             }
-        }
-        else
-        {
-            transaction.setExecutiveAccount(Kontonummer.valueOf(new Long(num)));
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 12
@@ -1580,7 +1626,8 @@ public final class DTAUSTape extends AbstractLogicalFile
             DTAUSTape.CRECORD_OFFSETS1[14], DTAUSTape.CRECORD_LENGTH1[14],
             true);
 
-        transaction.setAmount(BigInteger.valueOf(num));
+        transaction.setAmount(num != AbstractLogicalFile.NO_NUMBER ?
+            BigInteger.valueOf(num) : null);
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 14
         str = this.readAlphaNumeric(Fields.FIELD_C14, block,
@@ -1698,7 +1745,8 @@ public final class DTAUSTape extends AbstractLogicalFile
         //}
 
         // Erweiterungsteile des 2., 3., und 4. Satzabschnitts.
-        for(search = 0; search < extCount; search++)
+        for(search = 0; search < extCount &&
+            extCount != AbstractLogicalFile.NO_NUMBER; search++)
         {
             blockOffset = block +
                 DTAUSTape.CRECORD_EXTINDEX_TO_BLOCKOFFSET[search];
@@ -1715,7 +1763,8 @@ public final class DTAUSTape extends AbstractLogicalFile
                 DTAUSTape.CRECORD_EXTINDEX_TO_VALUELENGTH[search],
                 AbstractLogicalFile.ENCODING_EBCDI);
 
-            if(Num.longValue() == 1L)
+            num = Num.longValue();
+            if(num == 1L)
             {
                 if(transaction.getTargetExt() != null)
                 {
@@ -1749,7 +1798,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                     }
                 }
             }
-            else if(Num.longValue() == 2L)
+            else if(num == 2L)
             {
                 if(str != null)
                 {
@@ -1763,7 +1812,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                     }
                 }
             }
-            else if(Num.longValue() == 3L)
+            else if(num == 3L)
             {
                 if(transaction.getExecutiveExt() != null)
                 {
@@ -1799,7 +1848,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                     }
                 }
             }
-            else
+            else if(num != AbstractLogicalFile.NO_NUMBER)
             {
                 msg = new IllegalDataMessage(
                     DTAUSTape.CRECORD_EXTINDEX_TO_TYPEFIELD[search],

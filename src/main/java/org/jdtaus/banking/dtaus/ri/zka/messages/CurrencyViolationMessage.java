@@ -31,7 +31,6 @@ import org.jdtaus.core.text.Message;
  */
 public class CurrencyViolationMessage extends Message
 {
-
     //--CurrencyViolationMessage------------------------------------------------
 
     /**
@@ -109,5 +108,4 @@ public class CurrencyViolationMessage extends Message
     }
 
     //-----------------------------------------------------------------Message--
-
 }

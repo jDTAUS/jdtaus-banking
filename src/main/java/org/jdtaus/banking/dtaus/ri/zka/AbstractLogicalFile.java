@@ -142,6 +142,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /** Charset name for the tap format. */
     protected static final String IBM273 = "IBM273";
 
+    /** Return-Code. */
+    protected static final long NO_NUMBER = Long.MIN_VALUE;
+
     //--------------------------------------------------------------Konstanten--
     //--Attribute---------------------------------------------------------------
 
@@ -284,7 +287,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     /**
      * Hilfs-Methode zum Lesen von Zahlen.
-     * <p>Sollten ungültige Daten gelesen werden, so wird die Zahl {@code -1}
+     * <p>Sollten ungültige Daten gelesen werden, so wird {@code NO_NUMBER}
      * zurückgeliefert und eine entsprechende {@code IllegalDataMessage}
      * erzeugt.</p>
      *
@@ -295,8 +298,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @param len Anzahl von Ziffern, die gelesen werden sollen.
      * @param encoding zu verwendendes Encoding.
      *
-     * @return gelesene Zahl oder {@code -1} wenn gelesene Daten nicht als Zahl
-     * interpretiert werden konnten.
+     * @return gelesene Zahl oder {@code NO_NUMBER} wenn gelesene Daten nicht
+     * als Zahl interpretiert werden konnten.
      *
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
@@ -305,9 +308,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
-     * @see org.jdtaus.banking.dtaus.Fields
-     * @see org.jdtaus.banking.dtaus.spi.AbstractErrorMessage
-     * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
+     * @see org.jdtaus.banking.dtaus.spi.Fields
+     * @see org.jdtaus.banking.dtaus.ri.zka.AbstractErrorMessage
+     * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
+     * @see #NO_NUMBER
      */
     protected Long readNumber(final int field, final long block, final int off,
         final int len, final int encoding) throws IOException
@@ -322,7 +326,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * entspricht einem Verstoß gegen die Spezifikation. Diese Methode existiert
      * ausschließlich um ungültige Dateien lesen zu können und sollte nur in
      * diesen bestimmten Fällen verwendet werden.</p>
-     * <p>Sollten ungültige Daten gelesen werden, so wird die Zahl {@code -1}
+     * <p>Sollten ungültige Daten gelesen werden, so wird {@code NO_NUMBER}
      * zurückgeliefert und eine entsprechende {@code IllegalDataMessage}
      * erzeugt.</p>
      *
@@ -336,8 +340,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * Nullen ersetzt werden sollen; {@code false} für eine strikte Einhaltung
      * der Spezifikation.
      *
-     * @return gelesene Zahl oder {@code -1} wenn gelesene Daten nicht als Zahl
-     * interpretiert werden konnten.
+     * @return gelesene Zahl oder {@code NO_NUMBER} wenn gelesene Daten nicht
+     * als Zahl interpretiert werden konnten.
      *
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
@@ -346,9 +350,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @see #ENCODING_ASCII
      * @see #ENCODING_EBCDI
-     * @see org.jdtaus.banking.dtaus.Fields
-     * @see org.jdtaus.banking.dtaus.spi.AbstractErrorMessage
-     * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
+     * @see org.jdtaus.banking.dtaus.spi.Fields
+     * @see org.jdtaus.banking.dtaus.ri.zka.AbstractErrorMessage
+     * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
+     * @see #NO_NUMBER
      */
     protected Long readNumber(final int field, final long block, final int off,
         final int len, final int encoding, final boolean allowSpaces)
@@ -415,7 +420,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                     ThreadLocalMessages.getMessages().addMessage(msg);
                 }
 
-                ret = -1;
+                ret = AbstractLogicalFile.NO_NUMBER;
                 break;
             }
             else
@@ -1134,17 +1139,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @param sign {@code true} wenn ein Vorzeichen erwartet wird;
      * {@code false} wenn kein Vorzeichen erwartet wird.
      *
-     * @return gelesene Zahl oder {@code -1} wenn gelesene Daten nicht als
-     * Zahl interpretiert werden konnten.
+     * @return gelesene Zahl oder {@code NO_NUMBER} wenn gelesene Daten nicht
+     * als Zahl interpretiert werden konnten.
      *
      * @throws PhysicalFileError wenn die Datei Fehler enthält und
      * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
      * gleich {@code true} ist.
      * @throws IOException wenn nicht gelesen werden kann.
      *
-     * @see org.jdtaus.banking.dtaus.Fields
-     * @see org.jdtaus.banking.dtaus.spi.AbstractErrorMessage
-     * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
+     * @see org.jdtaus.banking.dtaus.spi.Fields
+     * @see org.jdtaus.banking.dtaus.ri.zka.AbstractErrorMessage
+     * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
+     * @see #NO_NUMBER
      */
     protected long readNumberPackedPositive(final int field, final long block,
         final int off, final int len, final boolean sign) throws IOException
@@ -1201,7 +1207,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                         ThreadLocalMessages.getMessages().addMessage(msg);
                     }
 
-                    ret = -1L;
+                    ret = AbstractLogicalFile.NO_NUMBER;
                     break;
                 }
             }
@@ -1225,7 +1231,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                         ThreadLocalMessages.getMessages().addMessage(msg);
                     }
 
-                    ret = -1L;
+                    ret = AbstractLogicalFile.NO_NUMBER;
                     break;
                 }
                 ret += (digit & 0xF) * AbstractLogicalFile.EXP10[exp];

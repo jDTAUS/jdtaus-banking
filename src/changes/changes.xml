@@ -5,7 +5,7 @@
   </properties>
   <body>
     <release version="1.0-beta-2" date="2007-06-01"
-             description="Second beta release">
+             description="2nd beta release">
       
       <action dev="schulte2005" type="fix"><![CDATA[
         Fixed <code>IllegalArgumentException</code> thrown when scanning DTAUS
@@ -14,7 +14,7 @@
       </action>
     </release>
     <release version="1.0-beta-3" date="2007-06-01"
-             description="Third beta release">
+             description="3rd beta release">
       
       <action dev="schulte2005" type="fix"><![CDATA[
         Added support for the DEM currency. A space character in a DTAUS file
@@ -31,12 +31,23 @@
       </action>
     </release>
     <release version="1.0-beta-4" date="2007-06-01"
-             description="Fourth beta release">
+             description="4th beta release">
       
       <action dev="schulte2005" type="fix"><![CDATA[
         Fixed a bug where changing the create date of an A record to a value
         which leads to currencies of the C records getting invalid lead to
         invalid files.]]>
+      </action>
+    </release>
+    <release version="1.0-beta-5" date="2007-06-01"
+             description="5th beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+        Removed misleading error messages. If e.g. an account code field
+        contains illegal data normally two error messages are reported. One for
+        the illegal data and a second one for the illegal account code. The new
+        behaviour is that if such a field is already known to not contain
+        valid data no further checks are performed for that field any more.]]>
       </action>
     </release>
   </body>

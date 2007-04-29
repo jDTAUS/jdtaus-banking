@@ -34,7 +34,6 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalDataMessage extends AbstractErrorMessage
 {
-
     //--Konstanten--------------------------------------------------------------
 
     /**
@@ -306,5 +305,4 @@ public final class IllegalDataMessage extends AbstractErrorMessage
     }
 
     //-----------------------------------------------------------------Message--
-
 }

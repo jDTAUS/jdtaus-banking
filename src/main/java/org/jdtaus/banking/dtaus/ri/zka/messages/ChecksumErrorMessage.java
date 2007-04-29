@@ -35,7 +35,6 @@ import org.jdtaus.core.text.Message;
  */
 public final class ChecksumErrorMessage extends AbstractErrorMessage
 {
-
     //--Konstruktoren-----------------------------------------------------------
 
     /**
@@ -195,5 +194,4 @@ public final class ChecksumErrorMessage extends AbstractErrorMessage
     }
 
     //-----------------------------------------------------------------Message--
-
 }

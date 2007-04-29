@@ -33,7 +33,6 @@ import org.jdtaus.core.text.Message;
  */
 public class IllegalFileLengthMessage extends Message
 {
-
     //--Konstruktoren-----------------------------------------------------------
 
     /**
@@ -173,5 +172,4 @@ public class IllegalFileLengthMessage extends Message
     }
 
     //-----------------------------------------------------------------Message--
-
 }

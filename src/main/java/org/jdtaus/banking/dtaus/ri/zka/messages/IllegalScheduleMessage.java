@@ -21,6 +21,7 @@ package org.jdtaus.banking.dtaus.ri.zka.messages;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
 import org.jdtaus.banking.dtaus.Header;
@@ -39,43 +40,43 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalScheduleMessage extends AbstractErrorMessage
 {
-
     //--Konstruktoren-----------------------------------------------------------
 
     /**
      * Erzeugt eine neue {@code IllegalScheduleMessage}.
      *
      * @param position absolute Position der logischen Datei.
-     * @param header A Datensatz mit ungültiger Terminierung.
+     * @param createDate Dateierstellungsdatum.
+     * @param executionDate Ausführungsdatum.
      *
-     * @throws NullPointerException wenn {@code header} {@code null} ist.
+     * @throws NullPointerException wenn {@code createDate} {@code null} ist.
      * @throws IllegalArgumentException wenn {@code position} negativ ist
-     * oder {@code header.getSchedule()} keiner ungültigen Auftragsterminierung
-     * entspricht.
+     * oder die Kombination von {@code createDate} und {@code executionDate}
+     * einer gültigen Auftragsterminierung entspricht.
      */
-    public IllegalScheduleMessage(final long position, final Header header)
+    public IllegalScheduleMessage(final long position, final Date createDate,
+        final Date executionDate)
     {
         super();
 
-        if(header == null)
+        if(createDate == null)
         {
-            throw new NullPointerException("header");
+            throw new NullPointerException("createDate");
         }
         if(position < 0L)
         {
             throw new IllegalArgumentException(Long.toString(position));
         }
-        if(Header.Schedule.checkSchedule(header.getSchedule().getCreateDate(),
-            header.getSchedule().getExecutionDate()))
+        if(Header.Schedule.checkSchedule(createDate, executionDate))
         {
-
-            throw new IllegalArgumentException(
-                Long.toString(header.getSchedule().getCreateDate().getTime()));
+            throw new IllegalArgumentException(Long.toString(
+                createDate.getTime()));
 
         }
 
         this.position = position;
-        this.header = header;
+        this.createDate = createDate;
+        this.executionDate = executionDate;
     }
 
     /**
@@ -120,19 +121,25 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
     //--IllegalScheduleMessage--------------------------------------------------
 
     /**
-     * Wert der Property {@code <position>}.
+     * Wert der Property {@code position}.
      * @serial
      */
     private long position;
 
     /**
-     * Wert der Property {@code <header>}.
+     * Wert der Property {@code createDate}.
      * @serial
      */
-    private Header header;
+    private Date createDate;
 
     /**
-     * Liest den Wert der Property {@code <position>}.
+     * Wert der Property {@code executionDate}.
+     * @serial
+     */
+    private Date executionDate;
+
+    /**
+     * Liest den Wert der Property {@code position}.
      *
      * @return absolute Position der logischen Datei.
      */
@@ -142,14 +149,23 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
     }
 
     /**
-     * Liest den Wert der Property {@code <header>}.
+     * Liest den Wert der Property {@code createDate}.
      *
-     * @return A-Datensatz der logischen Datei mit ungültiger
-     * Auftrags-Terminierung.
+     * @return Dateierstellungsdatum.
      */
-    public Header getHeader()
+    public Date getCreateDate()
     {
-        return this.header;
+        return this.createDate;
+    }
+
+    /**
+     * Liest den Wert der Property {@code executionDate}.
+     *
+     * @return Auftrags-Ausführungsdatum oder {@code null}.
+     */
+    public Date getExecutionDate()
+    {
+        return this.executionDate;
     }
 
     //--------------------------------------------------IllegalScheduleMessage--
@@ -167,8 +183,8 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
     {
         return new Object[] {
             new Long(this.getPosition()),
-            this.getHeader().getSchedule().getCreateDate(),
-            this.getHeader().getSchedule().getExecutionDate()
+            this.getCreateDate(),
+            this.getExecutionDate()
         };
     }
 
@@ -187,5 +203,4 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
     }
 
     //-----------------------------------------------------------------Message--
-
 }
