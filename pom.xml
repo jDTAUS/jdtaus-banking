@@ -9,12 +9,12 @@
   <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI CurrencyDirectory</name>
-  <version>1.0-beta-2-SNAPSHOT</version>
+  <version>1.0-beta-2</version>
   <description>jDTAUS CurrencyDirectory reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/1.0-beta-2-ibiblio</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/1.0-beta-2-ibiblio</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/1.0-beta-2-ibiblio</url>
   </scm>
   <build>
     <resources>
