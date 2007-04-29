@@ -19,6 +19,8 @@
  */
 package org.jdtaus.banking.ri.currencydir.test;
 
+import java.util.Currency;
+import junit.framework.Assert;
 import org.jdtaus.banking.ri.currencydir.XMLCurrencyDirectory;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.it.CurrencyMapperTest;
@@ -50,6 +52,27 @@ public class XMLCurrencyDirectoryTest
 
     //------------------------------------------------------CurrencyMapperTest--
     //--Tests-------------------------------------------------------------------
+
+    /**
+     * Tests calls to deprecated API methods to still work without
+     * throwing exceptions.
+     */
+    public void testDeprecation() throws Exception
+    {
+        assert this.getCurrencyMapper() != null;
+
+        final org.jdtaus.banking.dtaus.spi.CurrencyDirectory deprecated =
+            (org.jdtaus.banking.dtaus.spi.CurrencyDirectory)
+            this.getCurrencyMapper();
+
+        Assert.assertNotNull(deprecated.getCurrencies());
+        Assert.assertEquals(
+            deprecated.getCode(Currency.getInstance("EUR")), '1');
+
+        Assert.assertEquals(deprecated.getCurrency('1'),
+            Currency.getInstance("EUR"));
+
+    }
 
     //-------------------------------------------------------------------Tests--
 }

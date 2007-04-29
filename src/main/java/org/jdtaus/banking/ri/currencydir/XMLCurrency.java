@@ -42,7 +42,7 @@ public class XMLCurrency implements Serializable, Cloneable
      * DTAUS currency code.
      * @serial
      */
-    private char dtausCode;
+    private Character dtausCode;
 
     /**
      * Start date.
@@ -79,9 +79,9 @@ public class XMLCurrency implements Serializable, Cloneable
     /**
      * Gets the DTAUS currency code.
      *
-     * @return the DTAUS currency code.
+     * @return the DTAUS currency code or {@code null}.
      */
-    public char getDtausCode()
+    public Character getDtausCode()
     {
         return this.dtausCode;
     }
@@ -89,9 +89,9 @@ public class XMLCurrency implements Serializable, Cloneable
     /**
      * Sets the DTAUS currency code.
      *
-     * @param value the DTAUS currency code.
+     * @param value the DTAUS currency code or {@code null}.
      */
-    public void setDtausCode(final char value)
+    public void setDtausCode(final Character value)
     {
         this.dtausCode = value;
     }

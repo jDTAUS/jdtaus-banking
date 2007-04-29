@@ -8,5 +8,15 @@
              description="First beta release">
       
     </release>
+    <release version="1.0-beta-2" date="2007-06-01"
+             description="2nd beta release">
+      <action dev="schulte2005" type="fix"><![CDATA[
+        Fixed a bug which lead to currencies getting returned for dates
+        before the starting date. This stops returning the EUR currency for
+        dates before 01/01/2002. Additionally made property
+        <code>dtausCode</code> of XML currency instances optional to not force
+        all currencies to have a corresponding DTAUS code.]]>
+      </action>
+    </release>
   </body>
 </document>

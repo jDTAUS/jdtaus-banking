@@ -101,7 +101,7 @@
 
     <xsd:attribute name="dtausCode"
                    type="jdtaus:dtausCodeType"
-                   use="required"/>
+                   use="optional"/>
 
     <xsd:attribute name="startDate" 
                    type="xsd:date"

@@ -89,7 +89,7 @@ public final class XMLCurrencyDirectory
     public static final String SCHEMA_SOURCE_KEY =
         "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
-    /** jDTAUS {@code Model} namespace URI. */
+    /** jDTAUS {@code currencies} namespace URI. */
     public static final String MODEL_NS =
         "http://jdtaus.org/banking/xml/currencies";
 
@@ -295,8 +295,8 @@ public final class XMLCurrencyDirectory
                 final XMLCurrency currency = (XMLCurrency) it.next();
 
                 if(this.isoMap.put(currency.getIsoCode(), currency) != null ||
-                    this.dtausMap.put(new Character(currency.getDtausCode()),
-                    currency) != null)
+                    (currency.getDtausCode() != null && this.dtausMap.
+                    put(currency.getDtausCode(), currency) != null))
                 {
                     throw new DuplicateCurrencyException(
                         Currency.getInstance(currency.getIsoCode()));
@@ -338,8 +338,9 @@ public final class XMLCurrencyDirectory
             final String isoCode = (String) it.next();
             final XMLCurrency currency = (XMLCurrency) this.isoMap.get(isoCode);
 
-            if(currency.getEndDate() == null ||
-                date.before(currency.getEndDate()))
+            if(date.after(currency.getStartDate()) &&
+                (currency.getEndDate() == null ||
+                date.before(currency.getEndDate())))
             {
                 col.add(Currency.getInstance(isoCode));
             }
@@ -360,7 +361,8 @@ public final class XMLCurrencyDirectory
 
         Currency ret = null;
 
-        if(currency != null && (currency.getEndDate() == null ||
+        if(currency != null && date.after(currency.getStartDate()) &&
+            (currency.getEndDate() == null ||
             date.before(currency.getEndDate())))
         {
             ret = Currency.getInstance(currency.getIsoCode());
@@ -383,10 +385,11 @@ public final class XMLCurrencyDirectory
         final XMLCurrency xml = (XMLCurrency) this.isoMap.
             get(currency.getCurrencyCode());
 
-        if(xml != null && (xml.getEndDate() == null ||
-            date.before(xml.getEndDate())))
+        if(xml != null && xml.getDtausCode() != null &&
+            date.after(xml.getStartDate()) &&
+            (xml.getEndDate() == null || date.before(xml.getEndDate())))
         {
-            return xml.getDtausCode();
+            return xml.getDtausCode().charValue();
         }
 
         throw new IllegalArgumentException(currency.getCurrencyCode());
@@ -567,8 +570,11 @@ public final class XMLCurrencyDirectory
             cur.setIsoCode(e.getAttributeNS(XMLCurrencyDirectory.MODEL_NS,
                 "isoCode"));
 
-            cur.setDtausCode(e.getAttributeNS(XMLCurrencyDirectory.MODEL_NS,
-                "dtausCode").charAt(0));
+            str = e.getAttributeNS(XMLCurrencyDirectory.MODEL_NS,
+                "dtausCode");
+
+            cur.setDtausCode(str != null && str.length() > 0 ?
+                new Character(str.charAt(0)) : null);
 
             str = e.getAttributeNS(XMLCurrencyDirectory.MODEL_NS,
                 "startDate");
