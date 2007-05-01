@@ -38,16 +38,22 @@ import org.jdtaus.banking.Kontonummer;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
+import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.Header;
+import org.jdtaus.banking.dtaus.IllegalAmountException;
+import org.jdtaus.banking.dtaus.IllegalCurrencyException;
+import org.jdtaus.banking.dtaus.IllegalDateException;
+import org.jdtaus.banking.dtaus.IllegalDescriptionCountException;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
+import org.jdtaus.banking.dtaus.TextschluesselConstraintException;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
 import org.jdtaus.banking.spi.CurrencyMapper;
+import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
@@ -411,8 +417,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new ImplementationException(this.getMeta(),
-                        msg.getText(Locale.getDefault()));
+                    throw new CorruptedException(this.getMeta(),
+                        block * this.persistence.getBlockSize() + off);
 
                 }
                 else
@@ -582,8 +588,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new ImplementationException(this.getMeta(),
-                        msg.getText(Locale.getDefault()));
+                    throw new CorruptedException(this.getMeta(),
+                        block * this.persistence.getBlockSize() + off);
 
                 }
                 else
@@ -771,8 +777,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
+                        throw new CorruptedException(this.getMeta(),
+                            block * this.persistence.getBlockSize() + off);
 
                     }
                     else
@@ -804,8 +810,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                throw new CorruptedException(this.getMeta(),
+                    block * this.persistence.getBlockSize() + off);
 
             }
             else
@@ -837,7 +843,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * eine optionale Datums-Angabe zu entfernen.
      * @param encoding Konstante für das zu verwendende Encoding.
      *
-     * @throws IllegalArgumentException wenn das Jahr von {@code date} nicht
+     * @throws IllegalDateException wenn das Jahr von {@code date} nicht
      * größer oder gleich 1980 und kleiner oder gleich 2079 ist.
      * @throws IOException wenn nicht geschrieben werden kann.
      *
@@ -869,9 +875,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         {
             if(!Header.Schedule.checkDate(date))
             {
-                throw new IllegalArgumentException(
-                    Long.toString(date.getTime()));
-
+                throw new IllegalDateException(date);
             }
 
             this.shortDateBuffer.setLength(0);
@@ -989,8 +993,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
+                        throw new CorruptedException(this.getMeta(),
+                            block * this.persistence.getBlockSize() + off);
 
                     }
                     else
@@ -1023,8 +1027,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                throw new CorruptedException(this.getMeta(),
+                    block * this.persistence.getBlockSize() + off);
 
             }
             else
@@ -1054,7 +1058,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * eine optionale Datums-Angabe zu entfernen.
      * @param encoding Konstante für das zu verwendende Encoding.
      *
-     * @throws IllegalArgumentException wenn das Jahr von {@code date} nicht
+     * @throws IllegalDateException wenn das Jahr von {@code date} nicht
      * größer oder gleich 1980 und kleiner oder gleich 2079 ist.
      * @throws IOException wenn nicht geschrieben werden kann.
      *
@@ -1087,9 +1091,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         {
             if(!Header.Schedule.checkDate(date))
             {
-                throw new IllegalArgumentException(
-                    Long.toString(date.getTime()));
-
+                throw new IllegalDateException(date);
             }
 
             this.longDateBuffer.setLength(0);
@@ -1198,8 +1200,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
+                        throw new CorruptedException(this.getMeta(),
+                            block * this.persistence.getBlockSize() + off);
 
                     }
                     else
@@ -1222,8 +1224,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(!AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
+                        throw new CorruptedException(this.getMeta(),
+                            block * this.persistence.getBlockSize() + off);
 
                     }
                     else
@@ -1467,8 +1469,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
-                throw new ImplementationException(this.getMeta(),
-                    msg.getText(Locale.getDefault()));
+                throw new CorruptedException(this.getMeta(),
+                    block * this.persistence.getBlockSize() + off);
 
             }
             else
@@ -1571,9 +1573,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
             throw new NullPointerException("currency");
         }
 
-        this.getCurrencyMapperImpl().getDtausCode(header.getCurrency(),
-            schedule.getCreateDate());
+        try
+        {
+            this.getCurrencyMapperImpl().getDtausCode(header.getCurrency(),
+                schedule.getCreateDate());
 
+        }
+        catch(UnsupportedCurrencyException e)
+        {
+            throw new IllegalCurrencyException(e.getCurrencyCode(),
+                e.getDate());
+
+        }
     }
 
     //---------------------------------------------------void checkHeader(...)--
@@ -1657,28 +1668,36 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
             if(i < 0)
             {
-                throw new IllegalArgumentException(type.toString());
+                throw new TextschluesselConstraintException(lFileType, type);
             }
         }
         else
         {
-            throw new IllegalArgumentException(type.toString());
+            throw new TextschluesselConstraintException(lFileType, type);
         }
+
         if(!this.checkAmount(transaction.getAmount().longValue(), true))
         {
-            throw new IllegalArgumentException(transaction.getAmount().
-                toString());
-
+            throw new IllegalAmountException(transaction.getAmount());
         }
         if(!this.checkDescriptionCount(desc.getDescriptionCount()))
         {
-            throw new IllegalArgumentException(Integer.toString(
-                desc.getDescriptionCount()));
+            throw new IllegalDescriptionCountException(
+                AbstractLogicalFile.MAX_DESCRIPTIONS);
 
         }
 
-        this.getCurrencyMapperImpl().getDtausCode(transaction.getCurrency(),
-            this.getHeader().getSchedule().getCreateDate());
+        try
+        {
+            this.getCurrencyMapperImpl().getDtausCode(transaction.getCurrency(),
+                this.getHeader().getSchedule().getCreateDate());
+
+        }
+        catch(UnsupportedCurrencyException e)
+        {
+            throw new IllegalCurrencyException(e.getCurrencyCode(),
+                e.getDate());
+        }
     }
 
     //----------------------------------------------void checkTransaction(...)--
@@ -2017,7 +2036,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
             (oldLabel.isRemittanceAllowed() &&
             !newLabel.isRemittanceAllowed()))
         {
-            throw new IllegalArgumentException(newLabel.toString());
+            throw new TextschluesselConstraintException(newLabel,
+                this.getTransaction(0).getType());
+
         }
 
         final Currency[] oldCurrencies = this.getCurrencyMapperImpl().
@@ -2049,7 +2070,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(!currencyKept)
                     {
-                        throw new IllegalArgumentException(isoCode);
+                        throw new IllegalCurrencyException(isoCode,
+                            header.getSchedule().getCreateDate());
+
                     }
                 }
             }
@@ -2116,8 +2139,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
-                    throw new ImplementationException(this.getMeta(),
-                        msg.getText(Locale.getDefault()));
+                    throw new CorruptedException(this.getMeta(),
+                        block * this.persistence.getBlockSize() +
+                        DTAUSDisk.ARECORD_OFFSETS[1]);
 
                 }
                 else
@@ -2176,8 +2200,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                         if(AbstractErrorMessage.isErrorsEnabled())
                         {
-                            throw new ImplementationException(this.getMeta(),
-                                msg.getText(Locale.getDefault()));
+                            throw new CorruptedException(this.getMeta(),
+                                block * this.persistence.getBlockSize());
 
                         }
                         else
@@ -2196,8 +2220,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(AbstractErrorMessage.isErrorsEnabled())
                     {
-                        throw new ImplementationException(this.getMeta(),
-                            msg.getText(Locale.getDefault()));
+                        throw new CorruptedException(this.getMeta(),
+                            block * this.persistence.getBlockSize() +
+                            DTAUSDisk.ERECORD_OFFSETS[1]);
 
                     }
                     else

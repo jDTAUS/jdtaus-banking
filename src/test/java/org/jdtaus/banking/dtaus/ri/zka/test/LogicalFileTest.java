@@ -304,8 +304,8 @@ public class LogicalFileTest extends TestCase
         final Calendar createCal = Calendar.getInstance();
         final Calendar executionCal = Calendar.getInstance();
 
-        createCal.set(1980, 0, 1, 0, 0, 0);
-        executionCal.set(1980, 0, 15, 0, 0, 0);
+        createCal.set(2003, 0, 1, 0, 0, 0);
+        executionCal.set(2003, 0, 15, 0, 0, 0);
         createCal.set(Calendar.MILLISECOND, 0);
         executionCal.set(Calendar.MILLISECOND, 0);
 
@@ -617,26 +617,30 @@ public class LogicalFileTest extends TestCase
         eurHeader.setSchedule(eurSchedule);
         demHeader.setSchedule(demSchedule);
 
-        pFile.get(0).setHeader(demHeader);
+        try
+        {
+            pFile.get(0).setHeader(demHeader);
+            this.fail();
+        }
+        catch(IllegalArgumentException e)
+        {}
 
         final Transaction eurTransaction = pFile.get(0).getTransaction(0);
         final Transaction demTransaction = pFile.get(0).getTransaction(0);
         demTransaction.setCurrency(Currency.getInstance("DEM"));
 
-        pFile.get(0).setTransaction(0, demTransaction);
-
         try
         {
-            pFile.get(0).setHeader(eurHeader);
-            throw new AssertionError();
+            pFile.get(0).setTransaction(0, demTransaction);
+            this.fail();
         }
         catch(IllegalArgumentException e)
         {}
 
+        pFile.get(0).setHeader(eurHeader);
+
         for(int i = 10; i > 0; i--)
         {
-
-            pFile.get(0).createTransaction(demTransaction);
             pFile.get(0).createTransaction(eurTransaction);
         }
 

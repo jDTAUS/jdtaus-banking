@@ -4,7 +4,7 @@
     <author email="cs@jdtaus.org">Christian Schulte</author>
   </properties>
   <body>
-    <release version="1.0-beta-2" date="2007-06-01"
+    <release version="1.0-beta-2" date="2007-04-01"
              description="2nd beta release">
       
       <action dev="schulte2005" type="fix"><![CDATA[
@@ -13,7 +13,7 @@
         end. Updated to latest container hooks.]]>
       </action>
     </release>
-    <release version="1.0-beta-3" date="2007-06-01"
+    <release version="1.0-beta-3" date="2007-04-05"
              description="3rd beta release">
       
       <action dev="schulte2005" type="fix"><![CDATA[
@@ -30,7 +30,7 @@
         is after 01/01/2002.]]>
       </action>
     </release>
-    <release version="1.0-beta-4" date="2007-06-01"
+    <release version="1.0-beta-4" date="2007-04-15"
              description="4th beta release">
       
       <action dev="schulte2005" type="fix"><![CDATA[
@@ -39,7 +39,7 @@
         invalid files.]]>
       </action>
     </release>
-    <release version="1.0-beta-5" date="2007-06-01"
+    <release version="1.0-beta-5" date="2007-04-27"
              description="5th beta release">
       
       <action dev="schulte2005" type="update"><![CDATA[
@@ -48,6 +48,17 @@
         the illegal data and a second one for the illegal account code. The new
         behaviour is that if such a field is already known to not contain
         valid data no further checks are performed for that field any more.]]>
+      </action>
+    </release>
+    <release version="1.0-beta-6" date="2007-05-01"
+             description="6th beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+        Updated to new exception classes introduced in jdtaus-banking-api
+        1.0-beta-5. Updated the POM removing hardcoded signing aliases.
+        Updated invalid testfiles holding the EUR currency for create dates
+        for which the EUR currency does not exist. Updated the POM removing
+        hardcoded signing aliases.]]>
       </action>
     </release>
   </body>

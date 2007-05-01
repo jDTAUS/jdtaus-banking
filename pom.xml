@@ -38,23 +38,17 @@
             <id>sign</id>
             <phase>package</phase>
             <goals>
+              <goal>test-jar</goal>
               <goal>sign</goal>
             </goals>
             <configuration>
               <storepass>${jarsign.storepass}</storepass>
               <keypass>${jarsign.keypass}</keypass>
-              <alias>Christian Schulte</alias>
+              <alias>${jarsign.alias}</alias>
               <signedjar>${project.build.directory}/signed/${project.build.finalName}.jar</signedjar>
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkMode>never</forkMode>
-        </configuration>
       </plugin>
       
       <plugin>
@@ -67,10 +61,18 @@
               <goal>sign</goal>
             </goals>
             <configuration>
+              <keyname>${gpg.keyname}</keyname>
               <passphrase>${gpg.passphrase}</passphrase>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>never</forkMode>
+        </configuration>
       </plugin>
       
       <plugin>
