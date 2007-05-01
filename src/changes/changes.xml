@@ -4,16 +4,16 @@
     <author email="cs@jdtaus.org">Christian Schulte</author>
   </properties>
   <body>
-    <release version="1.0-beta-2" date="2007-06-01"
-             description="Second beta release">
+    <release version="1.0-beta-2" date="2007-04-01"
+             description="2nd beta release">
       
       <action dev="schulte2005" type="update"><![CDATA[
         Added final modifier to reference implementation classes. Updated to
         latest container hooks.]]>
       </action>
     </release>
-    <release version="1.0-beta-3" date="2007-06-01"
-             description="Third beta release">
+    <release version="1.0-beta-3" date="2007-04-05"
+             description="3rd beta release">
       
       <action dev="schulte2005" type="update"><![CDATA[
         Documentation updates. Added tests.]]>
@@ -26,14 +26,24 @@
         <code>textschluessel.xml</code>.]]>
       </action>
     </release>
-    <release version="1.0-beta-4" date="2007-06-01"
-             description="Fourth beta release">
+    <release version="1.0-beta-4" date="2007-04-27"
+             description="4th beta release">
       
       <action dev="schulte2005" type="fix"><![CDATA[
         Updated class <code>RITextschluessel</code> to fall back to either
         an english short description or a default description for properties key
         and extension if the language given by the default locale is not
         supported.]]>
+      </action>
+    </release>
+    <release version="1.0-beta-5" date="2007-05-01"
+             description="5th beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+        Updated class <code>RITextschluessel</code> to use the new property
+        <code>defaultLanguage</code> from the container model instead of the
+        hardcoded english default language. Updated the POM removing hardcoded
+        signing aliases.]]>
       </action>
     </release>
   </body>

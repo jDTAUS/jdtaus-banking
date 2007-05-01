@@ -24,6 +24,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import org.jdtaus.banking.Textschluessel;
+import org.jdtaus.core.container.Implementation;
+import org.jdtaus.core.container.ModelFactory;
+import org.jdtaus.core.container.Properties;
+import org.jdtaus.core.container.Property;
+import org.jdtaus.core.container.PropertyException;
 
 /**
  * Reference {@code Textschluessel} implementation.
@@ -31,8 +36,72 @@ import org.jdtaus.banking.Textschluessel;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class RITextschluessel extends Textschluessel
+public final class RITextschluessel extends Textschluessel
 {
+    //--Implementation----------------------------------------------------------
+
+    // This section is managed by jdtaus-container-mojo.
+
+    /** Meta-data describing the implementation. */
+    private static final Implementation META =
+        ModelFactory.getModel().getModules().
+        getImplementation(RITextschluessel.class.getName());
+
+    //----------------------------------------------------------Implementation--
+    //--Constructors------------------------------------------------------------
+
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Initializes the properties of the instance.
+     *
+     * @param meta the property values to initialize the instance with.
+     *
+     * @throws NullPointerException if {@code meta} is {@code null}.
+     */
+    protected void initializeProperties(final Properties meta)
+    {
+        Property p;
+
+        if(meta == null)
+        {
+            throw new NullPointerException("meta");
+        }
+
+        p = meta.getProperty("defaultLanguage");
+        this._defaultLanguage = (java.lang.String) p.getValue();
+
+    }
+
+    //------------------------------------------------------------Constructors--
+    //--Dependencies------------------------------------------------------------
+
+    // This section is managed by jdtaus-container-mojo.
+
+
+    //------------------------------------------------------------Dependencies--
+    //--Properties--------------------------------------------------------------
+
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Property {@code defaultLanguage}.
+     * @serial
+     */
+    private java.lang.String _defaultLanguage;
+
+    /**
+     * Gets the value of property <code>defaultLanguage</code>.
+     *
+     * @return the value of property <code>defaultLanguage</code>.
+     */
+    protected java.lang.String getDefaultLanguage()
+    {
+        return this._defaultLanguage;
+    }
+
+
+    //--------------------------------------------------------------Properties--
     //--Textschluessel----------------------------------------------------------
 
     public String getShortDescription(Locale locale)
@@ -47,11 +116,13 @@ public class RITextschluessel extends Textschluessel
 
         if(description == null)
         {
-            // English per default - fall back to a default message just stating
-            // key and extension.
-            description = (String) this.shortDescriptions.get("en");
+            description = (String) this.shortDescriptions.get(
+                this.getDefaultLanguage());
+
             if(description == null)
             {
+                // Fall back to a default message just stating key and extension
+                // if no language is available.
                 description = RITextschluesselBundle.
                     getDefaultDescriptionText(locale);
 
@@ -68,6 +139,13 @@ public class RITextschluessel extends Textschluessel
 
     //----------------------------------------------------------Textschluessel--
     //--RITextschluessel--------------------------------------------------------
+
+    /** Creates a new {@code RITextschluessel} instance. */
+    public RITextschluessel()
+    {
+        this.initializeProperties(RITextschluessel.META.getProperties());
+        this.assertValidProperties();
+    }
 
     /**
      * Maps language codes to short descriptions.
@@ -105,6 +183,21 @@ public class RITextschluessel extends Textschluessel
         return (String) this.shortDescriptions.
             put(locale.getLanguage(), shortDescription);
 
+    }
+
+    /**
+     * Checks configured properties.
+     *
+     * @throws PropertyException for invalid property values.
+     */
+    protected void assertValidProperties()
+    {
+        if(this.getDefaultLanguage() == null ||
+            this.getDefaultLanguage().length() <= 0)
+        {
+            throw new PropertyException("defaultLanguage",
+                this.getDefaultLanguage());
+        }
     }
 
     //--------------------------------------------------------RITextschluessel--

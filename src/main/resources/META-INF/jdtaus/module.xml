@@ -32,7 +32,7 @@
                jdtaus:name="${pom.name}"
                jdtaus:description="${pom.description}"
                jdtaus:version="1.0">
-
+  
   <jdtaus:implementations>
     <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis"
                            jdtaus:name="jDTAUS Banking SPI"
@@ -70,5 +70,19 @@
         
       </jdtaus:properties>
     </jdtaus:implementation>
+    
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.txtdirectory.RITextschluessel"
+                           jdtaus:name="RITextschluessel"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+      
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="defaultLanguage"
+                         jdtaus:type="java.lang.String"
+                         jdtaus:value="en"/>
+        
+      </jdtaus:properties>
+    </jdtaus:implementation>
+    
   </jdtaus:implementations>
 </jdtaus:module>
