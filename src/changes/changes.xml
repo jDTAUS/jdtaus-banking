@@ -4,21 +4,29 @@
     <author email="cs@jdtaus.org">Christian Schulte</author>
   </properties>
   <body>
-    <release version="1.0-beta-2" date="2007-06-01"
-             description="Second beta release">
+    <release version="1.0-beta-2" date="2007-04-01"
+             description="2nd beta release">
       
       <action dev="schulte2005" type="update"><![CDATA[
         Added final modifier to reference implementation classes. Updated to
         latest container hooks.]]>
       </action>
     </release>
-    <release version="1.0-beta-3" date="2007-06-01"
-             description="Third beta release">
+    <release version="1.0-beta-3" date="2007-04-05"
+             description="3rd beta release">
       
       <action dev="schulte2005" type="update"><![CDATA[
         Documentation updates. Refactored to use the
         <code>org.jdtaus.banking.util.BankleitzahlenDatei</code> utility
         component. Added various unit tests.]]>
+      </action>
+    </release>
+    <release version="1.0-beta-4" date="2007-05-01"
+             description="4th beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+        Documentation updates. Updated the POM removing hardcoded signing
+        aliases.]]>
       </action>
     </release>
   </body>
