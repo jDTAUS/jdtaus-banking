@@ -4,5 +4,12 @@
     <author email="cs@jdtaus.org">Christian Schulte</author>
   </properties>
   <body>
+    <release version="1.0-beta-3" date="2007-05-01"
+             description="3rd beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+        Updated the POM removing hardcoded signing aliases.]]>
+      </action>
+    </release>
   </body>
 </document>
