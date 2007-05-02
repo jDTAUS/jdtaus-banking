@@ -27,5 +27,13 @@
         aliases.]]>
       </action>
     </release>
+    <release version="1.0-beta-4" date="2007-05-02"
+             description="4th beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated entity classes to cache hash codes and stopped creating objects
+      during hash code computation. Added some more test cases.]]>
+      </action>
+    </release>
   </body>
 </document>

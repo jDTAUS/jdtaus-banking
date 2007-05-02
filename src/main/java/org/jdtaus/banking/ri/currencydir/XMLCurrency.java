@@ -56,6 +56,10 @@ public class XMLCurrency implements Serializable, Cloneable
      */
     private Date endDate;
 
+    /** Cached hash-code. */
+    private transient int hashCode = NO_HASHCODE;
+    private static final int NO_HASHCODE = Integer.MIN_VALUE;
+
     /**
      * Gets the ISO currency code.
      *
@@ -74,6 +78,7 @@ public class XMLCurrency implements Serializable, Cloneable
     public void setIsoCode(final String value)
     {
         this.isoCode = value;
+        this.hashCode = NO_HASHCODE;
     }
 
     /**
@@ -94,6 +99,7 @@ public class XMLCurrency implements Serializable, Cloneable
     public void setDtausCode(final Character value)
     {
         this.dtausCode = value;
+        this.hashCode = NO_HASHCODE;
     }
 
     /**
@@ -114,6 +120,7 @@ public class XMLCurrency implements Serializable, Cloneable
     public void setStartDate(final Date value)
     {
         this.startDate = value;
+        this.hashCode = NO_HASHCODE;
     }
 
     /**
@@ -134,6 +141,7 @@ public class XMLCurrency implements Serializable, Cloneable
     public void setEndDate(final Date value)
     {
         this.endDate = value;
+        this.hashCode = NO_HASHCODE;
     }
 
     /**
@@ -219,7 +227,26 @@ public class XMLCurrency implements Serializable, Cloneable
      */
     public int hashCode()
     {
-        return this.internalString().hashCode();
+        if(this.hashCode == NO_HASHCODE)
+        {
+            int hc = 23;
+
+            hc = 37 * hc + (this.dtausCode == null ?
+                0 : (int) this.dtausCode.charValue());
+
+            hc = 37 * hc + (this.isoCode == null ?
+                0 : this.isoCode.hashCode());
+
+            hc = 37 * hc + (this.startDate == null ?
+                0 : this.startDate.hashCode());
+
+            hc = 37 * hc + (this.endDate == null ?
+                0 : this.endDate.hashCode());
+
+            this.hashCode = hc;
+        }
+
+        return this.hashCode;
     }
 
     /**
