@@ -28,10 +28,7 @@ import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalFileLengthMessage;
-import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContainerInitializer;
-import org.jdtaus.core.container.ContextFactory;
-import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ModelFactory;
@@ -40,10 +37,8 @@ import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.io.FileOperations;
 import org.jdtaus.core.io.util.StructuredFileOperations;
-import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.nio.util.Charsets;
 import org.jdtaus.core.text.Message;
-import org.jdtaus.core.text.spi.ApplicationLogger;
 
 /**
  * Default {@code PhysicalFileFactory}-Implementierung.
@@ -141,82 +136,6 @@ public final class DefaultPhysicalFileFactory
 
     // This section is managed by jdtaus-container-mojo.
 
-    /** Configured <code>ApplicationLogger</code> implementation. */
-    private transient ApplicationLogger _dependency1;
-
-    /**
-     * Gets the configured <code>ApplicationLogger</code> implementation.
-     *
-     * @return the configured <code>ApplicationLogger</code> implementation.
-     */
-    private ApplicationLogger getApplicationLogger()
-    {
-        ApplicationLogger ret = null;
-        if(this._dependency1 != null)
-        {
-            ret = this._dependency1;
-        }
-        else
-        {
-            ret = (ApplicationLogger) ContainerFactory.getContainer().
-                getDependency(DefaultPhysicalFileFactory.class,
-                "ApplicationLogger");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DefaultPhysicalFileFactory.class.getName()).
-                getDependencies().getDependency("ApplicationLogger").
-                isBound())
-            {
-                this._dependency1 = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
-    /** Configured <code>Logger</code> implementation. */
-    private transient Logger _dependency0;
-
-    /**
-     * Gets the configured <code>Logger</code> implementation.
-     *
-     * @return the configured <code>Logger</code> implementation.
-     */
-    private Logger getLogger()
-    {
-        Logger ret = null;
-        if(this._dependency0 != null)
-        {
-            ret = this._dependency0;
-        }
-        else
-        {
-            ret = (Logger) ContainerFactory.getContainer().
-                getDependency(DefaultPhysicalFileFactory.class,
-                "Logger");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DefaultPhysicalFileFactory.class.getName()).
-                getDependencies().getDependency("Logger").
-                isBound())
-            {
-                this._dependency0 = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------

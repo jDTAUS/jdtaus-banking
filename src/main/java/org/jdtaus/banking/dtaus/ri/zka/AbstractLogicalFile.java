@@ -20,7 +20,6 @@
 package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -138,9 +137,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     /** Maximale Anzahl unterstützter Verwendungszweckzeilen. */
     protected static final int MAX_DESCRIPTIONS = 14;
-
-    /** {@code BigDecimal} 100. */
-    private static final BigDecimal BD100 = new BigDecimal(100L);
 
     /** Charset name for the disk format. */
     protected static final String DIN66003 = "ISO646-DE";

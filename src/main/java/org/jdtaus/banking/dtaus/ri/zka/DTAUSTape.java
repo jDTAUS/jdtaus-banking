@@ -1914,7 +1914,6 @@ public final class DTAUSTape extends AbstractLogicalFile
         long blockOffset;
         int extIndex;
         int followingIndex;
-        String str;
         AlphaNumericText27 txt;
         final Textschluessel type = transaction.getType();
         final Transaction.Description desc = transaction.getDescription();

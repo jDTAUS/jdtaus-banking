@@ -406,8 +406,6 @@ public class LogicalFileTest extends TestCase
      */
     public void testCreateTransaction() throws Exception
     {
-        final Transaction legal = TransactionTest.getLegalTransaction();
-
         PhysicalFile pFile = getDTAUSValidHeaderAndChecksum();
         LogicalFile lFile = pFile.get(0);
 
@@ -451,10 +449,8 @@ public class LogicalFileTest extends TestCase
 
         try
         {
-            PhysicalFile file =
-                getDTAUSValidHeaderChecksumIllegalFormatTransaction();
-
-            this.fail("IllegalDataException not thrown.");
+            getDTAUSValidHeaderChecksumIllegalFormatTransaction();
+            this.fail("PhysicalFileException not thrown.");
         }
         catch (PhysicalFileException e)
         {

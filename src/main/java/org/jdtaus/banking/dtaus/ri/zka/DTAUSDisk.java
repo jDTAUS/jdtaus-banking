@@ -1269,9 +1269,6 @@ public final class DTAUSDisk extends AbstractLogicalFile
         final Currency cur;
         final Textschluessel type;
         final Transaction.Description desc = new Transaction.Description();
-        final Kontonummer targetAccount;
-        final Bankleitzahl targetBank;
-        final AlphaNumericText27 targetName;
 
         transaction.setExecutiveExt(null);
         transaction.setTargetExt(null);
@@ -1845,7 +1842,6 @@ public final class DTAUSDisk extends AbstractLogicalFile
         long blockOffset;
         long lastBlockOffset;
         int extIndex;
-        String str;
         AlphaNumericText27 txt;
         final Transaction.Description desc = transaction.getDescription();
         final Textschluessel type = transaction.getType();

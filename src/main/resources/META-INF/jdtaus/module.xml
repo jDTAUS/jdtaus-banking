@@ -45,27 +45,6 @@
       <jdtaus:implementedSpecifications>
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"/>
       </jdtaus:implementedSpecifications>
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
-                           jdtaus:implementationName="jDTAUS Core SPI"
-                           jdtaus:name="Logger"
-                           jdtaus:bound="true">
-          
-          <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name" 
-                             jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory"
-                             jdtaus:api="true"/>
-            
-          </jdtaus:properties>
-        </jdtaus:dependency>
-        
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
-                           jdtaus:implementationName="jDTAUS Core SPI"
-                           jdtaus:name="ApplicationLogger"
-                           jdtaus:bound="true"/>
-        
-      </jdtaus:dependencies>
       <jdtaus:properties>
         <jdtaus:property jdtaus:name="defaultFormat"
                          jdtaus:type="int"
