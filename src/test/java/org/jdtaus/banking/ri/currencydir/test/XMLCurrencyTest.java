@@ -41,7 +41,7 @@ public class XMLCurrencyTest
         Assert.assertEquals(c1, c2);
         Assert.assertEquals(c1.hashCode(), c2.hashCode());
 
-        c2.setDtausCode(Character.valueOf('X'));
+        c2.setDtausCode(new Character('X'));
 
         Assert.assertFalse(c1.equals(c2));
         Assert.assertFalse(c1.hashCode() == c2.hashCode());
