@@ -41,6 +41,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.jdtaus.banking.dtaus.spi.CurrencyDirectory;
 import org.jdtaus.banking.spi.CurrencyMapper;
+import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContainerInitializer;
 import org.jdtaus.core.container.ContextFactory;
@@ -422,7 +423,9 @@ public final class XMLCurrencyDirectory
             return xml.getDtausCode().charValue();
         }
 
-        throw new IllegalArgumentException(currency.getCurrencyCode());
+        throw new UnsupportedCurrencyException(
+            currency.getCurrencyCode(), date);
+
     }
 
     // Deprecated implementation for backward compatibility.
