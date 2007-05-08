@@ -22,8 +22,10 @@ package org.jdtaus.banking.dtaus.ri.zka;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import org.jdtaus.banking.AlphaNumericText27;
 import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.Kontonummer;
@@ -665,7 +667,6 @@ public final class DTAUSDisk extends AbstractLogicalFile
         final int blockSize;
         final Currency cur;
         boolean isBank = false;
-        Header.Schedule schedule = null;
         Message msg;
 
         ret = new Header();
@@ -930,10 +931,9 @@ public final class DTAUSDisk extends AbstractLogicalFile
         executionDate = this.readLongDate(Fields.FIELD_A11B, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[11], AbstractLogicalFile.ENCODING_ASCII);
 
-        ret.setSchedule(null);
         if(createDate != null)
         {
-            if(!Header.Schedule.checkSchedule(createDate, executionDate))
+            if(!this.checkSchedule(createDate, executionDate))
             {
                 msg = new IllegalScheduleMessage(this.getHeaderBlock() *
                     this.persistence.getBlockSize() +
@@ -955,8 +955,8 @@ public final class DTAUSDisk extends AbstractLogicalFile
             }
             else
             {
-                schedule = new Header.Schedule(createDate, executionDate);
-                ret.setSchedule(schedule);
+                ret.setCreateDate(createDate);
+                ret.setExecutionDate(executionDate);
             }
         }
 
@@ -1026,11 +1026,9 @@ public final class DTAUSDisk extends AbstractLogicalFile
     protected void writeHeader(final long headerBlock,
         final Header header) throws IOException
     {
-        final Header.Schedule schedule;
         final LogicalFileType label;
         final boolean isBank;
 
-        schedule = header.getSchedule();
         label = header.getType();
         isBank = label.isSendByBank();
 
@@ -1069,7 +1067,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
 
         // Feld 7
         this.writeShortDate(Fields.FIELD_A7, headerBlock,
-            DTAUSDisk.ARECORD_OFFSETS[6], schedule.getCreateDate(),
+            DTAUSDisk.ARECORD_OFFSETS[6], header.getCreateDate(),
             AbstractLogicalFile.ENCODING_ASCII);
 
         // Feld 8
@@ -1097,7 +1095,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
 
         // Feld 11b
         this.writeLongDate(Fields.FIELD_A11B, headerBlock,
-            DTAUSDisk.ARECORD_OFFSETS[11], schedule.getExecutionDate(),
+            DTAUSDisk.ARECORD_OFFSETS[11], header.getExecutionDate(),
             AbstractLogicalFile.ENCODING_ASCII);
 
         // Feld 11c
@@ -1109,7 +1107,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
         this.writeAlphaNumeric(Fields.FIELD_A12, headerBlock,
             DTAUSDisk.ARECORD_OFFSETS[13], DTAUSDisk.ARECORD_LENGTH[13],
             Character.toString(this.getCurrencyMapper().getDtausCode(
-            header.getCurrency(), header.getSchedule().getCreateDate())),
+            header.getCurrency(), header.getCreateDate())),
             AbstractLogicalFile.ENCODING_ASCII);
 
     }
@@ -1268,7 +1266,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
         final long extCount;
         final Currency cur;
         final Textschluessel type;
-        final Transaction.Description desc = new Transaction.Description();
+        final List desc = new ArrayList(14);
 
         transaction.setExecutiveExt(null);
         transaction.setTargetExt(null);
@@ -1625,7 +1623,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
         {
             try
             {
-                desc.addDescription(AlphaNumericText27.parse(str));
+                desc.add(AlphaNumericText27.parse(str));
             }
             catch(ParseException e)
             {
@@ -1665,7 +1663,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
             {
                 final char c = str.toCharArray()[0];
                 cur = this.getCurrencyMapper().getDtausCurrency(c,
-                    this.getHeader().getSchedule().getCreateDate());
+                    this.getHeader().getCreateDate());
 
                 if(cur == null)
                 {
@@ -1762,7 +1760,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
                 {
                     try
                     {
-                        desc.addDescription(AlphaNumericText27.parse(str));
+                        desc.add(AlphaNumericText27.parse(str));
                     }
                     catch(ParseException e)
                     {
@@ -1830,7 +1828,9 @@ public final class DTAUSDisk extends AbstractLogicalFile
             }
         }
 
-        transaction.setDescription(desc);
+        transaction.setDescriptions((AlphaNumericText27[]) desc.
+            toArray(new AlphaNumericText27[desc.size()]));
+
         return transaction;
     }
 
@@ -1843,11 +1843,10 @@ public final class DTAUSDisk extends AbstractLogicalFile
         long lastBlockOffset;
         int extIndex;
         AlphaNumericText27 txt;
-        final Transaction.Description desc = transaction.getDescription();
+        final AlphaNumericText27[] desc = transaction.getDescriptions();
         final Textschluessel type = transaction.getType();
         final int descCount;
-        int extCount = desc.getDescriptionCount() > 0 ?
-            desc.getDescriptionCount() - 1 : 0;
+        int extCount = desc.length > 0 ? desc.length - 1 : 0;
 
         if(transaction.getExecutiveExt() != null)
         {
@@ -1967,16 +1966,15 @@ public final class DTAUSDisk extends AbstractLogicalFile
         // Konstanter Teil - 2. Satzabschnitt - Feld 16(2)
         this.writeAlphaNumeric(Fields.FIELD_C16, block + 1L,
             DTAUSDisk.CRECORD_OFFSETS2[1], DTAUSDisk.CRECORD_LENGTH2[1],
-            desc.getDescriptionCount() > 0 ?
-                desc.getDescription(0).format() : "",
+            desc.length > 0 ? desc[0].format() : "",
             AbstractLogicalFile.ENCODING_ASCII);
 
         // Konstanter Teil - 2. Satzabschnitt - Feld 17a(3)
         this.writeAlphaNumeric(Fields.FIELD_C17A, block + 1L,
             DTAUSDisk.CRECORD_OFFSETS2[2], DTAUSDisk.CRECORD_LENGTH2[2],
             Character.toString(this.getCurrencyMapper().getDtausCode(
-            transaction.getCurrency(), this.getHeader().getSchedule().
-            getCreateDate())), AbstractLogicalFile.ENCODING_ASCII);
+            transaction.getCurrency(), this.getHeader().getCreateDate())),
+            AbstractLogicalFile.ENCODING_ASCII);
 
         // Konstanter Teil - 2. Satzabschnitt - Feld 17b(4)
         this.writeAlphaNumeric(Fields.FIELD_C17B, block + 1L,
@@ -2018,7 +2016,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
         }
 
         // Verwendungszweck-Zeilen des 2., 3., 4., 5. und 6. Satzabschnittes.
-        descCount = desc.getDescriptionCount();
+        descCount = desc.length;
         for(i = 1; i < descCount; i++, extIndex++)
         {
             blockOffset = block +
@@ -2040,8 +2038,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEFIELD[extIndex], blockOffset,
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUEOFFSET[extIndex],
                 DTAUSDisk.CRECORD_EXTINDEX_TO_VALUELENGTH[extIndex],
-                desc.getDescription(i).format(),
-                AbstractLogicalFile.ENCODING_ASCII);
+                desc[i].format(), AbstractLogicalFile.ENCODING_ASCII);
 
             lastBlockOffset = blockOffset;
         }
@@ -2077,8 +2074,8 @@ public final class DTAUSDisk extends AbstractLogicalFile
 
     protected int blockCount(final Transaction transaction)
     {
-        int extCount = transaction.getDescription().getDescriptionCount() > 0
-            ? transaction.getDescription().getDescriptionCount() - 1 : 0;
+        int extCount = transaction.getDescriptions().length > 0
+            ? transaction.getDescriptions().length - 1 : 0;
 
         if(transaction.getExecutiveExt() != null)
         {

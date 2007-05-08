@@ -21,10 +21,14 @@ package org.jdtaus.banking.dtaus.ri.zka.test;
 
 import java.util.Calendar;
 import java.util.Currency;
+import java.util.Date;
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.jdtaus.banking.AlphaNumericText27;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.Header;
+import org.jdtaus.banking.dtaus.IllegalHeaderException;
+import org.jdtaus.banking.dtaus.IllegalTransactionException;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.PhysicalFile;
@@ -342,12 +346,11 @@ public class LogicalFileTest extends TestCase
         Assert.assertTrue(h.getType().equals(LogicalFileType.LK));
 
         Assert.assertTrue(h.getReference().longValue() == 2222222222L);
-        Assert.assertTrue(h.getSchedule().getCreateDate().equals(
-            createCal.getTime()));
+        Assert.assertEquals(h.getCreateDate(), createCal.getTime());
+        Assert.assertEquals(h.getExecutionDate(), executionCal.getTime());
 
-        Assert.assertTrue(h.getSchedule().getExecutionDate().equals(
-            executionCal.getTime()));
-
+        Assert.assertEquals(h.getCreateDate(), createCal.getTime());
+        Assert.assertEquals(h.getExecutionDate(), executionCal.getTime());
     }
 
     /**
@@ -479,48 +482,21 @@ public class LogicalFileTest extends TestCase
 
         Assert.assertTrue(t.getCurrency().equals(Currency.getInstance("EUR")));
 
-        Transaction.Description d = t.getDescription();
-        Assert.assertTrue(d.getDescription(0).format().
-            equals("ABCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(1).format().
-            equals("2BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(2).format().
-            equals("3BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(3).format().
-            equals("4BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(4).format().
-            equals("5BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(5).format().
-            equals("6BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(6).format().
-            equals("7BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(7).format().
-            equals("8BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(8).format().
-            equals("9BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(9).format().
-            equals("10CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(10).format().
-            equals("11CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(11).format().
-            equals("12CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(12).format().
-            equals("13CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
-
-        Assert.assertTrue(d.getDescription(13).format().
-            equals("14CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        AlphaNumericText27[] d = t.getDescriptions();
+        Assert.assertTrue(d[0].format().equals("ABCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[1].format().equals("2BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[2].format().equals("3BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[3].format().equals("4BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[4].format().equals("5BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[5].format().equals("6BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[6].format().equals("7BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[7].format().equals("8BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[8].format().equals("9BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[9].format().equals("10CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[10].format().equals("11CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[11].format().equals("12CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[12].format().equals("13CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
+        Assert.assertTrue(d[13].format().equals("14CDEFGHIJKLMNOPQRSTUÄÖÜß$."));
 
         Assert.assertTrue(t.getTargetExt().format().
             equals("1BCDEFGHIJKLMNOPQRSTUÄÖÜß$."));
@@ -602,23 +578,23 @@ public class LogicalFileTest extends TestCase
         cal.set(Calendar.MONTH, 0);
         cal.set(Calendar.YEAR, 2001);
 
-        final Header.Schedule demSchedule =
-            new Header.Schedule(cal.getTime(), null);
+        final Date demCreateDate = cal.getTime();
 
         cal.set(Calendar.YEAR, 2002);
 
-        final Header.Schedule eurSchedule =
-            new Header.Schedule(cal.getTime(), null);
+        final Date eurCreateDate = cal.getTime();
 
-        eurHeader.setSchedule(eurSchedule);
-        demHeader.setSchedule(demSchedule);
+        eurHeader.setCreateDate(eurCreateDate);
+        eurHeader.setExecutionDate(null);
+        demHeader.setCreateDate(demCreateDate);
+        demHeader.setExecutionDate(null);
 
         try
         {
             pFile.get(0).setHeader(demHeader);
             this.fail();
         }
-        catch(IllegalArgumentException e)
+        catch(IllegalHeaderException e)
         {}
 
         final Transaction eurTransaction = pFile.get(0).getTransaction(0);
@@ -630,7 +606,7 @@ public class LogicalFileTest extends TestCase
             pFile.get(0).setTransaction(0, demTransaction);
             this.fail();
         }
-        catch(IllegalArgumentException e)
+        catch(IllegalTransactionException e)
         {}
 
         pFile.get(0).setHeader(eurHeader);

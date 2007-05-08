@@ -94,6 +94,12 @@
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalFileLengthMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.MandatoryPropertyMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDateMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalCurrencyMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.TextschluesselConstraintMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalAmountMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDescriptionCountMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>

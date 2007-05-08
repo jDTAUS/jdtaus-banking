@@ -61,5 +61,13 @@
         hardcoded signing aliases.]]>
       </action>
     </release>
+    <release version="1.0-beta-7" date="2007-05-08"
+             description="7th beta release">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+        Removed deprecated API calls and added support for aggregated
+        error messages introduced in jdtaus-banking-api 1.0-beta-7.]]>
+      </action>
+    </release>
   </body>
 </document>

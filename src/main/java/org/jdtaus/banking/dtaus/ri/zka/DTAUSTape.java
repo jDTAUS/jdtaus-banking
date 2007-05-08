@@ -22,9 +22,11 @@ package org.jdtaus.banking.dtaus.ri.zka;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import org.jdtaus.banking.AlphaNumericText27;
 import org.jdtaus.banking.Bankleitzahl;
@@ -651,8 +653,8 @@ public final class DTAUSTape extends AbstractLogicalFile
 
     protected int blockCount(final Transaction transaction)
     {
-        int extCount = transaction.getDescription().getDescriptionCount() > 0 ?
-            transaction.getDescription().getDescriptionCount() - 1 : 0;
+        int extCount = transaction.getDescriptions().length > 0 ?
+            transaction.getDescriptions().length - 1 : 0;
 
         if(transaction.getExecutiveExt() != null)
         {
@@ -694,7 +696,6 @@ public final class DTAUSTape extends AbstractLogicalFile
         boolean isBank = false;
         Message msg;
         ret = new Header();
-        Header.Schedule schedule = null;
         blockSize = this.persistence.getBlockSize();
 
         // Feld 1
@@ -885,7 +886,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             num = num <= 79L ? 2000L + num : 1900L + num;
             this.calendar.set(Calendar.YEAR, (int) num);
             createDate = this.calendar.getTime();
-            if(!Header.Schedule.checkDate(createDate))
+            if(!this.checkDate(createDate))
             {
                 msg = new IllegalDataMessage(Fields.FIELD_A7,
                     IllegalDataMessage.TYPE_SHORTDATE,
@@ -988,10 +989,9 @@ public final class DTAUSTape extends AbstractLogicalFile
         executionDate = this.readLongDate(Fields.FIELD_A11B, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[12], AbstractLogicalFile.ENCODING_EBCDI);
 
-        ret.setSchedule(null);
         if(createDate != null)
         {
-            if(!Header.Schedule.checkSchedule(createDate, executionDate))
+            if(!this.checkSchedule(createDate, executionDate))
             {
                 msg = new IllegalScheduleMessage(this.getHeaderBlock() *
                     this.persistence.getBlockSize() +
@@ -1012,8 +1012,8 @@ public final class DTAUSTape extends AbstractLogicalFile
             }
             else
             {
-                schedule = new Header.Schedule(createDate, executionDate);
-                ret.setSchedule(schedule);
+                ret.setCreateDate(createDate);
+                ret.setExecutionDate(executionDate);
             }
         }
 
@@ -1081,14 +1081,12 @@ public final class DTAUSTape extends AbstractLogicalFile
     protected void writeHeader(final long headerBlock,
         final Header header) throws IOException
     {
-        final Header.Schedule schedule;
         final LogicalFileType label;
         final boolean isBank;
         long num = 0L;
         int cal = 0;
         int yy;
 
-        schedule = header.getSchedule();
         label = header.getType();
         isBank = label.isSendByBank();
 
@@ -1130,7 +1128,7 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 7
         this.calendar.clear();
-        this.calendar.setTime(schedule.getCreateDate());
+        this.calendar.setTime(header.getCreateDate());
         num = this.calendar.get(Calendar.DAY_OF_MONTH) *
             AbstractLogicalFile.EXP10[4];
 
@@ -1170,7 +1168,7 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 11b
         this.writeLongDate(Fields.FIELD_A11B, headerBlock,
-            DTAUSTape.ARECORD_OFFSETS[12], schedule.getExecutionDate(),
+            DTAUSTape.ARECORD_OFFSETS[12], header.getExecutionDate(),
             AbstractLogicalFile.ENCODING_EBCDI);
 
         // Feld 11c
@@ -1181,9 +1179,9 @@ public final class DTAUSTape extends AbstractLogicalFile
         // Feld 12
         this.writeAlphaNumeric(Fields.FIELD_A12, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[14], DTAUSTape.ARECORD_LENGTH[14],
-            Character.toString(this.getCurrencyMapper().
-            getDtausCode(header.getCurrency(), header.getSchedule().
-            getCreateDate())), AbstractLogicalFile.ENCODING_EBCDI);
+            Character.toString(this.getCurrencyMapper().getDtausCode(
+            header.getCurrency(), header.getCreateDate())),
+            AbstractLogicalFile.ENCODING_EBCDI);
 
     }
 
@@ -1342,7 +1340,7 @@ public final class DTAUSTape extends AbstractLogicalFile
         final long extCount;
         final Currency cur;
         final Textschluessel type;
-        final Transaction.Description desc = new Transaction.Description();
+        final List desc = new ArrayList(14);
         Message msg;
 
         transaction.setExecutiveExt(null);
@@ -1700,7 +1698,7 @@ public final class DTAUSTape extends AbstractLogicalFile
         {
             try
             {
-                desc.addDescription(AlphaNumericText27.parse(str));
+                desc.add(AlphaNumericText27.parse(str));
             }
             catch(ParseException e)
             {
@@ -1738,7 +1736,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             {
                 final char c = str.toCharArray()[0];
                 cur = this.getCurrencyMapper().getDtausCurrency(c,
-                    this.getHeader().getSchedule().getCreateDate());
+                    this.getHeader().getCreateDate());
 
                 if(cur == null)
                 {
@@ -1835,7 +1833,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                 {
                     try
                     {
-                        desc.addDescription(AlphaNumericText27.parse(str));
+                        desc.add(AlphaNumericText27.parse(str));
                     }
                     catch(ParseException e)
                     {
@@ -1903,7 +1901,9 @@ public final class DTAUSTape extends AbstractLogicalFile
             }
         }
 
-        transaction.setDescription(desc);
+        transaction.setDescriptions((AlphaNumericText27[]) desc.
+            toArray(new AlphaNumericText27[desc.size()]));
+
         return transaction;
     }
 
@@ -1916,10 +1916,9 @@ public final class DTAUSTape extends AbstractLogicalFile
         int followingIndex;
         AlphaNumericText27 txt;
         final Textschluessel type = transaction.getType();
-        final Transaction.Description desc = transaction.getDescription();
+        final AlphaNumericText27[] desc = transaction.getDescriptions();
         final int descCount;
-        int extCount = desc.getDescriptionCount() > 0 ?
-            desc.getDescriptionCount() - 1 : 0;
+        int extCount = desc.length > 0 ? desc.length - 1 : 0;
 
         if(transaction.getExecutiveExt() != null)
         {
@@ -2026,16 +2025,15 @@ public final class DTAUSTape extends AbstractLogicalFile
         // Konstanter Teil - 1. Satzabschnitt - Feld 16
         this.writeAlphaNumeric(Fields.FIELD_C16, block,
             DTAUSTape.CRECORD_OFFSETS1[18], DTAUSTape.CRECORD_LENGTH1[18],
-            desc.getDescriptionCount() > 0 ?
-                desc.getDescription(0).format() : "",
+            desc.length > 0 ? desc[0].format() : "",
             AbstractLogicalFile.ENCODING_EBCDI);
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 17a
         this.writeAlphaNumeric(Fields.FIELD_C17A, block,
             DTAUSTape.CRECORD_OFFSETS1[19], DTAUSTape.CRECORD_LENGTH1[19],
             Character.toString(this.getCurrencyMapper().getDtausCode(
-            transaction.getCurrency(), this.getHeader().getSchedule().
-            getCreateDate())), AbstractLogicalFile.ENCODING_EBCDI);
+            transaction.getCurrency(), this.getHeader().getCreateDate())),
+            AbstractLogicalFile.ENCODING_EBCDI);
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 17b
         this.writeAlphaNumeric(Fields.FIELD_C17B, block,
@@ -2048,7 +2046,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             extCount, true);
 
         // Erweiterungsteile des 2., 3., und 4. Satzabschnittes.
-        descCount = desc.getDescriptionCount();
+        descCount = desc.length;
         extIndex = 0;
         if((txt = transaction.getTargetExt()) != null)
         {
@@ -2118,8 +2116,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                 DTAUSTape.CRECORD_EXTINDEX_TO_VALUEFIELD[extIndex], blockOffset,
                 DTAUSTape.CRECORD_EXTINDEX_TO_VALUEOFFSET[extIndex],
                 DTAUSTape.CRECORD_EXTINDEX_TO_VALUELENGTH[extIndex],
-                desc.getDescription(i).format(),
-                AbstractLogicalFile.ENCODING_EBCDI);
+                desc[i].format(), AbstractLogicalFile.ENCODING_EBCDI);
 
             // Folgende Erweiterungsteile im selben Satzabschnitt leeren.
             for(followingIndex =

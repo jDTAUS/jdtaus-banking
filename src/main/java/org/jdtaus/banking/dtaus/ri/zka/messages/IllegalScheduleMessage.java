@@ -50,9 +50,7 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
      * @param executionDate Ausführungsdatum.
      *
      * @throws NullPointerException wenn {@code createDate} {@code null} ist.
-     * @throws IllegalArgumentException wenn {@code position} negativ ist
-     * oder die Kombination von {@code createDate} und {@code executionDate}
-     * einer gültigen Auftragsterminierung entspricht.
+     * @throws IllegalArgumentException wenn {@code position} negativ ist.
      */
     public IllegalScheduleMessage(final long position, final Date createDate,
         final Date executionDate)
@@ -66,12 +64,6 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
         if(position < 0L)
         {
             throw new IllegalArgumentException(Long.toString(position));
-        }
-        if(Header.Schedule.checkSchedule(createDate, executionDate))
-        {
-            throw new IllegalArgumentException(Long.toString(
-                createDate.getTime()));
-
         }
 
         this.position = position;

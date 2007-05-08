@@ -39,17 +39,21 @@ import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.Header;
-import org.jdtaus.banking.dtaus.IllegalAmountException;
-import org.jdtaus.banking.dtaus.IllegalCurrencyException;
-import org.jdtaus.banking.dtaus.IllegalDateException;
-import org.jdtaus.banking.dtaus.IllegalDescriptionCountException;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
-import org.jdtaus.banking.dtaus.TextschluesselConstraintException;
 import org.jdtaus.banking.dtaus.Transaction;
+import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDateMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDescriptionCountMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.MandatoryPropertyMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalAmountMessage;
+import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalCurrencyMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
+import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
+import org.jdtaus.banking.dtaus.spi.IllegalTransactionException;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.Implementation;
@@ -765,7 +769,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 this.calendar.set(Calendar.YEAR, year);
                 ret = this.calendar.getTime();
 
-                if(!Header.Schedule.checkDate(ret))
+                if(!this.checkDate(ret))
                 {
                     msg = new IllegalDataMessage(field,
                         IllegalDataMessage.TYPE_SHORTDATE,
@@ -839,7 +843,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * eine optionale Datums-Angabe zu entfernen.
      * @param encoding Konstante für das zu verwendende Encoding.
      *
-     * @throws IllegalDateException wenn das Jahr von {@code date} nicht
+     * @throws IllegalArgumentException wenn das Jahr von {@code date} nicht
      * größer oder gleich 1980 und kleiner oder gleich 2079 ist.
      * @throws IOException wenn nicht geschrieben werden kann.
      *
@@ -869,9 +873,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         if(date != null)
         {
-            if(!Header.Schedule.checkDate(date))
+            if(!this.checkDate(date))
             {
-                throw new IllegalDateException(date);
+                throw new IllegalArgumentException(date.toString());
             }
 
             this.shortDateBuffer.setLength(0);
@@ -981,7 +985,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                     str.substring(4, 8)).intValue());
 
                 ret = this.calendar.getTime();
-                if(!Header.Schedule.checkDate(ret))
+                if(!this.checkDate(ret))
                 {
                     msg = new IllegalDataMessage(field,
                         IllegalDataMessage.TYPE_LONGDATE,
@@ -1054,7 +1058,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * eine optionale Datums-Angabe zu entfernen.
      * @param encoding Konstante für das zu verwendende Encoding.
      *
-     * @throws IllegalDateException wenn das Jahr von {@code date} nicht
+     * @throws IllegalArgumentException wenn das Jahr von {@code date} nicht
      * größer oder gleich 1980 und kleiner oder gleich 2079 ist.
      * @throws IOException wenn nicht geschrieben werden kann.
      *
@@ -1085,9 +1089,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         if(date != null)
         {
-            if(!Header.Schedule.checkDate(date))
+            if(!this.checkDate(date))
             {
-                throw new IllegalDateException(date);
+                throw new IllegalArgumentException(date.toString());
             }
 
             this.longDateBuffer.setLength(0);
@@ -1496,6 +1500,73 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
     //---------------------------------------------------void checkAmount(...)--
+    //--boolean checkDate()-----------------------------------------------------
+
+    /** Maximum allowed days between create and execution date in millis. */
+    private static final long MAX_SCHEDULEDAYS_MILLIS =
+        15L * 24L * 60L * 60L * 1000L;
+
+    /** 01/01/1980 00:00:00 CET. */
+    private static final long VALID_DATES_START_MILLIS = 315529200000L;
+
+    /** 12/31/2079 23:59:59 CET. */
+    private static final long VALID_DATES_END_MILLIS = 3471289199999L;
+
+    /**
+     * Prüfung eines Datums.
+     *
+     * @param date zu prüfendes Datum.
+     *
+     * @return {@code true} wenn {@code date} im gültigen Bereich liegt;
+     * {@code false} wenn nicht,
+     */
+    protected boolean checkDate(final Date date)
+    {
+        boolean valid = false;
+
+        if(date != null)
+        {
+            final long millis = date.getTime();
+            valid = millis >= VALID_DATES_START_MILLIS &&
+                millis <= VALID_DATES_END_MILLIS;
+
+        }
+
+        return valid;
+    }
+
+    /**
+     * Prüfung einer Auftrags-Terminierung.
+     *
+     * @param createDate zu prüfendes Dateierstellungs-Datum.
+     * @param executionDate zu prüfendes Ausführungs-Datum.
+     *
+     * @return {@code true} wenn {@code createDate} in Kombination mit
+     * {@code executionDate} einer gültigen Auftrags-Terminierung entspricht;
+     * {@code false} wenn nicht;
+     */
+    protected boolean checkSchedule(final Date createDate,
+        final Date executionDate)
+    {
+        boolean valid = createDate != null;
+
+        if(valid)
+        {
+            final long createMillis = createDate.getTime();
+            if(executionDate != null)
+            {
+                final long executionMillis = executionDate.getTime();
+                valid = executionMillis >= createMillis &&
+                    executionMillis <= createMillis +
+                    MAX_SCHEDULEDAYS_MILLIS;
+
+            }
+        }
+
+        return valid;
+    }
+
+    //-----------------------------------------------------boolean checkDate()--
     //--boolean checkDescriptionCount(...)--------------------------------------
 
     /**
@@ -1523,63 +1594,88 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @param header zu prüfender A-Datensatz.
      *
-     * @throws NullPointerException wenn Angaben fehlen.
-     * @throws IllegalArgumentException wenn Angaben ungültig sind.
+     * @throws NullPointerException wenn {@code header null} ist.
+     * @throws IllegalHeaderException für ungültige Angaben.
      */
     protected void checkHeader(final Header header)
     {
-        if(header == null)
-        {
-            throw new NullPointerException("header");
-        }
-
         final LogicalFileType type;
-        final Header.Schedule schedule;
+        final IllegalHeaderException e = new IllegalHeaderException();
 
         if(header == null)
         {
             throw new NullPointerException("header");
         }
-        if((schedule = header.getSchedule()) == null)
+
+        if(header.getCreateDate() == null)
         {
-            throw new NullPointerException("schedule");
+            e.addMessage(Header.PROP_CREATEDATE,
+                new MandatoryPropertyMessage());
+
         }
-        if(schedule.getCreateDate() == null)
+        if(!this.checkDate(header.getCreateDate()))
         {
-            throw new NullPointerException("createDate");
+            e.addMessage(Header.PROP_CREATEDATE,
+                new IllegalDateMessage(header.getCreateDate()));
+
+        }
+        if(header.getExecutionDate() != null &&
+            !this.checkDate(header.getExecutionDate()))
+        {
+            e.addMessage(Header.PROP_EXECUTIONDATE,
+                new IllegalDateMessage(header.getExecutionDate()));
+
+        }
+        if(!this.checkSchedule(header.getCreateDate(),
+            header.getExecutionDate()))
+        {
+            e.addMessage(new IllegalScheduleMessage(
+                this.getHeaderBlock() * this.persistence.getBlockSize(),
+                header.getCreateDate(),
+                header.getExecutionDate()));
+
         }
         if((type = header.getType()) == null)
         {
-            throw new NullPointerException("type");
+            e.addMessage(Header.PROP_TYPE, new MandatoryPropertyMessage());
         }
         if(header.getCustomer() == null)
         {
-            throw new NullPointerException("customer");
+            e.addMessage(Header.PROP_CUSTOMER, new MandatoryPropertyMessage());
         }
         if(header.getBank() == null)
         {
-            throw new NullPointerException("bank");
+            e.addMessage(Header.PROP_BANK, new MandatoryPropertyMessage());
         }
         if(header.getAccount() == null)
         {
-            throw new NullPointerException("account");
+            e.addMessage(Header.PROP_ACCOUNT, new MandatoryPropertyMessage());
         }
         if(header.getCurrency() == null)
         {
-            throw new NullPointerException("currency");
+            e.addMessage(Header.PROP_CURRENCY, new MandatoryPropertyMessage());
         }
 
-        try
+        if(header.getCreateDate() != null && header.getCurrency() != null)
         {
-            this.getCurrencyMapperImpl().getDtausCode(header.getCurrency(),
-                schedule.getCreateDate());
+            try
+            {
+                this.getCurrencyMapperImpl().getDtausCode(header.getCurrency(),
+                    header.getCreateDate());
 
+            }
+            catch(UnsupportedCurrencyException ex)
+            {
+                e.addMessage(Header.PROP_CURRENCY,
+                    new IllegalCurrencyMessage(header.getCurrency().
+                    getCurrencyCode(), header.getCreateDate()));
+
+            }
         }
-        catch(UnsupportedCurrencyException e)
-        {
-            throw new IllegalCurrencyException(e.getCurrencyCode(),
-                e.getDate());
 
+        if(e.getMessages().length > 0)
+        {
+            throw e;
         }
     }
 
@@ -1591,15 +1687,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @param transaction zu prüfende Transaktion.
      *
-     * @throws NullPointerException wenn Angaben fehlen.
-     * @throws IllegalArgumentException wenn Angaben ungültig sind.
+     * @throws NullPointerException wenn {@code transaction null} ist.
+     * @throws IllegalTransactionException für ungültige Angaben.
      * @throws IOException wenn der Dateityp nicht gelesen werden kann.
      */
     protected void checkTransaction(
         final Transaction transaction) throws IOException
     {
         int i;
-        final Transaction.Description desc;
         final Kontonummer executiveAccount;
         final Bankleitzahl executiveBank;
         final AlphaNumericText27 executiveName;
@@ -1612,45 +1707,58 @@ public abstract class AbstractLogicalFile implements LogicalFile
             this.getTextschluesselVerzeichnisImpl().
             search(lFileType.isDebitAllowed(), lFileType.isRemittanceAllowed());
 
+        final IllegalTransactionException e = new IllegalTransactionException();
         if(transaction == null)
         {
             throw new NullPointerException("transaction");
         }
-        if((desc = transaction.getDescription()) == null)
-        {
-            throw new NullPointerException("description");
-        }
         if((executiveAccount = transaction.getExecutiveAccount()) == null)
         {
-            throw new NullPointerException("executiveAccount");
+            e.addMessage(Transaction.PROP_EXECUTIVEACCOUNT,
+                new MandatoryPropertyMessage());
+
         }
         if((executiveBank = transaction.getExecutiveBank()) == null)
         {
-            throw new NullPointerException("executiveBank");
+            e.addMessage(Transaction.PROP_EXECUTIVEBANK,
+                new MandatoryPropertyMessage());
+
         }
         if((executiveName = transaction.getExecutiveName()) == null)
         {
-            throw new NullPointerException("executiveName");
+            e.addMessage(Transaction.PROP_EXECUTIVENAME,
+                new MandatoryPropertyMessage());
+
         }
         if((targetAccount = transaction.getTargetAccount()) == null)
         {
-            throw new NullPointerException("targetAccount");
+            e.addMessage(Transaction.PROP_TARGETACCOUNT,
+                new MandatoryPropertyMessage());
+
         }
         if((targetBank = transaction.getTargetBank()) == null)
         {
-            throw new NullPointerException("targetBank");
+            e.addMessage(Transaction.PROP_TARGETBANK,
+                new MandatoryPropertyMessage());
+
         }
         if((targetName = transaction.getTargetName()) == null)
         {
-            throw new NullPointerException("targetName");
+            e.addMessage(Transaction.PROP_TARGETNAME,
+                new MandatoryPropertyMessage());
+
         }
         if((type = transaction.getType()) == null)
         {
-            throw new NullPointerException("type");
+            e.addMessage(Transaction.PROP_TYPE,
+                new MandatoryPropertyMessage());
+
         }
         if(transaction.getCurrency() == null)
         {
-            throw new NullPointerException("currency");
+            e.addMessage(Transaction.PROP_CURRENCY,
+                new MandatoryPropertyMessage());
+
         }
 
         if(allowedTypes != null)
@@ -1664,35 +1772,53 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
             if(i < 0)
             {
-                throw new TextschluesselConstraintException(lFileType, type);
+                e.addMessage(Transaction.PROP_TYPE,
+                    new TextschluesselConstraintMessage(lFileType, type));
+
             }
         }
         else
         {
-            throw new TextschluesselConstraintException(lFileType, type);
+            e.addMessage(Transaction.PROP_TYPE,
+                new TextschluesselConstraintMessage(lFileType, type));
+
         }
 
         if(!this.checkAmount(transaction.getAmount().longValue(), true))
         {
-            throw new IllegalAmountException(transaction.getAmount());
+            e.addMessage(Transaction.PROP_AMOUNT,
+                new IllegalAmountMessage(transaction.getAmount()));
+
         }
-        if(!this.checkDescriptionCount(desc.getDescriptionCount()))
+        if(!this.checkDescriptionCount(transaction.getDescriptions().length))
         {
-            throw new IllegalDescriptionCountException(
-                AbstractLogicalFile.MAX_DESCRIPTIONS);
+            e.addMessage(Transaction.PROP_DESCRIPTIONS,
+                new IllegalDescriptionCountMessage(
+                AbstractLogicalFile.MAX_DESCRIPTIONS));
 
         }
 
-        try
+        if(transaction.getCurrency() != null)
         {
-            this.getCurrencyMapperImpl().getDtausCode(transaction.getCurrency(),
-                this.getHeader().getSchedule().getCreateDate());
+            try
+            {
+                this.getCurrencyMapperImpl().getDtausCode(
+                    transaction.getCurrency(),
+                    this.getHeader().getCreateDate());
 
+            }
+            catch(UnsupportedCurrencyException ex)
+            {
+                e.addMessage(Transaction.PROP_CURRENCY,
+                    new IllegalCurrencyMessage(transaction.getCurrency().
+                    getCurrencyCode(), this.getHeader().getCreateDate()));
+
+            }
         }
-        catch(UnsupportedCurrencyException e)
+
+        if(e.getMessages().length > 0)
         {
-            throw new IllegalCurrencyException(e.getCurrencyCode(),
-                e.getDate());
+            throw e;
         }
     }
 
@@ -2027,21 +2153,24 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final LogicalFileType oldLabel = old.getType();
         final LogicalFileType newLabel = header.getType();
 
+        final IllegalHeaderException e = new IllegalHeaderException();
+
         if(oldLabel != null && checksum.getTransactionCount() > 0 &&
             (oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed()) ||
             (oldLabel.isRemittanceAllowed() &&
             !newLabel.isRemittanceAllowed()))
         {
-            throw new TextschluesselConstraintException(newLabel,
-                this.getTransaction(0).getType());
+            e.addMessage(header.PROP_TYPE,
+                new TextschluesselConstraintMessage(newLabel,
+                this.getTransaction(0).getType()));
 
         }
 
         final Currency[] oldCurrencies = this.getCurrencyMapperImpl().
-            getDtausCurrencies(old.getSchedule().getCreateDate());
+            getDtausCurrencies(old.getCreateDate());
 
         final Currency[] newCurrencies = this.getCurrencyMapperImpl().
-            getDtausCurrencies(header.getSchedule().getCreateDate());
+            getDtausCurrencies(header.getCreateDate());
 
         if(!Arrays.equals(oldCurrencies, newCurrencies))
         {
@@ -2066,12 +2195,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(!currencyKept)
                     {
-                        throw new IllegalCurrencyException(isoCode,
-                            header.getSchedule().getCreateDate());
+                        e.addMessage(Header.PROP_CURRENCY,
+                            new IllegalCurrencyMessage(isoCode,
+                            header.getCreateDate()));
 
                     }
                 }
             }
+        }
+
+        if(e.getMessages().length > 0)
+        {
+            throw e;
         }
 
         this.writeHeader(this.getHeaderBlock(), header);
