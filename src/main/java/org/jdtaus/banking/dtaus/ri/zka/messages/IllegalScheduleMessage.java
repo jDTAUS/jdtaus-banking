@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
-import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.ri.zka.AbstractErrorMessage;
 import org.jdtaus.core.text.Message;
 

@@ -69,5 +69,15 @@
         error messages introduced in jdtaus-banking-api 1.0-beta-7.]]>
       </action>
     </release>
+    <release version="1.0-beta-8" date="2007-05-11"
+             description="8th beta release">
+      
+      <action dev="schulte2005" type="fix"><![CDATA[
+        Fixed a <code>NullPointerException</code> thrown by class
+        <code>AbstractLogicalFile</code> when validating <code>Header</code>s
+        and <code>Transaction</code>s with certain <code>null</code>
+        references.]]>
+      </action>
+    </release>
   </body>
 </document>

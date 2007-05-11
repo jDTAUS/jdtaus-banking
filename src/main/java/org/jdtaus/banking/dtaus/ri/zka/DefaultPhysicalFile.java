@@ -25,6 +25,7 @@ import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFile;
+import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
@@ -308,7 +309,11 @@ public final class DefaultPhysicalFile implements PhysicalFile
             this.dtausCount == 0 ? 0L :
                 this.index[this.dtausCount - 1].getChecksumBlock() + 1L);
 
-        lFile.checkHeader(header);
+        final IllegalHeaderException e = lFile.checkHeader(header);
+        if(e != null && e.getMessages().length > 0)
+        {
+            throw e;
+        }
 
         this.getStructuredFile().insertBlocks(this.dtausCount == 0 ?
             0L : this.index[this.dtausCount - 1].getChecksumBlock() + 1L, 2L);

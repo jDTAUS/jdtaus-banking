@@ -29,11 +29,11 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import org.jdtaus.banking.AlphaNumericText27;
-import org.jdtaus.banking.Bankleitzahl;
-import org.jdtaus.banking.Kontonummer;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
@@ -42,6 +42,7 @@ import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
+import org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyConstraintMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDateMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDescriptionCountMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage;
@@ -1595,88 +1596,116 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @param header zu prüfender A-Datensatz.
      *
      * @throws NullPointerException wenn {@code header null} ist.
-     * @throws IllegalHeaderException für ungültige Angaben.
      */
-    protected void checkHeader(final Header header)
+    protected IllegalHeaderException checkHeader(final Header header)
     {
-        final LogicalFileType type;
-        final IllegalHeaderException e = new IllegalHeaderException();
-
         if(header == null)
         {
             throw new NullPointerException("header");
         }
 
+        final List messages = new LinkedList();
+        final Map properties = new HashMap(20);
+
         if(header.getCreateDate() == null)
         {
-            e.addMessage(Header.PROP_CREATEDATE,
+            properties.put(Header.PROP_CREATEDATE,
                 new MandatoryPropertyMessage());
 
         }
-        if(!this.checkDate(header.getCreateDate()))
+        else if(!this.checkDate(header.getCreateDate()))
         {
-            e.addMessage(Header.PROP_CREATEDATE,
+            properties.put(Header.PROP_CREATEDATE,
                 new IllegalDateMessage(header.getCreateDate()));
 
         }
+
         if(header.getExecutionDate() != null &&
             !this.checkDate(header.getExecutionDate()))
         {
-            e.addMessage(Header.PROP_EXECUTIONDATE,
+            properties.put(Header.PROP_EXECUTIONDATE,
                 new IllegalDateMessage(header.getExecutionDate()));
 
         }
-        if(!this.checkSchedule(header.getCreateDate(),
-            header.getExecutionDate()))
+        if(header.getType() == null)
         {
-            e.addMessage(new IllegalScheduleMessage(
-                this.getHeaderBlock() * this.persistence.getBlockSize(),
-                header.getCreateDate(),
-                header.getExecutionDate()));
-
-        }
-        if((type = header.getType()) == null)
-        {
-            e.addMessage(Header.PROP_TYPE, new MandatoryPropertyMessage());
+            properties.put(Header.PROP_TYPE, new MandatoryPropertyMessage());
         }
         if(header.getCustomer() == null)
         {
-            e.addMessage(Header.PROP_CUSTOMER, new MandatoryPropertyMessage());
+            properties.put(Header.PROP_CUSTOMER,
+                new MandatoryPropertyMessage());
+
         }
         if(header.getBank() == null)
         {
-            e.addMessage(Header.PROP_BANK, new MandatoryPropertyMessage());
+            properties.put(Header.PROP_BANK,
+                new MandatoryPropertyMessage());
+
         }
         if(header.getAccount() == null)
         {
-            e.addMessage(Header.PROP_ACCOUNT, new MandatoryPropertyMessage());
+            properties.put(Header.PROP_ACCOUNT,
+                new MandatoryPropertyMessage());
+
         }
         if(header.getCurrency() == null)
         {
-            e.addMessage(Header.PROP_CURRENCY, new MandatoryPropertyMessage());
+            properties.put(Header.PROP_CURRENCY,
+                new MandatoryPropertyMessage());
+
         }
 
-        if(header.getCreateDate() != null && header.getCurrency() != null)
+        if(header.getCreateDate() != null)
         {
-            try
+            if(header.getCurrency() != null)
             {
-                this.getCurrencyMapperImpl().getDtausCode(header.getCurrency(),
-                    header.getCreateDate());
+                try
+                {
+                    this.getCurrencyMapperImpl().getDtausCode(
+                        header.getCurrency(), header.getCreateDate());
+
+                }
+                catch(UnsupportedCurrencyException ex)
+                {
+                    properties.put(Header.PROP_CURRENCY,
+                        new IllegalCurrencyMessage(header.getCurrency().
+                        getCurrencyCode(), header.getCreateDate()));
+
+                }
+            }
+
+            if(!this.checkSchedule(header.getCreateDate(),
+                header.getExecutionDate()))
+            {
+                messages.add(new IllegalScheduleMessage(
+                    this.getHeaderBlock() * this.persistence.getBlockSize(),
+                    header.getCreateDate(),
+                    header.getExecutionDate()));
 
             }
-            catch(UnsupportedCurrencyException ex)
-            {
-                e.addMessage(Header.PROP_CURRENCY,
-                    new IllegalCurrencyMessage(header.getCurrency().
-                    getCurrencyCode(), header.getCreateDate()));
+        }
 
+        final IllegalHeaderException e;
+        if(properties.size() > 0 || messages.size() > 0)
+        {
+            e = new IllegalHeaderException();
+            for(Iterator it = properties.keySet().iterator(); it.hasNext();)
+            {
+                final String name = (String) it.next();
+                e.addMessage(name, (Message) properties.get(name));
+            }
+            for(Iterator it = messages.iterator(); it.hasNext();)
+            {
+                e.addMessage((Message) it.next());
             }
         }
-
-        if(e.getMessages().length > 0)
+        else
         {
-            throw e;
+            e = null;
         }
+
+        return e;
     }
 
     //---------------------------------------------------void checkHeader(...)--
@@ -1694,105 +1723,110 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected void checkTransaction(
         final Transaction transaction) throws IOException
     {
-        int i;
-        final Kontonummer executiveAccount;
-        final Bankleitzahl executiveBank;
-        final AlphaNumericText27 executiveName;
-        final Kontonummer targetAccount;
-        final Bankleitzahl targetBank;
-        final AlphaNumericText27 targetName;
-        final Textschluessel type;
-        final LogicalFileType lFileType = this.getHeader().getType();
-        final Textschluessel[] allowedTypes =
-            this.getTextschluesselVerzeichnisImpl().
-            search(lFileType.isDebitAllowed(), lFileType.isRemittanceAllowed());
-
-        final IllegalTransactionException e = new IllegalTransactionException();
         if(transaction == null)
         {
             throw new NullPointerException("transaction");
         }
-        if((executiveAccount = transaction.getExecutiveAccount()) == null)
+
+        final Map properties = new HashMap(20);
+        final LogicalFileType lFileType = this.getHeader().getType();
+        final Textschluessel[] allowedTypes =
+            this.getTextschluesselVerzeichnisImpl().
+            search(lFileType.isDebitAllowed(),
+            lFileType.isRemittanceAllowed());
+
+
+        if(transaction.getExecutiveAccount() == null)
         {
-            e.addMessage(Transaction.PROP_EXECUTIVEACCOUNT,
+            properties.put(Transaction.PROP_EXECUTIVEACCOUNT,
                 new MandatoryPropertyMessage());
 
         }
-        if((executiveBank = transaction.getExecutiveBank()) == null)
+        if(transaction.getExecutiveBank() == null)
         {
-            e.addMessage(Transaction.PROP_EXECUTIVEBANK,
+            properties.put(Transaction.PROP_EXECUTIVEBANK,
                 new MandatoryPropertyMessage());
 
         }
-        if((executiveName = transaction.getExecutiveName()) == null)
+        if(transaction.getExecutiveName() == null)
         {
-            e.addMessage(Transaction.PROP_EXECUTIVENAME,
+            properties.put(Transaction.PROP_EXECUTIVENAME,
                 new MandatoryPropertyMessage());
 
         }
-        if((targetAccount = transaction.getTargetAccount()) == null)
+        if(transaction.getTargetAccount() == null)
         {
-            e.addMessage(Transaction.PROP_TARGETACCOUNT,
+            properties.put(Transaction.PROP_TARGETACCOUNT,
                 new MandatoryPropertyMessage());
 
         }
-        if((targetBank = transaction.getTargetBank()) == null)
+        if(transaction.getTargetBank() == null)
         {
-            e.addMessage(Transaction.PROP_TARGETBANK,
+            properties.put(Transaction.PROP_TARGETBANK,
                 new MandatoryPropertyMessage());
 
         }
-        if((targetName = transaction.getTargetName()) == null)
+        if(transaction.getTargetName() == null)
         {
-            e.addMessage(Transaction.PROP_TARGETNAME,
+            properties.put(Transaction.PROP_TARGETNAME,
                 new MandatoryPropertyMessage());
 
         }
-        if((type = transaction.getType()) == null)
+        if(transaction.getType() == null)
         {
-            e.addMessage(Transaction.PROP_TYPE,
+            properties.put(Transaction.PROP_TYPE,
                 new MandatoryPropertyMessage());
 
         }
         if(transaction.getCurrency() == null)
         {
-            e.addMessage(Transaction.PROP_CURRENCY,
+            properties.put(Transaction.PROP_CURRENCY,
                 new MandatoryPropertyMessage());
 
         }
-
-        if(allowedTypes != null)
+        if(transaction.getAmount() == null)
         {
+            properties.put(Transaction.PROP_AMOUNT,
+                new MandatoryPropertyMessage());
+
+        }
+        if(allowedTypes != null && transaction.getType() != null)
+        {
+            int i;
             for(i = allowedTypes.length - 1; i >= 0; i--)
             {
-                if(type.equals(allowedTypes[i]))
+                if(allowedTypes[i].equals(transaction.getType()))
                 {
                     break;
                 }
             }
             if(i < 0)
             {
-                e.addMessage(Transaction.PROP_TYPE,
-                    new TextschluesselConstraintMessage(lFileType, type));
+                properties.put(Transaction.PROP_TYPE,
+                    new TextschluesselConstraintMessage(lFileType,
+                    transaction.getType()));
 
             }
         }
-        else
+        else if(transaction.getType() != null)
         {
-            e.addMessage(Transaction.PROP_TYPE,
-                new TextschluesselConstraintMessage(lFileType, type));
+            properties.put(Transaction.PROP_TYPE,
+                new TextschluesselConstraintMessage(lFileType,
+                transaction.getType()));
 
         }
 
-        if(!this.checkAmount(transaction.getAmount().longValue(), true))
+        if(transaction.getAmount() != null &&
+            !this.checkAmount(transaction.getAmount().longValue(), true))
         {
-            e.addMessage(Transaction.PROP_AMOUNT,
+            properties.put(Transaction.PROP_AMOUNT,
                 new IllegalAmountMessage(transaction.getAmount()));
 
         }
-        if(!this.checkDescriptionCount(transaction.getDescriptions().length))
+        if(!this.checkDescriptionCount(
+            transaction.getDescriptions().length))
         {
-            e.addMessage(Transaction.PROP_DESCRIPTIONS,
+            properties.put(Transaction.PROP_DESCRIPTIONS,
                 new IllegalDescriptionCountMessage(
                 AbstractLogicalFile.MAX_DESCRIPTIONS));
 
@@ -1809,15 +1843,24 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
             catch(UnsupportedCurrencyException ex)
             {
-                e.addMessage(Transaction.PROP_CURRENCY,
+                properties.put(Transaction.PROP_CURRENCY,
                     new IllegalCurrencyMessage(transaction.getCurrency().
                     getCurrencyCode(), this.getHeader().getCreateDate()));
 
             }
         }
 
-        if(e.getMessages().length > 0)
+        if(properties.size() > 0)
         {
+            final IllegalTransactionException e =
+                new IllegalTransactionException();
+
+            for(Iterator it = properties.keySet().iterator(); it.hasNext();)
+            {
+                final String name = (String) it.next();
+                e.addMessage(name, (Message) properties.get(name));
+            }
+
             throw e;
         }
     }
@@ -2147,19 +2190,22 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     public Header setHeader(final Header header) throws IOException
     {
-        this.checkHeader(header);
+        IllegalHeaderException e = this.checkHeader(header);
         final Checksum checksum = this.getChecksum();
         final Header old = this.getHeader();
         final LogicalFileType oldLabel = old.getType();
         final LogicalFileType newLabel = header.getType();
-
-        final IllegalHeaderException e = new IllegalHeaderException();
 
         if(oldLabel != null && checksum.getTransactionCount() > 0 &&
             (oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed()) ||
             (oldLabel.isRemittanceAllowed() &&
             !newLabel.isRemittanceAllowed()))
         {
+            if(e == null)
+            {
+                e = new IllegalHeaderException();
+            }
+
             e.addMessage(header.PROP_TYPE,
                 new TextschluesselConstraintMessage(newLabel,
                 this.getTransaction(0).getType()));
@@ -2195,8 +2241,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(!currencyKept)
                     {
-                        e.addMessage(Header.PROP_CURRENCY,
-                            new IllegalCurrencyMessage(isoCode,
+                        if(e == null)
+                        {
+                            e = new IllegalHeaderException();
+                        }
+
+                        e.addMessage(new CurrencyConstraintMessage(isoCode,
                             header.getCreateDate()));
 
                     }
@@ -2204,7 +2254,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
         }
 
-        if(e.getMessages().length > 0)
+        if(e != null && e.getMessages().length > 0)
         {
             throw e;
         }
