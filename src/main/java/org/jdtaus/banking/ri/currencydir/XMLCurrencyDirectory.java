@@ -72,6 +72,8 @@ import org.xml.sax.SAXParseException;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
+ *
+ * @see #initialize()
  */
 public final class XMLCurrencyDirectory
     implements CurrencyMapper, CurrencyDirectory, ContainerInitializer
