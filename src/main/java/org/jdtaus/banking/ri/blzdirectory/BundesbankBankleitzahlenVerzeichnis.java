@@ -60,6 +60,8 @@ import org.jdtaus.core.logging.spi.Logger;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
+ *
+ * @see #initialize()
  */
 public final class BundesbankBankleitzahlenVerzeichnis
     implements BankleitzahlenVerzeichnis,
