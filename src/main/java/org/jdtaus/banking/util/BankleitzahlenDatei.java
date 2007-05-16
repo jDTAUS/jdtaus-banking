@@ -40,7 +40,7 @@ import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.logging.spi.Logger;
-import org.jdtaus.core.monitor.Task;
+import org.jdtaus.core.monitor.spi.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
 import org.jdtaus.core.text.Message;
 
@@ -199,37 +199,17 @@ public final class BankleitzahlenDatei
     //--------------------------------------------------------------Properties--
     //--BankleitzahlenDatei-----------------------------------------------------
 
-    /** {@code Task} for updating a bankfile instance. */
-    private static final class UpdateTask extends Task
+    /** {@code Task} description for updating with another instance. */
+    private static final class Description extends Message
     {
-        /** Description of the {@link UpdateTask}. */
-        private static final class Description extends Message
+        public Object[] getFormatArguments(final Locale locale)
         {
-            public Object[] getFormatArguments(final Locale locale)
-            {
-                return new Object[0];
-            }
-
-            public String getText(final Locale locale)
-            {
-                return BankleitzahlenDateiBundle.getUpdateTaskText(locale);
-            }
+            return new Object[0];
         }
 
-        /**
-         * Description of the task.
-         * @serial
-         */
-        private Message description;
-
-        public Message getDescription()
+        public String getText(final Locale locale)
         {
-            if(this.description == null)
-            {
-                this.description = new UpdateTask.Description();
-            }
-
-            return this.description;
+            return BankleitzahlenDateiBundle.getUpdateTaskText(locale);
         }
     }
 
@@ -366,22 +346,25 @@ public final class BankleitzahlenDatei
         int i;
         final Iterator it;
         final boolean log = this.getLogger().isDebugEnabled();
-        Task task;
         BankleitzahlInfo oldVersion;
         BankleitzahlInfo newVersion;
 
-        task = new UpdateTask();
+        int progress = 0;
+        Task task = new Task();
+        task.setIndeterminate(false);
+        task.setCancelable(false);
+        task.setDescription(new Description());
         task.setMinimum(0);
         task.setMaximum(file.getRecords().length);
-        task.setProgress(0);
-        task.setIndeterminate(false);
-        this.getTaskMonitor().monitor(task);
+        task.setProgress(progress);
 
         try
         {
+            this.getTaskMonitor().monitor(task);
+
             for(i = file.getRecords().length - 1; i >= 0; i--)
             {
-                task.setProgress(task.getProgress() + 1);
+                task.setProgress(progress++);
                 newVersion = file.getRecords()[i];
                 if('A' == newVersion.getChangeLabel())
                 {
@@ -443,18 +426,22 @@ public final class BankleitzahlenDatei
             this.getTaskMonitor().finish(task);
         }
 
-        task = new UpdateTask();
+        progress = 0;
+        task = new Task();
+        task.setIndeterminate(false);
+        task.setCancelable(false);
+        task.setDescription(new Description());
         task.setMinimum(0);
         task.setMaximum(this.records.size());
-        task.setProgress(0);
-        task.setIndeterminate(false);
-        this.getTaskMonitor().monitor(task);
+        task.setProgress(progress);
 
         try
         {
+            this.getTaskMonitor().monitor(task);
+
             for(it = this.records.values().iterator(); it.hasNext();)
             {
-                task.setProgress(task.getProgress() + 1);
+                task.setProgress(progress++);
                 oldVersion = (BankleitzahlInfo) it.next();
 
                 if('D' == oldVersion.getChangeLabel())
