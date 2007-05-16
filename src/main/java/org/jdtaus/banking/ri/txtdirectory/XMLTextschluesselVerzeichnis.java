@@ -66,6 +66,8 @@ import org.xml.sax.SAXParseException;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
+ *
+ * @see #initialize()
  */
 public final class XMLTextschluesselVerzeichnis
     implements TextschluesselVerzeichnis, ContainerInitializer
