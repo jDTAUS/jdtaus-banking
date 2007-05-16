@@ -101,6 +101,8 @@
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalAmountMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDescriptionCountMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyConstraintMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumTaskDescriptionMessage</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.AnalyzingFileMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
@@ -147,6 +149,12 @@
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-it</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>

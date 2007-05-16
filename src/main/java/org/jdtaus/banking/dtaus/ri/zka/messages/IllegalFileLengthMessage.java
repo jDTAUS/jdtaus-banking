@@ -55,7 +55,7 @@ public class IllegalFileLengthMessage extends Message
         {
             throw new IllegalArgumentException(Integer.toString(blockSize));
         }
-        if(fileLength % blockSize == 0)
+        if(fileLength != 0 && fileLength % blockSize == 0)
         {
             throw new IllegalArgumentException(
                 Long.toString(fileLength % blockSize));

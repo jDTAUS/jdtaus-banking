@@ -42,6 +42,7 @@ import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
+import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumTaskDescriptionMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyConstraintMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDateMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDescriptionCountMessage;
@@ -61,7 +62,7 @@ import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
-import org.jdtaus.core.monitor.Task;
+import org.jdtaus.core.monitor.spi.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
 import org.jdtaus.core.nio.util.Charsets;
 import org.jdtaus.core.text.Message;
@@ -2141,44 +2142,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     //------------------------------------------------Property "checksumBlock"--
     //--LogicalFile-------------------------------------------------------------
 
-    /**
-     * {@code Task} Implementierung für die sequentielle Prüfsummenberechnung.
-     */
-    public static class ChecksumTask extends Task
-    {
-        /** Beschreibung des {@code ChecksumTask} .*/
-        public static final class Description extends Message
-        {
-            private static final Object[] NO_ARGS = {};
-
-            public Object[] getFormatArguments(final Locale locale)
-            {
-                return NO_ARGS;
-            }
-
-            public String getText(final Locale locale)
-            {
-                return AbstractLogicalFileBundle.getChecksumTaskText(locale);
-            }
-        }
-
-        /**
-         * Beschreibung des {@code ChecksumTask}.
-         * @serial
-         */
-        private Message description;
-
-        public Message getDescription()
-        {
-            if(this.description == null)
-            {
-                this.description = new ChecksumTask.Description();
-            }
-
-            return this.description;
-        }
-    }
-
     public Header getHeader() throws IOException
     {
         if(this.cachedHeader == null)
@@ -2291,7 +2254,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final Checksum c = new Checksum();
         final Transaction t = new Transaction();
         final long startBlock = this.getHeaderBlock();
-        final ChecksumTask task = new ChecksumTask();
+        final Task task = new Task();
         Message msg;
 
         try
@@ -2301,6 +2264,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 Integer.MAX_VALUE : (int) blockCount;
 
             task.setIndeterminate(false);
+            task.setCancelable(false);
+            task.setDescription(new ChecksumTaskDescriptionMessage());
             task.setMinimum(startBlock > Integer.MAX_VALUE ?
                 Integer.MAX_VALUE : (int) startBlock);
 

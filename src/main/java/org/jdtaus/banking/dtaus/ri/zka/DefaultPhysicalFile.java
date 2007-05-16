@@ -25,6 +25,7 @@ import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFile;
+import org.jdtaus.banking.dtaus.ri.zka.messages.AnalyzingFileMessage;
 import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
@@ -35,7 +36,7 @@ import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.io.StructuredFileListener;
 import org.jdtaus.core.io.util.StructuredFileOperations;
-import org.jdtaus.core.monitor.Task;
+import org.jdtaus.core.monitor.spi.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
 import org.jdtaus.core.text.Message;
 
@@ -222,37 +223,6 @@ public final class DefaultPhysicalFile implements PhysicalFile
     //------------------------------------------------------------Dependencies--
     //--PhysicalFile------------------------------------------------------------
 
-    public static final class ChecksumMessage extends Message
-    {
-
-        private static final Object[] NO_ARGS = {};
-
-        public Object[] getFormatArguments(final Locale locale)
-        {
-            return NO_ARGS;
-        }
-
-        public String getText(final Locale locale)
-        {
-            return DefaultPhysicalFileBundle.getChecksumTaskText(locale);
-        }
-    }
-
-    public static final class ChecksumTask extends Task
-    {
-
-        /**
-         * Description of the task.
-         * @serial
-         */
-        private final Message description = new ChecksumMessage();
-
-        public Message getDescription()
-        {
-            return this.description;
-        }
-    }
-
     protected void checksum() throws IOException
     {
         this.dtausCount = 0;
@@ -261,15 +231,18 @@ public final class DefaultPhysicalFile implements PhysicalFile
         final int maximumProgress = blockCount > Integer.MAX_VALUE ?
             Integer.MAX_VALUE : (int) blockCount;
 
-        final Task task = new ChecksumTask();
-
+        final Task task = new Task();
+        task.setIndeterminate(false);
+        task.setCancelable(false);
+        task.setDescription(new AnalyzingFileMessage());
         task.setMinimum(0);
         task.setProgress(0);
         task.setMaximum(maximumProgress);
 
-        this.getTaskMonitor().monitor(task);
         try
         {
+            this.getTaskMonitor().monitor(task);
+
             for(long block = 0L; block < blockCount;)
             {
                 task.setProgress(block > maximumProgress ?

@@ -162,6 +162,29 @@ public final class DefaultPhysicalFileFactory
     //--------------------------------------------------------------Properties--
     //--PhysicalFileFactory-----------------------------------------------------
 
+    public PhysicalFile createPhysicalFile(final FileOperations ops,
+        final int format) throws IOException
+    {
+        if(ops == null)
+        {
+            throw new NullPointerException("ops");
+        }
+        if(format != FORMAT_DISK && format != FORMAT_TAPE)
+        {
+            throw new IllegalArgumentException(Integer.toString(format));
+        }
+
+        try
+        {
+            ops.setLength(0L);
+            return this.getPhysicalFile(ops, format);
+        }
+        catch(PhysicalFileException e)
+        {
+            throw new AssertionError(e);
+        }
+    }
+
     public int analyse(final FileOperations fileOperations) throws
         PhysicalFileException, IOException
     {
@@ -190,7 +213,7 @@ public final class DefaultPhysicalFileFactory
             AbstractErrorMessage.setErrorsEnabled(false);
 
             if(length >= 128)
-            { // mindestens ein Satzabschnitt.
+            { // mindestens ein Disketten-Satzabschnitt.
                 // die ersten 4 Byte lesen.
                 fileOperations.setFilePointer(0L);
                 do
@@ -284,17 +307,53 @@ public final class DefaultPhysicalFileFactory
     public PhysicalFile getPhysicalFile(final FileOperations ops) throws
         PhysicalFileException, IOException
     {
+        return this.getPhysicalFile(ops, this.getDefaultFormat());
+    }
 
+    //-----------------------------------------------------PhysicalFileFactory--
+    //--DefaultPhysicalFileFactory----------------------------------------------
+
+    /** Creates a new {@code DefaultPhysicalFileFactory} instance. */
+    public DefaultPhysicalFileFactory()
+    {
+        this(DefaultPhysicalFileFactory.META);
+        this.initialize();
+    }
+
+    /**
+     * Checks configured properties.
+     *
+     * @throws PropertyException for illegal property values.
+     */
+    private void assertValidProperties()
+    {
+        final int defaultFormat = this.getDefaultFormat();
+        if(defaultFormat != PhysicalFileFactory.FORMAT_DISK &&
+            defaultFormat != PhysicalFileFactory.FORMAT_TAPE)
+        {
+
+            throw new PropertyException("defaultFormat",
+                new Integer(defaultFormat));
+
+        }
+    }
+
+    private PhysicalFile getPhysicalFile(final FileOperations ops,
+        int format) throws PhysicalFileException, IOException
+    {
         if(ops == null)
         {
             throw new NullPointerException("ops");
+        }
+        if(format != FORMAT_DISK && format != FORMAT_TAPE)
+        {
+            throw new IllegalArgumentException(Integer.toString(format));
         }
 
         final DefaultPhysicalFile ret;
         final Message[] messages;
         final StructuredFileOperations sops;
-        final int format = ops.getLength() > 0 ?
-            this.analyse(ops) : this.getDefaultFormat();
+        format = ops.getLength() > 0 ? this.analyse(ops) : format;
 
         switch(format)
         {
@@ -332,34 +391,6 @@ public final class DefaultPhysicalFileFactory
         finally
         {
             AbstractErrorMessage.setErrorsEnabled(true);
-        }
-    }
-
-    //-----------------------------------------------------PhysicalFileFactory--
-    //--DefaultPhysicalFileFactory----------------------------------------------
-
-    /** Creates a new {@code DefaultPhysicalFileFactory} instance. */
-    public DefaultPhysicalFileFactory()
-    {
-        this(DefaultPhysicalFileFactory.META);
-        this.initialize();
-    }
-
-    /**
-     * Checks configured properties.
-     *
-     * @throws PropertyException for illegal property values.
-     */
-    protected void assertValidProperties()
-    {
-        final int defaultFormat = this.getDefaultFormat();
-        if(defaultFormat != PhysicalFileFactory.FORMAT_DISK &&
-            defaultFormat != PhysicalFileFactory.FORMAT_TAPE)
-        {
-
-            throw new PropertyException("defaultFormat",
-                new Integer(defaultFormat));
-
         }
     }
 
