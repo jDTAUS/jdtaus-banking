@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
@@ -64,8 +63,7 @@ import org.jdtaus.core.logging.spi.Logger;
  * @see #initialize()
  */
 public final class BundesbankBankleitzahlenVerzeichnis
-    implements BankleitzahlenVerzeichnis,
-    org.jdtaus.banking.spi.BankleitzahlenDatei, ContainerInitializer
+    implements BankleitzahlenVerzeichnis, ContainerInitializer
 {
     //--Implementation----------------------------------------------------------
 
@@ -356,64 +354,6 @@ public final class BundesbankBankleitzahlenVerzeichnis
     }
 
     //-----------------------------------------------BankleitzahlenVerzeichnis--
-    //--BankleitzahlenDatei-----------------------------------------------------
-
-    public BankleitzahlInfo[] getRecords()
-    {
-        final String method = "getRecords()";
-        final String className = org.jdtaus.banking.spi.
-            BankleitzahlenDatei.class.getName();
-
-        this.getLogger().warn(BundesbankBankleitzahlenVerzeichnisBundle.
-            getDeprecationWarningMessage(Locale.getDefault()).format(
-            new Object[] { method, className }));
-
-        return this.delegate.getRecords();
-    }
-
-    public BankleitzahlInfo getRecord(final Integer serialNumber)
-    {
-        final String method = "getRecord(Integer)";
-        final String className = org.jdtaus.banking.spi.
-            BankleitzahlenDatei.class.getName();
-
-        this.getLogger().warn(BundesbankBankleitzahlenVerzeichnisBundle.
-            getDeprecationWarningMessage(Locale.getDefault()).format(
-            new Object[] { method, className }));
-
-        return this.delegate.getRecord(serialNumber);
-    }
-
-    public void read(final URL resource) throws IOException
-    {
-        final String method = "read(URL)";
-        final String className = org.jdtaus.banking.spi.
-            BankleitzahlenDatei.class.getName();
-
-        this.getLogger().warn(BundesbankBankleitzahlenVerzeichnisBundle.
-            getDeprecationWarningMessage(Locale.getDefault()).format(
-            new Object[] { method, className }));
-
-        this.delegate = new BankleitzahlenDatei(resource);
-    }
-
-    public void update(final org.jdtaus.banking.spi.BankleitzahlenDatei file)
-    {
-        final String method = "update(BankleitzahlenDatei)";
-        final String className = org.jdtaus.banking.spi.
-            BankleitzahlenDatei.class.getName();
-
-        this.getLogger().warn(BundesbankBankleitzahlenVerzeichnisBundle.
-            getDeprecationWarningMessage(Locale.getDefault()).format(
-            new Object[] { method, className }));
-
-        if(file == null)
-        {
-            throw new NullPointerException("file");
-        }
-    }
-
-    //-----------------------------------------------------BankleitzahlenDatei--
     //--BundesbankBankleitzahlenVerzeichnis-------------------------------------
 
     /** Prefix used for property keys in the property file. */
@@ -624,5 +564,4 @@ public final class BundesbankBankleitzahlenVerzeichnis
     }
 
     //-------------------------------------BundesbankBankleitzahlenVerzeichnis--
-
 }

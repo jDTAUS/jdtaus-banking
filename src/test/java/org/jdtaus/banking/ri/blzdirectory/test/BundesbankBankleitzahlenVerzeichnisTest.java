@@ -19,11 +19,9 @@
  */
 package org.jdtaus.banking.ri.blzdirectory.test;
 
-import junit.framework.Assert;
 import org.jdtaus.banking.BankleitzahlenVerzeichnis;
 import org.jdtaus.banking.it.BankleitzahlenVerzeichnisTest;
 import org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis;
-import org.jdtaus.banking.spi.BankleitzahlenDatei;
 
 /**
  * Tests the {@link BundesbankBankleitzahlenVerzeichnis} implementation.
@@ -51,39 +49,4 @@ public class BundesbankBankleitzahlenVerzeichnisTest
     }
 
     //-------------------------------------------BankleitzahlenVerzeichnisTest--
-    //--Tests-------------------------------------------------------------------
-
-    /**
-     * Tests backwards compatibility for the deprecated
-     * {@link org.jdtaus.banking.spi.BankleitzahlenDatei} interface.
-     */
-    public void testBankleitzahlenDateiBackwardsCompatibility()
-    throws Exception
-    {
-        assert this.getBankleitzahlenVerzeichnis() != null;
-
-        final BankleitzahlenDatei file =
-            (BankleitzahlenDatei) this.getBankleitzahlenVerzeichnis();
-
-        Assert.assertTrue(file.getRecords().length >= 0);
-
-        try
-        {
-            file.read(null);
-            throw new AssertionError();
-        }
-        catch(NullPointerException e)
-        {}
-
-        try
-        {
-            file.update(null);
-            throw new AssertionError();
-        }
-        catch(NullPointerException e)
-        {}
-
-    }
-
-    //-------------------------------------------------------------------Tests--
 }
