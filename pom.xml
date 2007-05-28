@@ -3,18 +3,18 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-beta-4</version>
+    <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-charsets</artifactId>
   <name>jDTAUS Banking Charset Providers</name>
-  <version>1.0-beta-4-SNAPSHOT</version>
+  <version>1.0</version>
   <description>jDTAUS banking charset provider implementations.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.0</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.0</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.0</url>
   </scm>
   <build>
     <resources>
