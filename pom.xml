@@ -14,7 +14,7 @@
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.0</connection>
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.0</developerConnection>
-    <url>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.0</url>
+    <url>http://svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.0</url>
   </scm>
   <build>
     <resources>
