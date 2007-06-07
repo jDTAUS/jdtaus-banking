@@ -3,7 +3,7 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
@@ -134,13 +134,13 @@
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-utilities</artifactId>
-      <version>RELEASE</version>
+      <version>1.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-it</artifactId>
-      <version>RELEASE</version>
+      <version>1.1-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
