@@ -6,6 +6,12 @@
   <body>
     <release version="1.0" date="2007-06-01"
              description="First stable release."/>
-      
+    
+    <release version="1.1" description="Feature enhancements.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added implementation for 1.1 API methods.]]>
+      </action>
+    </release>
+    
   </body>
 </document>

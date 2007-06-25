@@ -69,6 +69,14 @@
                          jdtaus:type="java.lang.String"
                          jdtaus:value="META-INF/jdtaus/BundesbankBankleitzahlenVerzeichnis.properties"/>
         
+        <jdtaus:property jdtaus:name="dateOfExpirationText"
+                         jdtaus:type="java.lang.String"
+                         jdtaus:value="2007-09-02"/>
+
+        <jdtaus:property jdtaus:name="dateOfExpirationPattern"
+                         jdtaus:type="java.lang.String"
+                         jdtaus:value="yyyy-MM-dd"/>
+
       </jdtaus:properties>
     </jdtaus:implementation>
   </jdtaus:implementations>

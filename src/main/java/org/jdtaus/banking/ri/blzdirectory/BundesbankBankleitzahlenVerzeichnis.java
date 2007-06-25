@@ -25,15 +25,22 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.jdtaus.banking.Bankleitzahl;
+import org.jdtaus.banking.BankleitzahlExpirationException;
 import org.jdtaus.banking.BankleitzahlInfo;
 import org.jdtaus.banking.BankleitzahlenVerzeichnis;
 import org.jdtaus.banking.util.BankleitzahlenDatei;
@@ -51,11 +58,12 @@ import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.logging.spi.Logger;
 
 /**
- * Directory of german bank codes.
- * <p>For further information see the
- * "<a href="doc-files/blz.pdf">Bankleitzahlen Richtlinie</a>". An updated
- * version of the document may be found at
- * <a href="http://www.bundesbank.de">Deutsche Bundesbank</a></p>.
+ * {@code BankleitzahlenVerzeichnis} implementation backed by bankfiles.
+ * <p>This implementation reads bankfile resources holding
+ * {@code BankleitzahlInfo} instances. Property {@code configuration} holds
+ * the name of a property file specifying the bankfiles to load and the order
+ * the files need to be loaded. Property {@code dataDirectory} holds the
+ * name of the directory in which these bankfiles are located.</p>
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -128,6 +136,14 @@ public final class BundesbankBankleitzahlenVerzeichnis
             throw new NullPointerException("meta");
         }
 
+        p = meta.getProperty("dateOfExpirationPattern");
+        this._dateOfExpirationPattern = (java.lang.String) p.getValue();
+
+
+        p = meta.getProperty("dateOfExpirationText");
+        this._dateOfExpirationText = (java.lang.String) p.getValue();
+
+
         p = meta.getProperty("configuration");
         this._configuration = (java.lang.String) p.getValue();
 
@@ -142,6 +158,12 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
     /** {@code BankleitzahlenDatei} delegate. */
     private BankleitzahlenDatei delegate;
+
+    /** Maps bankcodes to a list of outdated records. */
+    private Map outdated = new HashMap(5000);
+
+    /** Date of expiration. */
+    private Date dateOfExpiration;
 
     /**
      * Initializes the instance.
@@ -161,19 +183,41 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
             if(rsrc.length > 0)
             {
-                delegate = new BankleitzahlenDatei(rsrc[0]);
-
+                this.delegate = new BankleitzahlenDatei(rsrc[0]);
                 for(int i = 1; i < rsrc.length; i++)
                 {
-                    delegate.update(new BankleitzahlenDatei(rsrc[i]));
-                }
-            }
-            else
-            {
-                throw new ImplementationException(META,
-                    new IllegalArgumentException(
-                    Integer.toString(rsrc.length)));
+                    final BankleitzahlenDatei update =
+                        new BankleitzahlenDatei(rsrc[i]);
 
+                    // Build mapping of outdated records.
+                    final BankleitzahlInfo[] records =
+                        this.delegate.getRecords();
+
+                    for(int j = records.length - 1; j >= 0; j--)
+                    {
+                        if(records[j].getChangeLabel() == 'D')
+                        {
+                            this.getLogger().debug(
+                                BundesbankBankleitzahlenVerzeichnisBundle.
+                                getOutdatedInfoMessage(Locale.getDefault()).
+                                format(new Object[] { records[j].getBankCode().
+                                    format(Bankleitzahl.ELECTRONIC_FORMAT)}));
+
+                            List l = (List) this.outdated.get(
+                                records[j].getBankCode());
+
+                            if(l == null)
+                            {
+                                l = new LinkedList();
+                                this.outdated.put(records[j].getBankCode(), l);
+                            }
+
+                            l.add(records[j]);
+                        }
+                    }
+
+                    this.delegate.update(update);
+                }
             }
         }
         catch(IOException e)
@@ -232,6 +276,38 @@ public final class BundesbankBankleitzahlenVerzeichnis
     // This section is managed by jdtaus-container-mojo.
 
     /**
+     * Property {@code dateOfExpirationPattern}.
+     * @serial
+     */
+    private java.lang.String _dateOfExpirationPattern;
+
+    /**
+     * Gets the value of property <code>dateOfExpirationPattern</code>.
+     *
+     * @return the value of property <code>dateOfExpirationPattern</code>.
+     */
+    protected java.lang.String getDateOfExpirationPattern()
+    {
+        return this._dateOfExpirationPattern;
+    }
+
+    /**
+     * Property {@code dateOfExpirationText}.
+     * @serial
+     */
+    private java.lang.String _dateOfExpirationText;
+
+    /**
+     * Gets the value of property <code>dateOfExpirationText</code>.
+     *
+     * @return the value of property <code>dateOfExpirationText</code>.
+     */
+    protected java.lang.String getDateOfExpirationText()
+    {
+        return this._dateOfExpirationText;
+    }
+
+    /**
      * Property {@code configuration}.
      * @serial
      */
@@ -267,7 +343,13 @@ public final class BundesbankBankleitzahlenVerzeichnis
     //--------------------------------------------------------------Properties--
     //--BankleitzahlenVerzeichnis-----------------------------------------------
 
+    public Date getDateOfExpiration()
+    {
+        return this.dateOfExpiration;
+    }
+
     public BankleitzahlInfo getHeadOffice(final Bankleitzahl bankCode)
+    throws BankleitzahlExpirationException
     {
         if(bankCode == null)
         {
@@ -282,20 +364,31 @@ public final class BundesbankBankleitzahlenVerzeichnis
         {
             ret = matches[0];
         }
+        else
+        {
+            this.checkOutdated(bankCode);
+        }
 
         return ret;
     }
 
     public BankleitzahlInfo[] getBranchOffices(
-        final Bankleitzahl bankCode)
+        final Bankleitzahl bankCode) throws BankleitzahlExpirationException
     {
-
         if(bankCode == null)
         {
             throw new NullPointerException("bankCode");
         }
 
-        return this.findByBankCode(bankCode.intValue(), true);
+        final BankleitzahlInfo[] matches =
+            this.findByBankCode(bankCode.intValue(), true);
+
+        if(matches.length == 0)
+        {
+            this.checkOutdated(bankCode);
+        }
+
+        return matches;
     }
 
     public BankleitzahlInfo[] search(final String name, final String postalCode,
@@ -305,7 +398,9 @@ public final class BundesbankBankleitzahlenVerzeichnis
         final Pattern postalPat;
         final Pattern cityPat;
         final NumberFormat plzFmt = new DecimalFormat("00000");
-        final BankleitzahlInfo[] records = this.delegate.getRecords();
+        final BankleitzahlInfo[] records = this.delegate == null ?
+            new BankleitzahlInfo[0] : this.delegate.getRecords();
+
         final Collection col = new ArrayList(records.length);
         String plz;
 
@@ -414,7 +509,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
      *
      * @throws PropertyException if configured properties hold invalid values.
      */
-    protected void assertValidProperties()
+    private void assertValidProperties()
     {
         if(this.getDataDirectory() == null ||
             this.getDataDirectory().length() == 0)
@@ -433,6 +528,74 @@ public final class BundesbankBankleitzahlenVerzeichnis
                 this.getConfiguration());
 
         }
+        if(this.getDateOfExpirationText() == null ||
+            this.getDateOfExpirationText().length() == 0)
+        {
+            throw new PropertyException("dateOfExpirationText",
+                this.getDateOfExpirationText());
+
+        }
+        if(this.getDateOfExpirationPattern() == null ||
+            this.getDateOfExpirationPattern().length() == 0)
+        {
+            throw new PropertyException("dateOfExpirationPattern",
+                this.getDateOfExpirationPattern());
+
+        }
+
+        try
+        {
+            this.dateOfExpiration =
+                new SimpleDateFormat(this.getDateOfExpirationPattern()).
+                parse(this.getDateOfExpirationText());
+
+        }
+        catch(ParseException e)
+        {
+            throw new PropertyException("dateOfExpirationText",
+                this.getDateOfExpirationText(), e);
+
+        }
+    }
+
+    /**
+     * Throws a {@code BankleitzahlExpirationException} if {@code bankCode}
+     * is outdated.
+     *
+     * @param bankCode the Bankleitzahl to check for expiration.
+     *
+     * @throws NullPointerException if {@code bankCode} is {@code null}.
+     */
+    private void checkOutdated(final Bankleitzahl bankCode)
+    throws BankleitzahlExpirationException
+    {
+        if(bankCode == null)
+        {
+            throw new NullPointerException("bankCode");
+        }
+
+        final List l = (List) this.outdated.get(bankCode);
+
+        if(l != null)
+        {
+            // Finds the most recent record.
+            BankleitzahlInfo record = null;
+            BankleitzahlInfo replacement = null;
+
+            for(Iterator it = l.iterator(); it.hasNext();)
+            {
+                record = (BankleitzahlInfo) it.next();
+                if(record.getReplacingBankCode() != null)
+                {
+                    replacement = record;
+                }
+            }
+
+            // Records specifying a replacement Bankleitzahl take precedence.
+            throw new BankleitzahlExpirationException(replacement == null ?
+                record : replacement);
+
+        }
     }
 
     /**
@@ -445,7 +608,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
      *
      * @see #getClassLoader()
      */
-    protected URL getConfigurationResource()
+    private URL getConfigurationResource()
     {
         return this.getClassLoader().getResource(this.getConfiguration());
     }
@@ -461,7 +624,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
      * @see #getConfigurationResource()
      * @see #getClassLoader()
      */
-    protected URL[] getFileResources()
+    private URL[] getFileResources()
     {
         int i;
         String rsrc;
@@ -518,7 +681,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
      * matching {@code bankCode}; {@code false} to return all known head
      * offices matching {@code bankCode}.
      */
-    protected BankleitzahlInfo[] findByBankCode(
+    private BankleitzahlInfo[] findByBankCode(
         final int bankCode, final boolean branchOffices)
     {
         final BankleitzahlInfo[] records = this.delegate.getRecords();
@@ -549,7 +712,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
      *
      * @return the classloader to be used for loading bankfile resources.
      */
-    protected ClassLoader getClassLoader()
+    private ClassLoader getClassLoader()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if(classLoader == null)
