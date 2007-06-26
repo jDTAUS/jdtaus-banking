@@ -195,14 +195,10 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
                     for(int j = records.length - 1; j >= 0; j--)
                     {
-                        if(records[j].getChangeLabel() == 'D')
+                        if(records[j].getChangeLabel() == 'D' &&
+                            update.getRecord(
+                            records[j].getSerialNumber()) == null)
                         {
-                            this.getLogger().debug(
-                                BundesbankBankleitzahlenVerzeichnisBundle.
-                                getOutdatedInfoMessage(Locale.getDefault()).
-                                format(new Object[] { records[j].getBankCode().
-                                    format(Bankleitzahl.ELECTRONIC_FORMAT)}));
-
                             List l = (List) this.outdated.get(
                                 records[j].getBankCode());
 
@@ -217,6 +213,34 @@ public final class BundesbankBankleitzahlenVerzeichnis
                     }
 
                     this.delegate.update(update);
+                }
+
+                // Remove all outdated records for which another record
+                // with the same Bankleitzahl still exists.
+                for(Iterator it = this.outdated.keySet().
+                    iterator(); it.hasNext();)
+                {
+                    final Bankleitzahl key = (Bankleitzahl) it.next();
+                    if(this.findByBankCode(key.intValue(), false).length > 0)
+                    {
+                        it.remove();
+                    }
+                }
+
+                // Log outdated records.
+                if(this.getLogger().isDebugEnabled())
+                {
+                    for(Iterator it = this.outdated.keySet().
+                        iterator(); it.hasNext();)
+                    {
+                        final Bankleitzahl blz = (Bankleitzahl) it.next();
+                        this.getLogger().debug(
+                            BundesbankBankleitzahlenVerzeichnisBundle.
+                            getOutdatedInfoMessage(Locale.getDefault()).
+                            format(new Object[] { blz.format(
+                                Bankleitzahl.ELECTRONIC_FORMAT)}));
+
+                    }
                 }
             }
         }
@@ -684,7 +708,9 @@ public final class BundesbankBankleitzahlenVerzeichnis
     private BankleitzahlInfo[] findByBankCode(
         final int bankCode, final boolean branchOffices)
     {
-        final BankleitzahlInfo[] records = this.delegate.getRecords();
+        final BankleitzahlInfo[] records = this.delegate == null ?
+            new BankleitzahlInfo[0] : this.delegate.getRecords();
+
         final Collection col = new ArrayList(records.length);
 
         for(int i = records.length - 1; i >= 0; i--)
