@@ -157,7 +157,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
     //--ContainerInitializer----------------------------------------------------
 
     /** {@code BankleitzahlenDatei} delegate. */
-    private BankleitzahlenDatei delegate;
+    private BankleitzahlenDatei bankFile;
 
     /** Maps bankcodes to a list of outdated records. */
     private Map outdated = new HashMap(5000);
@@ -183,7 +183,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
             if(rsrc.length > 0)
             {
-                this.delegate = new BankleitzahlenDatei(rsrc[0]);
+                this.bankFile = new BankleitzahlenDatei(rsrc[0]);
                 for(int i = 1; i < rsrc.length; i++)
                 {
                     final BankleitzahlenDatei update =
@@ -191,7 +191,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
                     // Build mapping of outdated records.
                     final BankleitzahlInfo[] records =
-                        this.delegate.getRecords();
+                        this.bankFile.getRecords();
 
                     for(int j = records.length - 1; j >= 0; j--)
                     {
@@ -212,7 +212,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
                         }
                     }
 
-                    this.delegate.update(update);
+                    this.bankFile.update(update);
                 }
 
                 // Remove all outdated records for which another record
@@ -390,7 +390,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
         }
         else
         {
-            this.checkOutdated(bankCode);
+            this.checkReplacement(bankCode);
         }
 
         return ret;
@@ -409,7 +409,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
         if(matches.length == 0)
         {
-            this.checkOutdated(bankCode);
+            this.checkReplacement(bankCode);
         }
 
         return matches;
@@ -422,8 +422,8 @@ public final class BundesbankBankleitzahlenVerzeichnis
         final Pattern postalPat;
         final Pattern cityPat;
         final NumberFormat plzFmt = new DecimalFormat("00000");
-        final BankleitzahlInfo[] records = this.delegate == null ?
-            new BankleitzahlInfo[0] : this.delegate.getRecords();
+        final BankleitzahlInfo[] records = this.bankFile == null ?
+            new BankleitzahlInfo[0] : this.bankFile.getRecords();
 
         final Collection col = new ArrayList(records.length);
         String plz;
@@ -584,13 +584,13 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
     /**
      * Throws a {@code BankleitzahlExpirationException} if {@code bankCode}
-     * is outdated.
+     * is outdated and if a valid replacement record exists in the directory.
      *
      * @param bankCode the Bankleitzahl to check for expiration.
      *
      * @throws NullPointerException if {@code bankCode} is {@code null}.
      */
-    private void checkOutdated(final Bankleitzahl bankCode)
+    private void checkReplacement(final Bankleitzahl bankCode)
     throws BankleitzahlExpirationException
     {
         if(bankCode == null)
@@ -602,23 +602,39 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
         if(l != null)
         {
-            // Finds the most recent record.
+            // Finds the most recent record specifying a replacing Bankleitzahl.
+            BankleitzahlInfo current = null;
             BankleitzahlInfo record = null;
-            BankleitzahlInfo replacement = null;
 
             for(Iterator it = l.iterator(); it.hasNext();)
             {
-                record = (BankleitzahlInfo) it.next();
-                if(record.getReplacingBankCode() != null)
+                current = (BankleitzahlInfo) it.next();
+                if(current.getReplacingBankCode() != null)
                 {
-                    replacement = record;
+                    record = current;
                 }
             }
 
-            // Records specifying a replacement Bankleitzahl take precedence.
-            throw new BankleitzahlExpirationException(replacement == null ?
-                record : replacement);
+            // Only throw an exception for records specifying a replacing
+            // Bankleitzahl which is not outdated.
+            if(record != null)
+            {
+                final int replacingCode =
+                    record.getReplacingBankCode().intValue();
 
+                final BankleitzahlInfo[] replacement =
+                    this.findByBankCode(replacingCode, false);
+
+                assert replacement.length == 0 || replacement.length == 1 :
+                    "Multiple head offices for " + replacingCode + ".";
+
+                if(replacement.length == 1)
+                {
+                    throw new BankleitzahlExpirationException(
+                        record, replacement[0]);
+
+                }
+            }
         }
     }
 
@@ -708,8 +724,8 @@ public final class BundesbankBankleitzahlenVerzeichnis
     private BankleitzahlInfo[] findByBankCode(
         final int bankCode, final boolean branchOffices)
     {
-        final BankleitzahlInfo[] records = this.delegate == null ?
-            new BankleitzahlInfo[0] : this.delegate.getRecords();
+        final BankleitzahlInfo[] records = this.bankFile == null ?
+            new BankleitzahlInfo[0] : this.bankFile.getRecords();
 
         final Collection col = new ArrayList(records.length);
 
