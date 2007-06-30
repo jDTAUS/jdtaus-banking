@@ -261,7 +261,7 @@ public final class BankleitzahlenDatei
         {
             stream = resource.openStream();
             reader = new BufferedReader(new InputStreamReader(
-                stream, "ISO-8859-1"));
+                stream, this.getEncoding()));
 
             while((line = reader.readLine()) != null)
             {
@@ -371,7 +371,6 @@ public final class BankleitzahlenDatei
                     if(this.records.put(
                         newVersion.getSerialNumber(), newVersion) != null)
                     {
-
                         throw new IllegalArgumentException(
                             newVersion.toString());
 
@@ -390,18 +389,13 @@ public final class BankleitzahlenDatei
                 else if('M' == newVersion.getChangeLabel() ||
                     'D' == newVersion.getChangeLabel())
                 {
-
-                    oldVersion = (BankleitzahlInfo) this.records.
-                        get(newVersion.getSerialNumber());
-
-                    if(oldVersion == null)
+                    if(this.records.put(newVersion.getSerialNumber(),
+                        newVersion) == null)
                     {
                         throw new IllegalArgumentException(
                             newVersion.toString());
 
                     }
-
-                    this.records.put(newVersion.getSerialNumber(), newVersion);
 
                     if(log)
                     {

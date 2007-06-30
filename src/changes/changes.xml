@@ -4,20 +4,18 @@
     <author email="cs@jdtaus.org">Christian Schulte</author>
   </properties>
   <body>
-    <release version="1.0-beta-2" date="2007-05-01"
-             description="2nd beta release">
-      
-      <action dev="schulte2005" type="update"><![CDATA[
-        Updated the POM removing hardcoded signing aliases.]]>
+    <release version="1.0" date="2007-06-01"
+             description="First stable release."/>
+
+    <release version="1.0.1" date="2007-07-01"
+             description="Bugfix release.">
+
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Fixed class <code>org.jdtaus.banking.util.BankleitzahlenDatei</code>
+      to use configuration property <code>encoding</code> for reading the
+      bankfiles instead of the hardcoded ISO-8859-1 encoding.]]>
       </action>
     </release>
-    <release version="1.0-beta-3" date="2007-05-16"
-             description="3rd beta release">
-      
-      <action dev="schulte2005" type="update"><![CDATA[
-        Removed deprecated API calls and updated to enhanced task API introduced
-        in jdtaus-core-api 1.0-beta-4.]]>
-      </action>
-    </release>
+
   </body>
 </document>
