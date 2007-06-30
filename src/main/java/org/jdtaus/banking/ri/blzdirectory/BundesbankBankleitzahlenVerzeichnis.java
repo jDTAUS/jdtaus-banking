@@ -56,6 +56,9 @@ import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.logging.spi.Logger;
+import org.jdtaus.core.text.Message;
+import org.jdtaus.core.text.MessageEvent;
+import org.jdtaus.core.text.spi.ApplicationLogger;
 
 /**
  * {@code BankleitzahlenVerzeichnis} implementation backed by bankfiles.
@@ -243,6 +246,16 @@ public final class BundesbankBankleitzahlenVerzeichnis
                     }
                 }
             }
+
+            // Log an application message if the directory is outdated.
+            if(new Date().after(this.getDateOfExpiration()))
+            {
+                final MessageEvent evt = new MessageEvent(this, new Message[] {
+                    new OutdatedDirectoryMessage(this.getDateOfExpiration())
+                }, MessageEvent.NOTIFICATION);
+
+                this.getApplicationLogger().log(evt);
+            }
         }
         catch(IOException e)
         {
@@ -255,6 +268,44 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
     // This section is managed by jdtaus-container-mojo.
 
+    /** Configured <code>ApplicationLogger</code> implementation. */
+    private transient ApplicationLogger _dependency1;
+
+    /**
+     * Gets the configured <code>ApplicationLogger</code> implementation.
+     *
+     * @return the configured <code>ApplicationLogger</code> implementation.
+     */
+    private ApplicationLogger getApplicationLogger()
+    {
+        ApplicationLogger ret = null;
+        if(this._dependency1 != null)
+        {
+            ret = this._dependency1;
+        }
+        else
+        {
+            ret = (ApplicationLogger) ContainerFactory.getContainer().
+                getDependency(BundesbankBankleitzahlenVerzeichnis.class,
+                "ApplicationLogger");
+
+            if(ModelFactory.getModel().getModules().
+                getImplementation(BundesbankBankleitzahlenVerzeichnis.class.getName()).
+                getDependencies().getDependency("ApplicationLogger").
+                isBound())
+            {
+                this._dependency1 = ret;
+            }
+        }
+
+        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
+            isInitialized(ContextFactory.getContext()))
+        {
+            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
+        }
+
+        return ret;
+    }
     /** Configured <code>Logger</code> implementation. */
     private transient Logger _dependency0;
 

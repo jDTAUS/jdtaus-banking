@@ -19,9 +19,12 @@
  */
 package org.jdtaus.banking.ri.blzdirectory.test;
 
+import java.util.Date;
+import java.util.Locale;
 import org.jdtaus.banking.BankleitzahlenVerzeichnis;
 import org.jdtaus.banking.it.BankleitzahlenVerzeichnisTest;
 import org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis;
+import org.jdtaus.banking.ri.blzdirectory.OutdatedDirectoryMessage;
 
 /**
  * Tests the {@link BundesbankBankleitzahlenVerzeichnis} implementation.
@@ -49,4 +52,33 @@ public class BundesbankBankleitzahlenVerzeichnisTest
     }
 
     //-------------------------------------------BankleitzahlenVerzeichnisTest--
+    //--Tests-------------------------------------------------------------------
+
+    /**
+     * Tests class {@link OutdatedDirectoryMessage} to throw a corresponding
+     * {@code NullPointerException} for null arguments.
+     */
+    public void testOutdatedDirectoryMessageNull() throws Exception
+    {
+        try
+        {
+            new OutdatedDirectoryMessage(null);
+            throw new AssertionError();
+        }
+        catch(NullPointerException e)
+        {}
+    }
+
+    /**
+     * Tests class {@link OutdatedDirectoryMessage} to not throw any exception
+     * for non-null arguments.
+     */
+    public void testOutdatedDirectoryMessage() throws Exception
+    {
+        System.out.println(new OutdatedDirectoryMessage(
+            new Date()).getText(Locale.getDefault()));
+
+    }
+
+    //-------------------------------------------------------------------Tests--
 }

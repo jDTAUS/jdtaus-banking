@@ -58,6 +58,12 @@
           </jdtaus:properties>
           
         </jdtaus:dependency>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
+                           jdtaus:implementationName="jDTAUS Core SPI"
+                           jdtaus:name="ApplicationLogger"
+                           jdtaus:bound="true">
+
+        </jdtaus:dependency>
       </jdtaus:dependencies>
       
       <jdtaus:properties>

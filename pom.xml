@@ -89,6 +89,7 @@
             <configuration>
               <bundles>
                 <bundle>org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis</bundle>
+                <bundle>org.jdtaus.banking.ri.blzdirectory.OutdatedDirectoryMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
