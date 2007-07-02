@@ -60,7 +60,7 @@ public class LogicalFileTest extends TestCase
     {
         return (PhysicalFileFactory) ContainerFactory.getContainer().
             getImplementation(PhysicalFileFactory.class,
-            "jDTAUS Banking RI DTAUS");
+            "jDTAUS Banking SPI");
 
     }
 

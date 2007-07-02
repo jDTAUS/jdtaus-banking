@@ -1,95 +1,26 @@
 <document>
   <properties>
-    <title>jDTAUS Editor Changelog</title>
+    <title>Changelog</title>
     <author email="cs@jdtaus.org">Christian Schulte</author>
   </properties>
   <body>
-    <release version="1.0-beta-2" date="2007-04-01"
-             description="2nd beta release">
-      
+    <release version="1.0" date="2007-06-01"
+             description="First stable release."/>
+
+    <release version="1.1" date="2007-07-02"
+             description="Feature enhancements.">
+
       <action dev="schulte2005" type="fix"><![CDATA[
-        Fixed <code>IllegalArgumentException</code> thrown when scanning DTAUS
-        files starting with valid records but missing mandatory records at the
-        end. Updated to latest container hooks.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-3" date="2007-04-05"
-             description="3rd beta release">
-      
-      <action dev="schulte2005" type="fix"><![CDATA[
-        Added support for the DEM currency. A space character in a DTAUS file
-        is now taken as the DTAUS code for the DEM currency for files whose
-        createdate is before 01/01/2002. Files with createdate after 01/01/2002
-        and space characters in currency fields will now lead to a
-        <code>PhysicalFileException</code>. When writing DTAUS files the DTAUS
-        code (space character) for the DEM currency is written when the currency
-        property of <code>Header</code> or <code>Transaction</code> holds a
-        reference to the DEM currency. An <code>IllegalArgumentException</code>
-        is thrown for <code>Header</code> and <code>Transaction</code> instances
-        with property currency set to DEM if the corresponding createdate
-        is after 01/01/2002.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-4" date="2007-04-15"
-             description="4th beta release">
-      
-      <action dev="schulte2005" type="fix"><![CDATA[
-        Fixed a bug where changing the create date of an A record to a value
-        which leads to currencies of the C records getting invalid lead to
-        invalid files.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-5" date="2007-04-27"
-             description="5th beta release">
-      
-      <action dev="schulte2005" type="update"><![CDATA[
-        Removed misleading error messages. If e.g. an account code field
-        contains illegal data normally two error messages are reported. One for
-        the illegal data and a second one for the illegal account code. The new
-        behaviour is that if such a field is already known to not contain
-        valid data no further checks are performed for that field any more.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-6" date="2007-05-01"
-             description="6th beta release">
-      
-      <action dev="schulte2005" type="update"><![CDATA[
-        Updated to new exception classes introduced in jdtaus-banking-api
-        1.0-beta-5. Updated the POM removing hardcoded signing aliases.
-        Updated invalid testfiles holding the EUR currency for create dates
-        for which the EUR currency does not exist. Updated the POM removing
-        hardcoded signing aliases.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-7" date="2007-05-08"
-             description="7th beta release">
-      
-      <action dev="schulte2005" type="update"><![CDATA[
-        Removed deprecated API calls and added support for aggregated
-        error messages introduced in jdtaus-banking-api 1.0-beta-7.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-8" date="2007-05-11"
-             description="8th beta release">
-      
-      <action dev="schulte2005" type="fix"><![CDATA[
-        Fixed a <code>NullPointerException</code> thrown by class
-        <code>AbstractLogicalFile</code> when validating <code>Header</code>s
-        and <code>Transaction</code>s with certain <code>null</code>
-        references.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-9" date="2007-05-16"
-             description="9th beta release">
-      
-      <action dev="schulte2005" type="fix"><![CDATA[
-        Fixed an <code>IllegalArgumentException</code> thrown by class
-        <code>DefaultPhysicalFileFactory</code> when analyzing an empty file.]]>
+      Fixed the implementation name from <code>jDTAUS Banking RI DTAUS</code>
+      to <code>jDTAUS Banking SPI</code>.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[
-        Removed depracted API calls and updated to enhanced task API introduced
-        in jdtaus-core-api 1.0-beta-4.]]>
+      Updated implementation to the 1.1 implementation programming interfaces.
+      The implementation now honours the two new interfaces
+      <code>HeaderValidator</code> and <code>TransactionValidator</code>
+      introduced in the 1.1 SPI.]]>
       </action>
     </release>
+
   </body>
 </document>

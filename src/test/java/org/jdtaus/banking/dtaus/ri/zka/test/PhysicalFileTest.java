@@ -64,7 +64,7 @@ public class PhysicalFileTest extends TestCase
         final PhysicalFileFactory factory =
             (PhysicalFileFactory) ContainerFactory.getContainer().
             getImplementation(PhysicalFileFactory.class,
-            "jDTAUS Banking RI DTAUS");
+            "jDTAUS Banking SPI");
 
         final PhysicalFile pFile = factory.getPhysicalFile(ops);
         Assert.assertTrue(pFile.count() == 0);
@@ -102,7 +102,7 @@ public class PhysicalFileTest extends TestCase
 
         PhysicalFileFactory factory = (PhysicalFileFactory) ContainerFactory.
             getContainer().getImplementation(PhysicalFileFactory.class,
-            "jDTAUS Banking RI DTAUS");
+            "jDTAUS Banking SPI");
 
         file = factory.getPhysicalFile(ops);
 

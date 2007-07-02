@@ -35,7 +35,6 @@ import org.jdtaus.core.text.Message;
  */
 public abstract class AbstractErrorMessage extends Message
 {
-
     //--Constructors------------------------------------------------------------
 
     /**
@@ -95,5 +94,4 @@ public abstract class AbstractErrorMessage extends Message
     }
 
     //----------------------------------------------------AbstractErrorMessage--
-
 }

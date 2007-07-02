@@ -3,18 +3,18 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-beta-4</version>
+    <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
   <groupId>org.jdtaus.banking.dtaus</groupId>
   <name>jDTAUS Banking RI DTAUS</name>
-  <version>1.0-beta-10-SNAPSHOT</version>
+  <version>1.1</version>
   <description>jDTAUS DTAUS reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/tags/jdtaus-banking-ri-dtaus-1.1</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/tags/jdtaus-banking-ri-dtaus-1.1</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/tags/jdtaus-banking-ri-dtaus-1.1</url>
   </scm>
   <build>
     <resources>
@@ -90,7 +90,6 @@
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyViolationMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalFileLengthMessage</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage</bundle>
@@ -218,10 +217,6 @@
     <dependency>
       <groupId>org.jdtaus.core.logging</groupId>
       <artifactId>jdtaus-core-jdk-logging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
   <reporting>

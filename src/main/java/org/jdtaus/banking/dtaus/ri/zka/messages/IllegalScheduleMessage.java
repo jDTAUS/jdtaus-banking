@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
-import org.jdtaus.banking.dtaus.ri.zka.AbstractErrorMessage;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -37,7 +36,7 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public final class IllegalScheduleMessage extends AbstractErrorMessage
+public final class IllegalScheduleMessage extends Message
 {
     //--Konstruktoren-----------------------------------------------------------
 
@@ -50,6 +49,8 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
      *
      * @throws NullPointerException wenn {@code createDate} {@code null} ist.
      * @throws IllegalArgumentException wenn {@code position} negativ ist.
+     *
+     * @deprecated Property position got removed without replacement.
      */
     public IllegalScheduleMessage(final long position, final Date createDate,
         final Date executionDate)
@@ -66,6 +67,27 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
         }
 
         this.position = position;
+        this.createDate = createDate;
+        this.executionDate = executionDate;
+    }
+
+    /**
+     * Erzeugt eine neue {@code IllegalScheduleMessage}.
+     *
+     * @param createDate Dateierstellungsdatum.
+     * @param executionDate Ausführungsdatum.
+     *
+     * @throws NullPointerException wenn {@code createDate} {@code null} ist.
+     */
+    public IllegalScheduleMessage(final Date createDate,
+        final Date executionDate)
+    {
+        super();
+
+        if(createDate == null)
+        {
+            throw new NullPointerException("createDate");
+        }
         this.createDate = createDate;
         this.executionDate = executionDate;
     }
@@ -133,6 +155,8 @@ public final class IllegalScheduleMessage extends AbstractErrorMessage
      * Liest den Wert der Property {@code position}.
      *
      * @return absolute Position der logischen Datei.
+     *
+     * @deprecated Removed without replacement.
      */
     public long getPosition()
     {

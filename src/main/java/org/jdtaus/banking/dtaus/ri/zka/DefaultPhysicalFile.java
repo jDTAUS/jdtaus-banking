@@ -20,12 +20,12 @@
 package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.IOException;
-import java.util.Locale;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.ri.zka.messages.AnalyzingFileMessage;
+import org.jdtaus.banking.dtaus.spi.HeaderValidator;
 import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
@@ -34,11 +34,11 @@ import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
+import org.jdtaus.core.container.Specification;
 import org.jdtaus.core.io.StructuredFileListener;
 import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.monitor.spi.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
-import org.jdtaus.core.text.Message;
 
 /**
  * Default {@code PhysicalFile}-Implementierung.
@@ -52,11 +52,10 @@ import org.jdtaus.core.text.Message;
  */
 public final class DefaultPhysicalFile implements PhysicalFile
 {
-
     //--Attribute---------------------------------------------------------------
 
     /** Index der logischen Dateien. */
-    protected AbstractLogicalFile[] index = new AbstractLogicalFile[100];
+    private AbstractLogicalFile[] index;
 
     /** Anzahl vorhandener logischer Dateien. */
     private int dtausCount = 0;
@@ -277,16 +276,31 @@ public final class DefaultPhysicalFile implements PhysicalFile
         {
             throw new NullPointerException("header");
         }
-        final Checksum newChecksum = new Checksum();
+
+        HeaderValidator validator = null;
+        IllegalHeaderException result = null;
+        final Specification validatorSpec = ModelFactory.getModel().
+            getModules().getSpecification(HeaderValidator.class.getName());
+
+        for(int i = validatorSpec.getImplementations().
+            getImplementations().length - 1; i >= 0; i--)
+        {
+            validator = (HeaderValidator) ContainerFactory.getContainer().
+                getImplementation(HeaderValidator.class,
+                validatorSpec.getImplementations().getImplementation(i).
+                getName());
+
+            result = validator.assertValidHeader(header, result);
+        }
+
+        if(result != null && result.getMessages().length > 0)
+        {
+            throw result;
+        }
+
         final AbstractLogicalFile lFile = this.newLogicalFile(
             this.dtausCount == 0 ? 0L :
                 this.index[this.dtausCount - 1].getChecksumBlock() + 1L);
-
-        final IllegalHeaderException e = lFile.checkHeader(header);
-        if(e != null && e.getMessages().length > 0)
-        {
-            throw e;
-        }
 
         this.getStructuredFile().insertBlocks(this.dtausCount == 0 ?
             0L : this.index[this.dtausCount - 1].getChecksumBlock() + 1L, 2L);
@@ -297,7 +311,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
             header);
 
         lFile.writeChecksum(this.index[this.dtausCount].
-            getHeaderBlock() + 1L, newChecksum);
+            getHeaderBlock() + 1L, new Checksum());
 
         this.getStructuredFile().flush();
         this.index[this.dtausCount].checksum();
@@ -364,11 +378,15 @@ public final class DefaultPhysicalFile implements PhysicalFile
         return ret;
     }
 
-    protected void resizeIndex(int requested)
+    protected void resizeIndex(int index)
     {
-        if(this.index.length - 1 < requested)
+        if(this.index == null)
         {
-            while(this.index.length - 1 <= requested)
+            this.index = new AbstractLogicalFile[index + 1];
+        }
+        else if(this.index.length < index + 1)
+        {
+            while(this.index.length < index + 1)
             {
                 final int newLength = this.index.length * 2;
                 final AbstractLogicalFile[] newIndex =
@@ -381,5 +399,4 @@ public final class DefaultPhysicalFile implements PhysicalFile
     }
 
     //-----------------------------------------------------DefaultPhysicalFile--
-
 }

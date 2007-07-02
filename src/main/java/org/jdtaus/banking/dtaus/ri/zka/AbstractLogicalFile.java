@@ -22,43 +22,35 @@ package org.jdtaus.banking.dtaus.ri.zka;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import org.jdtaus.banking.AlphaNumericText27;
-import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
-import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumTaskDescriptionMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyConstraintMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDateMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDescriptionCountMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.MandatoryPropertyMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.TextschluesselConstraintMessage;
+import org.jdtaus.banking.dtaus.spi.CurrencyCounter;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalAmountMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalCurrencyMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
+import org.jdtaus.banking.dtaus.spi.HeaderValidator;
 import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
 import org.jdtaus.banking.dtaus.spi.IllegalTransactionException;
+import org.jdtaus.banking.dtaus.spi.TransactionValidator;
 import org.jdtaus.banking.spi.CurrencyMapper;
-import org.jdtaus.banking.spi.UnsupportedCurrencyException;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.Implementation;
+import org.jdtaus.core.container.ModelFactory;
+import org.jdtaus.core.container.Specification;
 import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
@@ -81,7 +73,6 @@ import org.jdtaus.core.text.spi.ApplicationLogger;
  */
 public abstract class AbstractLogicalFile implements LogicalFile
 {
-
     //--Konstanten--------------------------------------------------------------
 
     // Vom Format vorgegebene Längen.
@@ -157,18 +148,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
     //--Attribute---------------------------------------------------------------
 
     /** Verwendete {@code StructuredFile} Implementierung. */
-    protected transient StructuredFileOperations persistence;
+    protected StructuredFileOperations persistence;
 
     /** Datums-Format mit zweistelliger Jahresangabe. */
-    protected final transient DateFormat shortDateFormat =
+    protected final DateFormat shortDateFormat =
         new SimpleDateFormat("ddMMyy", Locale.GERMANY);
 
     /** Datums-Format mit vierstelliger Jahresangabe. */
-    protected final transient DateFormat longDateFormat =
+    protected final DateFormat longDateFormat =
         new SimpleDateFormat("ddMMyyyy", Locale.GERMANY);
 
     /** Puffer zum Lesen und Schreiben von Daten. */
-    protected final transient byte[] buffer =
+    protected final byte[] buffer =
         new byte[AbstractLogicalFile.FORMAT_MAX_CHARS + 1];
 
     /** Satzabschnitt-Offset des A-Datensatzes. */
@@ -181,13 +172,13 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * Index = laufende Transaktionsnummer,
      * Wert = Offset des Satzabschnittes an der die Transaktion beginnt.
      */
-    protected transient long[] index;
+    protected long[] index;
 
     /** Zwischengespeicherter A Datensatz. */
-    protected transient Header cachedHeader = null;
+    protected Header cachedHeader = null;
 
     /** Zwischengespeicherter E Datensatz. */
-    protected transient Checksum cachedChecksum = null;
+    protected Checksum cachedChecksum = null;
 
     /** Calendar der Instanz. */
     protected final Calendar calendar = Calendar.getInstance(Locale.GERMANY);
@@ -196,7 +187,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * Abbildung von ISO Währungs-Codes zur Anzahl der vorhandenen Zahlungen
      * mit der entsprechenden Währung.
      */
-    protected Map currencyMap = new HashMap(10);
+    protected CurrencyCounter counter = new CurrencyCounter();
 
     //---------------------------------------------------------------Attribute--
     //--Konstruktoren-----------------------------------------------------------
@@ -556,13 +547,13 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.AbstractErrorMessage
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
-    protected String readAlphaNumeric(final int field, final long block,
-        final int off, final int len, final int encoding) throws IOException
+    protected AlphaNumericText27 readAlphaNumeric(final int field,
+        final long block, final int off, final int len, final int encoding)
+        throws IOException
     {
-        String str;
-        final Message msg;
-        final char[] c;
         final String cset;
+        final String str;
+        AlphaNumericText27 txt = null;
 
         if(encoding == AbstractLogicalFile.ENCODING_ASCII)
         {
@@ -579,32 +570,31 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         this.persistence.readBlock(block, off, this.buffer, 0, len);
         str = Charsets.decode(this.buffer, 0, len, cset);
-        c = str.toCharArray();
-        for(int i = c.length - 1; i >= 0; i--)
+
+        try
         {
-            if(!AlphaNumericText27.checkAlphaNumeric(c[i]))
+            txt = AlphaNumericText27.parse(str);
+        }
+        catch(ParseException e)
+        {
+            txt = null;
+            final Message msg = new IllegalDataMessage(field,
+                IllegalDataMessage.TYPE_ALPHA_NUMERIC,
+                block * this.persistence.getBlockSize() + off, str);
+
+            if(AbstractErrorMessage.isErrorsEnabled())
             {
-                msg = new IllegalDataMessage(field,
-                    IllegalDataMessage.TYPE_ALPHA_NUMERIC,
-                    block * this.persistence.getBlockSize() + off, str);
+                throw new CorruptedException(this.getMeta(),
+                    block * this.persistence.getBlockSize() + off);
 
-                if(AbstractErrorMessage.isErrorsEnabled())
-                {
-                    throw new CorruptedException(this.getMeta(),
-                        block * this.persistence.getBlockSize() + off);
-
-                }
-                else
-                {
-                    ThreadLocalMessages.getMessages().addMessage(msg);
-                }
-
-                str = null;
-                break;
+            }
+            else
+            {
+                ThreadLocalMessages.getMessages().addMessage(msg);
             }
         }
 
-        return str;
+        return txt;
     }
 
     //--------------------------------------------String readAlphaNumeric(...)--
@@ -1589,284 +1579,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
     //--------------------------------------boolean checkDescriptionCount(...)--
-    //--void checkHeader(...)---------------------------------------------------
-
-    /**
-     * Prüfung eines A-Datensatzes.
-     *
-     * @param header zu prüfender A-Datensatz.
-     *
-     * @throws NullPointerException wenn {@code header null} ist.
-     */
-    protected IllegalHeaderException checkHeader(final Header header)
-    {
-        if(header == null)
-        {
-            throw new NullPointerException("header");
-        }
-
-        final List messages = new LinkedList();
-        final Map properties = new HashMap(20);
-
-        if(header.getCreateDate() == null)
-        {
-            properties.put(Header.PROP_CREATEDATE,
-                new MandatoryPropertyMessage());
-
-        }
-        else if(!this.checkDate(header.getCreateDate()))
-        {
-            properties.put(Header.PROP_CREATEDATE,
-                new IllegalDateMessage(header.getCreateDate()));
-
-        }
-
-        if(header.getExecutionDate() != null &&
-            !this.checkDate(header.getExecutionDate()))
-        {
-            properties.put(Header.PROP_EXECUTIONDATE,
-                new IllegalDateMessage(header.getExecutionDate()));
-
-        }
-        if(header.getType() == null)
-        {
-            properties.put(Header.PROP_TYPE, new MandatoryPropertyMessage());
-        }
-        if(header.getCustomer() == null)
-        {
-            properties.put(Header.PROP_CUSTOMER,
-                new MandatoryPropertyMessage());
-
-        }
-        if(header.getBank() == null)
-        {
-            properties.put(Header.PROP_BANK,
-                new MandatoryPropertyMessage());
-
-        }
-        if(header.getAccount() == null)
-        {
-            properties.put(Header.PROP_ACCOUNT,
-                new MandatoryPropertyMessage());
-
-        }
-        if(header.getCurrency() == null)
-        {
-            properties.put(Header.PROP_CURRENCY,
-                new MandatoryPropertyMessage());
-
-        }
-
-        if(header.getCreateDate() != null)
-        {
-            if(header.getCurrency() != null)
-            {
-                try
-                {
-                    this.getCurrencyMapperImpl().getDtausCode(
-                        header.getCurrency(), header.getCreateDate());
-
-                }
-                catch(UnsupportedCurrencyException ex)
-                {
-                    properties.put(Header.PROP_CURRENCY,
-                        new IllegalCurrencyMessage(header.getCurrency().
-                        getCurrencyCode(), header.getCreateDate()));
-
-                }
-            }
-
-            if(!this.checkSchedule(header.getCreateDate(),
-                header.getExecutionDate()))
-            {
-                messages.add(new IllegalScheduleMessage(
-                    this.getHeaderBlock() * this.persistence.getBlockSize(),
-                    header.getCreateDate(),
-                    header.getExecutionDate()));
-
-            }
-        }
-
-        final IllegalHeaderException e;
-        if(properties.size() > 0 || messages.size() > 0)
-        {
-            e = new IllegalHeaderException();
-            for(Iterator it = properties.keySet().iterator(); it.hasNext();)
-            {
-                final String name = (String) it.next();
-                e.addMessage(name, (Message) properties.get(name));
-            }
-            for(Iterator it = messages.iterator(); it.hasNext();)
-            {
-                e.addMessage((Message) it.next());
-            }
-        }
-        else
-        {
-            e = null;
-        }
-
-        return e;
-    }
-
-    //---------------------------------------------------void checkHeader(...)--
-    //--void checkTransaction(...)----------------------------------------------
-
-    /**
-     * Prüfung einer Transaktion.
-     *
-     * @param transaction zu prüfende Transaktion.
-     *
-     * @throws NullPointerException wenn {@code transaction null} ist.
-     * @throws IllegalTransactionException für ungültige Angaben.
-     * @throws IOException wenn der Dateityp nicht gelesen werden kann.
-     */
-    protected void checkTransaction(
-        final Transaction transaction) throws IOException
-    {
-        if(transaction == null)
-        {
-            throw new NullPointerException("transaction");
-        }
-
-        final Map properties = new HashMap(20);
-        final LogicalFileType lFileType = this.getHeader().getType();
-        final Textschluessel[] allowedTypes =
-            this.getTextschluesselVerzeichnisImpl().
-            search(lFileType.isDebitAllowed(),
-            lFileType.isRemittanceAllowed());
-
-
-        if(transaction.getExecutiveAccount() == null)
-        {
-            properties.put(Transaction.PROP_EXECUTIVEACCOUNT,
-                new MandatoryPropertyMessage());
-
-        }
-        if(transaction.getExecutiveBank() == null)
-        {
-            properties.put(Transaction.PROP_EXECUTIVEBANK,
-                new MandatoryPropertyMessage());
-
-        }
-        if(transaction.getExecutiveName() == null)
-        {
-            properties.put(Transaction.PROP_EXECUTIVENAME,
-                new MandatoryPropertyMessage());
-
-        }
-        if(transaction.getTargetAccount() == null)
-        {
-            properties.put(Transaction.PROP_TARGETACCOUNT,
-                new MandatoryPropertyMessage());
-
-        }
-        if(transaction.getTargetBank() == null)
-        {
-            properties.put(Transaction.PROP_TARGETBANK,
-                new MandatoryPropertyMessage());
-
-        }
-        if(transaction.getTargetName() == null)
-        {
-            properties.put(Transaction.PROP_TARGETNAME,
-                new MandatoryPropertyMessage());
-
-        }
-        if(transaction.getType() == null)
-        {
-            properties.put(Transaction.PROP_TYPE,
-                new MandatoryPropertyMessage());
-
-        }
-        if(transaction.getCurrency() == null)
-        {
-            properties.put(Transaction.PROP_CURRENCY,
-                new MandatoryPropertyMessage());
-
-        }
-        if(transaction.getAmount() == null)
-        {
-            properties.put(Transaction.PROP_AMOUNT,
-                new MandatoryPropertyMessage());
-
-        }
-        if(allowedTypes != null && transaction.getType() != null)
-        {
-            int i;
-            for(i = allowedTypes.length - 1; i >= 0; i--)
-            {
-                if(allowedTypes[i].equals(transaction.getType()))
-                {
-                    break;
-                }
-            }
-            if(i < 0)
-            {
-                properties.put(Transaction.PROP_TYPE,
-                    new TextschluesselConstraintMessage(lFileType,
-                    transaction.getType()));
-
-            }
-        }
-        else if(transaction.getType() != null)
-        {
-            properties.put(Transaction.PROP_TYPE,
-                new TextschluesselConstraintMessage(lFileType,
-                transaction.getType()));
-
-        }
-
-        if(transaction.getAmount() != null &&
-            !this.checkAmount(transaction.getAmount().longValue(), true))
-        {
-            properties.put(Transaction.PROP_AMOUNT,
-                new IllegalAmountMessage(transaction.getAmount()));
-
-        }
-        if(!this.checkDescriptionCount(
-            transaction.getDescriptions().length))
-        {
-            properties.put(Transaction.PROP_DESCRIPTIONS,
-                new IllegalDescriptionCountMessage(
-                AbstractLogicalFile.MAX_DESCRIPTIONS));
-
-        }
-
-        if(transaction.getCurrency() != null)
-        {
-            try
-            {
-                this.getCurrencyMapperImpl().getDtausCode(
-                    transaction.getCurrency(),
-                    this.getHeader().getCreateDate());
-
-            }
-            catch(UnsupportedCurrencyException ex)
-            {
-                properties.put(Transaction.PROP_CURRENCY,
-                    new IllegalCurrencyMessage(transaction.getCurrency().
-                    getCurrencyCode(), this.getHeader().getCreateDate()));
-
-            }
-        }
-
-        if(properties.size() > 0)
-        {
-            final IllegalTransactionException e =
-                new IllegalTransactionException();
-
-            for(Iterator it = properties.keySet().iterator(); it.hasNext();)
-            {
-                final String name = (String) it.next();
-                e.addMessage(name, (Message) properties.get(name));
-            }
-
-            throw e;
-        }
-    }
-
-    //----------------------------------------------void checkTransaction(...)--
     //--void resizeIndex(...)---------------------------------------------------
 
     /**
@@ -1913,7 +1625,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         if(this.getLoggerImpl().isDebugEnabled() &&
             this.index.length != oldLength)
         {
-
             final MessageFormat fmt =  AbstractLogicalFileBundle.
                 getLogResizeIndexMessage(Locale.getDefault());
 
@@ -2153,73 +1864,28 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     public Header setHeader(final Header header) throws IOException
     {
-        IllegalHeaderException e = this.checkHeader(header);
-        final Checksum checksum = this.getChecksum();
+        HeaderValidator validator = null;
+        IllegalHeaderException result = null;
         final Header old = this.getHeader();
-        final LogicalFileType oldLabel = old.getType();
-        final LogicalFileType newLabel = header.getType();
+        final Specification validatorSpec = ModelFactory.getModel().
+            getModules().getSpecification(HeaderValidator.class.getName());
 
-        if(oldLabel != null && checksum.getTransactionCount() > 0 &&
-            (oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed()) ||
-            (oldLabel.isRemittanceAllowed() &&
-            !newLabel.isRemittanceAllowed()))
+        for(int i = validatorSpec.getImplementations().
+            getImplementations().length - 1; i >= 0; i--)
         {
-            if(e == null)
-            {
-                e = new IllegalHeaderException();
-            }
+            validator = (HeaderValidator) ContainerFactory.getContainer().
+                getImplementation(HeaderValidator.class,
+                validatorSpec.getImplementations().getImplementation(i).
+                getName());
 
-            e.addMessage(header.PROP_TYPE,
-                new TextschluesselConstraintMessage(newLabel,
-                this.getTransaction(0).getType()));
+            result = validator.assertValidHeader(this, header, this.counter,
+                result);
 
         }
 
-        final Currency[] oldCurrencies = this.getCurrencyMapperImpl().
-            getDtausCurrencies(old.getCreateDate());
-
-        final Currency[] newCurrencies = this.getCurrencyMapperImpl().
-            getDtausCurrencies(header.getCreateDate());
-
-        if(!Arrays.equals(oldCurrencies, newCurrencies))
+        if(result != null && result.getMessages().length > 0)
         {
-            for(Iterator it = this.currencyMap.keySet().
-                iterator(); it.hasNext();)
-            {
-                final String isoCode = (String) it.next();
-                final Long currencyCount = (Long) this.currencyMap.get(isoCode);
-
-                if(currencyCount != null && currencyCount.longValue() > 0)
-                {
-                    boolean currencyKept = false;
-
-                    for(int i = newCurrencies.length - 1; i >= 0; i--)
-                    {
-                        if(newCurrencies[i].getCurrencyCode().equals(isoCode))
-                        {
-                            currencyKept = true;
-                            break;
-                        }
-                    }
-
-                    if(!currencyKept)
-                    {
-                        if(e == null)
-                        {
-                            e = new IllegalHeaderException();
-                        }
-
-                        e.addMessage(new CurrencyConstraintMessage(isoCode,
-                            header.getCreateDate()));
-
-                    }
-                }
-            }
-        }
-
-        if(e != null && e.getMessages().length > 0)
-        {
-            throw e;
+            throw result;
         }
 
         this.writeHeader(this.getHeaderBlock(), header);
@@ -2301,7 +1967,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 task.setProgress(block > maximumProgress ?
                     maximumProgress : (int) block);
 
-                this.currencyMap.clear();
+                this.counter = new CurrencyCounter();
 
                 while(block < blockCount &&
                     (type = this.getBlockType(block)) == 'C')
@@ -2315,13 +1981,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
                     if(t.getCurrency() != null)
                     {
-                        final Long currencyCount = (Long) this.currencyMap.get(
-                            t.getCurrency().getCurrencyCode());
-
-                        this.currencyMap.put(t.getCurrency().getCurrencyCode(),
-                            new Long(currencyCount == null ? 1L :
-                                currencyCount.longValue() + 1L));
-
+                        this.counter.add(t.getCurrency());
                     }
 
                     block += blocks;
@@ -2402,14 +2062,31 @@ public abstract class AbstractLogicalFile implements LogicalFile
         {
             throw new ArrayIndexOutOfBoundsException(newCount);
         }
-        this.checkTransaction(transaction);
 
-        final Long currencyCount = (Long) this.currencyMap.get(
-            transaction.getCurrency().getCurrencyCode());
+        TransactionValidator validator = null;
+        IllegalTransactionException result = null;
+        final Specification validatorSpec = ModelFactory.getModel().
+            getModules().getSpecification(TransactionValidator.class.getName());
 
-        this.currencyMap.put(transaction.getCurrency().getCurrencyCode(),
-            new Long(currencyCount == null ? 1L :
-                currencyCount.longValue() + 1L));
+        for(int i = validatorSpec.getImplementations().
+            getImplementations().length - 1; i >= 0; i--)
+        {
+            validator = (TransactionValidator) ContainerFactory.getContainer().
+                getImplementation(TransactionValidator.class,
+                validatorSpec.getImplementations().getImplementation(i).
+                getName());
+
+            result = validator.assertValidTransaction(this, transaction,
+                result);
+
+        }
+
+        if(result != null && result.getMessages().length > 0)
+        {
+            throw result;
+        }
+
+        this.counter.add(transaction.getCurrency());
 
         checksum.setTransactionCount(newCount);
         checksum.add(transaction);
@@ -2445,32 +2122,42 @@ public abstract class AbstractLogicalFile implements LogicalFile
     public Transaction setTransaction(final int index,
         final Transaction transaction) throws IOException
     {
-
         final Checksum checksum = this.getChecksum();
         if(!this.checkTransactionId(index, checksum))
         {
             throw new ArrayIndexOutOfBoundsException(index);
         }
 
-        this.checkTransaction(transaction);
+        TransactionValidator validator = null;
+        IllegalTransactionException result = null;
+        final Specification validatorSpec = ModelFactory.getModel().
+            getModules().getSpecification(TransactionValidator.class.getName());
+
+        for(int i = validatorSpec.getImplementations().
+            getImplementations().length - 1; i >= 0; i--)
+        {
+            validator = (TransactionValidator) ContainerFactory.getContainer().
+                getImplementation(TransactionValidator.class,
+                validatorSpec.getImplementations().getImplementation(i).
+                getName());
+
+            result = validator.assertValidTransaction(this, transaction,
+                result);
+
+        }
+
+        if(result != null && result.getMessages().length > 0)
+        {
+            throw result;
+        }
+
         final Transaction old = this.getTransaction(index);
 
-        if(!old.getCurrency().equals(transaction.getCurrency()))
+        if(!old.getCurrency().getCurrencyCode().
+            equals(transaction.getCurrency().getCurrencyCode()))
         {
-            final Long oldCurrencyCount = (Long) this.currencyMap.
-                get(old.getCurrency().getCurrencyCode());
-
-            final Long newCurrencyCount = (Long) this.currencyMap.
-                get(transaction.getCurrency().getCurrencyCode());
-
-            this.currencyMap.put(old.getCurrency().getCurrencyCode(),
-                new Long(oldCurrencyCount == null ? 0L :
-                    oldCurrencyCount.longValue() - 1L));
-
-            this.currencyMap.put(transaction.getCurrency().getCurrencyCode(),
-                new Long(newCurrencyCount == null ? 1L :
-                    newCurrencyCount.longValue() + 1L));
-
+            this.counter.substract(old.getCurrency());
+            this.counter.add(transaction.getCurrency());
         }
 
         final int oldBlocks;
@@ -2531,12 +2218,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         final Transaction removed = this.getTransaction(index);
 
-        final Long currencyCount = (Long) this.currencyMap.get(
-            removed.getCurrency().getCurrencyCode());
-
-        this.currencyMap.put(removed.getCurrency().getCurrencyCode(),
-            new Long(currencyCount == null ? 0L :
-                currencyCount.longValue() - 1L));
+        this.counter.substract(removed.getCurrency());
 
         checksum.setTransactionCount(checksum.getTransactionCount() - 1);
         checksum.substract(removed);
@@ -2563,6 +2245,5 @@ public abstract class AbstractLogicalFile implements LogicalFile
         return removed;
     }
 
-//-------------------------------------------------------------LogicalFile--
-
+    //-------------------------------------------------------------LogicalFile--
 }

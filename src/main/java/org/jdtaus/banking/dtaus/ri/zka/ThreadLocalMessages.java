@@ -29,7 +29,6 @@ import org.jdtaus.core.text.Messages;
  */
 public abstract class ThreadLocalMessages
 {
-
     //--ThreadLocalMessages-----------------------------------------------------
 
     /** Thread local collections of messages. */
@@ -54,5 +53,4 @@ public abstract class ThreadLocalMessages
     }
 
     //-----------------------------------------------------ThreadLocalMessages--
-
 }

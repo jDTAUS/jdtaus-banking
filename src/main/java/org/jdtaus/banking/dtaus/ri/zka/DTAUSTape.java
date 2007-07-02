@@ -21,7 +21,6 @@ package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
@@ -40,6 +39,7 @@ import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
+import org.jdtaus.banking.dtaus.ri.zka.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
 import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage;
@@ -70,7 +70,6 @@ import org.jdtaus.core.text.spi.ApplicationLogger;
  */
 public final class DTAUSTape extends AbstractLogicalFile
 {
-
     //--Konstanten--------------------------------------------------------------
 
     /**
@@ -265,7 +264,7 @@ public final class DTAUSTape extends AbstractLogicalFile
     //--Attribute---------------------------------------------------------------
 
     /** Temporäres Kalendar-Objekt. */
-    private transient Calendar calendar;
+    private Calendar calendar;
 
     //---------------------------------------------------------------Attribute--
     //--Implementation----------------------------------------------------------
@@ -603,49 +602,38 @@ public final class DTAUSTape extends AbstractLogicalFile
     protected char getBlockType(final long block) throws IOException
     {
         // Feld 2
-        final String str = this.readAlphaNumeric(Fields.FIELD_A2, block,
-            DTAUSTape.ARECORD_OFFSETS[2], DTAUSTape.ARECORD_LENGTH[2],
+        final AlphaNumericText27 txt = this.readAlphaNumeric(Fields.FIELD_A2,
+            block, DTAUSTape.ARECORD_OFFSETS[2], DTAUSTape.ARECORD_LENGTH[2],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        char ret;
+        char ret = '?';
         final Message msg;
 
-        if(str == null || str.length() != 1)
+        if(txt != null)
         {
-            msg = new IllegalDataMessage(Fields.FIELD_A2,
-                IllegalDataMessage.TYPE_CONSTANT,
-                block * this.persistence.getBlockSize() +
-                DTAUSTape.ARECORD_OFFSETS[2], str);
-
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if(txt.length() != 1)
             {
-                throw new CorruptedException(this.getMeta(),
+                msg = new IllegalDataMessage(Fields.FIELD_A2,
+                    IllegalDataMessage.TYPE_CONSTANT,
                     block * this.persistence.getBlockSize() +
-                    DTAUSTape.ARECORD_OFFSETS[2]);
+                    DTAUSTape.ARECORD_OFFSETS[2], txt.format());
 
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new CorruptedException(this.getMeta(),
+                        block * this.persistence.getBlockSize() +
+                        DTAUSTape.ARECORD_OFFSETS[2]);
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                ret = txt.charAt(0);
             }
-
-            ret = '?';
-        }
-        else if("A".equals(str))
-        {
-            ret = 'A';
-        }
-        else if("C".equals(str))
-        {
-            ret = 'C';
-        }
-        else if("E".equals(str))
-        {
-            ret = 'E';
-        }
-        else
-        {
-            ret = str.toCharArray()[0];
         }
 
         return ret;
@@ -686,7 +674,7 @@ public final class DTAUSTape extends AbstractLogicalFile
         long num;
         Long Num;
         int cal;
-        String str;
+        AlphaNumericText27 txt;
         final Currency cur;
         final Date createDate;
         final Date executionDate;
@@ -723,16 +711,16 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
         // Feld 2
-        str = this.readAlphaNumeric(Fields.FIELD_A2, headerBlock,
+        txt = this.readAlphaNumeric(Fields.FIELD_A2, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[2], DTAUSTape.ARECORD_LENGTH[2],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'A'))
+        if(txt != null && (txt.length() != 1 || txt.charAt(0) != 'A'))
         {
             msg = new IllegalDataMessage(Fields.FIELD_A1,
                 IllegalDataMessage.TYPE_CONSTANT,
                 headerBlock * this.persistence.getBlockSize() +
-                DTAUSTape.ARECORD_OFFSETS[0], str);
+                DTAUSTape.ARECORD_OFFSETS[0], txt.format());
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
@@ -748,21 +736,21 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
         // Feld 3
-        str = this.readAlphaNumeric(Fields.FIELD_A3, headerBlock,
+        txt = this.readAlphaNumeric(Fields.FIELD_A3, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[3], DTAUSTape.ARECORD_LENGTH[3],
             AbstractLogicalFile.ENCODING_EBCDI);
 
         ret.setType(null);
 
-        if(str != null)
+        if(txt != null)
         {
-            label = LogicalFileType.valueOf(str);
+            label = LogicalFileType.valueOf(txt.format());
             if(label == null)
             {
                 msg = new IllegalDataMessage(Fields.FIELD_A3,
                     IllegalDataMessage.TYPE_FILETYPE,
                     headerBlock * this.persistence.getBlockSize() +
-                    DTAUSTape.ARECORD_OFFSETS[3], str);
+                    DTAUSTape.ARECORD_OFFSETS[3], txt.format());
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
@@ -795,7 +783,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                 msg = new IllegalDataMessage(Fields.FIELD_A4,
                     IllegalDataMessage.TYPE_BANKLEITZAHL,
                     headerBlock * this.persistence.getBlockSize() +
-                    DTAUSTape.ARECORD_OFFSETS[4], str);
+                    DTAUSTape.ARECORD_OFFSETS[4], Long.toString(num));
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
@@ -854,21 +842,11 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
         // Feld 6
-        str = this.readAlphaNumeric(Fields.FIELD_A6, headerBlock,
+        txt = this.readAlphaNumeric(Fields.FIELD_A6, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[6], DTAUSTape.ARECORD_LENGTH[6],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null)
-        {
-            try
-            {
-                ret.setCustomer(AlphaNumericText27.parse(str));
-            }
-            catch(ParseException e)
-            {
-                throw new AssertionError(e);
-            }
-        }
+        ret.setCustomer(txt);
 
         // Feld 7
         num = this.readNumberPackedPositive(Fields.FIELD_A7, headerBlock,
@@ -914,7 +892,7 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 8
         // Nur belegt wenn Absender Kreditinistitut ist, sonst leer.
-        str = this.readAlphaNumeric(Fields.FIELD_A8, headerBlock,
+        txt = this.readAlphaNumeric(Fields.FIELD_A8, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[8], DTAUSTape.ARECORD_LENGTH[8],
             AbstractLogicalFile.ENCODING_EBCDI);
 
@@ -993,10 +971,7 @@ public final class DTAUSTape extends AbstractLogicalFile
         {
             if(!this.checkSchedule(createDate, executionDate))
             {
-                msg = new IllegalScheduleMessage(this.getHeaderBlock() *
-                    this.persistence.getBlockSize() +
-                    DTAUSTape.ARECORD_OFFSETS[12], createDate, executionDate);
-
+                msg = new IllegalScheduleMessage(createDate, executionDate);
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
                     throw new CorruptedException(this.getMeta(),
@@ -1018,19 +993,19 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
         // Feld 12
-        str = this.readAlphaNumeric(Fields.FIELD_A12, headerBlock,
+        txt = this.readAlphaNumeric(Fields.FIELD_A12, headerBlock,
             DTAUSTape.ARECORD_OFFSETS[14], DTAUSTape.ARECORD_LENGTH[14],
             AbstractLogicalFile.ENCODING_EBCDI);
 
         ret.setCurrency(null);
-        if(str != null)
+        if(txt != null)
         {
-            if(str.length() != 1)
+            if(txt.length() != 1)
             {
                 msg = new IllegalDataMessage(Fields.FIELD_A12,
                     IllegalDataMessage.TYPE_ALPHA_NUMERIC,
                     headerBlock * this.persistence.getBlockSize() +
-                    DTAUSTape.ARECORD_OFFSETS[14], str);
+                    DTAUSTape.ARECORD_OFFSETS[14], txt.format());
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
@@ -1046,7 +1021,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             }
             else
             {
-                final char c = str.toCharArray()[0];
+                final char c = txt.charAt(0);
                 cur = this.getCurrencyMapper().
                     getDtausCurrency(c, createDate);
 
@@ -1188,7 +1163,7 @@ public final class DTAUSTape extends AbstractLogicalFile
     protected Checksum readChecksum(final long checksumBlock) throws IOException
     {
         long num;
-        final String str;
+        final AlphaNumericText27 txt;
         final Checksum checksum;
 
         Message msg;
@@ -1219,16 +1194,16 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
         // Feld 2
-        str = this.readAlphaNumeric(Fields.FIELD_E2, checksumBlock,
+        txt = this.readAlphaNumeric(Fields.FIELD_E2, checksumBlock,
             DTAUSTape.ERECORD_OFFSETS[2], DTAUSTape.ERECORD_LENGTH[2],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'E'))
+        if(txt != null && (txt.length() != 1 || txt.charAt(0) != 'E'))
         {
             msg = new IllegalDataMessage(Fields.FIELD_E2,
                 IllegalDataMessage.TYPE_CONSTANT,
                 checksumBlock * this.persistence.getBlockSize() +
-                DTAUSTape.ERECORD_OFFSETS[2], str);
+                DTAUSTape.ERECORD_OFFSETS[2], txt.format());
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
@@ -1333,7 +1308,7 @@ public final class DTAUSTape extends AbstractLogicalFile
     {
         long num;
         Long Num;
-        String str;
+        AlphaNumericText27 txt;
         int search;
         long keyType;
         long blockOffset;
@@ -1377,16 +1352,16 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 2
-        str = this.readAlphaNumeric(Fields.FIELD_C2, block,
+        txt = this.readAlphaNumeric(Fields.FIELD_C2, block,
             DTAUSTape.CRECORD_OFFSETS1[2], DTAUSTape.CRECORD_LENGTH1[2],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null && (str.length() != 1 || str.toCharArray()[0] != 'C'))
+        if(txt != null && (txt.length() != 1 || txt.charAt(0) != 'C'))
         {
             msg = new IllegalDataMessage(Fields.FIELD_C2,
                 IllegalDataMessage.TYPE_CONSTANT,
                 block * this.persistence.getBlockSize() +
-                DTAUSTape.CRECORD_OFFSETS1[2], str);
+                DTAUSTape.CRECORD_OFFSETS1[2], txt.format());
 
             if(AbstractErrorMessage.isErrorsEnabled())
             {
@@ -1548,16 +1523,32 @@ public final class DTAUSTape extends AbstractLogicalFile
             type = this.getTextschluesselVerzeichnis().
                 getTextschluessel((int) keyType, (int) num);
 
-            if(type == null
-                || (type.isDebit() && !this.getHeader().getType().isDebitAllowed())
-                || (type.isRemittance() && !this.getHeader().getType().
-                isRemittanceAllowed()))
+            if(type == null)
             {
                 msg = new IllegalDataMessage(Fields.FIELD_C7A,
                     IllegalDataMessage.TYPE_TEXTSCHLUESSEL,
                     block * this.persistence.getBlockSize() +
                     DTAUSTape.CRECORD_OFFSETS1[8], Long.toString(keyType) +
                     Long.toString(num));
+
+                if(AbstractErrorMessage.isErrorsEnabled())
+                {
+                    throw new CorruptedException(this.getMeta(),
+                        block * this.persistence.getBlockSize() +
+                        DTAUSTape.CRECORD_OFFSETS1[8]);
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessage(msg);
+                }
+            }
+            else if((type.isDebit() && !this.getHeader().getType().
+                isDebitAllowed()) || (type.isRemittance() && !this.getHeader().
+                getType().isRemittanceAllowed()))
+            {
+                msg = new TextschluesselConstraintMessage(
+                    this.getHeader().getType(), type);
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
@@ -1656,69 +1647,42 @@ public final class DTAUSTape extends AbstractLogicalFile
             BigInteger.valueOf(num) : null);
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 14
-        str = this.readAlphaNumeric(Fields.FIELD_C14, block,
+        txt = this.readAlphaNumeric(Fields.FIELD_C14, block,
             DTAUSTape.CRECORD_OFFSETS1[16], DTAUSTape.CRECORD_LENGTH1[16],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null)
-        {
-            try
-            {
-                transaction.setTargetName(AlphaNumericText27.parse(str));
-            }
-            catch(ParseException e)
-            {
-                throw new AssertionError(e);
-            }
-        }
+        transaction.setTargetName(txt);
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 15
-        str = this.readAlphaNumeric(Fields.FIELD_C15, block,
+        txt = this.readAlphaNumeric(Fields.FIELD_C15, block,
             DTAUSTape.CRECORD_OFFSETS1[17], DTAUSTape.CRECORD_LENGTH1[17],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null)
-        {
-            try
-            {
-                transaction.setExecutiveName(AlphaNumericText27.parse(str));
-            }
-            catch(ParseException e)
-            {
-                throw new AssertionError(e);
-            }
-        }
+        transaction.setExecutiveName(txt);
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 16
-        str = this.readAlphaNumeric(Fields.FIELD_C16, block,
+        txt = this.readAlphaNumeric(Fields.FIELD_C16, block,
             DTAUSTape.CRECORD_OFFSETS1[18], DTAUSTape.CRECORD_LENGTH1[18],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null)
+        if(txt != null)
         {
-            try
-            {
-                desc.add(AlphaNumericText27.parse(str));
-            }
-            catch(ParseException e)
-            {
-                throw new AssertionError(e);
-            }
+            desc.add(txt);
         }
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 17a
-        str = this.readAlphaNumeric(Fields.FIELD_C17A, block,
+        txt = this.readAlphaNumeric(Fields.FIELD_C17A, block,
             DTAUSTape.CRECORD_OFFSETS1[19], DTAUSTape.CRECORD_LENGTH1[19],
             AbstractLogicalFile.ENCODING_EBCDI);
 
-        if(str != null)
+        if(txt != null)
         {
-            if(str.length() != 1)
+            if(txt.length() != 1)
             {
                 msg = new IllegalDataMessage(Fields.FIELD_C17A,
                     IllegalDataMessage.TYPE_CURRENCY,
                     block * this.persistence.getBlockSize() +
-                    DTAUSTape.CRECORD_OFFSETS1[19], str);
+                    DTAUSTape.CRECORD_OFFSETS1[19], txt.format());
 
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
@@ -1734,7 +1698,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             }
             else
             {
-                final char c = str.toCharArray()[0];
+                final char c = txt.charAt(0);
                 cur = this.getCurrencyMapper().getDtausCurrency(c,
                     this.getHeader().getCreateDate());
 
@@ -1785,7 +1749,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                 DTAUSTape.CRECORD_EXTINDEX_TO_TYPELENGTH[search],
                 AbstractLogicalFile.ENCODING_EBCDI);
 
-            str = this.readAlphaNumeric(
+            txt = this.readAlphaNumeric(
                 DTAUSTape.CRECORD_EXTINDEX_TO_VALUEFIELD[search], blockOffset,
                 DTAUSTape.CRECORD_EXTINDEX_TO_VALUEOFFSET[search],
                 DTAUSTape.CRECORD_EXTINDEX_TO_VALUELENGTH[search],
@@ -1815,31 +1779,14 @@ public final class DTAUSTape extends AbstractLogicalFile
                         ThreadLocalMessages.getMessages().addMessage(msg);
                     }
                 }
-                else if (str != null)
+                else
                 {
-                    try
-                    {
-                        transaction.setTargetExt(AlphaNumericText27.parse(str));
-                    }
-                    catch(ParseException e)
-                    {
-                        throw new AssertionError(e);
-                    }
+                    transaction.setTargetExt(txt);
                 }
             }
-            else if(num == 2L)
+            else if(num == 2L && txt != null)
             {
-                if(str != null)
-                {
-                    try
-                    {
-                        desc.add(AlphaNumericText27.parse(str));
-                    }
-                    catch(ParseException e)
-                    {
-                        throw new AssertionError(e);
-                    }
-                }
+                desc.add(txt);
             }
             else if(num == 3L)
             {
@@ -1866,16 +1813,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                 }
                 else
                 {
-                    try
-                    {
-                        transaction.setExecutiveExt(
-                            AlphaNumericText27.parse(str));
-
-                    }
-                    catch(ParseException e)
-                    {
-                        throw new AssertionError(e);
-                    }
+                    transaction.setExecutiveExt(txt);
                 }
             }
             else if(num != AbstractLogicalFile.NO_NUMBER)
@@ -2243,5 +2181,4 @@ public final class DTAUSTape extends AbstractLogicalFile
     }
 
     //-----------------------------------------------------AbstractLogicalFile--
-
 }

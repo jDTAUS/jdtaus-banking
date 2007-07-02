@@ -45,11 +45,12 @@ import org.jdtaus.core.text.Message;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
+ *
+ * @see #initialize()
  */
 public final class DefaultPhysicalFileFactory
     implements PhysicalFileFactory, ContainerInitializer
 {
-
     //--Implementation----------------------------------------------------------
 
     // This section is managed by jdtaus-container-mojo.
@@ -395,5 +396,4 @@ public final class DefaultPhysicalFileFactory
     }
 
     //----------------------------------------------DefaultPhysicalFileFactory--
-
 }

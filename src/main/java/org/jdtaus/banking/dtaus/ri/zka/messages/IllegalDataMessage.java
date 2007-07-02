@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Locale;
-import org.jdtaus.banking.dtaus.ri.zka.AbstractErrorMessage;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -32,7 +31,7 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public final class IllegalDataMessage extends AbstractErrorMessage
+public final class IllegalDataMessage extends Message
 {
     //--Konstanten--------------------------------------------------------------
 

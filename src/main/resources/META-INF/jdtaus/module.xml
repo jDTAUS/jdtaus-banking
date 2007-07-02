@@ -28,20 +28,20 @@
 <jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
                xmlns:jdtaus="http://jdtaus.org/runtime/container/xml"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="http://jdtaus.org/runtime/container/xml http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-client-container/jdtaus-module.xsd"
+               xsi:schemaLocation="http://jdtaus.org/runtime/container/xml http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-client-container/jdtaus-module-1.0.xsd"
                jdtaus:name="${pom.name}"
                jdtaus:description="${pom.description}"
                jdtaus:version="1.0">
-  
+
   <jdtaus:implementations>
     <!--                                                                     -->
     <!-- DefaultPhysicalFileFactory                                          -->
     <!--                                                                     -->
     <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory"
-                           jdtaus:name="${pom.name}"
+                           jdtaus:name="jDTAUS Banking SPI"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
-      
+
       <jdtaus:implementedSpecifications>
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"/>
       </jdtaus:implementedSpecifications>
@@ -49,10 +49,10 @@
         <jdtaus:property jdtaus:name="defaultFormat"
                          jdtaus:type="int"
                          jdtaus:value="128"/>
-        
+
       </jdtaus:properties>
     </jdtaus:implementation>
-    
+
     <!--                                                                     -->
     <!-- DefaultPhysicalFile                                                 -->
     <!--                                                                     -->
@@ -60,13 +60,13 @@
                            jdtaus:name="${pom.name}"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
-      
+
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="TaskMonitor"
                            jdtaus:bound="true"/>
-        
+
       </jdtaus:dependencies>
     </jdtaus:implementation>
     
@@ -77,47 +77,47 @@
                            jdtaus:name="${pom.name} - Disk"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
-      
+
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="Logger"
                            jdtaus:bound="true">
-          
+
           <jdtaus:properties>
             <jdtaus:property jdtaus:name="name" 
                              jdtaus:type="java.lang.String"
                              jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"
                              jdtaus:api="true"/>
-            
+
           </jdtaus:properties>
         </jdtaus:dependency>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.lang.spi.MemoryManager"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="MemoryManager"
                            jdtaus:bound="true"/>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="ApplicationLogger"
                            jdtaus:bound="true"/>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="TaskMonitor"
                            jdtaus:bound="true"/>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.TextschluesselVerzeichnis"
                            jdtaus:implementationName="jDTAUS Banking SPI"
                            jdtaus:name="TextschluesselVerzeichnis"
                            jdtaus:bound="true"/>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
                            jdtaus:implementationName="jDTAUS Banking SPI"
                            jdtaus:name="CurrencyMapper"
                            jdtaus:bound="true"/>
-        
+
       </jdtaus:dependencies>
     </jdtaus:implementation>
     
@@ -128,48 +128,125 @@
                            jdtaus:name="${pom.name} - Tape"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}">
-      
+
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="Logger"
                            jdtaus:bound="true">
-          
+
           <jdtaus:properties>
             <jdtaus:property jdtaus:name="name" 
                              jdtaus:type="java.lang.String"
                              jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"
                              jdtaus:api="true"/>
-            
+
           </jdtaus:properties>
         </jdtaus:dependency>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.lang.spi.MemoryManager"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="MemoryManager"
                            jdtaus:bound="true"/>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="ApplicationLogger"
                            jdtaus:bound="true"/>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
                            jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="TaskMonitor"
                            jdtaus:bound="true"/>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.TextschluesselVerzeichnis"
                            jdtaus:implementationName="jDTAUS Banking SPI"
                            jdtaus:name="TextschluesselVerzeichnis"
                            jdtaus:bound="true"/>
-        
+
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
                            jdtaus:implementationName="jDTAUS Banking SPI"
                            jdtaus:name="CurrencyMapper"
                            jdtaus:bound="true"/>
-        
+
       </jdtaus:dependencies>
+    </jdtaus:implementation>
+
+    <!--                                                                     -->
+    <!-- DefaultHeaderValidator                                              -->
+    <!--                                                                     -->
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultHeaderValidator"
+                           jdtaus:name="jDTAUS Banking SPI"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.spi.HeaderValidator"/>
+      </jdtaus:implementedSpecifications>
+      <jdtaus:dependencies>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
+                           jdtaus:implementationName="jDTAUS Banking SPI"
+                           jdtaus:name="CurrencyMapper"
+                           jdtaus:bound="true"/>
+
+      </jdtaus:dependencies>
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="maxScheduleDaysMillis"
+                         jdtaus:type="long"
+                         jdtaus:value="1296000000"/>
+
+        <jdtaus:property jdtaus:name="minDateMillis"
+                         jdtaus:type="long"
+                         jdtaus:value="315529200000"/>
+
+        <jdtaus:property jdtaus:name="maxDateMillis"
+                         jdtaus:type="long"
+                         jdtaus:value="3471289199999"/>
+
+      </jdtaus:properties>
+    </jdtaus:implementation>
+
+    <!--                                                                     -->
+    <!-- DefaultTransactionValidator                                         -->
+    <!--                                                                     -->
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultTransactionValidator"
+                           jdtaus:name="jDTAUS Banking SPI"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.spi.TransactionValidator"/>
+      </jdtaus:implementedSpecifications>
+      <jdtaus:dependencies>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.TextschluesselVerzeichnis"
+                           jdtaus:implementationName="jDTAUS Banking SPI"
+                           jdtaus:name="TextschluesselVerzeichnis"
+                           jdtaus:bound="true"/>
+
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
+                           jdtaus:implementationName="jDTAUS Banking SPI"
+                           jdtaus:name="CurrencyMapper"
+                           jdtaus:bound="true"/>
+
+      </jdtaus:dependencies>
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="minAmount"
+                         jdtaus:type="long"
+                         jdtaus:value="1"/>
+
+        <jdtaus:property jdtaus:name="maxAmount"
+                         jdtaus:type="long"
+                         jdtaus:value="99999999999"/>
+
+        <jdtaus:property jdtaus:name="minDescriptions"
+                         jdtaus:type="int"
+                         jdtaus:value="0"/>
+
+        <jdtaus:property jdtaus:name="maxDescriptions"
+                         jdtaus:type="int"
+                         jdtaus:value="14"/>
+
+      </jdtaus:properties>
     </jdtaus:implementation>
   </jdtaus:implementations>
 </jdtaus:module>
