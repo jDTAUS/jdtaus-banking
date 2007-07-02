@@ -3,18 +3,18 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-beta-4</version>
+    <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI CurrencyDirectory</name>
-  <version>1.0-beta-6-SNAPSHOT</version>
+  <version>1.1</version>
   <description>jDTAUS CurrencyDirectory reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.1</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.1</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.1</url>
   </scm>
   <build>
     <resources>
@@ -31,7 +31,24 @@
         </includes>
       </resource>
     </resources>
+    <testResources>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>src/site/resources</directory>
+        <targetPath>META-INF/jdtaus</targetPath>
+        <includes>
+          <include>currencies.xml</include>
+        </includes>
+      </testResource>
+    </testResources>
     <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>never</forkMode>
+        </configuration>
+      </plugin>
+
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
@@ -71,6 +88,28 @@
             <configuration>
               <keyname>${gpg.keyname}</keyname>
               <passphrase>${gpg.passphrase}</passphrase>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>src/site/resources/jdtaus-currencies-1.0.xsd</file>
+                  <type>xsd</type>
+                </artifact>
+              </artifacts>
             </configuration>
           </execution>
         </executions>
@@ -154,10 +193,6 @@
     <dependency>
       <groupId>org.jdtaus.core.logging</groupId>
       <artifactId>jdtaus-core-jdk-logging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
   <reporting>

@@ -37,6 +37,6 @@
   <jdtaus:currency jdtaus:isoCode="DEM"
                    jdtaus:dtausCode=" "
                    jdtaus:startDate="1948-06-21"
-                   jdtaus:endDate="2002-01-01"/>
+                   jdtaus:endDate="2001-12-31"/>
 
 </jdtaus:currencies>

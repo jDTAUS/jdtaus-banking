@@ -4,44 +4,40 @@
     <author email="cs@jdtaus.org">Christian Schulte</author>
   </properties>
   <body>
-    <release version="1.0-beta-1" date="2007-06-01"
-             description="First beta release">
-      
-    </release>
-    <release version="1.0-beta-2" date="2007-04-01"
-             description="2nd beta release">
+    <release version="1.0" date="2007-06-01"
+             description="First stable release."/>
+
+    <release version="1.0.1" date="2007-06-07"
+             description="Bugfix release.">
+
       <action dev="schulte2005" type="fix"><![CDATA[
-        Fixed a bug which lead to currencies getting returned for dates
-        before the starting date. This stops returning the EUR currency for
-        dates before 01/01/2002. Additionally made property
-        <code>dtausCode</code> of XML currency instances optional to not force
-        all currencies to have a corresponding DTAUS code.]]>
+      Fixed time information handling of dates. The time information of an end
+      date was set to 00:00:00.000 excluding the day. It will now be set to
+      23:59:59.999 including the day so that a currency starting at
+      06/21/1948 and ending at 12/31/2001 is now interpreted to actually
+      start at 06/21/1948 00:00:00.000 and end at 12/31/2001 23:59:59.999.]]>
       </action>
     </release>
-    <release version="1.0-beta-3" date="2007-05-01"
-             description="2nd beta release">
-      <action dev="schulte2005" type="fix"><![CDATA[
-        Fixed a bug where time information was not discarded from given
-        dates leading to not always returning correct currencies when
-        matching dates exactly. Updated the POM removing hardcoded signing
-        aliases.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-4" date="2007-05-02"
-             description="4th beta release">
-      
+
+    <release version="1.1" date="2007-07-02"
+             description="Feature enhancements.">
+
       <action dev="schulte2005" type="update"><![CDATA[
-      Updated entity classes to cache hash codes and stopped creating objects
-      during hash code computation. Added some more test cases.]]>
+      Attached default currency configuration to the artifact and
+      removed it from the artifact's jar file.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added interface <code>CurrenciesProvider</code> and class
+      <code>ClasspathCurrenciesProvider</code> implementing the former classpath
+      resource lookup mechanism. Updated class <code>XMLCurrencyDirectory</code>
+      to use any available <code>CurrenciesProvider</code> implementation for
+      reading XML resources.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added support for monitoring resources with a <code>file</code> URI scheme
+      for changes to support dynamic reloading of changed files.]]>
       </action>
     </release>
-    <release version="1.0-beta-5" date="2007-05-08"
-             description="5th beta release">
-      
-      <action dev="schulte2005" type="fix"><![CDATA[
-      Fixed a bug where an <code>IllegalArgumentException</code> was thrown
-      instead of an <code>UnsupportedCurrencyException</code>.]]>
-      </action>
-    </release>
+
   </body>
 </document>

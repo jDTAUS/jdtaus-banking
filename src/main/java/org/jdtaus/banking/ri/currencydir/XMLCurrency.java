@@ -58,6 +58,7 @@ public class XMLCurrency implements Serializable, Cloneable
 
     /** Cached hash-code. */
     private transient int hashCode = NO_HASHCODE;
+    /** Constant for field {@code hashCode} forcing hash code computation. */
     private static final int NO_HASHCODE = Integer.MIN_VALUE;
 
     /**

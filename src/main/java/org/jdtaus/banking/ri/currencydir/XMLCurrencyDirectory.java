@@ -19,8 +19,11 @@
  */
 package org.jdtaus.banking.ri.currencydir;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,8 +33,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Currency;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -39,7 +42,6 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.jdtaus.banking.dtaus.spi.CurrencyDirectory;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.ContainerFactory;
@@ -53,6 +55,7 @@ import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
+import org.jdtaus.core.container.Specification;
 import org.jdtaus.core.logging.spi.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,12 +66,10 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Currency directory implementation backed by XML files.
- * <p>This implementation reads XML resources from the classpath holding
- * currency instances. Property {@code resource} holds the name of the
- * XML resources to load and property {@code dataDir} holds the directory in
- * which to look for these resources. See
- * <a href="http://www.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/jdtaus-currencies-1.0.xsd">
- * jdtaus-currencies-1.0.xsd</a> for further information</p>
+ * <p>This implementation uses XML resources provided by any available
+ * {@link CurrenciesProvider} implementation. Resources with a {@code file} URI
+ * scheme are monitored for changes by querying the last modification
+ * time. Monitoring is controlled by property {@code reloadIntervalMillis}.</p>
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -76,9 +77,8 @@ import org.xml.sax.SAXParseException;
  * @see #initialize()
  */
 public final class XMLCurrencyDirectory
-    implements CurrencyMapper, CurrencyDirectory, ContainerInitializer
+    implements CurrencyMapper, ContainerInitializer
 {
-
     //--Constants---------------------------------------------------------------
 
     /** JAXP configuration key to the Schema implementation attribute. */
@@ -168,12 +168,8 @@ public final class XMLCurrencyDirectory
             throw new NullPointerException("meta");
         }
 
-        p = meta.getProperty("resource");
-        this._resource = (java.lang.String) p.getValue();
-
-
-        p = meta.getProperty("dataDirectory");
-        this._dataDirectory = (java.lang.String) p.getValue();
+        p = meta.getProperty("reloadIntervalMillis");
+        this._reloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
 
     }
 
@@ -227,35 +223,19 @@ public final class XMLCurrencyDirectory
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code resource}.
+     * Property {@code reloadIntervalMillis}.
      * @serial
      */
-    private java.lang.String _resource;
+    private long _reloadIntervalMillis;
 
     /**
-     * Gets the value of property <code>resource</code>.
+     * Gets the value of property <code>reloadIntervalMillis</code>.
      *
-     * @return the value of property <code>resource</code>.
+     * @return the value of property <code>reloadIntervalMillis</code>.
      */
-    protected java.lang.String getResource()
+    protected long getReloadIntervalMillis()
     {
-        return this._resource;
-    }
-
-    /**
-     * Property {@code dataDirectory}.
-     * @serial
-     */
-    private java.lang.String _dataDirectory;
-
-    /**
-     * Gets the value of property <code>dataDirectory</code>.
-     *
-     * @return the value of property <code>dataDirectory</code>.
-     */
-    protected java.lang.String getDataDirectory()
-    {
-        return this._dataDirectory;
+        return this._reloadIntervalMillis;
     }
 
 
@@ -281,6 +261,9 @@ public final class XMLCurrencyDirectory
     {
         this.assertValidProperties();
 
+        this.monitorMap = new HashMap();
+        this.lastCheck = System.currentTimeMillis();
+
         try
         {
             final Document docs[] = this.parseResources();
@@ -297,7 +280,6 @@ public final class XMLCurrencyDirectory
             for(Iterator it = col.iterator(); it.hasNext();)
             {
                 final XMLCurrency currency = (XMLCurrency) it.next();
-
                 if(this.isoMap.put(currency.getIsoCode(), currency) != null ||
                     (currency.getDtausCode() != null && this.dtausMap.
                     put(currency.getDtausCode(), currency) != null))
@@ -329,26 +311,20 @@ public final class XMLCurrencyDirectory
     //----------------------------------------------------ContainerInitializer--
     //--CurrencyDirectory-------------------------------------------------------
 
-    public Currency[] getDtausCurrencies(Date date)
+    public Currency[] getDtausCurrencies(final Date date)
     {
         if(date == null)
         {
             throw new NullPointerException("date");
         }
 
+        this.checkForModifications();
+
         final Collection col = new LinkedList();
         for(Iterator it = this.isoMap.keySet().iterator(); it.hasNext();)
         {
             final String isoCode = (String) it.next();
             final XMLCurrency currency = (XMLCurrency) this.isoMap.get(isoCode);
-            final Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.clear(Calendar.HOUR_OF_DAY);
-            cal.clear(Calendar.MINUTE);
-            cal.clear(Calendar.SECOND);
-            cal.clear(Calendar.MILLISECOND);
-
-            date = cal.getTime();
             if((date.equals(currency.getStartDate()) ||
                 date.after(currency.getStartDate())) &&
                 (currency.getEndDate() == null ||
@@ -362,23 +338,17 @@ public final class XMLCurrencyDirectory
         return (Currency[]) col.toArray(new Currency[col.size()]);
     }
 
-    public Currency getDtausCurrency(final char code, Date date)
+    public Currency getDtausCurrency(final char code, final Date date)
     {
         if(date == null)
         {
             throw new NullPointerException("date");
         }
 
+        this.checkForModifications();
+
         final XMLCurrency currency =
             (XMLCurrency) this.dtausMap.get(new Character(code));
-
-        final Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.clear(Calendar.HOUR_OF_DAY);
-        cal.clear(Calendar.MINUTE);
-        cal.clear(Calendar.SECOND);
-        cal.clear(Calendar.MILLISECOND);
-        date = cal.getTime();
 
         Currency ret = null;
 
@@ -394,7 +364,7 @@ public final class XMLCurrencyDirectory
         return ret;
     }
 
-    public char getDtausCode(final Currency currency,Date date)
+    public char getDtausCode(final Currency currency, final Date date)
     {
         if(currency == null)
         {
@@ -405,13 +375,7 @@ public final class XMLCurrencyDirectory
             throw new NullPointerException("date");
         }
 
-        final Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.clear(Calendar.HOUR_OF_DAY);
-        cal.clear(Calendar.MINUTE);
-        cal.clear(Calendar.SECOND);
-        cal.clear(Calendar.MILLISECOND);
-        date = cal.getTime();
+        this.checkForModifications();
 
         final XMLCurrency xml = (XMLCurrency) this.isoMap.
             get(currency.getCurrencyCode());
@@ -430,49 +394,14 @@ public final class XMLCurrencyDirectory
 
     }
 
-    // Deprecated implementation for backward compatibility.
-
-    public Currency[] getCurrencies()
-    {
-        final String method = "getCurrencies()";
-        final String className = org.jdtaus.banking.dtaus.spi.
-            CurrencyDirectory.class.getName();
-
-        this.getLogger().warn(XMLCurrencyDirectoryBundle.
-            getDeprecationWarningMessage(Locale.getDefault()).format(
-            new Object[] { method, className }));
-
-        return this.getDtausCurrencies(new Date());
-    }
-
-    public char getCode(final Currency currency)
-    {
-        final String method = "getCode(Currency)";
-        final String className = org.jdtaus.banking.dtaus.spi.
-            CurrencyDirectory.class.getName();
-
-        this.getLogger().warn(XMLCurrencyDirectoryBundle.
-            getDeprecationWarningMessage(Locale.getDefault()).format(
-            new Object[] { method, className }));
-
-        return this.getDtausCode(currency, new Date());
-    }
-
-    public Currency getCurrency(final char code)
-    {
-        final String method = "getCurrency(char)";
-        final String className = org.jdtaus.banking.dtaus.spi.
-            CurrencyDirectory.class.getName();
-
-        this.getLogger().warn(XMLCurrencyDirectoryBundle.
-            getDeprecationWarningMessage(Locale.getDefault()).format(
-            new Object[] { method, className }));
-
-        return this.getDtausCurrency(code, new Date());
-    }
-
     //-------------------------------------------------------CurrencyDirectory--
     //--XMLCurrencyDirectory----------------------------------------------------
+
+    /** Maps {@code File} instances to theire last modification timestamp. */
+    private Map monitorMap;
+
+    /** Holds the timestamp resources got checked for modifications. */
+    private long lastCheck;
 
     /** Creates a new {@code XMLCurrencyDirectory} instance. */
     public XMLCurrencyDirectory()
@@ -485,54 +414,113 @@ public final class XMLCurrencyDirectory
      * Checks configured properties.
      *
      * @throws PropertyException if properties hold invalid values.
-     * @throws ImplementationException if reading resources fails.
      */
-    protected void assertValidProperties()
+    private void assertValidProperties()
     {
-        try
+        if(this.getReloadIntervalMillis() < 0L)
         {
-            if(this.getDataDirectory() == null)
-            {
-                throw new PropertyException("dataDirectory",
-                    this.getDataDirectory());
+            throw new PropertyException("reloadIntervalMillis",
+                Long.toString(this.getReloadIntervalMillis()));
 
-            }
-            if(this.getResource() == null || this.getResource().length() <= 0 ||
-                this.getResources().length <= 0)
-            {
-
-                throw new PropertyException("resource", this.getResource());
-            }
-        }
-        catch(IOException e)
-        {
-            throw new ImplementationException(META, e);
         }
     }
 
     /**
-     * Gets all XML resources as {@code URL} instances.
+     * Gets XML resources provided by any available {@code CurrenciesProvider}
+     * implementation.
      *
-     * @return an array of {@code URL} instances for all resources named
-     * {@code getDataDirectory() + '/' + getResource()}.
+     * @return XML resources provided by any available
+     * {@code CurrenciesProvider} implementation.
      *
      * @throws IOException if getting the resources fails.
      *
-     * @see #getClassLoader()
+     * @see CurrenciesProvider
      */
-    protected URL[] getResources() throws IOException
+    private URL[] getResources() throws IOException
     {
-        final ClassLoader classLoader = this.getClassLoader();
-        final Collection col = new LinkedList();
-        final Enumeration en = classLoader.getResources(
-            this.getDataDirectory() + '/' + this.getResource());
+        final Collection resources = new HashSet();
+        final Specification providerSpec = ModelFactory.getModel().getModules().
+            getSpecification(CurrenciesProvider.class.getName());
 
-        while(en.hasMoreElements())
+        for(int i = providerSpec.getImplementations().size() - 1; i >= 0; i--)
         {
-            col.add(en.nextElement());
+            final CurrenciesProvider provider =
+                (CurrenciesProvider) ContainerFactory.getContainer().
+                getImplementation(CurrenciesProvider.class,
+                providerSpec.getImplementations().getImplementation(i).
+                getName());
+
+            resources.addAll(Arrays.asList(provider.getResources()));
         }
 
-        return (URL[]) col.toArray(new URL[col.size()]);
+        return (URL[]) resources.toArray(new URL[resources.size()]);
+    }
+
+    /**
+     * Adds a resource to the list of resources to monitor for changes.
+     *
+     * @param url the URL of the resource to monitor for changes.
+     *
+     * @throws NullPointerException if {@code url} is {@code null}.
+     */
+    private void monitorResource(final URL url)
+    {
+        if(url == null)
+        {
+            throw new NullPointerException("url");
+        }
+
+        try
+        {
+            final File file = new File(new URI(url.toString()));
+            this.monitorMap.put(file, new Long(file.lastModified()));
+            this.getLogger().info(XMLCurrencyDirectoryBundle.
+                getMonitoringInfoMessage(Locale.getDefault()).format(
+                new Object[] { file.getAbsolutePath() }));
+
+        }
+        catch(IllegalArgumentException e)
+        {
+            this.getLogger().warn(XMLCurrencyDirectoryBundle.
+                getNotMonitoringWarningMessage(Locale.getDefault()).
+                format(new Object[] { url.toExternalForm(), e.getMessage() }));
+
+        }
+        catch(URISyntaxException e)
+        {
+            this.getLogger().warn(XMLCurrencyDirectoryBundle.
+                getNotMonitoringWarningMessage(Locale.getDefault()).
+                format(new Object[] { url.toExternalForm(), e.getMessage() }));
+
+        }
+    }
+
+    /** Reloads the XML files when detecting a change. */
+    private void checkForModifications()
+    {
+        if(System.currentTimeMillis() - this.lastCheck >
+            this.getReloadIntervalMillis() && this.monitorMap.size() > 0)
+        {
+            for(Iterator it = this.monitorMap.entrySet().
+                iterator(); it.hasNext();)
+            {
+                final Map.Entry entry = (Map.Entry) it.next();
+                final File file = (File) entry.getKey();
+                final Long lastModified = (Long) entry.getValue();
+
+                assert lastModified != null : "Expected modification time.";
+
+                if(file.lastModified() != lastModified.longValue())
+                {
+                    this.getLogger().info(XMLCurrencyDirectoryBundle.
+                        getChangeInfoMessage(Locale.getDefault()).format(
+                        new Object[] { file.getAbsolutePath() }));
+
+                    this.initialize();
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -548,7 +536,7 @@ public final class XMLCurrencyDirectory
      * is available.
      * @throws SAXException if parsing fails.
      */
-    protected Document[] parseResources() throws
+    private Document[] parseResources() throws
         IOException, ParserConfigurationException, SAXException
     {
         InputStream stream = null;
@@ -561,6 +549,7 @@ public final class XMLCurrencyDirectory
         {
             try
             {
+                this.monitorResource(resources[i]);
                 stream = resources[i].openStream();
                 ret[i] = parser.parse(stream);
             }
@@ -586,13 +575,14 @@ public final class XMLCurrencyDirectory
      *
      * @throws ParseException if parsing values fails.
      */
-    protected XMLCurrency[] transformDocument(final Document doc)
+    private XMLCurrency[] transformDocument(final Document doc)
     throws ParseException
     {
         Element e;
         String str;
         NodeList l;
         XMLCurrency cur;
+        final Calendar cal = Calendar.getInstance();
         final Collection col = new ArrayList(500);
 
         l = doc.getDocumentElement().getElementsByTagNameNS(
@@ -621,7 +611,12 @@ public final class XMLCurrencyDirectory
 
             if(str != null && str.length() > 0)
             {
-                cur.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(str));
+                cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(str));
+                cal.set(Calendar.HOUR_OF_DAY, 23);
+                cal.set(Calendar.MINUTE, 59);
+                cal.set(Calendar.SECOND, 59);
+                cal.set(Calendar.MILLISECOND, 999);
+                cur.setEndDate(cal.getTime());
             }
 
             col.add(cur);
@@ -651,7 +646,7 @@ public final class XMLCurrencyDirectory
      * @throws ParserConfigurationException if no supported XML parser runtime
      * is available.
      */
-    protected DocumentBuilder getDocumentBuilder() throws IOException,
+    private DocumentBuilder getDocumentBuilder() throws IOException,
         ParserConfigurationException
     {
         final DocumentBuilder xmlBuilder;
@@ -712,7 +707,7 @@ public final class XMLCurrencyDirectory
      *
      * @return the classloader to be used for loading XML resources.
      */
-    protected ClassLoader getClassLoader()
+    private ClassLoader getClassLoader()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if(classLoader == null)
@@ -727,5 +722,4 @@ public final class XMLCurrencyDirectory
     }
 
     //----------------------------------------------------XMLCurrencyDirectory--
-
 }

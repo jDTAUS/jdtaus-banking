@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>jDTAUS Banking RI CurrencyDirectory</title>
+    <author email="cs@jdtaus.org">Christian Schulte</author>
+  </properties>
+  <body>
+    <section name="Introduction">
+      <p>
+        This artifact provides a <code>CurrencyDirectory</code> implementation
+        backed by XML files. See the XML schema
+        <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/jdtaus-currencies-1.0.xsd">jdtaus-currencies-1.0.xsd</a>
+        for further information regarding these XML documents.
+        XML resources are read using any available
+        <a href="apidocs/org/jdtaus/banking/ri/currencydir/CurrenciesProvider.html">CurrenciesProvider</a>
+        implementation. The <a href="apidocs/org/jdtaus/banking/ri/currencydir/ClasspathCurrenciesProvider.html">ClasspathCurrenciesProvider</a>
+        default implementation expects the XML documents to be located in
+        directory <code>META-INF/jdtaus</code> named <code>currencies.xml</code>.
+        This location can be changed by updating the configuration file
+        located at <code>META-INF/jdtaus/module.xml</code>.
+      </p>
+    </section>
+    <section name="Upgrading from 1.0">
+      <p>
+        All released 1.0 artifacts come with a default
+        <code>currencies.xml</code> document located at
+        <code>META-INF/jdtaus/currencies.xml</code> holding currency
+        instances as specified by <a href="http://www.zka.de">ZKA</a>. Starting
+        with version 1.1 this default XML document is no longer part of the
+        artifact's jar file. When upgrading your application to 1.1 you need to
+        provide the currency configuration yourself by either placing at least
+        one XML document in the application's classpath for use by class
+        <code>ClasspathCurrenciesProvider</code> or by supplying a custom
+        <code>CurrenciesProvider</code> implementation providing the
+        currency resources. The former default document is available for
+        download as a starting point from <a href="currencies.xml">here</a>.
+      </p>
+    </section>
+  </body>
+</document>
