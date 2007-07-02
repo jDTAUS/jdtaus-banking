@@ -6,14 +6,24 @@
   <body>
     <release version="1.0" date="2007-06-01"
              description="First stable release."/>
-    
-    <release version="1.1" description="Feature enhancements.">
+
+    <release version="1.1" date="2007-07-02"
+             description="Feature enhancements.">
+
       <action dev="schulte2005" type="update"><![CDATA[
       Added implementation for 1.1 API methods. Added class
-      <code>OutdatedDirectoryMessage</code>; updated the implementation
+      <code>OutdatedDirectoryMessage</code> and updated the implementation
       to notify applications about an outdated directory.]]>
       </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added interface <code>BankfileProvider</code> and class
+      <code>PropertyBankfileProvider</code> implementing the former bankfile
+      lookup mechanism backed by a property file. Updated class
+      <code>BundesbankBankleitzahlenVerzeichnis</code> to use any available
+      <code>BankfileProvider</code> implementation for reading bankfile
+      resources.]]>
+      </action>
     </release>
-    
+
   </body>
 </document>

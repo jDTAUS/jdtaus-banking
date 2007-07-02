@@ -33,6 +33,15 @@
                jdtaus:description="${pom.description}"
                jdtaus:version="1.0">
 
+  <jdtaus:specifications>
+    <jdtaus:specification jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"
+                          jdtaus:description="${pom.description}"
+                          jdtaus:vendor="${pom.organization.name}"
+                          jdtaus:version="${pom.version}"
+                          jdtaus:singleton="true"/>
+
+  </jdtaus:specifications>
+
   <jdtaus:implementations>
     <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis"
                            jdtaus:name="jDTAUS Banking SPI"
@@ -67,14 +76,6 @@
       </jdtaus:dependencies>
       
       <jdtaus:properties>
-        <jdtaus:property jdtaus:name="dataDirectory"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="META-INF/jdtaus"/>
-        
-        <jdtaus:property jdtaus:name="configuration"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="META-INF/jdtaus/BundesbankBankleitzahlenVerzeichnis.properties"/>
-        
         <jdtaus:property jdtaus:name="dateOfExpirationText"
                          jdtaus:type="java.lang.String"
                          jdtaus:value="2007-09-02"/>
@@ -85,5 +86,26 @@
 
       </jdtaus:properties>
     </jdtaus:implementation>
+    
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.PropertyBankfileProvider"
+                           jdtaus:name="jDTAUS Banking SPI"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}">
+      
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"/>
+      </jdtaus:implementedSpecifications>      
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="dataDirectory"
+                         jdtaus:type="java.lang.String"
+                         jdtaus:value="META-INF/jdtaus"/>
+        
+        <jdtaus:property jdtaus:name="configuration"
+                         jdtaus:type="java.lang.String"
+                         jdtaus:value="META-INF/jdtaus/BundesbankBankleitzahlenVerzeichnis.properties"/>
+
+      </jdtaus:properties>
+    </jdtaus:implementation>
+
   </jdtaus:implementations>
 </jdtaus:module>

@@ -20,15 +20,14 @@
 package org.jdtaus.banking.ri.blzdirectory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,7 +35,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.jdtaus.banking.Bankleitzahl;
@@ -55,6 +53,7 @@ import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
+import org.jdtaus.core.container.Specification;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.MessageEvent;
@@ -62,11 +61,8 @@ import org.jdtaus.core.text.spi.ApplicationLogger;
 
 /**
  * {@code BankleitzahlenVerzeichnis} implementation backed by bankfiles.
- * <p>This implementation reads bankfile resources holding
- * {@code BankleitzahlInfo} instances. Property {@code configuration} holds
- * the name of a property file specifying the bankfiles to load and the order
- * the files need to be loaded. Property {@code dataDirectory} holds the
- * name of the directory in which these bankfiles are located.</p>
+ * <p>This implementation uses bankfile resources provided by any available
+ * {@link BankfileProvider} implementation.</p>
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -145,14 +141,6 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
         p = meta.getProperty("dateOfExpirationText");
         this._dateOfExpirationText = (java.lang.String) p.getValue();
-
-
-        p = meta.getProperty("configuration");
-        this._configuration = (java.lang.String) p.getValue();
-
-
-        p = meta.getProperty("dataDirectory");
-        this._dataDirectory = (java.lang.String) p.getValue();
 
     }
 
@@ -382,38 +370,6 @@ public final class BundesbankBankleitzahlenVerzeichnis
         return this._dateOfExpirationText;
     }
 
-    /**
-     * Property {@code configuration}.
-     * @serial
-     */
-    private java.lang.String _configuration;
-
-    /**
-     * Gets the value of property <code>configuration</code>.
-     *
-     * @return the value of property <code>configuration</code>.
-     */
-    protected java.lang.String getConfiguration()
-    {
-        return this._configuration;
-    }
-
-    /**
-     * Property {@code dataDirectory}.
-     * @serial
-     */
-    private java.lang.String _dataDirectory;
-
-    /**
-     * Gets the value of property <code>dataDirectory</code>.
-     *
-     * @return the value of property <code>dataDirectory</code>.
-     */
-    protected java.lang.String getDataDirectory()
-    {
-        return this._dataDirectory;
-    }
-
 
     //--------------------------------------------------------------Properties--
     //--BankleitzahlenVerzeichnis-----------------------------------------------
@@ -526,52 +482,6 @@ public final class BundesbankBankleitzahlenVerzeichnis
     //-----------------------------------------------BankleitzahlenVerzeichnis--
     //--BundesbankBankleitzahlenVerzeichnis-------------------------------------
 
-    /** Prefix used for property keys in the property file. */
-    private static final String PREFIX = "BankleitzahlenDatei.";
-
-    /** {@code Comparator} used to sort property keys in ascending order. */
-    private static final Comparator PROPERTY_SORTER = new Comparator()
-    {
-        public int compare(final Object o1, final Object o2)
-        {
-            if(!(o1 instanceof String))
-            {
-                throw new IllegalArgumentException(o1.toString());
-            }
-            if(!(o2 instanceof String))
-            {
-                throw new IllegalArgumentException(o2.toString());
-            }
-
-            int ret = 0;
-            final NumberFormat fmt = NumberFormat.getIntegerInstance();
-            try
-            {
-                final Number o1Int = fmt.parse(((String) o1).
-                    substring(PREFIX.length()));
-
-                final Number o2Int = fmt.parse(((String) o2).
-                    substring(PREFIX.length()));
-
-                if(o1Int.longValue() < o2Int.longValue())
-                {
-                    ret = -1;
-                }
-                else if(o1Int.longValue() > o2Int.longValue())
-                {
-                    ret = 1;
-                }
-
-            }
-            catch(ParseException e)
-            {
-                throw new ImplementationException(META, e);
-            }
-
-            return ret;
-        }
-    };
-
     /** Creates a new {@code BundesbankBankleitzahlenVerzeichnis} instance. */
     public BundesbankBankleitzahlenVerzeichnis()
     {
@@ -586,23 +496,6 @@ public final class BundesbankBankleitzahlenVerzeichnis
      */
     private void assertValidProperties()
     {
-        if(this.getDataDirectory() == null ||
-            this.getDataDirectory().length() == 0)
-        {
-
-            throw new PropertyException("dataDirectory",
-                this.getDataDirectory());
-
-        }
-        if(this.getConfiguration() == null ||
-            this.getConfiguration().length() == 0 ||
-            this.getConfigurationResource() == null)
-        {
-
-            throw new PropertyException("configuration",
-                this.getConfiguration());
-
-        }
         if(this.getDateOfExpirationText() == null ||
             this.getDateOfExpirationText().length() == 0)
         {
@@ -690,77 +583,34 @@ public final class BundesbankBankleitzahlenVerzeichnis
     }
 
     /**
-     * Gets an URL to the property file configured via property
-     * {@code configuration} holding the files to load.
+     * Gets the bankfile resources provided by any available
+     * {@code BankfileProvider} implementation.
      *
-     * @return an URL to a property file holding the files to load or
-     * {@code null} if property {@code configuration} does not point to any
-     * resource.
+     * @return bankfile resources provided by any available
+     * {@code BankfileProvider} implementation.
      *
-     * @see #getClassLoader()
+     * @throws IOException if getting the resources fails.
+     *
+     * @see BankfileProvider
      */
-    private URL getConfigurationResource()
+    private URL[] getFileResources() throws IOException
     {
-        return this.getClassLoader().getResource(this.getConfiguration());
-    }
+        final List resources = new LinkedList();
+        final Specification providerSpec = ModelFactory.getModel().getModules().
+            getSpecification(BankfileProvider.class.getName());
 
-    /**
-     * Gets the configured bankfile resources in the correct order for
-     * sequential loading.
-     *
-     * @return the bankfile resources backing the implementation.
-     *
-     * @throws ImplementationException if reading configuration resources fails.
-     *
-     * @see #getConfigurationResource()
-     * @see #getClassLoader()
-     */
-    private URL[] getFileResources()
-    {
-        int i;
-        String rsrc;
-        InputStream stream = null;
-        final URL[] ret;
-        final Iterator it;
-        final Map sorted = new TreeMap(PROPERTY_SORTER);
-        final java.util.Properties props = new java.util.Properties();
+        for(int i = providerSpec.getImplementations().size() - 1; i >= 0; i--)
+        {
+            final BankfileProvider provider =
+                (BankfileProvider) ContainerFactory.getContainer().
+                getImplementation(BankfileProvider.class,
+                providerSpec.getImplementations().getImplementation(i).
+                getName());
 
-        try
-        {
-            stream = this.getConfigurationResource().openStream();
-            props.load(stream);
-            sorted.putAll(props);
-            ret = new URL[sorted.size()];
-            for(it = sorted.values().iterator(), i = 0; it.hasNext(); i++)
-            {
-                rsrc = this.getDataDirectory() + '/' + it.next().toString();
-                ret[i] = this.getClassLoader().getResource(rsrc);
-                if(ret[i] == null)
-                {
-                    throw new ImplementationException(META, rsrc);
-                }
-            }
+            resources.addAll(Arrays.asList(provider.getResources()));
+        }
 
-            return ret;
-        }
-        catch(IOException e)
-        {
-            throw new ImplementationException(META, e);
-        }
-        finally
-        {
-            if(stream != null)
-            {
-                try
-                {
-                    stream.close();
-                }
-                catch(IOException e)
-                {
-                    throw new ImplementationException(META, e);
-                }
-            }
-        }
+        return (URL[]) resources.toArray(new URL[resources.size()]);
     }
 
     /**
@@ -795,28 +645,6 @@ public final class BundesbankBankleitzahlenVerzeichnis
         return (BankleitzahlInfo[]) col.toArray(
             new BankleitzahlInfo[col.size()]);
 
-    }
-
-    /**
-     * Gets the classloader used for loading bankfile resources.
-     * <p>The reference implementation will use the current thread's context
-     * classloader and will fall back to the system classloader if the
-     * current thread has no context classloader set.</p>
-     *
-     * @return the classloader to be used for loading bankfile resources.
-     */
-    private ClassLoader getClassLoader()
-    {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if(classLoader == null)
-        {
-            classLoader = ClassLoader.getSystemClassLoader();
-        }
-
-        assert classLoader != null :
-            "Expected ClassLoader.getSystemClassLoader() to not return null.";
-
-        return classLoader;
     }
 
     //-------------------------------------BundesbankBankleitzahlenVerzeichnis--
