@@ -27,12 +27,11 @@
 <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml/textschluessel"
                        xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                       xsi:schemaLocation="http://jdtaus.org/banking/xml/textschluessel http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.0.xsd"
-                       jdtaus:version="1.0">
+                       xsi:schemaLocation="http://jdtaus.org/banking/xml/textschluessel http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.1.xsd"
+                       jdtaus:version="1.1">
   
   <jdtaus:transactionTypes>
-    <jdtaus:transactionType jdtaus:name="DEBIT_ORDER"
-                            jdtaus:key="04"
+    <jdtaus:transactionType jdtaus:key="04"
                             jdtaus:extension="000"
                             jdtaus:type="DEBIT">
       
@@ -40,8 +39,7 @@
       <jdtaus:description jdtaus:language="en">Debit order ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="DEBIT_ORDER_FOREIGN"
-                            jdtaus:key="04"
+    <jdtaus:transactionType jdtaus:key="04"
                             jdtaus:extension="888"
                             jdtaus:type="DEBIT">
       
@@ -49,8 +47,7 @@
       <jdtaus:description jdtaus:language="en">Debit order - foreign ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="DEBIT"
-                            jdtaus:key="05"
+    <jdtaus:transactionType jdtaus:key="05"
                             jdtaus:extension="000"
                             jdtaus:type="DEBIT">
       
@@ -58,8 +55,7 @@
       <jdtaus:description jdtaus:language="en">Direct debit ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="DEBIT_FOREIGN"
-                            jdtaus:key="05"
+    <jdtaus:transactionType jdtaus:key="05"
                             jdtaus:extension="888"
                             jdtaus:type="DEBIT">
       
@@ -67,8 +63,7 @@
       <jdtaus:description jdtaus:language="en">Direct debit - foreign ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="DEBIT_POS_EC"
-                            jdtaus:key="05"
+    <jdtaus:transactionType jdtaus:key="05"
                             jdtaus:extension="005"
                             jdtaus:type="DEBIT">
       
@@ -76,8 +71,7 @@
       <jdtaus:description jdtaus:language="en">Debit from POS - electronic cash ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="DEBIT_POS_MAESTRO"
-                            jdtaus:key="05"
+    <jdtaus:transactionType jdtaus:key="05"
                             jdtaus:extension="006"
                             jdtaus:type="DEBIT">
       
@@ -85,8 +79,7 @@
       <jdtaus:description jdtaus:language="en">Debit from POS - Maestro ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="DEBIT_CREDITCARD"
-                            jdtaus:key="05"
+    <jdtaus:transactionType jdtaus:key="05"
                             jdtaus:extension="008"
                             jdtaus:type="DEBIT">
       
@@ -94,8 +87,7 @@
       <jdtaus:description jdtaus:language="en">Debit from credit card ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="DEBIT_POS_POZ"
-                            jdtaus:key="05"
+    <jdtaus:transactionType jdtaus:key="05"
                             jdtaus:extension="015"
                             jdtaus:type="DEBIT">
       
@@ -103,8 +95,7 @@
       <jdtaus:description jdtaus:language="en">Debit from POS - POZ ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="REMITTANCE"
-                            jdtaus:key="51"
+    <jdtaus:transactionType jdtaus:key="51"
                             jdtaus:extension="000"
                             jdtaus:type="REMITTANCE">
       
@@ -112,8 +103,7 @@
       <jdtaus:description jdtaus:language="en">Remittance ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="REMITTANCE_WAGE_PENSION"
-                            jdtaus:key="53"
+    <jdtaus:transactionType jdtaus:key="53"
                             jdtaus:extension="000"
                             jdtaus:type="REMITTANCE">
       
@@ -121,8 +111,7 @@
       <jdtaus:description jdtaus:language="en">Lohn-;Gehalts-;Renten-Gutschrift ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="REMITTANCE_CITY_TREASURY"
-                            jdtaus:key="56"
+    <jdtaus:transactionType jdtaus:key="56"
                             jdtaus:extension="000"
                             jdtaus:type="REMITTANCE">
       
@@ -130,8 +119,7 @@
       <jdtaus:description jdtaus:language="en">Remittance of city treasuries ({0,number,00}{1,number,000})</jdtaus:description>
     </jdtaus:transactionType>
     
-    <jdtaus:transactionType jdtaus:name="CAPITAL_FORMING_PAYMENT"
-                            jdtaus:key="54"
+    <jdtaus:transactionType jdtaus:key="54"
                             jdtaus:extension="VARIABLE"
                             jdtaus:type="REMITTANCE">
       
@@ -140,5 +128,4 @@
     </jdtaus:transactionType>
     
   </jdtaus:transactionTypes>
-  
 </jdtaus:textschluessel>

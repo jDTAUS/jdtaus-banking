@@ -3,18 +3,18 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0-beta-4</version>
+    <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI Textschluesselverzeichnis</name>
-  <version>1.0-beta-6-SNAPSHOT</version>
+  <version>1.1</version>
   <description>jDTAUS TextschluesselVerzeichnis reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/jdtaus-banking-ri-textschluesselverzeichnis-1.1</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/jdtaus-banking-ri-textschluesselverzeichnis-1.1</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/jdtaus-banking-ri-textschluesselverzeichnis-1.1</url>
   </scm>
   <build>
     <resources>
@@ -27,10 +27,20 @@
         <directory>src/site/resources</directory>
         <targetPath>org/jdtaus/banking/xml/textschluessel</targetPath>
         <includes>
-          <include>jdtaus-textschluessel-1.0.xsd</include>
+          <include>jdtaus-textschluessel-1.1.xsd</include>
         </includes>
       </resource>
     </resources>
+    <testResources>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>src/site/resources</directory>
+        <targetPath>META-INF/jdtaus</targetPath>
+        <includes>
+          <include>textschluessel.xml</include>
+        </includes>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
@@ -76,6 +86,32 @@
         </executions>
       </plugin>
       
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>src/site/resources/jdtaus-textschluessel-1.1.xsd</file>
+                  <type>xsd</type>
+                </artifact>
+                <artifact>
+                  <file>src/site/resources/textschluessel.xml</file>
+                  <type>xml</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
@@ -156,10 +192,6 @@
       <groupId>org.jdtaus.core.logging</groupId>
       <artifactId>jdtaus-core-jdk-logging</artifactId>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
   </dependencies>
   <reporting>
     <plugins>
@@ -173,7 +205,7 @@
           <encoding>UTF-8</encoding>
           <doctitle>${pom.name} Specification ${pom.version}</doctitle>
           <linksource>true</linksource>
-          <nodeprecated>true</nodeprecated>
+          <nodeprecated>false</nodeprecated>
           <quiet>false</quiet>
           <verbose>false</verbose>
           <serialwarn>true</serialwarn>

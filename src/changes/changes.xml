@@ -4,47 +4,41 @@
     <author email="cs@jdtaus.org">Christian Schulte</author>
   </properties>
   <body>
-    <release version="1.0-beta-2" date="2007-04-01"
-             description="2nd beta release">
-      
+    <release version="1.0" date="2007-06-01"
+             description="First stable release."/>
+
+    <release version="1.1" date="2007-06-01"
+             description="Feature enhancements.">
+
       <action dev="schulte2005" type="update"><![CDATA[
-        Added final modifier to reference implementation classes. Updated to
-        latest container hooks.]]>
+      Moved all methods of class <code>RITextschluessel</code> to the API
+      class <code>org.jdtaus.banking.Textschluessel</code> and deprecated
+      <code>RITextschluessel</code>.]]>
       </action>
-    </release>
-    <release version="1.0-beta-3" date="2007-04-05"
-             description="3rd beta release">
-      
       <action dev="schulte2005" type="update"><![CDATA[
-        Documentation updates. Added tests.]]>
+      Attached default Textschlüssel configuration to the artifact and
+      removed it from the artifact's jar file.]]>
       </action>
-      <action dev="schulte2005" type="fix"><![CDATA[
-        Changed the target XML namespace of the <code>textschluessel.xsd</code>
-        schema from <code>http://jdtaus.org/banking/xml</code> to
-        <code>http://jdtaus.org/banking/xml/textschluessel</code>.
-        Additionally fixed wrong <code>schemaLocation</code> in
-        <code>textschluessel.xml</code>.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-4" date="2007-04-27"
-             description="4th beta release">
-      
-      <action dev="schulte2005" type="fix"><![CDATA[
-        Updated class <code>RITextschluessel</code> to fall back to either
-        an english short description or a default description for properties key
-        and extension if the language given by the default locale is not
-        supported.]]>
-      </action>
-    </release>
-    <release version="1.0-beta-5" date="2007-05-01"
-             description="5th beta release">
-      
       <action dev="schulte2005" type="update"><![CDATA[
-        Updated class <code>RITextschluessel</code> to use the new property
-        <code>defaultLanguage</code> from the container model instead of the
-        hardcoded english default language. Updated the POM removing hardcoded
-        signing aliases.]]>
+      Added interface <code>TextschluesselProvider</code> and class
+      <code>ClasspathTextschluesselProvider</code> implementing the former
+      classpath resource lookup mechanism. Updated class
+      <code>XMLTextschluesselVerzeichnis</code> to use any available
+      <code>TextschluesselProvider</code> implementation for reading XML
+      resources.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added support for monitoring resources with a <code>file</code> URI scheme
+      for changes to support dynamic reloading of changed files.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Removed the name attribute from the &lt;transactionType&gt; XML
+      element and updated the schema to model version 1.1.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated to 1.1 API.]]>
       </action>
     </release>
+
   </body>
 </document>

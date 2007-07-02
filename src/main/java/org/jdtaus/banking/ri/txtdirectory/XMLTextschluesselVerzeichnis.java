@@ -19,14 +19,18 @@
  */
 package org.jdtaus.banking.ri.txtdirectory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -47,6 +51,7 @@ import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
+import org.jdtaus.core.container.Specification;
 import org.jdtaus.core.logging.spi.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,12 +62,10 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Textschlüssel directory implementation backed by XML files.
- * <p>This implementation reads XML resources from the classpath holding
- * Textschlüssel instances. Property {@code resource} holds the name of the
- * XML resources to load and property {@code dataDir} holds the directory in
- * which to look for these resources. See
- * <a href="http://www.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.0.xsd">
- * jdtaus-textschluessel-1.0.xsd</a> for further information</p>
+ * <p>This implementation uses XML resources provided by any available
+ * {@link TextschluesselProvider} implementation. Resources with a {@code file}
+ * URI scheme are monitored for changes by querying the last modification
+ * time. Monitoring is controlled by property {@code reloadIntervalMillis}.</p>
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -92,10 +95,10 @@ public final class XMLTextschluesselVerzeichnis
 
     /** Location of the jdtaus-textschluessel-1.0.xsd schema. */
     public static final String MODEL_XSD =
-        "org/jdtaus/banking/xml/textschluessel/jdtaus-textschluessel-1.0.xsd";
+        "org/jdtaus/banking/xml/textschluessel/jdtaus-textschluessel-1.1.xsd";
 
     /** Version supported by this implementation. */
-    public static final String SUPPORTED_VERSION = "1.0";
+    public static final String SUPPORTED_VERSION = "1.1";
 
     //---------------------------------------------------------------Constants--
     //--Implementation----------------------------------------------------------
@@ -161,12 +164,8 @@ public final class XMLTextschluesselVerzeichnis
             throw new NullPointerException("meta");
         }
 
-        p = meta.getProperty("resource");
-        this._resource = (java.lang.String) p.getValue();
-
-
-        p = meta.getProperty("dataDirectory");
-        this._dataDirectory = (java.lang.String) p.getValue();
+        p = meta.getProperty("reloadIntervalMillis");
+        this._reloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
 
     }
 
@@ -220,35 +219,19 @@ public final class XMLTextschluesselVerzeichnis
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code resource}.
+     * Property {@code reloadIntervalMillis}.
      * @serial
      */
-    private java.lang.String _resource;
+    private long _reloadIntervalMillis;
 
     /**
-     * Gets the value of property <code>resource</code>.
+     * Gets the value of property <code>reloadIntervalMillis</code>.
      *
-     * @return the value of property <code>resource</code>.
+     * @return the value of property <code>reloadIntervalMillis</code>.
      */
-    protected java.lang.String getResource()
+    protected long getReloadIntervalMillis()
     {
-        return this._resource;
-    }
-
-    /**
-     * Property {@code dataDirectory}.
-     * @serial
-     */
-    private java.lang.String _dataDirectory;
-
-    /**
-     * Gets the value of property <code>dataDirectory</code>.
-     *
-     * @return the value of property <code>dataDirectory</code>.
-     */
-    protected java.lang.String getDataDirectory()
-    {
-        return this._dataDirectory;
+        return this._reloadIntervalMillis;
     }
 
 
@@ -270,6 +253,9 @@ public final class XMLTextschluesselVerzeichnis
     public void initialize()
     {
         this.assertValidProperties();
+
+        this.monitorMap = new HashMap();
+        this.lastCheck = System.currentTimeMillis();
 
         try
         {
@@ -326,6 +312,19 @@ public final class XMLTextschluesselVerzeichnis
     //----------------------------------------------------ContainerInitializer--
     //--TextschluesselVerzeichnis-----------------------------------------------
 
+    public Textschluessel[] getTextschluessel()
+    {
+        this.checkForModifications();
+
+        final Textschluessel[] ret = new Textschluessel[this.instances.length];
+        for(int i = ret.length - 1; i >= 0; i--)
+        {
+            ret[i] = (Textschluessel) this.instances[i].clone();
+        }
+
+        return ret;
+    }
+
     public Textschluessel getTextschluessel(int key, int extension)
     {
         if(key < 0 || key > 99)
@@ -336,6 +335,8 @@ public final class XMLTextschluesselVerzeichnis
         {
             throw new IllegalArgumentException(Integer.toString(extension));
         }
+
+        this.checkForModifications();
 
         Textschluessel ret = null;
 
@@ -364,6 +365,8 @@ public final class XMLTextschluesselVerzeichnis
 
     public Textschluessel[] search(boolean debit, boolean remittance)
     {
+        this.checkForModifications();
+
         final Collection col = new ArrayList(this.instances.length);
 
         for(int i = this.instances.length - 1; i >= 0; i--)
@@ -381,6 +384,12 @@ public final class XMLTextschluesselVerzeichnis
     //-----------------------------------------------TextschluesselVerzeichnis--
     //--XMLTextschluesselVerzeichnis--------------------------------------------
 
+    /** Maps {@code File} instances to theire last modification timestamp. */
+    private Map monitorMap;
+
+    /** Holds the timestamp resources got checked for modifications. */
+    private long lastCheck;
+
     /** Creates a new {@code XMLTextschluesselVerzeichnis} instance. */
     public XMLTextschluesselVerzeichnis()
     {
@@ -392,54 +401,113 @@ public final class XMLTextschluesselVerzeichnis
      * Checks configured properties.
      *
      * @throws PropertyException if properties hold invalid values.
-     * @throws ImplementationException if reading resources fails.
      */
-    protected void assertValidProperties()
+    private void assertValidProperties()
     {
-        try
+        if(this.getReloadIntervalMillis() < 0L)
         {
-            if(this.getDataDirectory() == null)
-            {
-                throw new PropertyException("dataDirectory",
-                    this.getDataDirectory());
+            throw new PropertyException("reloadIntervalMillis",
+                Long.toString(this.getReloadIntervalMillis()));
 
-            }
-            if(this.getResource() == null || this.getResource().length() <= 0 ||
-                this.getResources().length <= 0)
-            {
-
-                throw new PropertyException("resource", this.getResource());
-            }
-        }
-        catch(IOException e)
-        {
-            throw new ImplementationException(META, e);
         }
     }
 
     /**
-     * Gets all XML resources as {@code URL} instances.
+     * Gets XML resources provided by any available
+     * {@code TextschluesselProvider} implementation.
      *
-     * @return an array of {@code URL} instances for all resources named
-     * {@code getDataDirectory() + '/' + getResource()}.
+     * @return XML resources provided by any available
+     * {@code TextschluesselProvider} implementation.
      *
      * @throws IOException if getting the resources fails.
      *
-     * @see #getClassLoader()
+     * @see TextschluesselProvider
      */
-    protected URL[] getResources() throws IOException
+    private URL[] getResources() throws IOException
     {
-        final ClassLoader classLoader = this.getClassLoader();
-        final Collection col = new LinkedList();
-        final Enumeration en = classLoader.getResources(
-            this.getDataDirectory() + '/' + this.getResource());
+        final Collection resources = new HashSet();
+        final Specification providerSpec = ModelFactory.getModel().getModules().
+            getSpecification(TextschluesselProvider.class.getName());
 
-        while(en.hasMoreElements())
+        for(int i = providerSpec.getImplementations().size() - 1; i >= 0; i--)
         {
-            col.add(en.nextElement());
+            final TextschluesselProvider provider =
+                (TextschluesselProvider) ContainerFactory.getContainer().
+                getImplementation(TextschluesselProvider.class,
+                providerSpec.getImplementations().getImplementation(i).
+                getName());
+
+            resources.addAll(Arrays.asList(provider.getResources()));
         }
 
-        return (URL[]) col.toArray(new URL[col.size()]);
+        return (URL[]) resources.toArray(new URL[resources.size()]);
+    }
+
+    /**
+     * Adds a resource to the list of resources to monitor for changes.
+     *
+     * @param url the URL of the resource to monitor for changes.
+     *
+     * @throws NullPointerException if {@code url} is {@code null}.
+     */
+    private void monitorResource(final URL url)
+    {
+        if(url == null)
+        {
+            throw new NullPointerException("url");
+        }
+
+        try
+        {
+            final File file = new File(new URI(url.toString()));
+            this.monitorMap.put(file, new Long(file.lastModified()));
+            this.getLogger().info(XMLTextschluesselVerzeichnisBundle.
+                getMonitoringInfoMessage(Locale.getDefault()).format(
+                new Object[] { file.getAbsolutePath() }));
+
+        }
+        catch(IllegalArgumentException e)
+        {
+            this.getLogger().warn(XMLTextschluesselVerzeichnisBundle.
+                getNotMonitoringWarningMessage(Locale.getDefault()).
+                format(new Object[] { url.toExternalForm(), e.getMessage() }));
+
+        }
+        catch(URISyntaxException e)
+        {
+            this.getLogger().warn(XMLTextschluesselVerzeichnisBundle.
+                getNotMonitoringWarningMessage(Locale.getDefault()).
+                format(new Object[] { url.toExternalForm(), e.getMessage() }));
+
+        }
+    }
+
+    /** Reloads the XML files when detecting a change. */
+    private void checkForModifications()
+    {
+        if(System.currentTimeMillis() - this.lastCheck >
+            this.getReloadIntervalMillis() && this.monitorMap.size() > 0)
+        {
+            for(Iterator it = this.monitorMap.entrySet().
+                iterator(); it.hasNext();)
+            {
+                final Map.Entry entry = (Map.Entry) it.next();
+                final File file = (File) entry.getKey();
+                final Long lastModified = (Long) entry.getValue();
+
+                assert lastModified != null : "Expected modification time.";
+
+                if(file.lastModified() != lastModified.longValue())
+                {
+                    this.getLogger().info(XMLTextschluesselVerzeichnisBundle.
+                        getChangeInfoMessage(Locale.getDefault()).format(
+                        new Object[] { file.getAbsolutePath() }));
+
+                    this.initialize();
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -455,10 +523,9 @@ public final class XMLTextschluesselVerzeichnis
      * is available.
      * @throws SAXException if parsing fails.
      */
-    protected Document[] parseResources() throws
+    private Document[] parseResources() throws
         IOException, ParserConfigurationException, SAXException
     {
-
         InputStream stream = null;
 
         final URL[] resources = this.getResources();
@@ -469,6 +536,7 @@ public final class XMLTextschluesselVerzeichnis
         {
             try
             {
+                this.monitorResource(resources[i]);
                 stream = resources[i].openStream();
                 ret[i] = parser.parse(stream);
             }
@@ -492,14 +560,14 @@ public final class XMLTextschluesselVerzeichnis
      *
      * @return an array of Textschluessel instances from the given document.
      *
-     * @see #transformTextschluessel(RITextschluessel, Element)
+     * @see #transformTextschluessel(Textschluessel, Element)
      */
-    protected Textschluessel[] transformDocument(final Document doc)
+    private Textschluessel[] transformDocument(final Document doc)
     {
         Element e;
         String str;
         NodeList l;
-        RITextschluessel key;
+        Textschluessel key;
         final Collection col = new ArrayList(500);
 
         l = doc.getDocumentElement().getElementsByTagNameNS(
@@ -511,7 +579,7 @@ public final class XMLTextschluesselVerzeichnis
         for(int i = l.getLength() - 1; i >= 0; i--)
         {
             e = (Element) l.item(i);
-            key = new RITextschluessel();
+            key = new Textschluessel();
             str = e.getAttributeNS(
                 XMLTextschluesselVerzeichnis.MODEL_NS,
                 "type");
@@ -548,7 +616,7 @@ public final class XMLTextschluesselVerzeichnis
 
     /**
      * Transforms a {@code &lt;transactionType&gt;} element to the corresponding
-     * {@code RITextschluessel} instance.
+     * {@code Textschluessel} instance.
      *
      * @param key the instance to be populated with data.
      * @param xmlKey the XML element to read the data for {@code key} from.
@@ -556,7 +624,7 @@ public final class XMLTextschluesselVerzeichnis
      * @throws NullPointerException if either {@code key} or {@code xmlKey} is
      * {@code null}.
      */
-    protected void transformTextschluessel(final RITextschluessel key,
+    private void transformTextschluessel(final Textschluessel key,
         final Element xmlKey)
     {
         String lang;
@@ -572,7 +640,7 @@ public final class XMLTextschluesselVerzeichnis
                 "language");
 
             txt = e.getFirstChild().getNodeValue();
-            key.updateShortDescription(new Locale(lang), txt);
+            key.setShortDescription(new Locale(lang), txt);
         }
     }
 
@@ -597,7 +665,7 @@ public final class XMLTextschluesselVerzeichnis
      * @throws ParserConfigurationException if no supported XML parser runtime
      * is available.
      */
-    protected DocumentBuilder getDocumentBuilder() throws IOException,
+    private DocumentBuilder getDocumentBuilder() throws IOException,
         ParserConfigurationException
     {
         final DocumentBuilder xmlBuilder;
@@ -658,7 +726,7 @@ public final class XMLTextschluesselVerzeichnis
      *
      * @return the classloader to be used for loading XML resources.
      */
-    protected ClassLoader getClassLoader()
+    private ClassLoader getClassLoader()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if(classLoader == null)
@@ -673,5 +741,4 @@ public final class XMLTextschluesselVerzeichnis
     }
 
     //--------------------------------------------XMLTextschluesselVerzeichnis--
-
 }

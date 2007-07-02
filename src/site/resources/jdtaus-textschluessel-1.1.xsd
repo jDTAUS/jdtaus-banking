@@ -18,22 +18,18 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Note:
-  This schema is deprecated. Use of the jdtaus-textschluessel-1.0.xsd schema
-  is recommended.
-  
-  Document    : jdtaus-textschluessel.xsd
+  Document    : jdtaus-textschluessel-1.0.xsd
   Autor       : Christian Schulte <cs@jdtaus.org>
   Beschreibung: Schema for the XML model of the TextschluesselVerzeichnis.
 
   Beispiel:
 
   <?xml version="1.0" encoding="UTF-8"?>
-  <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml"
-      xmlns:jdtaus="http://jdtaus.org/banking/xml"
+  <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml/textschluessel"
+      xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://jdtaus.org/banking/xml http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel.xsd"
-      jdtaus:version="1.0">
+      xsi:schemaLocation="http://jdtaus.org/banking/xml/textschluessel http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.1.xsd"
+      jdtaus:version="1.1">
 
   </jdtaus:textschluessel>
 
@@ -41,9 +37,9 @@
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:jdtaus="http://jdtaus.org/banking/xml"
-            targetNamespace="http://jdtaus.org/banking/xml"
-            xmlns="http://jdtaus.org/banking/xml"
+            xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
+            targetNamespace="http://jdtaus.org/banking/xml/textschluessel"
+            xmlns="http://jdtaus.org/banking/xml/textschluessel"
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
   
@@ -62,19 +58,10 @@
       </xsd:annotation>
       <xsd:sequence>
         <xsd:element name="transactionTypes"
-                     minOccurs="1"
+                     minOccurs="0"
                      maxOccurs="1"
                      type="jdtaus:TransactionTypes">
           
-          <xsd:unique name="transactiontype-name-uniqueness">
-            <xsd:annotation>
-              <xsd:documentation xml:lang="en"><![CDATA[
-              Name uniqueness.]]>
-              </xsd:documentation>
-            </xsd:annotation>
-            <xsd:selector xpath="jdtaus:transactionType"/>
-            <xsd:field xpath="@jdtaus:name"/>
-          </xsd:unique>
           <xsd:unique name="transactiontype-code-uniqueness">
             <xsd:annotation>
               <xsd:documentation xml:lang="en"><![CDATA[
@@ -90,7 +77,7 @@
       
       <xsd:attribute name="version" 
                      type="xsd:string" 
-                     fixed="1.0"
+                     fixed="1.1"
                      use="required">
         
         <xsd:annotation>
@@ -107,7 +94,7 @@
     <xsd:sequence>
       <xsd:element name="transactionType"
                    type="jdtaus:TransactionType"
-                   minOccurs="1"
+                   minOccurs="0"
                    maxOccurs="unbounded">
         
         <xsd:annotation>
@@ -137,14 +124,10 @@
     <xsd:sequence>
       <xsd:element name="description"
                    type="jdtaus:Description"
-                   minOccurs="2"
+                   minOccurs="1"
                    maxOccurs="unbounded"/>
       
     </xsd:sequence>
-    <xsd:attribute name="name"
-                   type="jdtaus:constantNameType"
-                   use="required"/>
-    
     <xsd:attribute name="key" 
                    type="jdtaus:keyType"
                    use="required"/>
@@ -209,20 +192,6 @@
       <xsd:minLength value="1"/>
       <xsd:maxLength value="100"/>
       <xsd:whiteSpace value="collapse"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-  
-  <xsd:simpleType name="constantNameType">
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en"><![CDATA[
-        Name for a constant. Allowed characters are capital letters, digits,
-        and the underscore. A constant name is not allowed to begin with digits,
-        or to begin or end with underscores.]]>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:whiteSpace value="collapse"/>
-      <xsd:pattern value="[A-Z].*[A-Z0-9_].*[A-Z0-9].*"/>
     </xsd:restriction>
   </xsd:simpleType>
   
