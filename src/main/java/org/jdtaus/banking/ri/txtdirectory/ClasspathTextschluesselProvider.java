@@ -201,6 +201,7 @@ public final class ClasspathTextschluesselProvider
     public ClasspathTextschluesselProvider()
     {
         this(META);
+        this.initializeProperties(META.getProperties());
         this.initialize();
     }
 
