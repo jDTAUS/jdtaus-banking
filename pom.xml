@@ -9,12 +9,12 @@
   <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI CurrencyDirectory</name>
-  <version>1.1</version>
+  <version>1.1.1-SNAPSHOT</version>
   <description>jDTAUS CurrencyDirectory reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.1</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.1</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.1</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/branches/jdtaus-banking-ri-currencydirectory-1.x</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/branches/jdtaus-banking-ri-currencydirectory-1.x</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/branches/jdtaus-banking-ri-currencydirectory-1.x</url>
   </scm>
   <build>
     <resources>
