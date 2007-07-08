@@ -32,7 +32,7 @@
       </p>
       <subsection name="Currency Directory">
         <p>
-          The <a href="jdtaus-banking-ri-currencydirectory/project-summary.html">
+          The <a href="jdtaus-banking-ri-currencydirectory/index.html">
           Currency Directory artifact</a> provides the jDTAUS CurrencyDirectory
           <a href="jdtaus-banking-ri-currencydirectory/apidocs/index.html">
           reference implementation</a> which is backed by classpath XML
@@ -41,7 +41,7 @@
       </subsection>
       <subsection name="Textschlüssel Verzeichnis">
         <p>
-          The <a href="jdtaus-banking-ri-textschluesselverzeichnis/project-summary.html">
+          The <a href="jdtaus-banking-ri-textschluesselverzeichnis/index.html">
           Textschluessel Verzeichnis artifact</a> provides the jDTAUS
           TextschluesselVerzeichnis
           <a href="jdtaus-banking-ri-textschluesselverzeichnis/apidocs/index.html">
@@ -51,7 +51,7 @@
       </subsection>
       <subsection name="Bankleitzahlen Verzeichnis">
         <p>
-          The <a href="jdtaus-banking-ri-bankleitzahlenverzeichnis/project-summary.html">
+          The <a href="jdtaus-banking-ri-bankleitzahlenverzeichnis/index.html">
           Bankleitzahlen Verzeichnis artifact</a> provides the jDTAUS
           BankleitzahlenVerzeichnis
           <a href="jdtaus-banking-ri-bankleitzahlenverzeichnis/apidocs/index.html">
