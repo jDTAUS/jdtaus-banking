@@ -15,6 +15,7 @@
     </head>
     
     <menu name="jDTAUS Banking">
+      <item name="Home" href="http://www.jdtaus.org/"/>
       <item name="About" href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/index.html"/>
     </menu>
     
