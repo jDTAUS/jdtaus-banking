@@ -281,6 +281,13 @@ public final class PropertyBankfileProvider
         }
     };
 
+    /** Creates a new {@code PropertyBankfileProvider} instance. */
+    public PropertyBankfileProvider()
+    {
+        this(META);
+        this.initialize();
+    }
+
     /**
      * Checks configured properties.
      *
