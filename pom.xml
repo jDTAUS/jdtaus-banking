@@ -109,6 +109,10 @@
                   <file>src/site/resources/jdtaus-currencies-1.0.xsd</file>
                   <type>xsd</type>
                 </artifact>
+                <artifact>
+                  <file>src/site/resources/currencies.xml</file>
+                  <type>xml</type>
+                </artifact>
               </artifacts>
             </configuration>
           </execution>
