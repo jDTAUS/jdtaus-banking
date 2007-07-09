@@ -201,7 +201,6 @@ public final class ClasspathCurrenciesProvider
     public ClasspathCurrenciesProvider()
     {
         this(META);
-        this.initializeProperties(META.getProperties());
         this.initialize();
     }
 
