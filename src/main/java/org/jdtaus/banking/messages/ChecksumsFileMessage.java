@@ -54,7 +54,7 @@ public final class ChecksumsFileMessage extends Message
     public String getText(final Locale locale)
     {
         return ChecksumsFileMessageBundle.
-            getChecksummingFileMessage(locale);
+            getChecksummingFileText(locale);
 
     }
 

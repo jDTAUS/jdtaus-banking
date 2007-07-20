@@ -37,17 +37,33 @@ public final class IllegalDateMessage extends Message
      * The illegal date.
      * @serial
      */
-    private Date date;
+    private final Date date;
+
+    /**
+     * The starting date of the range for valid dates.
+     * @serial
+     */
+    private final Date dateRangeStart;
+
+    /**
+     * The ending date of the range for valid dates.
+     * @serial
+     */
+    private final Date dateRangeEnd;
 
     /**
      * Creates a new {@code IllegalDateMessage} instance taking the illegal
-     * date.
+     * date and the range of dates for which a date is considered legal.
      *
      * @param date the illegal date.
+     * @param dateRangeStart the starting date of the range for valid dates.
+     * @param dateRangeEnd the ending date of the range for valid dates.
      *
-     * @throws NullPointerException if {@code date} is {@code null}.
+     * @throws NullPointerException if either {@code date},
+     * {@code dateRangeStart} or {@code dateRangeEnd} is {@code null}.
      */
-    public IllegalDateMessage(final Date date)
+    public IllegalDateMessage(final Date date, final Date dateRangeStart,
+        final Date dateRangeEnd)
     {
         super();
 
@@ -55,8 +71,18 @@ public final class IllegalDateMessage extends Message
         {
             throw new NullPointerException("date");
         }
+        if(dateRangeStart == null)
+        {
+            throw new NullPointerException("dateRangeStart");
+        }
+        if(dateRangeEnd == null)
+        {
+            throw new NullPointerException("dateRangeEnd");
+        }
 
         this.date = date;
+        this.dateRangeStart = dateRangeStart;
+        this.dateRangeEnd = dateRangeEnd;
     }
 
     //------------------------------------------------------------Constructors--
@@ -68,12 +94,14 @@ public final class IllegalDateMessage extends Message
      * @return the illegal date.
      * <ul>
      * <li>[0]: the illegal date.</li>
+     * <li>[1]: the starting date of the range for valid dates.</li>
+     * <li>[2]: the ending date of the range for valid dates.</li>
      * </ul>
      */
     public Object[] getFormatArguments(final Locale locale)
     {
         return new Object[] {
-            this.date
+            this.date, this.dateRangeStart, this.dateRangeEnd
         };
     }
 
@@ -81,7 +109,7 @@ public final class IllegalDateMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The date {0,date,long} is either before 1980 or after 2079.").
+     * (defaults to "The date {0,date,long} is either before {1,date,long} or after {2,date,long}.").
      */
     public String getText(final Locale locale)
     {

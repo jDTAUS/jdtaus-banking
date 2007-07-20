@@ -38,13 +38,13 @@ public final class CurrencyConstraintMessage extends Message
      * The ISO currency code of the currency violating the constraint.
      * @serial
      */
-    private String currencyCode;
+    private final String currencyCode;
 
     /**
      * The date at which {@code currencyCode} violates the constraint.
      * @serial
      */
-    private Date date;
+    private final Date date;
 
     /**
      * Creates a new {@code CurrencyConstraintMessage} taking a currency code

@@ -28,7 +28,7 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class IllegalDescriptionCountMessage extends Message
+public final class IllegalDescriptionCountMessage extends Message
 {
     //--Constructors------------------------------------------------------------
 
@@ -36,13 +36,13 @@ public class IllegalDescriptionCountMessage extends Message
      * Maximum number of supported descriptions.
      * @serial
      */
-    private int maxDescriptions;
+    private final int maxDescriptions;
 
     /**
      * Requested number of descriptions.
      * @serial
      */
-    private int requestedDescriptions;
+    private final int requestedDescriptions;
 
     /**
      * Creates a new {@code IllegalDescriptionCountMessage} instance taking
@@ -86,7 +86,7 @@ public class IllegalDescriptionCountMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The date {0,date,long} is either before 1980 or after 2079.").
+     * (defaults to "The number of descriptions ({1,number}) exceeds the possible number {0,number}.").
      */
     public String getText(final Locale locale)
     {

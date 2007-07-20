@@ -25,12 +25,13 @@ import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.core.text.Message;
 
 /**
- * Message stating that an invalid {@code Textschluessel} cannot be used.
+ * Message stating that a {@code Textschluessel} cannot be used in combination
+ * with a logical file type.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class TextschluesselConstraintMessage extends Message
+public final class TextschluesselConstraintMessage extends Message
 {
     //--Constructors------------------------------------------------------------
 
@@ -38,13 +39,13 @@ public class TextschluesselConstraintMessage extends Message
      * The type of the logical file incompatible with {@code textschluessel}.
      * @serial
      */
-    private LogicalFileType fileType;
+    private final LogicalFileType fileType;
 
     /**
      * The {@code Textschluessel} incompatible with {@code fileType}.
      * @serial
      */
-    private Textschluessel textschluessel;
+    private final Textschluessel textschluessel;
 
     /**
      * Creates a new {@code TextschluesselConstraintMessage} taking the

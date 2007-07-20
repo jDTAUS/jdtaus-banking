@@ -40,26 +40,36 @@ public final class IllegalScheduleMessage extends Message
      * Create date of the illegal schedule.
      * @serial
      */
-    private Date createDate;
+    private final Date createDate;
 
     /**
      * Execution date of the illegal schedule.
      * @serial
      */
-    private Date executionDate;
+    private final Date executionDate;
 
     /**
-     * Creates a new {@code IllegalScheduleMessage} instance taking the
-     * absolute position of the first illegal date, the create date and the
-     * date of execution.
+     * Maximum number of days allowed between {@code createDate} and
+     * {@code executionDate}.
+     * @serial
+     */
+    private final int maxDays;
+
+    /**
+     * Creates a new {@code IllegalScheduleMessage} instance taking the create
+     * date and the date of execution not forming a valid schedule for a
+     * maximum number of days between them.
      *
      * @param createDate the create date of the schedule.
      * @param executionDate the execution date of the schedule.
+     * @param maxDays the maximum number of days allowed between
+     * {@code createDate} and {@code executionDate}.
      *
      * @throws NullPointerException if {@code createDate} is {@code null}.
+     * @throws IllegalArgumentException if {@code maxDays} is negative.
      */
     public IllegalScheduleMessage(final Date createDate,
-        final Date executionDate)
+        final Date executionDate, final int maxDays)
     {
         super();
 
@@ -67,9 +77,14 @@ public final class IllegalScheduleMessage extends Message
         {
             throw new NullPointerException("createDate");
         }
+        if(maxDays < 0)
+        {
+            throw new IllegalArgumentException(Integer.toString(maxDays));
+        }
 
         this.createDate = createDate;
         this.executionDate = executionDate;
+        this.maxDays = maxDays;
     }
 
     //------------------------------------------------------------Constructors--
@@ -82,12 +97,14 @@ public final class IllegalScheduleMessage extends Message
      * <ul>
      * <li>[0]: the create date of the schedule.</li>
      * <li>[1]: the date of execution of the invalid schedule.</li>
+     * <li>[2]: the maximum number of days allowed between create date and
+     * execution date.</li>
      * </ul>
      */
     public Object[] getFormatArguments(final Locale locale)
     {
         return new Object[] {
-            this.createDate, this.executionDate
+            this.createDate, this.executionDate, new Integer(this.maxDays)
         };
     }
 
@@ -95,7 +112,7 @@ public final class IllegalScheduleMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The executiondate {2, date, long} is before create date {1, date, long} or more than 15 days thereafter.").
+     * (defaults to "The executiondate {1,date,long} is before create date {0,date,long} or more than {2,number} days thereafter.").
      */
     public String getText(final Locale locale)
     {

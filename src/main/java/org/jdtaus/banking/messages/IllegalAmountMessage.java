@@ -37,7 +37,7 @@ public final class IllegalAmountMessage extends Message
      * The illegal amount.
      * @serial
      */
-    private BigInteger amount;
+    private final BigInteger amount;
 
     /**
      * Creates a new {@code IllegalAmountMessage} taking an amount.

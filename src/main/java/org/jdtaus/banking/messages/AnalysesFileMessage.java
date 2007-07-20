@@ -53,7 +53,7 @@ public final class AnalysesFileMessage extends Message
      */
     public String getText(final Locale locale)
     {
-        return AnalysesFileMessageBundle.getAnalyzingFileMessage(locale);
+        return AnalysesFileMessageBundle.getAnalyzingFileText(locale);
     }
 
     //-----------------------------------------------------------------Message--

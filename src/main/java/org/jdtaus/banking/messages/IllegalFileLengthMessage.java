@@ -39,13 +39,13 @@ public final class IllegalFileLengthMessage extends Message
      * The length of a file incompatible to {@code blockSize}.
      * @serial
      */
-    private long fileLength;
+    private final long fileLength;
 
     /**
      * The length of one block in byte.
      * @serial
      */
-    private int blockSize;
+    private final int blockSize;
 
     /**
      * Creates a new {@code IllegalFileLengthMessage} instance taking the
@@ -102,7 +102,7 @@ public final class IllegalFileLengthMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The date {0,date,long} is either before 1980 or after 2079.").
+     * (defaults to "The length of the file ({0, number}) is incompatible to the blocksize {1,number}.").
      */
     public String getText(final Locale locale)
     {

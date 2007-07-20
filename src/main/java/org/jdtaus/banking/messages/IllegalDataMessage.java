@@ -26,7 +26,7 @@ import java.util.Locale;
 import org.jdtaus.core.text.Message;
 
 /**
- * Fehler-Meldung für ungültige Feld-Werte.
+ * Message stating that a field holds invalid data.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -35,7 +35,7 @@ public final class IllegalDataMessage extends Message
 {
     //--Constants---------------------------------------------------------------
 
-    /** Constant for a DTAUS alphabet field. */
+    /** Constant for DTAUS alphabet fields. */
     public static final int TYPE_ALPHA = 1;
 
     /** Constant for numeric DTAUS alphabet fields. */
@@ -163,7 +163,7 @@ public final class IllegalDataMessage extends Message
         if(!valid)
         {
             throw new IllegalArgumentException(
-                Integer.toString(this.getType()));
+                Integer.toString(this.type));
 
         }
     }

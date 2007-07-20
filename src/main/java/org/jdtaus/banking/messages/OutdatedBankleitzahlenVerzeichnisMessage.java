@@ -38,7 +38,7 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
      * Date of expiration of the directory.
      * @serial
      */
-    private Date dateOfExpiration;
+    private final Date dateOfExpiration;
 
     /**
      * Creates a new {@code OutdatedDirectoryMessage} instance taking the

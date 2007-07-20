@@ -40,19 +40,19 @@ public final class ChecksumErrorMessage extends Message
      * Absolute position of the file with the incorrect checksum.
      * @serial
      */
-    private long position;
+    private final long position;
 
     /**
      * Stored checksum.
      * @serial
      */
-    private Checksum storedChecksum;
+    private final Checksum storedChecksum;
 
     /**
      * Computed checksum.
      * @serial
      */
-    private Checksum computedChecksum;
+    private final Checksum computedChecksum;
 
     /**
      * Creates a new {@code ChecksumErrorMessage} instance.
@@ -131,7 +131,7 @@ public final class ChecksumErrorMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "Analyses file.").
+     * (defaults to "The checksum of the file beginning at position {0,number} is invalid.").
      */
     public String getText(final Locale locale)
     {

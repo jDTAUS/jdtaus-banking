@@ -37,13 +37,13 @@ public final class IllegalCurrencyMessage extends Message
      * The ISO currency code of the illegal currency.
      * @serial
      */
-    private String currencyCode;
+    private final String currencyCode;
 
     /**
      * The date at which {@code currenycCode} is illegal.
      * @serial
      */
-    private Date date;
+    private final Date date;
 
     /**
      * Creates a new {@code IllegalCurrencyMessage} instance taking the ISO
