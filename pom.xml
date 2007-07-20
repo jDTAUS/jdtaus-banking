@@ -75,7 +75,7 @@
         </configuration>
       </plugin>
       
-      <!-- plugin>
+      <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
         <executions>
@@ -87,16 +87,26 @@
             </goals>
             <configuration>
               <bundles>
-                <bundle>org.jdtaus.core.messages.DeletesBlocksMessage</bundle>
-                <bundle>org.jdtaus.core.messages.InsertsBlocksMessage</bundle>
-                <bundle>org.jdtaus.core.messages.CaughtExceptionMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.AnalysesFileMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.ChecksumErrorMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.ChecksumsFileMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.CurrencyConstraintMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.IllegalAmountMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.IllegalCurrencyMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.IllegalDataMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.IllegalDateMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.IllegalDescriptionCountMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.IllegalFileLengthMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.IllegalScheduleMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.TextschluesselConstraintMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
             </configuration>
           </execution>
         </executions>
-      </plugin -->
+      </plugin>
 
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
@@ -121,7 +131,8 @@
   <dependencies>
     <dependency>
       <groupId>org.jdtaus.common</groupId>
-      <artifactId>jdtaus-core-api</artifactId>
+      <artifactId>jdtaus-banking-api</artifactId>
+      <version>SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
