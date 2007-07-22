@@ -136,6 +136,10 @@
       <version>SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.core.container</groupId>
+      <artifactId>jdtaus-core-client-container</artifactId>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
