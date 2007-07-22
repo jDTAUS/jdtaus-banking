@@ -19,9 +19,6 @@
  */
 package org.jdtaus.banking.messages;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.Locale;
 import org.jdtaus.core.text.Message;
 
