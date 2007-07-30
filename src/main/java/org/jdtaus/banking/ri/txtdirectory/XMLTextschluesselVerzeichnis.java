@@ -28,7 +28,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -103,26 +102,29 @@ public final class XMLTextschluesselVerzeichnis
     //---------------------------------------------------------------Constants--
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(XMLTextschluesselVerzeichnis.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Protected <code>XMLTextschluesselVerzeichnis</code> implementation constructor.
+     * <code>XMLTextschluesselVerzeichnis</code> implementation constructor.
      *
      * @param meta Implementation meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected XMLTextschluesselVerzeichnis(final Implementation meta)
+    private XMLTextschluesselVerzeichnis(final Implementation meta)
     {
         super();
         if(meta == null)
@@ -132,13 +134,13 @@ public final class XMLTextschluesselVerzeichnis
         this.initializeProperties(meta.getProperties());
     }
     /**
-     * Protected <code>XMLTextschluesselVerzeichnis</code> dependency constructor.
+     * <code>XMLTextschluesselVerzeichnis</code> dependency constructor.
      *
      * @param meta dependency meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected XMLTextschluesselVerzeichnis(final Dependency meta)
+    private XMLTextschluesselVerzeichnis(final Dependency meta)
     {
         super();
         if(meta == null)
@@ -155,7 +157,7 @@ public final class XMLTextschluesselVerzeichnis
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -168,10 +170,12 @@ public final class XMLTextschluesselVerzeichnis
         this._reloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>Logger</code> implementation. */
@@ -212,10 +216,12 @@ public final class XMLTextschluesselVerzeichnis
 
         return ret;
     }
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -229,11 +235,12 @@ public final class XMLTextschluesselVerzeichnis
      *
      * @return the value of property <code>reloadIntervalMillis</code>.
      */
-    protected long getReloadIntervalMillis()
+    private long getReloadIntervalMillis()
     {
         return this._reloadIntervalMillis;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--ContainerInitializer----------------------------------------------------

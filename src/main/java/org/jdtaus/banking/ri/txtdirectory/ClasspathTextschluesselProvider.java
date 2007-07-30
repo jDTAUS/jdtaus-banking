@@ -49,26 +49,29 @@ public final class ClasspathTextschluesselProvider
 {
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(ClasspathTextschluesselProvider.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Protected <code>ClasspathTextschluesselProvider</code> implementation constructor.
+     * <code>ClasspathTextschluesselProvider</code> implementation constructor.
      *
      * @param meta Implementation meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected ClasspathTextschluesselProvider(final Implementation meta)
+    private ClasspathTextschluesselProvider(final Implementation meta)
     {
         super();
         if(meta == null)
@@ -78,13 +81,13 @@ public final class ClasspathTextschluesselProvider
         this.initializeProperties(meta.getProperties());
     }
     /**
-     * Protected <code>ClasspathTextschluesselProvider</code> dependency constructor.
+     * <code>ClasspathTextschluesselProvider</code> dependency constructor.
      *
      * @param meta dependency meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected ClasspathTextschluesselProvider(final Dependency meta)
+    private ClasspathTextschluesselProvider(final Dependency meta)
     {
         super();
         if(meta == null)
@@ -101,7 +104,7 @@ public final class ClasspathTextschluesselProvider
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -118,6 +121,7 @@ public final class ClasspathTextschluesselProvider
         this._directoryName = (java.lang.String) p.getValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--ContainerInitializer----------------------------------------------------
@@ -135,12 +139,15 @@ public final class ClasspathTextschluesselProvider
     //----------------------------------------------------ContainerInitializer--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -154,7 +161,7 @@ public final class ClasspathTextschluesselProvider
      *
      * @return the value of property <code>resourceName</code>.
      */
-    protected java.lang.String getResourceName()
+    private java.lang.String getResourceName()
     {
         return this._resourceName;
     }
@@ -170,11 +177,12 @@ public final class ClasspathTextschluesselProvider
      *
      * @return the value of property <code>directoryName</code>.
      */
-    protected java.lang.String getDirectoryName()
+    private java.lang.String getDirectoryName()
     {
         return this._directoryName;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--TextschluesselProvider--------------------------------------------------
