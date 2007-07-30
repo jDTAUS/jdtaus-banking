@@ -5,7 +5,7 @@
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.1</version>
+  <version>1.1-SNAPSHOT</version>
   <description><![CDATA[
   jDTAUS Banking provides a library for electronic banking facilities. This is
   the parent module for the library artifacts.]]>
