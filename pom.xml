@@ -5,7 +5,7 @@
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.0</version>
+  <version>1.1</version>
   <description><![CDATA[
   jDTAUS Banking provides a library for electronic banking facilities. This is
   the parent module for the library artifacts.]]>
@@ -135,6 +135,7 @@
   </build>
   <modules>
     <module>jdtaus-banking-api</module>
+    <module>jdtaus-banking-messages</module>
     <module>jdtaus-banking-spi</module>
     <module>jdtaus-banking-charsets</module>
     <module>jdtaus-banking-it</module>
@@ -191,13 +192,7 @@
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core.monitor</groupId>
-        <artifactId>jdtaus-core-client-monitoring</artifactId>
-        <version>RELEASE</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.jdtaus.core.monitor</groupId>
-        <artifactId>jdtaus-core-server-monitoring</artifactId>
+        <artifactId>jdtaus-core-task-monitor</artifactId>
         <version>RELEASE</version>
         <scope>test</scope>
       </dependency>
@@ -230,6 +225,12 @@
         <artifactId>jdtaus-core-log4j-logging</artifactId>
         <version>RELEASE</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jdtaus.core</groupId>
+        <artifactId>jdtaus-core-messages</artifactId>
+        <version>RELEASE</version>
+        <scope>provided</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
