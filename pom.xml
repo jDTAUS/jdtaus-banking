@@ -3,18 +3,18 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>SNAPSHOT</version>
+    <version>1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-messages</artifactId>
   <name>jDTAUS Banking Messages</name>
-  <version>SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <description>jDTAUS banking application messages.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/trunk</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/trunk</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-messages/trunk</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</url>
   </scm>
   <build>
     <resources>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-banking-api</artifactId>
-      <version>SNAPSHOT</version>
+      <version>RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.container</groupId>

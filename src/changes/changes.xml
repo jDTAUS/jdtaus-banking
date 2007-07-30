@@ -1,0 +1,11 @@
+<document>
+  <properties>
+    <title>Changelog</title>
+    <author email="cs@jdtaus.org">Christian Schulte</author>
+  </properties>
+  <body>
+    <release version="1.0" date="2007-08-01"
+             description="First stable release."/>
+
+  </body>
+</document>
