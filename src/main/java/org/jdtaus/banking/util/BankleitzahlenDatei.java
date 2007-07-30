@@ -30,11 +30,11 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import org.jdtaus.banking.BankleitzahlInfo;
+import org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ImplementationException;
 import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
@@ -42,7 +42,6 @@ import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.monitor.spi.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
-import org.jdtaus.core.text.Message;
 
 /**
  * German Bankleitzahlendatei for the format as of 2006-06-01.
@@ -59,16 +58,19 @@ public final class BankleitzahlenDatei
 {
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(BankleitzahlenDatei.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -78,7 +80,7 @@ public final class BankleitzahlenDatei
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -91,10 +93,12 @@ public final class BankleitzahlenDatei
         this._encoding = (java.lang.String) p.getValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>TaskMonitor</code> implementation. */
@@ -173,10 +177,12 @@ public final class BankleitzahlenDatei
 
         return ret;
     }
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -190,28 +196,15 @@ public final class BankleitzahlenDatei
      *
      * @return the value of property <code>encoding</code>.
      */
-    protected java.lang.String getEncoding()
+    private java.lang.String getEncoding()
     {
         return this._encoding;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--BankleitzahlenDatei-----------------------------------------------------
-
-    /** {@code Task} description for updating with another instance. */
-    private static final class Description extends Message
-    {
-        public Object[] getFormatArguments(final Locale locale)
-        {
-            return new Object[0];
-        }
-
-        public String getText(final Locale locale)
-        {
-            return BankleitzahlenDateiBundle.getUpdateTaskText(locale);
-        }
-    }
 
     /** Records held by the instance. */
     private Map records = new HashMap(5000);
@@ -270,8 +263,8 @@ public final class BankleitzahlenDatei
 
                 if(this.records.put(rec.getSerialNumber(), rec) != null)
                 {
-                    throw new ImplementationException(META,
-                        new IllegalArgumentException(rec.toString()));
+                    throw new IllegalArgumentException(
+                        rec.getSerialNumber().toString());
 
                 }
             }
@@ -353,7 +346,7 @@ public final class BankleitzahlenDatei
         Task task = new Task();
         task.setIndeterminate(false);
         task.setCancelable(false);
-        task.setDescription(new Description());
+        task.setDescription(new UpdatesBankleitzahlenDateiMessage());
         task.setMinimum(0);
         task.setMaximum(file.getRecords().length);
         task.setProgress(progress);
@@ -424,7 +417,7 @@ public final class BankleitzahlenDatei
         task = new Task();
         task.setIndeterminate(false);
         task.setCancelable(false);
-        task.setDescription(new Description());
+        task.setDescription(new UpdatesBankleitzahlenDateiMessage());
         task.setMinimum(0);
         task.setMaximum(this.records.size());
         task.setProgress(progress);
