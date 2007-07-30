@@ -25,5 +25,14 @@
       </action>
     </release>
 
+    <release version="1.1.1" date="2007-08-01"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated the XML module descriptor to the 1.1 model version.
+      Removed class <code>org.jdtaus.banking.ri.blzdirectory.OutdatedDirectoryMessage</code>
+      in favour of the new <code>jdtaus-banking-messages</code> artifact.]]>
+      </action>
+    </release>
   </body>
 </document>

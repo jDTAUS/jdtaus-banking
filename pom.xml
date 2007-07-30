@@ -3,7 +3,7 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0</version>
+    <version>1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
@@ -89,7 +89,6 @@
             <configuration>
               <bundles>
                 <bundle>org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis</bundle>
-                <bundle>org.jdtaus.banking.ri.blzdirectory.OutdatedDirectoryMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
@@ -140,6 +139,12 @@
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-messages</artifactId>
+      <version>RELEASE</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-it</artifactId>
       <version>RELEASE</version>
       <scope>test</scope>
@@ -158,7 +163,7 @@
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.monitor</groupId>
-      <artifactId>jdtaus-core-client-monitoring</artifactId>
+      <artifactId>jdtaus-core-task-monitor</artifactId>
     </dependency>
   </dependencies>
   <reporting>

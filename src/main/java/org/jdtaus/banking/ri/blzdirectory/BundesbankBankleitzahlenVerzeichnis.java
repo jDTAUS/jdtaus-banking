@@ -41,6 +41,7 @@ import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.BankleitzahlExpirationException;
 import org.jdtaus.banking.BankleitzahlInfo;
 import org.jdtaus.banking.BankleitzahlenVerzeichnis;
+import org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage;
 import org.jdtaus.banking.util.BankleitzahlenDatei;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContainerInitializer;
@@ -74,26 +75,29 @@ public final class BundesbankBankleitzahlenVerzeichnis
 {
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(BundesbankBankleitzahlenVerzeichnis.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Protected <code>BundesbankBankleitzahlenVerzeichnis</code> implementation constructor.
+     * <code>BundesbankBankleitzahlenVerzeichnis</code> implementation constructor.
      *
      * @param meta Implementation meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected BundesbankBankleitzahlenVerzeichnis(final Implementation meta)
+    private BundesbankBankleitzahlenVerzeichnis(final Implementation meta)
     {
         super();
         if(meta == null)
@@ -103,13 +107,13 @@ public final class BundesbankBankleitzahlenVerzeichnis
         this.initializeProperties(meta.getProperties());
     }
     /**
-     * Protected <code>BundesbankBankleitzahlenVerzeichnis</code> dependency constructor.
+     * <code>BundesbankBankleitzahlenVerzeichnis</code> dependency constructor.
      *
      * @param meta dependency meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected BundesbankBankleitzahlenVerzeichnis(final Dependency meta)
+    private BundesbankBankleitzahlenVerzeichnis(final Dependency meta)
     {
         super();
         if(meta == null)
@@ -126,7 +130,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -143,6 +147,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
         this._dateOfExpirationText = (java.lang.String) p.getValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--ContainerInitializer----------------------------------------------------
@@ -239,7 +244,8 @@ public final class BundesbankBankleitzahlenVerzeichnis
             if(new Date().after(this.getDateOfExpiration()))
             {
                 final MessageEvent evt = new MessageEvent(this, new Message[] {
-                    new OutdatedDirectoryMessage(this.getDateOfExpiration())
+                    new OutdatedBankleitzahlenVerzeichnisMessage(
+                        this.getDateOfExpiration())
                 }, MessageEvent.NOTIFICATION);
 
                 this.getApplicationLogger().log(evt);
@@ -254,6 +260,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
     //----------------------------------------------------ContainerInitializer--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>ApplicationLogger</code> implementation. */
@@ -332,10 +339,12 @@ public final class BundesbankBankleitzahlenVerzeichnis
 
         return ret;
     }
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -349,7 +358,7 @@ public final class BundesbankBankleitzahlenVerzeichnis
      *
      * @return the value of property <code>dateOfExpirationPattern</code>.
      */
-    protected java.lang.String getDateOfExpirationPattern()
+    private java.lang.String getDateOfExpirationPattern()
     {
         return this._dateOfExpirationPattern;
     }
@@ -365,11 +374,12 @@ public final class BundesbankBankleitzahlenVerzeichnis
      *
      * @return the value of property <code>dateOfExpirationText</code>.
      */
-    protected java.lang.String getDateOfExpirationText()
+    private java.lang.String getDateOfExpirationText()
     {
         return this._dateOfExpirationText;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--BankleitzahlenVerzeichnis-----------------------------------------------

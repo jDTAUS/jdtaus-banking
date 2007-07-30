@@ -54,26 +54,29 @@ public final class PropertyBankfileProvider
 {
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(PropertyBankfileProvider.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Protected <code>PropertyBankfileProvider</code> implementation constructor.
+     * <code>PropertyBankfileProvider</code> implementation constructor.
      *
      * @param meta Implementation meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected PropertyBankfileProvider(final Implementation meta)
+    private PropertyBankfileProvider(final Implementation meta)
     {
         super();
         if(meta == null)
@@ -83,13 +86,13 @@ public final class PropertyBankfileProvider
         this.initializeProperties(meta.getProperties());
     }
     /**
-     * Protected <code>PropertyBankfileProvider</code> dependency constructor.
+     * <code>PropertyBankfileProvider</code> dependency constructor.
      *
      * @param meta dependency meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected PropertyBankfileProvider(final Dependency meta)
+    private PropertyBankfileProvider(final Dependency meta)
     {
         super();
         if(meta == null)
@@ -106,7 +109,7 @@ public final class PropertyBankfileProvider
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -123,6 +126,7 @@ public final class PropertyBankfileProvider
         this._dataDirectory = (java.lang.String) p.getValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--ContainerInitializer----------------------------------------------------
@@ -140,12 +144,15 @@ public final class PropertyBankfileProvider
     //----------------------------------------------------ContainerInitializer--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -159,7 +166,7 @@ public final class PropertyBankfileProvider
      *
      * @return the value of property <code>configuration</code>.
      */
-    protected java.lang.String getConfiguration()
+    private java.lang.String getConfiguration()
     {
         return this._configuration;
     }
@@ -175,11 +182,12 @@ public final class PropertyBankfileProvider
      *
      * @return the value of property <code>dataDirectory</code>.
      */
-    protected java.lang.String getDataDirectory()
+    private java.lang.String getDataDirectory()
     {
         return this._dataDirectory;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--BankfileProvider--------------------------------------------------------
