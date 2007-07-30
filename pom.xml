@@ -9,12 +9,12 @@
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI Bankleitzahlenverzeichnis</name>
-  <version>1.2</version>
+  <version>1.3-SNAPSHOT</version>
   <description>jDTAUS BankleitzahlenVerzeichnis reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.2</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.2</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.2</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/branches/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.x</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/branches/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.x</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/branches/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.x</url>
   </scm>
   <build>
     <resources>
