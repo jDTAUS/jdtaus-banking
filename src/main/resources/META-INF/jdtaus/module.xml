@@ -28,17 +28,18 @@
 <jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
                xmlns:jdtaus="http://jdtaus.org/runtime/container/xml"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="http://jdtaus.org/runtime/container/xml http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-client-container/jdtaus-module-1.0.xsd"
+               xsi:schemaLocation="http://jdtaus.org/runtime/container/xml http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-client-container/jdtaus-module-1.1.xsd"
                jdtaus:name="${pom.name}"
                jdtaus:description="${pom.description}"
-               jdtaus:version="1.0">
+               jdtaus:version="1.1">
   
   <jdtaus:specifications>
     <jdtaus:specification jdtaus:identifier="org.jdtaus.banking.ri.currencydir.CurrenciesProvider"
                           jdtaus:description="${pom.description}"
                           jdtaus:vendor="${pom.organization.name}"
                           jdtaus:version="${pom.version}"
-                          jdtaus:singleton="true"/>
+                          jdtaus:singleton="true"
+                          jdtaus:multiplicity="many"/>
     
   </jdtaus:specifications>
 
@@ -46,7 +47,8 @@
     <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.currencydir.XMLCurrencyDirectory"
                            jdtaus:name="jDTAUS Banking SPI"
                            jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}">
+                           jdtaus:version="${pom.version}"
+                           jdtaus:final="true">
       
       <jdtaus:implementedSpecifications>
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.CurrencyDirectory"/>
@@ -55,7 +57,6 @@
       
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
-                           jdtaus:implementationName="jDTAUS Core SPI"
                            jdtaus:name="Logger"
                            jdtaus:bound="true">
           
@@ -72,7 +73,7 @@
       <jdtaus:properties>
         <jdtaus:property jdtaus:name="reloadIntervalMillis"
                          jdtaus:type="long"
-                         jdtaus:value="0"/>
+                         jdtaus:value="500"/>
         
       </jdtaus:properties>
     </jdtaus:implementation>
@@ -80,7 +81,8 @@
     <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.currencydir.ClasspathCurrenciesProvider"
                            jdtaus:name="${pom.name}"
                            jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}">
+                           jdtaus:version="${pom.version}"
+                           jdtaus:final="true">
       
       <jdtaus:implementedSpecifications>
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.ri.currencydir.CurrenciesProvider"/>

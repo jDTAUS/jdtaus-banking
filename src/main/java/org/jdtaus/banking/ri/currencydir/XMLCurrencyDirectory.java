@@ -107,26 +107,29 @@ public final class XMLCurrencyDirectory
     //---------------------------------------------------------------Constants--
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(XMLCurrencyDirectory.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Protected <code>XMLCurrencyDirectory</code> implementation constructor.
+     * <code>XMLCurrencyDirectory</code> implementation constructor.
      *
      * @param meta Implementation meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected XMLCurrencyDirectory(final Implementation meta)
+    private XMLCurrencyDirectory(final Implementation meta)
     {
         super();
         if(meta == null)
@@ -136,13 +139,13 @@ public final class XMLCurrencyDirectory
         this.initializeProperties(meta.getProperties());
     }
     /**
-     * Protected <code>XMLCurrencyDirectory</code> dependency constructor.
+     * <code>XMLCurrencyDirectory</code> dependency constructor.
      *
      * @param meta dependency meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected XMLCurrencyDirectory(final Dependency meta)
+    private XMLCurrencyDirectory(final Dependency meta)
     {
         super();
         if(meta == null)
@@ -159,7 +162,7 @@ public final class XMLCurrencyDirectory
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -172,10 +175,12 @@ public final class XMLCurrencyDirectory
         this._reloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>Logger</code> implementation. */
@@ -216,10 +221,12 @@ public final class XMLCurrencyDirectory
 
         return ret;
     }
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -233,11 +240,12 @@ public final class XMLCurrencyDirectory
      *
      * @return the value of property <code>reloadIntervalMillis</code>.
      */
-    protected long getReloadIntervalMillis()
+    private long getReloadIntervalMillis()
     {
         return this._reloadIntervalMillis;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--ContainerInitializer----------------------------------------------------
