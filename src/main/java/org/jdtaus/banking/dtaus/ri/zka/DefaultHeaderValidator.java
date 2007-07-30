@@ -31,15 +31,14 @@ import java.util.Map;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
-import org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyConstraintMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalCurrencyMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDateMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.MandatoryPropertyMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.dtaus.spi.CurrencyCounter;
 import org.jdtaus.banking.dtaus.spi.HeaderValidator;
 import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
+import org.jdtaus.banking.messages.CurrencyConstraintMessage;
+import org.jdtaus.banking.messages.IllegalCurrencyMessage;
+import org.jdtaus.banking.messages.IllegalDateMessage;
+import org.jdtaus.banking.messages.IllegalScheduleMessage;
+import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.ContainerFactory;
@@ -52,6 +51,7 @@ import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
+import org.jdtaus.core.messages.MandatoryPropertyMessage;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -65,26 +65,29 @@ public class DefaultHeaderValidator
 {
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(DefaultHeaderValidator.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Protected <code>DefaultHeaderValidator</code> implementation constructor.
+     * <code>DefaultHeaderValidator</code> implementation constructor.
      *
      * @param meta Implementation meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected DefaultHeaderValidator(final Implementation meta)
+    private DefaultHeaderValidator(final Implementation meta)
     {
         super();
         if(meta == null)
@@ -94,13 +97,13 @@ public class DefaultHeaderValidator
         this.initializeProperties(meta.getProperties());
     }
     /**
-     * Protected <code>DefaultHeaderValidator</code> dependency constructor.
+     * <code>DefaultHeaderValidator</code> dependency constructor.
      *
      * @param meta dependency meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected DefaultHeaderValidator(final Dependency meta)
+    private DefaultHeaderValidator(final Dependency meta)
     {
         super();
         if(meta == null)
@@ -117,7 +120,7 @@ public class DefaultHeaderValidator
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -134,10 +137,11 @@ public class DefaultHeaderValidator
         this._minDateMillis = ((java.lang.Long) p.getValue()).longValue();
 
 
-        p = meta.getProperty("maxScheduleDaysMillis");
-        this._maxScheduleDaysMillis = ((java.lang.Long) p.getValue()).longValue();
+        p = meta.getProperty("maxScheduleDays");
+        this._maxScheduleDays = ((java.lang.Integer) p.getValue()).intValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--ContainerInitializer----------------------------------------------------
@@ -155,6 +159,7 @@ public class DefaultHeaderValidator
     //----------------------------------------------------ContainerInitializer--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>CurrencyMapper</code> implementation. */
@@ -195,10 +200,12 @@ public class DefaultHeaderValidator
 
         return ret;
     }
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -212,7 +219,7 @@ public class DefaultHeaderValidator
      *
      * @return the value of property <code>maxDateMillis</code>.
      */
-    protected long getMaxDateMillis()
+    private long getMaxDateMillis()
     {
         return this._maxDateMillis;
     }
@@ -228,27 +235,28 @@ public class DefaultHeaderValidator
      *
      * @return the value of property <code>minDateMillis</code>.
      */
-    protected long getMinDateMillis()
+    private long getMinDateMillis()
     {
         return this._minDateMillis;
     }
 
     /**
-     * Property {@code maxScheduleDaysMillis}.
+     * Property {@code maxScheduleDays}.
      * @serial
      */
-    private long _maxScheduleDaysMillis;
+    private int _maxScheduleDays;
 
     /**
-     * Gets the value of property <code>maxScheduleDaysMillis</code>.
+     * Gets the value of property <code>maxScheduleDays</code>.
      *
-     * @return the value of property <code>maxScheduleDaysMillis</code>.
+     * @return the value of property <code>maxScheduleDays</code>.
      */
-    protected long getMaxScheduleDaysMillis()
+    private int getMaxScheduleDays()
     {
-        return this._maxScheduleDaysMillis;
+        return this._maxScheduleDays;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--HeaderValidator---------------------------------------------------------
@@ -273,7 +281,9 @@ public class DefaultHeaderValidator
         else if(!this.checkDate(header.getCreateDate()))
         {
             properties.put(Header.PROP_CREATEDATE,
-                new IllegalDateMessage(header.getCreateDate()));
+                new IllegalDateMessage(header.getCreateDate(),
+                new Date(this.getMinDateMillis()),
+                new Date(this.getMaxDateMillis())));
 
         }
 
@@ -281,7 +291,9 @@ public class DefaultHeaderValidator
             !this.checkDate(header.getExecutionDate()))
         {
             properties.put(Header.PROP_EXECUTIONDATE,
-                new IllegalDateMessage(header.getExecutionDate()));
+                new IllegalDateMessage(header.getExecutionDate(),
+                new Date(this.getMinDateMillis()),
+                new Date(this.getMaxDateMillis())));
 
         }
         if(header.getType() == null)
@@ -344,7 +356,7 @@ public class DefaultHeaderValidator
                 header.getExecutionDate()))
             {
                 messages.add(new IllegalScheduleMessage(header.getCreateDate(),
-                    header.getExecutionDate()));
+                    header.getExecutionDate(), this.getMaxScheduleDays()));
 
             }
         }
@@ -451,6 +463,31 @@ public class DefaultHeaderValidator
     //---------------------------------------------------------HeaderValidator--
     //--DefaultHeaderValidator--------------------------------------------------
 
+    /** Value of property {@code maxScheduleDays} in milliseconds. */
+    private long maxScheduleDaysMillis = Long.MIN_VALUE;
+
+    /** Creates a new {@code DefaultHeaderValidator} instance. */
+    public DefaultHeaderValidator()
+    {
+        this(META);
+        this.initialize();
+    }
+
+    /**
+     * Gets the value of property {@code maxScheduleDays} in milliseconds.
+     *
+     * @return the value of property {@code maxScheduleDays} in milliseconds.
+     */
+    private long getMaxScheduleDaysMillis()
+    {
+        if(this.maxScheduleDaysMillis < 0L)
+        {
+            this.maxScheduleDaysMillis = this.getMaxScheduleDays() * 86400000L;
+        }
+
+        return this.maxScheduleDaysMillis;
+    }
+
     /**
      * Checks configured properties.
      *
@@ -471,10 +508,10 @@ public class DefaultHeaderValidator
                 Long.toString(this.getMaxDateMillis()));
 
         }
-        if(this.getMaxScheduleDaysMillis() < 0L)
+        if(this.getMaxScheduleDays() < 0)
         {
-            throw new PropertyException("maxScheduleDaysMillis",
-                Long.toString(this.getMaxScheduleDaysMillis()));
+            throw new PropertyException("maxScheduleDays",
+                Integer.toString(this.getMaxScheduleDays()));
 
         }
     }

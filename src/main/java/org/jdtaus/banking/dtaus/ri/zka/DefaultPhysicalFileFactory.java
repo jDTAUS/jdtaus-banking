@@ -26,8 +26,8 @@ import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFileException;
 import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.spi.Fields;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalFileLengthMessage;
+import org.jdtaus.banking.messages.IllegalDataMessage;
+import org.jdtaus.banking.messages.IllegalFileLengthMessage;
 import org.jdtaus.core.container.ContainerInitializer;
 import org.jdtaus.core.container.Dependency;
 import org.jdtaus.core.container.Implementation;
@@ -53,26 +53,29 @@ public final class DefaultPhysicalFileFactory
 {
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(DefaultPhysicalFileFactory.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Protected <code>DefaultPhysicalFileFactory</code> implementation constructor.
+     * <code>DefaultPhysicalFileFactory</code> implementation constructor.
      *
      * @param meta Implementation meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected DefaultPhysicalFileFactory(final Implementation meta)
+    private DefaultPhysicalFileFactory(final Implementation meta)
     {
         super();
         if(meta == null)
@@ -82,13 +85,13 @@ public final class DefaultPhysicalFileFactory
         this.initializeProperties(meta.getProperties());
     }
     /**
-     * Protected <code>DefaultPhysicalFileFactory</code> dependency constructor.
+     * <code>DefaultPhysicalFileFactory</code> dependency constructor.
      *
      * @param meta dependency meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected DefaultPhysicalFileFactory(final Dependency meta)
+    private DefaultPhysicalFileFactory(final Dependency meta)
     {
         super();
         if(meta == null)
@@ -105,7 +108,7 @@ public final class DefaultPhysicalFileFactory
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -118,6 +121,7 @@ public final class DefaultPhysicalFileFactory
         this._defaultFormat = ((java.lang.Integer) p.getValue()).intValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--ContainerInitializer----------------------------------------------------
@@ -135,12 +139,15 @@ public final class DefaultPhysicalFileFactory
     //----------------------------------------------------ContainerInitializer--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -154,11 +161,12 @@ public final class DefaultPhysicalFileFactory
      *
      * @return the value of property <code>defaultFormat</code>.
      */
-    protected int getDefaultFormat()
+    private int getDefaultFormat()
     {
         return this._defaultFormat;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--PhysicalFileFactory-----------------------------------------------------
@@ -379,7 +387,6 @@ public final class DefaultPhysicalFileFactory
             AbstractErrorMessage.setErrorsEnabled(false);
 
             ret = new DefaultPhysicalFile(sops);
-            ret.checksum();
 
             messages = ThreadLocalMessages.getMessages().getMessages();
             if(messages.length > 0)

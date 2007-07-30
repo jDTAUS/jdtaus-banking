@@ -35,17 +35,15 @@ import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.Transaction;
-import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumTaskDescriptionMessage;
 import org.jdtaus.banking.dtaus.spi.CurrencyCounter;
 import org.jdtaus.banking.dtaus.spi.Fields;
-import org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalAmountMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalCurrencyMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
 import org.jdtaus.banking.dtaus.spi.HeaderValidator;
 import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
 import org.jdtaus.banking.dtaus.spi.IllegalTransactionException;
 import org.jdtaus.banking.dtaus.spi.TransactionValidator;
+import org.jdtaus.banking.messages.ChecksumErrorMessage;
+import org.jdtaus.banking.messages.ChecksumsFileMessage;
+import org.jdtaus.banking.messages.IllegalDataMessage;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.Implementation;
@@ -1494,9 +1492,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
     //---------------------------------------------------void checkAmount(...)--
     //--boolean checkDate()-----------------------------------------------------
 
+    /** Maximum allowed days between create and execution date. */
+    protected static final int MAX_SCHEDULEDAYS = 15;
+
     /** Maximum allowed days between create and execution date in millis. */
     private static final long MAX_SCHEDULEDAYS_MILLIS =
-        15L * 24L * 60L * 60L * 1000L;
+        MAX_SCHEDULEDAYS * 86400000L;
 
     /** 01/01/1980 00:00:00 CET. */
     private static final long VALID_DATES_START_MILLIS = 315529200000L;
@@ -1559,26 +1560,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
     //-----------------------------------------------------boolean checkDate()--
-    //--boolean checkDescriptionCount(...)--------------------------------------
-
-    /**
-     * Prüfung einer Anzahl Verwendungszweckzeilen.
-     *
-     * @param descriptionCount Wert für den geprüft werden soll, ob er einer
-     * gültigen Anzahl Verwendungszweckzeilen pro Transaktion entspricht.
-     *
-     * @return {@code true}, wenn {@code descriptionCount} einer gültigen
-     * Anzahl Verwendungszweckzeilen pro Transaktion entspricht;
-     * {@code false} sonst.
-     */
-    private boolean checkDescriptionCount(final int descriptionCount)
-    {
-        return descriptionCount >= 0 &&
-            descriptionCount <= AbstractLogicalFile.MAX_DESCRIPTIONS;
-
-    }
-
-    //--------------------------------------boolean checkDescriptionCount(...)--
     //--void resizeIndex(...)---------------------------------------------------
 
     /**
@@ -1841,7 +1822,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         if(checksumBlock <= this.getHeaderBlock() ||
             checksumBlock > this.persistence.getBlockCount())
         {
-
             throw new IllegalArgumentException("checksumBlock=" +
                 checksumBlock);
 
@@ -1890,7 +1870,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         this.writeHeader(this.getHeaderBlock(), header);
         this.cachedHeader = (Header) header.clone();
-        this.persistence.flush();
         return old;
     }
 
@@ -1907,7 +1886,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     {
         this.writeChecksum(this.getChecksumBlock(), checksum);
         this.cachedChecksum = (Checksum) checksum.clone();
-        this.persistence.flush();
     }
 
     protected void checksum() throws IOException
@@ -1926,17 +1904,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
         try
         {
             final long blockCount = this.persistence.getBlockCount();
-            final int maximumProgress = blockCount > Integer.MAX_VALUE ?
-                Integer.MAX_VALUE : (int) blockCount;
-
-            task.setIndeterminate(false);
+            task.setIndeterminate(true);
             task.setCancelable(false);
-            task.setDescription(new ChecksumTaskDescriptionMessage());
-            task.setMinimum(startBlock > Integer.MAX_VALUE ?
-                Integer.MAX_VALUE : (int) startBlock);
-
-            task.setMaximum(maximumProgress);
-            task.setProgress(task.getMinimum());
+            task.setDescription(new ChecksumsFileMessage());
             this.getTaskMonitorImpl().monitor(task);
 
             block = startBlock;
@@ -1964,9 +1934,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
             else
             {
                 this.getHeader(); // A-Datensatz prüfen.
-                task.setProgress(block > maximumProgress ?
-                    maximumProgress : (int) block);
-
                 this.counter = new CurrencyCounter();
 
                 while(block < blockCount &&
@@ -1988,10 +1955,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
                     blockOffset += blocks;
                     c.setTransactionCount(count++);
                     this.setChecksumBlock(block);
-
-                    task.setProgress(block > maximumProgress ?
-                        maximumProgress : (int) block);
-
                 }
 
                 this.setChecksumBlock(block);
@@ -2037,10 +2000,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
                     }
 
                 }
-
-                task.setProgress(block > maximumProgress ?
-                    maximumProgress : (int) block);
-
             }
         }
         finally
@@ -2103,7 +2062,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         this.writeChecksum(this.getChecksumBlock(), checksum);
         this.cachedChecksum = checksum;
-        this.persistence.flush();
     }
 
     public Transaction getTransaction(final int index) throws IOException
@@ -2204,7 +2162,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         this.writeChecksum(this.getChecksumBlock(), checksum);
         this.cachedChecksum = checksum;
-        this.persistence.flush();
         return old;
     }
 
@@ -2241,7 +2198,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         this.writeChecksum(this.getChecksumBlock(), checksum);
         this.cachedChecksum = checksum;
-        this.persistence.flush();
         return removed;
     }
 

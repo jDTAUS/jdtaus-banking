@@ -3,7 +3,7 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.0</version>
+    <version>1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
@@ -89,19 +89,6 @@
               <bundles>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumErrorMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalFileLengthMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.MandatoryPropertyMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDateMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalCurrencyMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.TextschluesselConstraintMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalAmountMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDescriptionCountMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.CurrencyConstraintMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.ChecksumTaskDescriptionMessage</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.messages.AnalyzingFileMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
@@ -148,6 +135,12 @@
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-messages</artifactId>
+      <version>RELEASE</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
@@ -204,7 +197,7 @@
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.monitor</groupId>
-      <artifactId>jdtaus-core-server-monitoring</artifactId>
+      <artifactId>jdtaus-core-task-monitor</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.lang</groupId>
@@ -217,6 +210,10 @@
     <dependency>
       <groupId>org.jdtaus.core.logging</groupId>
       <artifactId>jdtaus-core-jdk-logging</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-messages</artifactId>
     </dependency>
   </dependencies>
   <reporting>

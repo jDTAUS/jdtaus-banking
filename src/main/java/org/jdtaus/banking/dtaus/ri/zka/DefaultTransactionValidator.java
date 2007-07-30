@@ -28,13 +28,12 @@ import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalAmountMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalCurrencyMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDescriptionCountMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.MandatoryPropertyMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.dtaus.spi.IllegalTransactionException;
 import org.jdtaus.banking.dtaus.spi.TransactionValidator;
+import org.jdtaus.banking.messages.IllegalAmountMessage;
+import org.jdtaus.banking.messages.IllegalCurrencyMessage;
+import org.jdtaus.banking.messages.IllegalDescriptionCountMessage;
+import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.ContainerFactory;
@@ -47,6 +46,7 @@ import org.jdtaus.core.container.ModelFactory;
 import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
+import org.jdtaus.core.messages.MandatoryPropertyMessage;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -60,26 +60,29 @@ public final class DefaultTransactionValidator
 {
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(DefaultTransactionValidator.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Protected <code>DefaultTransactionValidator</code> implementation constructor.
+     * <code>DefaultTransactionValidator</code> implementation constructor.
      *
      * @param meta Implementation meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected DefaultTransactionValidator(final Implementation meta)
+    private DefaultTransactionValidator(final Implementation meta)
     {
         super();
         if(meta == null)
@@ -89,13 +92,13 @@ public final class DefaultTransactionValidator
         this.initializeProperties(meta.getProperties());
     }
     /**
-     * Protected <code>DefaultTransactionValidator</code> dependency constructor.
+     * <code>DefaultTransactionValidator</code> dependency constructor.
      *
      * @param meta dependency meta-data.
      *
      * @throws NullPointerException if <code>meta</code> is <code>null</code>.
      */
-    protected DefaultTransactionValidator(final Dependency meta)
+    private DefaultTransactionValidator(final Dependency meta)
     {
         super();
         if(meta == null)
@@ -112,7 +115,7 @@ public final class DefaultTransactionValidator
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -137,6 +140,7 @@ public final class DefaultTransactionValidator
         this._minAmount = ((java.lang.Long) p.getValue()).longValue();
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--ContainerInitializer----------------------------------------------------
@@ -154,6 +158,7 @@ public final class DefaultTransactionValidator
     //----------------------------------------------------ContainerInitializer--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>CurrencyMapper</code> implementation. */
@@ -232,10 +237,12 @@ public final class DefaultTransactionValidator
 
         return ret;
     }
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -249,7 +256,7 @@ public final class DefaultTransactionValidator
      *
      * @return the value of property <code>maxDescriptions</code>.
      */
-    protected int getMaxDescriptions()
+    private int getMaxDescriptions()
     {
         return this._maxDescriptions;
     }
@@ -265,7 +272,7 @@ public final class DefaultTransactionValidator
      *
      * @return the value of property <code>minDescriptions</code>.
      */
-    protected int getMinDescriptions()
+    private int getMinDescriptions()
     {
         return this._minDescriptions;
     }
@@ -281,7 +288,7 @@ public final class DefaultTransactionValidator
      *
      * @return the value of property <code>maxAmount</code>.
      */
-    protected long getMaxAmount()
+    private long getMaxAmount()
     {
         return this._maxAmount;
     }
@@ -297,11 +304,12 @@ public final class DefaultTransactionValidator
      *
      * @return the value of property <code>minAmount</code>.
      */
-    protected long getMinAmount()
+    private long getMinAmount()
     {
         return this._minAmount;
     }
 
+// </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
     //--TransactionValidator----------------------------------------------------
@@ -419,7 +427,8 @@ public final class DefaultTransactionValidator
         {
             properties.put(Transaction.PROP_DESCRIPTIONS,
                 new IllegalDescriptionCountMessage(
-                AbstractLogicalFile.MAX_DESCRIPTIONS));
+                AbstractLogicalFile.MAX_DESCRIPTIONS,
+                transaction.getDescriptions().length));
 
         }
 
@@ -461,6 +470,13 @@ public final class DefaultTransactionValidator
 
     //----------------------------------------------------TransactionValidator--
     //--DefaultTransactionValidator---------------------------------------------
+
+    /** Created a new {@code DefaultTransactionValidator} instance. */
+    public DefaultTransactionValidator()
+    {
+        this(META);
+        this.initialize();
+    }
 
     /**
      * Checks configured properties.

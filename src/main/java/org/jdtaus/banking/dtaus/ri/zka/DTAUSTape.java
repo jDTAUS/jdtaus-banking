@@ -39,10 +39,10 @@ import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.dtaus.Transaction;
-import org.jdtaus.banking.dtaus.ri.zka.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.dtaus.spi.Fields;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalDataMessage;
-import org.jdtaus.banking.dtaus.ri.zka.messages.IllegalScheduleMessage;
+import org.jdtaus.banking.messages.IllegalDataMessage;
+import org.jdtaus.banking.messages.IllegalScheduleMessage;
+import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
@@ -269,16 +269,19 @@ public final class DTAUSTape extends AbstractLogicalFile
     //---------------------------------------------------------------Attribute--
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(DTAUSTape.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -288,7 +291,7 @@ public final class DTAUSTape extends AbstractLogicalFile
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -298,6 +301,7 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--Konstruktoren-----------------------------------------------------------
@@ -339,6 +343,7 @@ public final class DTAUSTape extends AbstractLogicalFile
     //-----------------------------------------------------------Konstruktoren--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>CurrencyMapper</code> implementation. */
@@ -569,6 +574,7 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         return ret;
     }
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--AbstractLogicalFile-----------------------------------------------------
@@ -971,7 +977,9 @@ public final class DTAUSTape extends AbstractLogicalFile
         {
             if(!this.checkSchedule(createDate, executionDate))
             {
-                msg = new IllegalScheduleMessage(createDate, executionDate);
+                msg = new IllegalScheduleMessage(createDate, executionDate,
+                    MAX_SCHEDULEDAYS);
+
                 if(AbstractErrorMessage.isErrorsEnabled())
                 {
                     throw new CorruptedException(this.getMeta(),

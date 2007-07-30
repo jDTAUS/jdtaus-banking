@@ -24,9 +24,9 @@ import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFile;
-import org.jdtaus.banking.dtaus.ri.zka.messages.AnalyzingFileMessage;
 import org.jdtaus.banking.dtaus.spi.HeaderValidator;
 import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
+import org.jdtaus.banking.messages.AnalysesFileMessage;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContextFactory;
 import org.jdtaus.core.container.ContextInitializer;
@@ -63,16 +63,19 @@ public final class DefaultPhysicalFile implements PhysicalFile
     //---------------------------------------------------------------Attribute--
     //--Implementation----------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
     // This section is managed by jdtaus-container-mojo.
 
     /** Meta-data describing the implementation. */
     private static final Implementation META =
         ModelFactory.getModel().getModules().
         getImplementation(DefaultPhysicalFile.class.getName());
+// </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
     /**
@@ -82,7 +85,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
      *
      * @throws NullPointerException if {@code meta} is {@code null}.
      */
-    protected void initializeProperties(final Properties meta)
+    private void initializeProperties(final Properties meta)
     {
         Property p;
 
@@ -92,12 +95,18 @@ public final class DefaultPhysicalFile implements PhysicalFile
         }
 
     }
+// </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
     //--Konstruktoren-----------------------------------------------------------
 
+    /** <code>StructuredFile</code> requirement. **/
+    private StructuredFileOperations structuredFile;
+
     /**
      * Creates a new {@code DefaultPhysicalFile} instance.
+     * <p>Registers a {@code StructuredFileListener} with the given
+     * {@code structuredFile} and then checksums the contents of the file.</p>
      *
      * @param structuredFile the {@code StructuredFile} implementation to
      * operate on.
@@ -108,7 +117,6 @@ public final class DefaultPhysicalFile implements PhysicalFile
     public DefaultPhysicalFile(
         final StructuredFileOperations structuredFile) throws IOException
     {
-
         super();
         this.initializeProperties(DefaultPhysicalFile.META.getProperties());
 
@@ -173,11 +181,14 @@ public final class DefaultPhysicalFile implements PhysicalFile
                 return i;
             }
         });
+
+        this.checksum();
     }
 
     //-----------------------------------------------------------Konstruktoren--
     //--Dependencies------------------------------------------------------------
 
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>TaskMonitor</code> implementation. */
@@ -218,56 +229,14 @@ public final class DefaultPhysicalFile implements PhysicalFile
 
         return ret;
     }
+// </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--PhysicalFile------------------------------------------------------------
 
-    protected void checksum() throws IOException
-    {
-        this.dtausCount = 0;
-        int dtausIndex = 0;
-        final long blockCount = this.getStructuredFile().getBlockCount();
-        final int maximumProgress = blockCount > Integer.MAX_VALUE ?
-            Integer.MAX_VALUE : (int) blockCount;
-
-        final Task task = new Task();
-        task.setIndeterminate(false);
-        task.setCancelable(false);
-        task.setDescription(new AnalyzingFileMessage());
-        task.setMinimum(0);
-        task.setProgress(0);
-        task.setMaximum(maximumProgress);
-
-        try
-        {
-            this.getTaskMonitor().monitor(task);
-
-            for(long block = 0L; block < blockCount;)
-            {
-                task.setProgress(block > maximumProgress ?
-                    maximumProgress : (int) block);
-
-                this.resizeIndex(dtausIndex);
-                this.index[dtausIndex] = this.newLogicalFile(block);
-                this.index[dtausIndex].checksum();
-                block = this.index[dtausIndex++].getChecksumBlock() + 1L;
-                this.dtausCount++;
-            }
-        }
-        finally
-        {
-            this.getTaskMonitor().finish(task);
-        }
-    }
-
     public int count()
     {
         return this.dtausCount;
-    }
-
-    protected boolean checkLogicalFileExists(int dtausId)
-    {
-        return dtausId < this.dtausCount && dtausId >= 0;
     }
 
     public LogicalFile add(final Header header) throws IOException
@@ -313,7 +282,6 @@ public final class DefaultPhysicalFile implements PhysicalFile
         lFile.writeChecksum(this.index[this.dtausCount].
             getHeaderBlock() + 1L, new Checksum());
 
-        this.getStructuredFile().flush();
         this.index[this.dtausCount].checksum();
         return this.index[this.dtausCount++];
     }
@@ -341,25 +309,74 @@ public final class DefaultPhysicalFile implements PhysicalFile
         System.arraycopy(this.index, dtausId + 1, this.index, dtausId,
             --this.dtausCount - dtausId);
 
+    }
+
+    public void commit() throws IOException
+    {
         this.getStructuredFile().flush();
     }
 
     //------------------------------------------------------------PhysicalFile--
     //--DefaultPhysicalFile-----------------------------------------------------
 
-    /** <code>StructuredFile</code> requirement. **/
-    private StructuredFileOperations structuredFile;
-
     /** StructuredFileOperations requirement getter method. */
-    protected StructuredFileOperations getStructuredFile()
+    private StructuredFileOperations getStructuredFile()
     {
         return this.structuredFile;
     }
 
-    protected AbstractLogicalFile newLogicalFile(
+    private boolean checkLogicalFileExists(int dtausId)
+    {
+        return dtausId < this.dtausCount && dtausId >= 0;
+    }
+
+    private void checksum() throws IOException
+    {
+        this.dtausCount = 0;
+        int dtausIndex = 0;
+        final long blockCount = this.getStructuredFile().getBlockCount();
+
+        long maximumProgress = blockCount;
+        long progressDivisor = 1L;
+
+        while(maximumProgress > Integer.MAX_VALUE)
+        {
+            maximumProgress /= 2L;
+            progressDivisor *= 2L;
+        }
+
+        final Task task = new Task();
+        task.setIndeterminate(false);
+        task.setCancelable(false);
+        task.setDescription(new AnalysesFileMessage());
+        task.setMinimum(0);
+        task.setProgress(0);
+        task.setMaximum((int) maximumProgress);
+
+        try
+        {
+            this.getTaskMonitor().monitor(task);
+
+            for(long block = 0L; block < blockCount;)
+            {
+                task.setProgress((int) (block / progressDivisor));
+
+                this.resizeIndex(dtausIndex);
+                this.index[dtausIndex] = this.newLogicalFile(block);
+                this.index[dtausIndex].checksum();
+                block = this.index[dtausIndex++].getChecksumBlock() + 1L;
+                this.dtausCount++;
+            }
+        }
+        finally
+        {
+            this.getTaskMonitor().finish(task);
+        }
+    }
+
+    private AbstractLogicalFile newLogicalFile(
         final long headerBlock) throws IOException
     {
-
         final AbstractLogicalFile ret;
 
         switch(this.getStructuredFile().getBlockSize())
@@ -378,7 +395,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
         return ret;
     }
 
-    protected void resizeIndex(int index)
+    private void resizeIndex(int index)
     {
         if(this.index == null)
         {
