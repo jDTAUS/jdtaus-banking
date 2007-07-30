@@ -67,7 +67,7 @@ public class MessagesTest extends TestCase
         this.assertNotNull(new ChecksumErrorMessage(c1, c2, 0L));
         this.assertNotNull(new ChecksumsFileMessage());
         this.assertNotNull(new CurrencyConstraintMessage("DEM", new Date()));
-        this.assertNotNull(new IllegalAmountMessage(BigInteger.TEN));
+        this.assertNotNull(new IllegalAmountMessage(new BigInteger("10")));
         this.assertNotNull(new IllegalCurrencyMessage("DEM", new Date()));
         this.assertNotNull(new IllegalDataMessage(
             0xA1, IllegalDataMessage.TYPE_CONSTANT, 0L, "TEST"));
