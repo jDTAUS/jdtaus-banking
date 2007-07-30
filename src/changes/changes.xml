@@ -6,6 +6,16 @@
   <body>
     <release version="1.0" date="2007-06-01"
              description="First stable release."/>
+    
+    <release version="1.0.1" date="2007-08-01"
+             description="Maintenance release.">
       
+      <action dev="schulte2005" action="update"><![CDATA[
+      Refactored the provider implementations to not use any inner classes
+      avoiding access from the inner classes to the enclosing class improving
+      performance.]]>
+      </action>
+    </release>
+    
   </body>
 </document>

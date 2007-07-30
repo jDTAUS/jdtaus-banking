@@ -49,20 +49,20 @@ public class IBM273CharsetProvider extends CharsetProvider
     //--Constants---------------------------------------------------------------
 
     /** Common name. */
-    private static final String COMMON_NAME = "IBM273";
+    static final String COMMON_NAME = "IBM273";
 
     /** Alias names. */
-    private static final String[] ALIAS_NAMES = {
+    static final String[] ALIAS_NAMES = {
         "cp273", "csIBM273"
     };
 
     /** Supported character set names. */
-    private static final String[] SUPPORTED_NAMES = {
+    static final String[] SUPPORTED_NAMES = {
         IBM273CharsetProvider.COMMON_NAME.toLowerCase(),
         "cp273", "csIBM273"
     };
 
-    private static final char[] IBM273_TO_CHAR = {
+    static final char[] IBM273_TO_CHAR = {
         '\u0000', '\u0001', '\u0002', '\u0003', '\u009C', '\u0009', '\u0086',
         '\u007F', '\u0097', '\u008D', '\u008E', '\u000B', '\u000C',
         0xD, '\u000E', '\u000F', '\u0010', '\u0011', '\u0012', '\u0013',
@@ -108,7 +108,7 @@ public class IBM273CharsetProvider extends CharsetProvider
         '\u009F'
     };
 
-    private static final byte[] CHAR_TO_IBM273 = new byte[0x203F];
+    static final byte[] CHAR_TO_IBM273 = new byte[0x203F];
 
     //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
@@ -435,239 +435,235 @@ public class IBM273CharsetProvider extends CharsetProvider
     }
 
     //---------------------------------------------------------CharsetProvider--
+}
 
-    /** IBM273 {@code Charset} implementation. */
-    public static class IBM273Charset extends Charset
+//--IBM273Charset---------------------------------------------------------------
+
+/** IBM273 {@code Charset} implementation. */
+class IBM273Charset extends Charset
+{
+
+    public IBM273Charset()
     {
-
-        public IBM273Charset()
-        {
-            super(IBM273CharsetProvider.COMMON_NAME,
-                IBM273CharsetProvider.ALIAS_NAMES);
-
-        }
-
-
-        public CharsetEncoder newEncoder()
-        {
-            return new IBM273CharsetEncoder();
-        }
-
-        public CharsetDecoder newDecoder()
-        {
-            return new IBM273CharsetDecoder();
-        }
-
-        public boolean contains(final Charset charset)
-        {
-            return false;
-        }
-
-        private boolean isCharacterSupported(final char c)
-        {
-            return (c >= '\u0000' && c <= '\u00AE') ||
-                (c >= '\u00B0' && c <= '\u00FF') || c == '\u203E';
-
-        }
-
-        //--IBM273CharsetEncoder------------------------------------------------
-
-        class IBM273CharsetEncoder extends CharsetEncoder
-        {
-
-            private final char[] charBuf = new char[65536];
-
-            IBM273CharsetEncoder()
-            {
-                super(IBM273Charset.this, 1f, 1f);
-                this.onUnmappableCharacter(CodingErrorAction.REPLACE);
-            }
-
-            protected CoderResult encodeLoop(final CharBuffer in,
-                final ByteBuffer buf)
-            {
-
-                if(in.hasArray() && buf.hasArray())
-                {
-                    return this.encodeLoopArray(in, buf);
-                }
-
-                int inRemaining;
-                final int inPosition = in.position();
-                int i;
-                int inLen;
-
-                while(in.hasRemaining())
-                {
-                    inRemaining = in.remaining();
-                    if(inRemaining < this.charBuf.length)
-                    {
-                        in.get(this.charBuf, 0, inRemaining);
-                        inLen = inRemaining;
-                    }
-                    else
-                    {
-                        in.get(this.charBuf, 0, this.charBuf.length);
-                        inLen = this.charBuf.length;
-                    }
-                    for(i = 0; i < inLen; i++)
-                    {
-                        if(!buf.hasRemaining())
-                        {
-                            return CoderResult.OVERFLOW;
-                        }
-
-                        if(!isCharacterSupported(this.charBuf[i]))
-                        {
-                            in.position(inPosition + i);
-                            return CoderResult.unmappableForLength(1);
-                        }
-                        buf.put(IBM273CharsetProvider.CHAR_TO_IBM273[
-                            this.charBuf[i]]);
-
-                    }
-                }
-
-                return CoderResult.UNDERFLOW;
-            }
-
-            protected CoderResult encodeLoopArray(final CharBuffer in,
-                final ByteBuffer buf)
-            {
-
-                final char[] inArray = in.array();
-                final int inOffset = in.arrayOffset();
-                final byte[] outArray = buf.array();
-                final int outOffset = buf.arrayOffset();
-                final int inPosition = in.position();
-                final int outPosition = buf.position();
-                int inRemaining;
-                while((inRemaining = in.remaining()) > 0)
-                {
-                    if(buf.remaining() < inRemaining)
-                    {
-                        return CoderResult.OVERFLOW;
-                    }
-
-                    for(int i = 0; i < inRemaining; i++)
-                    {
-                        final int inIndex = inPosition + inOffset + i;
-                        final int outIndex = outPosition + outOffset + i;
-                        if(!isCharacterSupported(inArray[inIndex]))
-                        {
-                            in.position(inPosition + i);
-                            buf.position(outPosition + i);
-                            return CoderResult.unmappableForLength(1);
-                        }
-                        else
-                        {
-                            outArray[outIndex] =
-                                IBM273CharsetProvider.CHAR_TO_IBM273[
-                                inArray[inIndex]];
-
-                        }
-                    }
-                    in.position(inPosition + inRemaining);
-                    buf.position(outPosition + inRemaining);
-                }
-
-                return CoderResult.UNDERFLOW;
-            }
-        }
-
-
-        //------------------------------------------------IBM273CharsetEncoder--
-        //--IBM273CharsetDecoder------------------------------------------------
-
-        class IBM273CharsetDecoder extends CharsetDecoder
-        {
-            private final byte[] byteBuf = new byte[65536];
-
-            IBM273CharsetDecoder()
-            {
-                super(IBM273Charset.this, 1f, 1f);
-                this.onUnmappableCharacter(CodingErrorAction.REPLACE);
-            }
-
-            protected CoderResult decodeLoop(final ByteBuffer in,
-                final CharBuffer buf)
-            {
-
-                if(in.hasArray() && buf.hasArray())
-                {
-                    return this.decodeLoopArray(in, buf);
-                }
-
-                int inRemaining;
-                int i;
-                int inLen;
-
-                while(in.hasRemaining())
-                {
-                    inRemaining = in.remaining();
-                    if(inRemaining < this.byteBuf.length)
-                    {
-                        in.get(this.byteBuf, 0, inRemaining);
-                        inLen = inRemaining;
-                    }
-                    else
-                    {
-                        in.get(this.byteBuf, 0, this.byteBuf.length);
-                        inLen = this.byteBuf.length;
-                    }
-                    for(i = 0; i < inLen; i++)
-                    {
-                        if(!buf.hasRemaining())
-                        {
-                            return CoderResult.OVERFLOW;
-                        }
-
-                        buf.put(IBM273CharsetProvider.IBM273_TO_CHAR[
-                            this.byteBuf[i] & 0xFF]);
-
-                    }
-                }
-
-                return CoderResult.UNDERFLOW;
-            }
-
-            protected CoderResult decodeLoopArray(final ByteBuffer in,
-                final CharBuffer buf)
-            {
-
-                final byte[] inArray = in.array();
-                final int inOffset = in.arrayOffset();
-                final char[] outArray = buf.array();
-                final int outOffset = buf.arrayOffset();
-                final int inPosition = in.position();
-                final int outPosition = buf.position();
-                int inRemaining;
-                while((inRemaining = in.remaining()) > 0)
-                {
-                    for(int i = 0; i < inRemaining; i++)
-                    {
-                        if(buf.remaining() < inRemaining)
-                        {
-                            return CoderResult.OVERFLOW;
-                        }
-
-                        final int inIndex = inPosition + inOffset + i;
-                        final int outIndex = outPosition + outOffset + i;
-                        outArray[outIndex] =
-                            IBM273CharsetProvider.IBM273_TO_CHAR[
-                            inArray[inIndex] & 0xFF];
-
-                    }
-                    in.position(inPosition + inRemaining);
-                    buf.position(outPosition + inRemaining);
-                }
-
-                return CoderResult.UNDERFLOW;
-            }
-        }
-
-        //------------------------------------------------IBM273CharsetDecoder--
+        super(IBM273CharsetProvider.COMMON_NAME,
+            IBM273CharsetProvider.ALIAS_NAMES);
 
     }
 
+    public CharsetEncoder newEncoder()
+    {
+        return new IBM273CharsetEncoder(this);
+    }
+
+    public CharsetDecoder newDecoder()
+    {
+        return new IBM273CharsetDecoder(this);
+    }
+
+    public boolean contains(final Charset charset)
+    {
+        return false;
+    }
+
+    static boolean isCharacterSupported(final char c)
+    {
+        return (c >= '\u0000' && c <= '\u00AE') ||
+            (c >= '\u00B0' && c <= '\u00FF') || c == '\u203E';
+
+    }
 }
+
+//---------------------------------------------------------------IBM273Charset--
+//--IBM273CharsetEncoder--------------------------------------------------------
+
+class IBM273CharsetEncoder extends CharsetEncoder
+{
+
+    private final char[] charBuf = new char[65536];
+
+    IBM273CharsetEncoder(final Charset charset)
+    {
+        super(charset, 1f, 1f);
+        this.onUnmappableCharacter(CodingErrorAction.REPLACE);
+    }
+
+    protected CoderResult encodeLoop(final CharBuffer in,
+        final ByteBuffer buf)
+    {
+        if(in.hasArray() && buf.hasArray())
+        {
+            return this.encodeLoopArray(in, buf);
+        }
+
+        int inRemaining;
+        final int inPosition = in.position();
+        int i;
+        int inLen;
+
+        while(in.hasRemaining())
+        {
+            inRemaining = in.remaining();
+            if(inRemaining < this.charBuf.length)
+            {
+                in.get(this.charBuf, 0, inRemaining);
+                inLen = inRemaining;
+            }
+            else
+            {
+                in.get(this.charBuf, 0, this.charBuf.length);
+                inLen = this.charBuf.length;
+            }
+            for(i = 0; i < inLen; i++)
+            {
+                if(!buf.hasRemaining())
+                {
+                    return CoderResult.OVERFLOW;
+                }
+
+                if(!IBM273Charset.isCharacterSupported(this.charBuf[i]))
+                {
+                    in.position(inPosition + i);
+                    return CoderResult.unmappableForLength(1);
+                }
+                buf.put(IBM273CharsetProvider.CHAR_TO_IBM273[
+                    this.charBuf[i]]);
+
+            }
+        }
+
+        return CoderResult.UNDERFLOW;
+    }
+
+    private CoderResult encodeLoopArray(final CharBuffer in,
+        final ByteBuffer buf)
+    {
+        final char[] inArray = in.array();
+        final int inOffset = in.arrayOffset();
+        final byte[] outArray = buf.array();
+        final int outOffset = buf.arrayOffset();
+        final int inPosition = in.position();
+        final int outPosition = buf.position();
+        int inRemaining;
+        while((inRemaining = in.remaining()) > 0)
+        {
+            if(buf.remaining() < inRemaining)
+            {
+                return CoderResult.OVERFLOW;
+            }
+
+            for(int i = 0; i < inRemaining; i++)
+            {
+                final int inIndex = inPosition + inOffset + i;
+                final int outIndex = outPosition + outOffset + i;
+                if(!IBM273Charset.isCharacterSupported(inArray[inIndex]))
+                {
+                    in.position(inPosition + i);
+                    buf.position(outPosition + i);
+                    return CoderResult.unmappableForLength(1);
+                }
+                else
+                {
+                    outArray[outIndex] =
+                        IBM273CharsetProvider.CHAR_TO_IBM273[
+                        inArray[inIndex]];
+
+                }
+            }
+            in.position(inPosition + inRemaining);
+            buf.position(outPosition + inRemaining);
+        }
+
+        return CoderResult.UNDERFLOW;
+    }
+}
+
+//--------------------------------------------------------IBM273CharsetEncoder--
+//--IBM273CharsetDecoder--------------------------------------------------------
+
+class IBM273CharsetDecoder extends CharsetDecoder
+{
+    private final byte[] byteBuf = new byte[65536];
+
+    IBM273CharsetDecoder(final Charset charset)
+    {
+        super(charset, 1f, 1f);
+        this.onUnmappableCharacter(CodingErrorAction.REPLACE);
+    }
+
+    protected CoderResult decodeLoop(final ByteBuffer in,
+        final CharBuffer buf)
+    {
+
+        if(in.hasArray() && buf.hasArray())
+        {
+            return this.decodeLoopArray(in, buf);
+        }
+
+        int inRemaining;
+        int i;
+        int inLen;
+
+        while(in.hasRemaining())
+        {
+            inRemaining = in.remaining();
+            if(inRemaining < this.byteBuf.length)
+            {
+                in.get(this.byteBuf, 0, inRemaining);
+                inLen = inRemaining;
+            }
+            else
+            {
+                in.get(this.byteBuf, 0, this.byteBuf.length);
+                inLen = this.byteBuf.length;
+            }
+            for(i = 0; i < inLen; i++)
+            {
+                if(!buf.hasRemaining())
+                {
+                    return CoderResult.OVERFLOW;
+                }
+
+                buf.put(IBM273CharsetProvider.IBM273_TO_CHAR[
+                    this.byteBuf[i] & 0xFF]);
+
+            }
+        }
+
+        return CoderResult.UNDERFLOW;
+    }
+
+    private CoderResult decodeLoopArray(final ByteBuffer in,
+        final CharBuffer buf)
+    {
+        final byte[] inArray = in.array();
+        final int inOffset = in.arrayOffset();
+        final char[] outArray = buf.array();
+        final int outOffset = buf.arrayOffset();
+        final int inPosition = in.position();
+        final int outPosition = buf.position();
+        int inRemaining;
+        while((inRemaining = in.remaining()) > 0)
+        {
+            for(int i = 0; i < inRemaining; i++)
+            {
+                if(buf.remaining() < inRemaining)
+                {
+                    return CoderResult.OVERFLOW;
+                }
+
+                final int inIndex = inPosition + inOffset + i;
+                final int outIndex = outPosition + outOffset + i;
+                outArray[outIndex] =
+                    IBM273CharsetProvider.IBM273_TO_CHAR[
+                    inArray[inIndex] & 0xFF];
+
+            }
+            in.position(inPosition + inRemaining);
+            buf.position(outPosition + inRemaining);
+        }
+
+        return CoderResult.UNDERFLOW;
+    }
+}
+
+//--------------------------------------------------------IBM273CharsetDecoder--

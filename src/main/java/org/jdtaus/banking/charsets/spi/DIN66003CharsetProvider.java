@@ -48,24 +48,23 @@ import java.util.NoSuchElementException;
  */
 public class DIN66003CharsetProvider extends CharsetProvider
 {
-
     //--Constants---------------------------------------------------------------
 
     /** Common name. */
-    private static final String COMMON_NAME = "DIN_66003";
+    static final String COMMON_NAME = "DIN_66003";
 
     /** Alias names. */
-    private static final String[] ALIAS_NAMES = {
+    static final String[] ALIAS_NAMES = {
         "iso-ir-21", "de", "iso646-de", "csiso21german"
     };
 
     /** Supported character set names. */
-    private static final String[] SUPPORTED_NAMES = {
+    static final String[] SUPPORTED_NAMES = {
         DIN66003CharsetProvider.COMMON_NAME.toLowerCase(),
         "iso-ir-21", "de", "iso646-de", "csiso21german"
     };
 
-    private static final char[] DIN66003_TO_CHAR = {
+    static final char[] DIN66003_TO_CHAR = {
         '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?',
         '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?',
         '?', '?', '?', '?', '?', ' ', '!', '"', '#', '$', '%', '&', '\'',
@@ -78,7 +77,7 @@ public class DIN66003CharsetProvider extends CharsetProvider
         'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', 'ß', '\u007F'
     };
 
-    private static final byte[] CHAR_TO_DIN66003 = new byte[0xFF];
+    static final byte[] CHAR_TO_DIN66003 = new byte[0xFF];
 
     //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
@@ -157,8 +156,9 @@ public class DIN66003CharsetProvider extends CharsetProvider
                     return new DIN66003Charset();
                 }
                 else
+                {
                     throw new NoSuchElementException();
-
+                }
             }
 
             public void remove()
@@ -171,256 +171,254 @@ public class DIN66003CharsetProvider extends CharsetProvider
 
     //---------------------------------------------------------CharsetProvider--
 
-    /** DIN-66003 {@code Charset} implementation. */
-    public static class DIN66003Charset extends Charset
+}
+
+//--DIN66003Charset-------------------------------------------------------------
+
+/** DIN-66003 {@code Charset} implementation. */
+class DIN66003Charset extends Charset
+{
+    public DIN66003Charset()
     {
+        super(DIN66003CharsetProvider.COMMON_NAME,
+            DIN66003CharsetProvider.ALIAS_NAMES);
 
-        public DIN66003Charset()
-        {
-            super(DIN66003CharsetProvider.COMMON_NAME,
-                DIN66003CharsetProvider.ALIAS_NAMES);
+    }
 
-        }
+    public CharsetEncoder newEncoder()
+    {
+        return new DIN66003CharsetEncoder(this);
+    }
 
+    public CharsetDecoder newDecoder()
+    {
+        return new DIN66003CharsetDecoder(this);
+    }
 
-        public CharsetEncoder newEncoder()
-        {
-            return new DIN66003CharsetEncoder();
-        }
+    public boolean contains(final Charset charset)
+    {
+        return false;
+    }
 
-        public CharsetDecoder newDecoder()
-        {
-            return new DIN66003CharsetDecoder();
-        }
-
-        public boolean contains(final Charset charset)
-        {
-            return false;
-        }
-
-        private boolean isCharacterSupported(final char c)
-        {
-            return (c >= 32 && c < 64) || (c >= 65 && c <= 90) ||
-                (c >= 94 && c <= 122) || c == '§' || c == 'Ä' || c == 'Ö' ||
-                c == 'Ü' || c == 'ä' || c == 'ö' || c == 'ü' || c == 'ß';
-
-        }
-
-        //--DIN66003CharsetEncoder----------------------------------------------
-
-        class DIN66003CharsetEncoder extends CharsetEncoder
-        {
-
-            private final char[] charBuf = new char[65536];
-
-            DIN66003CharsetEncoder()
-            {
-                super(DIN66003Charset.this, 1f, 1f);
-                this.onUnmappableCharacter(CodingErrorAction.REPLACE);
-            }
-
-            protected CoderResult encodeLoop(final CharBuffer in,
-                final ByteBuffer buf)
-            {
-
-                if(in.hasArray() && buf.hasArray())
-                {
-                    return this.encodeLoopArray(in, buf);
-                }
-
-                int inRemaining;
-                final int inPosition = in.position();
-                int i;
-                int inLen;
-
-                while(in.hasRemaining())
-                {
-                    inRemaining = in.remaining();
-                    if(inRemaining < this.charBuf.length)
-                    {
-                        in.get(this.charBuf, 0, inRemaining);
-                        inLen = inRemaining;
-                    }
-                    else
-                    {
-                        in.get(this.charBuf, 0, this.charBuf.length);
-                        inLen = this.charBuf.length;
-                    }
-                    for(i = 0; i < inLen; i++)
-                    {
-                        if(!buf.hasRemaining())
-                        {
-                            return CoderResult.OVERFLOW;
-                        }
-
-                        if(!isCharacterSupported(this.charBuf[i]))
-                        {
-                            in.position(inPosition + i);
-                            return CoderResult.unmappableForLength(1);
-                        }
-                        buf.put(DIN66003CharsetProvider.CHAR_TO_DIN66003[
-                            this.charBuf[i]]);
-
-                    }
-                }
-
-                return CoderResult.UNDERFLOW;
-            }
-
-            protected CoderResult encodeLoopArray(final CharBuffer in,
-                final ByteBuffer buf)
-            {
-
-                final char[] inArray = in.array();
-                final int inOffset = in.arrayOffset();
-                final byte[] outArray = buf.array();
-                final int outOffset = buf.arrayOffset();
-                final int inPosition = in.position();
-                final int outPosition = buf.position();
-                int inRemaining;
-                while((inRemaining = in.remaining()) > 0)
-                {
-                    if(buf.remaining() < inRemaining)
-                    {
-                        return CoderResult.OVERFLOW;
-                    }
-
-                    for(int i = 0; i < inRemaining; i++)
-                    {
-                        final int inIndex = inPosition + inOffset + i;
-                        final int outIndex = outPosition + outOffset + i;
-                        if(!isCharacterSupported(inArray[inIndex]))
-                        {
-                            in.position(inPosition + i);
-                            buf.position(outPosition + i);
-                            return CoderResult.unmappableForLength(1);
-                        }
-                        else
-                        {
-                            outArray[outIndex] =
-                                DIN66003CharsetProvider.CHAR_TO_DIN66003[
-                                inArray[inIndex]];
-
-                        }
-                    }
-                    in.position(inPosition + inRemaining);
-                    buf.position(outPosition + inRemaining);
-                }
-
-                return CoderResult.UNDERFLOW;
-            }
-        }
-
-
-        //----------------------------------------------DIN66003CharsetEncoder--
-        //--DIN66003CharsetDecoder----------------------------------------------
-
-        class DIN66003CharsetDecoder extends CharsetDecoder
-        {
-            private final byte[] byteBuf = new byte[65536];
-
-            DIN66003CharsetDecoder()
-            {
-                super(DIN66003Charset.this, 1f, 1f);
-                this.onUnmappableCharacter(CodingErrorAction.REPLACE);
-            }
-
-            protected CoderResult decodeLoop(final ByteBuffer in,
-                final CharBuffer buf)
-            {
-
-                if(in.hasArray() && buf.hasArray())
-                {
-                    return this.decodeLoopArray(in, buf);
-                }
-
-                int inRemaining;
-                final int inPosition = in.position();
-                int i;
-                int inLen;
-
-                while(in.hasRemaining())
-                {
-                    inRemaining = in.remaining();
-                    if(inRemaining < this.byteBuf.length)
-                    {
-                        in.get(this.byteBuf, 0, inRemaining);
-                        inLen = inRemaining;
-                    }
-                    else
-                    {
-                        in.get(this.byteBuf, 0, this.byteBuf.length);
-                        inLen = this.byteBuf.length;
-                    }
-                    for(i = 0; i < inLen; i++)
-                    {
-                        if(!buf.hasRemaining())
-                        {
-                            return CoderResult.OVERFLOW;
-                        }
-
-                        if((this.byteBuf[i] & 0xFF) < 0x20 ||
-                            (this.byteBuf[i] & 0xFF) > 0x7F)
-                        {
-                            in.position(inPosition + i);
-                            return CoderResult.unmappableForLength(1);
-                        }
-
-                        buf.put(DIN66003CharsetProvider.DIN66003_TO_CHAR[
-                            this.byteBuf[i] & 0xFF]);
-
-                    }
-                }
-
-                return CoderResult.UNDERFLOW;
-            }
-
-            protected CoderResult decodeLoopArray(final ByteBuffer in,
-                final CharBuffer buf)
-            {
-
-                final byte[] inArray = in.array();
-                final int inOffset = in.arrayOffset();
-                final char[] outArray = buf.array();
-                final int outOffset = buf.arrayOffset();
-                final int inPosition = in.position();
-                final int outPosition = buf.position();
-                int inRemaining;
-                while((inRemaining = in.remaining()) > 0)
-                {
-                    for(int i = 0; i < inRemaining; i++)
-                    {
-                        if(buf.remaining() < inRemaining)
-                        {
-                            return CoderResult.OVERFLOW;
-                        }
-
-                        final int inIndex = inPosition + inOffset + i;
-                        final int outIndex = outPosition + outOffset + i;
-                        if((inArray[inIndex] & 0xFF) < 0x20 ||
-                            (inArray[inIndex] & 0xFF) > 0x7F)
-                        {
-                            in.position(inPosition + i);
-                            buf.position(outPosition + i);
-                            return CoderResult.unmappableForLength(1);
-                        }
-                        else
-                        {
-                            outArray[outIndex] =
-                                DIN66003CharsetProvider.DIN66003_TO_CHAR[
-                                inArray[inIndex] & 0xFF];
-
-                        }
-                    }
-                    in.position(inPosition + inRemaining);
-                    buf.position(outPosition + inRemaining);
-                }
-
-                return CoderResult.UNDERFLOW;
-            }
-        }
-
-        //----------------------------------------------DIN66003CharsetDecoder--
+    static boolean isCharacterSupported(final char c)
+    {
+        return (c >= 32 && c < 64) || (c >= 65 && c <= 90) ||
+            (c >= 94 && c <= 122) || c == '§' || c == 'Ä' || c == 'Ö' ||
+            c == 'Ü' || c == 'ä' || c == 'ö' || c == 'ü' || c == 'ß';
 
     }
 }
+
+//-------------------------------------------------------------DIN66003Charset--
+//--DIN66003CharsetEncoder------------------------------------------------------
+
+class DIN66003CharsetEncoder extends CharsetEncoder
+{
+
+    private final char[] charBuf = new char[65536];
+
+    DIN66003CharsetEncoder(final Charset charset)
+    {
+        super(charset, 1f, 1f);
+        this.onUnmappableCharacter(CodingErrorAction.REPLACE);
+    }
+
+    protected CoderResult encodeLoop(final CharBuffer in,
+        final ByteBuffer buf)
+    {
+
+        if(in.hasArray() && buf.hasArray())
+        {
+            return this.encodeLoopArray(in, buf);
+        }
+
+        int inRemaining;
+        final int inPosition = in.position();
+        int i;
+        int inLen;
+
+        while(in.hasRemaining())
+        {
+            inRemaining = in.remaining();
+            if(inRemaining < this.charBuf.length)
+            {
+                in.get(this.charBuf, 0, inRemaining);
+                inLen = inRemaining;
+            }
+            else
+            {
+                in.get(this.charBuf, 0, this.charBuf.length);
+                inLen = this.charBuf.length;
+            }
+            for(i = 0; i < inLen; i++)
+            {
+                if(!buf.hasRemaining())
+                {
+                    return CoderResult.OVERFLOW;
+                }
+
+                if(!DIN66003Charset.isCharacterSupported(this.charBuf[i]))
+                {
+                    in.position(inPosition + i);
+                    return CoderResult.unmappableForLength(1);
+                }
+                buf.put(DIN66003CharsetProvider.CHAR_TO_DIN66003[
+                    this.charBuf[i]]);
+
+            }
+        }
+
+        return CoderResult.UNDERFLOW;
+    }
+
+    private CoderResult encodeLoopArray(final CharBuffer in,
+        final ByteBuffer buf)
+    {
+        final char[] inArray = in.array();
+        final int inOffset = in.arrayOffset();
+        final byte[] outArray = buf.array();
+        final int outOffset = buf.arrayOffset();
+        final int inPosition = in.position();
+        final int outPosition = buf.position();
+        int inRemaining;
+        while((inRemaining = in.remaining()) > 0)
+        {
+            if(buf.remaining() < inRemaining)
+            {
+                return CoderResult.OVERFLOW;
+            }
+
+            for(int i = 0; i < inRemaining; i++)
+            {
+                final int inIndex = inPosition + inOffset + i;
+                final int outIndex = outPosition + outOffset + i;
+                if(!DIN66003Charset.isCharacterSupported(inArray[inIndex]))
+                {
+                    in.position(inPosition + i);
+                    buf.position(outPosition + i);
+                    return CoderResult.unmappableForLength(1);
+                }
+                else
+                {
+                    outArray[outIndex] =
+                        DIN66003CharsetProvider.CHAR_TO_DIN66003[
+                        inArray[inIndex]];
+
+                }
+            }
+            in.position(inPosition + inRemaining);
+            buf.position(outPosition + inRemaining);
+        }
+
+        return CoderResult.UNDERFLOW;
+    }
+}
+
+//------------------------------------------------------DIN66003CharsetEncoder--
+//--DIN66003CharsetDecoder------------------------------------------------------
+
+class DIN66003CharsetDecoder extends CharsetDecoder
+{
+    private final byte[] byteBuf = new byte[65536];
+
+    DIN66003CharsetDecoder(final Charset charset)
+    {
+        super(charset, 1f, 1f);
+        this.onUnmappableCharacter(CodingErrorAction.REPLACE);
+    }
+
+    protected CoderResult decodeLoop(final ByteBuffer in,
+        final CharBuffer buf)
+    {
+
+        if(in.hasArray() && buf.hasArray())
+        {
+            return this.decodeLoopArray(in, buf);
+        }
+
+        int inRemaining;
+        final int inPosition = in.position();
+        int i;
+        int inLen;
+
+        while(in.hasRemaining())
+        {
+            inRemaining = in.remaining();
+            if(inRemaining < this.byteBuf.length)
+            {
+                in.get(this.byteBuf, 0, inRemaining);
+                inLen = inRemaining;
+            }
+            else
+            {
+                in.get(this.byteBuf, 0, this.byteBuf.length);
+                inLen = this.byteBuf.length;
+            }
+            for(i = 0; i < inLen; i++)
+            {
+                if(!buf.hasRemaining())
+                {
+                    return CoderResult.OVERFLOW;
+                }
+
+                if((this.byteBuf[i] & 0xFF) < 0x20 ||
+                    (this.byteBuf[i] & 0xFF) > 0x7F)
+                {
+                    in.position(inPosition + i);
+                    return CoderResult.unmappableForLength(1);
+                }
+
+                buf.put(DIN66003CharsetProvider.DIN66003_TO_CHAR[
+                    this.byteBuf[i] & 0xFF]);
+
+            }
+        }
+
+        return CoderResult.UNDERFLOW;
+    }
+
+    private CoderResult decodeLoopArray(final ByteBuffer in,
+        final CharBuffer buf)
+    {
+        final byte[] inArray = in.array();
+        final int inOffset = in.arrayOffset();
+        final char[] outArray = buf.array();
+        final int outOffset = buf.arrayOffset();
+        final int inPosition = in.position();
+        final int outPosition = buf.position();
+        int inRemaining;
+        while((inRemaining = in.remaining()) > 0)
+        {
+            for(int i = 0; i < inRemaining; i++)
+            {
+                if(buf.remaining() < inRemaining)
+                {
+                    return CoderResult.OVERFLOW;
+                }
+
+                final int inIndex = inPosition + inOffset + i;
+                final int outIndex = outPosition + outOffset + i;
+                if((inArray[inIndex] & 0xFF) < 0x20 ||
+                    (inArray[inIndex] & 0xFF) > 0x7F)
+                {
+                    in.position(inPosition + i);
+                    buf.position(outPosition + i);
+                    return CoderResult.unmappableForLength(1);
+                }
+                else
+                {
+                    outArray[outIndex] =
+                        DIN66003CharsetProvider.DIN66003_TO_CHAR[
+                        inArray[inIndex] & 0xFF];
+
+                }
+            }
+            in.position(inPosition + inRemaining);
+            buf.position(outPosition + inRemaining);
+        }
+
+        return CoderResult.UNDERFLOW;
+    }
+}
+
+//------------------------------------------------------DIN66003CharsetDecoder--
