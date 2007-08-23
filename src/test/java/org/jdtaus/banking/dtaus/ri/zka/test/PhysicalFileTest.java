@@ -72,7 +72,7 @@ public class PhysicalFileTest extends TestCase
         final Header header = HeaderTest.getLegalHeader();
         final LogicalFile lFile = pFile.add(header);
         final Transaction transaction = TransactionTest.getLegalTransaction();
-        lFile.createTransaction(transaction);
+        lFile.addTransaction(transaction);
         System.out.println(lFile.getTransaction(0));
         lFile.removeTransaction(0);
         pFile.remove(0);
@@ -149,7 +149,7 @@ public class PhysicalFileTest extends TestCase
                 tr.setReference(Referenznummer11.valueOf(
                     new Long(transactions)));
 
-                dtaus.createTransaction(tr);
+                dtaus.addTransaction(tr);
             }
         }
 

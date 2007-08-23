@@ -20,7 +20,9 @@
 package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFileException;
@@ -36,6 +38,9 @@ import org.jdtaus.core.container.Properties;
 import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.io.FileOperations;
+import org.jdtaus.core.io.util.CoalescingFileOperations;
+import org.jdtaus.core.io.util.RandomAccessFileOperations;
+import org.jdtaus.core.io.util.ReadAheadFileOperations;
 import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.nio.util.Charsets;
 import org.jdtaus.core.text.Message;
@@ -194,8 +199,8 @@ public final class DefaultPhysicalFileFactory
         }
     }
 
-    public int analyse(final FileOperations fileOperations) throws
-        PhysicalFileException, IOException
+    public int analyse(final FileOperations fileOperations)
+    throws PhysicalFileException, IOException
     {
         int blockSize = 128;
         long remainder = 0;
@@ -313,10 +318,59 @@ public final class DefaultPhysicalFileFactory
         }
     }
 
-    public PhysicalFile getPhysicalFile(final FileOperations ops) throws
-        PhysicalFileException, IOException
+    public PhysicalFile getPhysicalFile(final FileOperations ops)
+    throws PhysicalFileException, IOException
     {
         return this.getPhysicalFile(ops, this.getDefaultFormat());
+    }
+
+    public PhysicalFile createPhysicalFile(final File file, final int format)
+    throws IOException
+    {
+        if(file == null)
+        {
+            throw new NullPointerException("file");
+        }
+
+        return this.createPhysicalFile(
+            new CoalescingFileOperations(
+            new RandomAccessFileOperations(
+            new RandomAccessFile(file, "rw"))), format);
+
+    }
+
+    public int analyse(final File file)
+    throws PhysicalFileException, IOException
+    {
+        if(file == null)
+        {
+            throw new NullPointerException("file");
+        }
+
+        final FileOperations ops = new ReadAheadFileOperations(
+            new RandomAccessFileOperations(
+            new RandomAccessFile(file, "r")));
+
+        final int format = this.analyse(ops);
+
+        ops.close();
+
+        return format;
+    }
+
+    public PhysicalFile getPhysicalFile(final File file)
+    throws PhysicalFileException, IOException
+    {
+        if(file == null)
+        {
+            throw new NullPointerException("file");
+        }
+
+        return this.getPhysicalFile(
+            new ReadAheadFileOperations(
+            new RandomAccessFileOperations(
+            new RandomAccessFile(file, "rw"))));
+
     }
 
     //-----------------------------------------------------PhysicalFileFactory--

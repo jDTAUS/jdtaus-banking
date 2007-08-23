@@ -60,7 +60,7 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class DefaultHeaderValidator
+public final class DefaultHeaderValidator
     implements ContainerInitializer, HeaderValidator
 {
     //--Implementation----------------------------------------------------------

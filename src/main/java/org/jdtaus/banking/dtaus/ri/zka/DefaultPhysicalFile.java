@@ -313,7 +313,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
 
     public void commit() throws IOException
     {
-        this.getStructuredFile().flush();
+        this.getStructuredFile().close();
     }
 
     //------------------------------------------------------------PhysicalFile--

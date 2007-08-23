@@ -2008,10 +2008,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
         }
     }
 
-    public void createTransaction(
+    public final void createTransaction(final Transaction transaction)
+    throws IOException
+    {
+        this.addTransaction(transaction);
+    }
+
+    public int addTransaction(
         final Transaction transaction) throws IOException
     {
-
         final int transactionId;
         final int blockCount;
         final Checksum checksum = this.getChecksum();
@@ -2062,6 +2067,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         this.writeChecksum(this.getChecksumBlock(), checksum);
         this.cachedChecksum = checksum;
+
+        return transactionId;
     }
 
     public Transaction getTransaction(final int index) throws IOException

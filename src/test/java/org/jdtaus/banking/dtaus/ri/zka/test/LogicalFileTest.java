@@ -404,17 +404,17 @@ public class LogicalFileTest extends TestCase
 
     /**
      * Testet die
-     * {@link org.jdtaus.common.dtaus.LogicalFile#createTransaction(Transaction)}
+     * {@link org.jdtaus.common.dtaus.LogicalFile#addTransaction(Transaction)}
      * Methode.
      */
-    public void testCreateTransaction() throws Exception
+    public void testAddTransaction() throws Exception
     {
         PhysicalFile pFile = getDTAUSValidHeaderAndChecksum();
         LogicalFile lFile = pFile.get(0);
 
         try
         {
-            lFile.createTransaction(TransactionTest.getIllegalTransaction());
+            lFile.addTransaction(TransactionTest.getIllegalTransaction());
             this.fail();
         }
         catch(IllegalArgumentException e)
@@ -424,7 +424,7 @@ public class LogicalFileTest extends TestCase
         {
         }
 
-        lFile.createTransaction(TransactionTest.getLegalTransaction());
+        lFile.addTransaction(TransactionTest.getLegalTransaction());
         Assert.assertTrue(TransactionTest.getLegalTransaction().equals(
             lFile.getTransaction(lFile.getChecksum().getTransactionCount() - 1)));
 
@@ -613,7 +613,7 @@ public class LogicalFileTest extends TestCase
 
         for(int i = 10; i > 0; i--)
         {
-            pFile.get(0).createTransaction(eurTransaction);
+            pFile.get(0).addTransaction(eurTransaction);
         }
 
         while(pFile.get(0).getChecksum().getTransactionCount() > 0)
