@@ -34,5 +34,14 @@
       in favour of the new <code>jdtaus-banking-messages</code> artifact.]]>
       </action>
     </release>
+
+    <release version="1.2.1" date="2007-08-24"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated class <code>org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis</code>
+      to use task monitoring when loading bankfiles.]]>
+      </action>
+    </release>
   </body>
 </document>

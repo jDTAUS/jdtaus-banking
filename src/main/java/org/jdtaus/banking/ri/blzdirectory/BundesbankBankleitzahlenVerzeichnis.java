@@ -42,6 +42,7 @@ import org.jdtaus.banking.BankleitzahlExpirationException;
 import org.jdtaus.banking.BankleitzahlInfo;
 import org.jdtaus.banking.BankleitzahlenVerzeichnis;
 import org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage;
+import org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage;
 import org.jdtaus.banking.util.BankleitzahlenDatei;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.ContainerInitializer;
@@ -56,6 +57,8 @@ import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.container.Specification;
 import org.jdtaus.core.logging.spi.Logger;
+import org.jdtaus.core.monitor.spi.Task;
+import org.jdtaus.core.monitor.spi.TaskMonitor;
 import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.MessageEvent;
 import org.jdtaus.core.text.spi.ApplicationLogger;
@@ -173,15 +176,29 @@ public final class BundesbankBankleitzahlenVerzeichnis
     {
         this.assertValidProperties();
 
+        int progress = 0;
+        final Task task = new Task();
+        task.setIndeterminate(false);
+        task.setCancelable(false);
+        task.setDescription(new ReadsBankleitzahlenDateiMessage());
+        task.setMinimum(0);
+
         try
         {
             final URL[] rsrc = this.getFileResources();
 
+            task.setMaximum(rsrc.length == 0 ? 0 : rsrc.length - 1);
+            task.setProgress(progress);
+
+            this.getTaskMonitor().monitor(task);
+
             if(rsrc.length > 0)
             {
+                task.setProgress(progress++);
                 this.bankFile = new BankleitzahlenDatei(rsrc[0]);
                 for(int i = 1; i < rsrc.length; i++)
                 {
+                    task.setProgress(progress++);
                     final BankleitzahlenDatei update =
                         new BankleitzahlenDatei(rsrc[i]);
 
@@ -255,6 +272,10 @@ public final class BundesbankBankleitzahlenVerzeichnis
         {
             throw new ImplementationException(META, e);
         }
+        finally
+        {
+            this.getTaskMonitor().finish(task);
+        }
     }
 
     //----------------------------------------------------ContainerInitializer--
@@ -263,6 +284,44 @@ public final class BundesbankBankleitzahlenVerzeichnis
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
+    /** Configured <code>TaskMonitor</code> implementation. */
+    private transient TaskMonitor _dependency2;
+
+    /**
+     * Gets the configured <code>TaskMonitor</code> implementation.
+     *
+     * @return the configured <code>TaskMonitor</code> implementation.
+     */
+    private TaskMonitor getTaskMonitor()
+    {
+        TaskMonitor ret = null;
+        if(this._dependency2 != null)
+        {
+            ret = this._dependency2;
+        }
+        else
+        {
+            ret = (TaskMonitor) ContainerFactory.getContainer().
+                getDependency(BundesbankBankleitzahlenVerzeichnis.class,
+                "TaskMonitor");
+
+            if(ModelFactory.getModel().getModules().
+                getImplementation(BundesbankBankleitzahlenVerzeichnis.class.getName()).
+                getDependencies().getDependency("TaskMonitor").
+                isBound())
+            {
+                this._dependency2 = ret;
+            }
+        }
+
+        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
+            isInitialized(ContextFactory.getContext()))
+        {
+            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
+        }
+
+        return ret;
+    }
     /** Configured <code>ApplicationLogger</code> implementation. */
     private transient ApplicationLogger _dependency1;
 
@@ -646,8 +705,11 @@ public final class BundesbankBankleitzahlenVerzeichnis
                 (records[i].isHeadOffice() != branchOffices) &&
                 !col.add(records[i]))
             {
-                throw new ImplementationException(META,
-                    new IllegalStateException());
+                throw new IllegalStateException(
+                    BundesbankBankleitzahlenVerzeichnisBundle.
+                    getDuplicateRecordMessage(Locale.getDefault()).
+                    format(new Object[] { records[i].getSerialNumber(),
+                    new Integer(bankCode) }));
 
             }
         }

@@ -70,9 +70,12 @@
         </jdtaus:dependency>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
                            jdtaus:name="ApplicationLogger"
-                           jdtaus:bound="true">
+                           jdtaus:bound="true"/>
 
-        </jdtaus:dependency>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                           jdtaus:name="TaskMonitor"
+                           jdtaus:bound="true"/>
+
       </jdtaus:dependencies>
       
       <jdtaus:properties>
