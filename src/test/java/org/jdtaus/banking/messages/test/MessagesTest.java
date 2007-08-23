@@ -39,6 +39,7 @@ import org.jdtaus.banking.messages.IllegalDescriptionCountMessage;
 import org.jdtaus.banking.messages.IllegalFileLengthMessage;
 import org.jdtaus.banking.messages.IllegalScheduleMessage;
 import org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage;
+import org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage;
 import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage;
 import org.jdtaus.core.text.Message;
@@ -87,6 +88,7 @@ public class MessagesTest extends TestCase
             LogicalFileType.GB, new Textschluessel()));
 
         this.assertNotNull(new UpdatesBankleitzahlenDateiMessage());
+        this.assertNotNull(new ReadsBankleitzahlenDateiMessage());
     }
 
     private void assertNotNull(final Message message)
