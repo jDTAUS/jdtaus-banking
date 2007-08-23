@@ -47,5 +47,9 @@
       Updated the XML module descriptor to the 1.1 model version.]]>
       </action>
     </release>
+
+    <release version="1.2.1" date="2007-08-24"
+             description="Maintenance release."/>
+
   </body>
 </document>
