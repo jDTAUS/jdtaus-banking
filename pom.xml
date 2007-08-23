@@ -9,12 +9,12 @@
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-messages</artifactId>
   <name>jDTAUS Banking Messages</name>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <description>jDTAUS banking application messages.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/tags/jdtaus-banking-messages-1.1</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/tags/jdtaus-banking-messages-1.1</developerConnection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-messages/tags/jdtaus-banking-messages-1.1</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</developerConnection>
+    <url>http://svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</url>
   </scm>
   <build>
     <resources>
