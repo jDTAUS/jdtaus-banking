@@ -101,6 +101,7 @@
                 <bundle>org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage</bundle>
                 <bundle>org.jdtaus.banking.messages.TextschluesselConstraintMessage</bundle>
                 <bundle>org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
