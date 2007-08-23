@@ -691,16 +691,17 @@ public final class XMLCurrencyDirectory
         {
             public void warning(final SAXParseException e)
             {
-                getLogger().warn(e);
+                getLogger().warn(e.getMessage());
             }
             public void fatalError(final SAXParseException e)
+            throws SAXException
             {
-                getLogger().fatal(e);
-                throw new ImplementationException(META, e);
+                throw e;
             }
             public void error(final SAXParseException e)
+            throws SAXException
             {
-                getLogger().error(e);
+                throw e;
             }
         });
 
