@@ -43,5 +43,14 @@
       to use task monitoring when loading bankfiles.]]>
       </action>
     </release>
+
+    <release version="1.2.2" date="2007-09-21"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added a recent bankfile valid from 2007-09-03 to 2007-12-02.]]>
+      </action>
+    </release>
+
   </body>
 </document>
