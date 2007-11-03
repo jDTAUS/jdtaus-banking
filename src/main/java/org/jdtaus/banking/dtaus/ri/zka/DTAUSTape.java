@@ -1824,7 +1824,8 @@ public final class DTAUSTape extends AbstractLogicalFile
                     transaction.setExecutiveExt(txt);
                 }
             }
-            else if(num != AbstractLogicalFile.NO_NUMBER)
+            else if(num != AbstractLogicalFile.NO_NUMBER && num != 1L &&
+                num != 2L && num != 3L)
             {
                 msg = new IllegalDataMessage(
                     DTAUSTape.CRECORD_EXTINDEX_TO_TYPEFIELD[search],

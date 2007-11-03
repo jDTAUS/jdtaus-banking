@@ -1742,7 +1742,9 @@ public final class DTAUSDisk extends AbstractLogicalFile
                     transaction.setExecutiveExt(txt);
                 }
             }
-            else if(num.longValue() != AbstractLogicalFile.NO_NUMBER)
+            else if(num.longValue() != AbstractLogicalFile.NO_NUMBER &&
+                num.longValue() != 1L && num.longValue() != 2L &&
+                num.longValue() != 3L)
             {
                 msg = new IllegalDataMessage(
                     DTAUSDisk.CRECORD_EXTINDEX_TO_TYPEFIELD[search],

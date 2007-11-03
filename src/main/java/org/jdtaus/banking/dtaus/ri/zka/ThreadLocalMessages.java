@@ -19,6 +19,7 @@
  */
 package org.jdtaus.banking.dtaus.ri.zka;
 
+import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.Messages;
 
 /**
@@ -29,6 +30,12 @@ import org.jdtaus.core.text.Messages;
  */
 public abstract class ThreadLocalMessages
 {
+    //--Constants---------------------------------------------------------------
+
+    /** Maximum number of messages added to the collection. */
+    private static final int MAXIMUM_MESSAGES = 250;
+
+    //---------------------------------------------------------------Constants--
     //--ThreadLocalMessages-----------------------------------------------------
 
     /** Thread local collections of messages. */
@@ -36,7 +43,34 @@ public abstract class ThreadLocalMessages
     {
         public Object initialValue()
         {
-            return new Messages();
+            return new Messages()
+            {
+                /** Number of messages added to the instance. */
+                private int messageCount = 0;
+
+                public void addMessage(final Message message)
+                {
+                    if(this.messageCount + 1L <= Integer.MAX_VALUE &&
+                        this.messageCount + 1 < MAXIMUM_MESSAGES)
+                    {
+                        this.messageCount++;
+                        super.addMessage(message);
+                    }
+                }
+                public void removeMessage(final Message message)
+                {
+                    if(this.messageCount - 1 >= 0)
+                    {
+                        this.messageCount--;
+                        super.removeMessage(message);
+                    }
+                }
+                public void clear()
+                {
+                    this.messageCount = 0;
+                    super.clear();
+                }
+            };
         }
     };
 
