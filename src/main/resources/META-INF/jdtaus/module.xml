@@ -81,7 +81,7 @@
       <jdtaus:properties>
         <jdtaus:property jdtaus:name="dateOfExpirationText"
                          jdtaus:type="java.lang.String"
-                         jdtaus:value="2007-12-02"/>
+                         jdtaus:value="2008-03-02"/>
 
         <jdtaus:property jdtaus:name="dateOfExpirationPattern"
                          jdtaus:type="java.lang.String"
