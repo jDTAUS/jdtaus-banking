@@ -225,59 +225,33 @@ public final class BankleitzahlenDatei
     public BankleitzahlenDatei(final URL resource) throws IOException
     {
         super();
-
-        this.initializeProperties(BankleitzahlenDatei.META.getProperties());
+        this.initializeProperties(META.getProperties());
         this.assertValidProperties();
+        this.readBankfile(resource);
+    }
 
-        final BufferedReader reader;
-
-        String line;
-        InputStream stream = null;
-        BankleitzahlInfo rec;
-
-        if(resource == null)
-        {
-            throw new NullPointerException("resource");
-        }
-
-        this.records.clear();
-
-        if(this.getLogger().isDebugEnabled())
-        {
-            this.getLogger().debug(BankleitzahlenDateiBundle.
-                getFileNameInfoMessage(Locale.getDefault()).
-                format(new Object[] { resource.toExternalForm() }));
-
-        }
-
-        try
-        {
-            stream = resource.openStream();
-            reader = new BufferedReader(new InputStreamReader(
-                stream, this.getEncoding()));
-
-            while((line = reader.readLine()) != null)
-            {
-                rec = new BankleitzahlInfo();
-                rec.parse(line);
-
-                if(this.records.put(rec.getSerialNumber(), rec) != null)
-                {
-                    throw new IllegalArgumentException(
-                        rec.getSerialNumber().toString());
-
-                }
-            }
-
-            this.cachedRecords = null;
-        }
-        finally
-        {
-            if(stream != null)
-            {
-                stream.close();
-            }
-        }
+    /**
+     * Reads a Bankleitzahlendatei form an URL initializing the instance to
+     * hold its data taking the encoding to use when reading the file.
+     *
+     * @param resource an URL to a Bankleitzahlendatei.
+     * @param encoding the encoding to use when reading {@code resource}.
+     *
+     * @throws NullPointerException if either {@code resource} or
+     * {@code encoding} is {@code null}.
+     * @throws PropertyException for invalid property values.
+     * @throws IllegalArgumentException if {@code resource} does not provide
+     * a valid Bankleitzahlendatei.
+     * @throws IOException if reading fails.
+     */
+    public BankleitzahlenDatei(final URL resource, final String encoding)
+    throws IOException
+    {
+        super();
+        this.initializeProperties(META.getProperties());
+        this._encoding = encoding;
+        this.assertValidProperties();
+        this.readBankfile(resource);
     }
 
     /**
@@ -464,7 +438,7 @@ public final class BankleitzahlenDatei
      *
      * @throws PropertyException for invalid property values.
      */
-    protected void assertValidProperties()
+    private void assertValidProperties()
     {
         if(this.getEncoding() == null || this.getEncoding().length() == 0)
         {
@@ -478,6 +452,69 @@ public final class BankleitzahlenDatei
         catch(UnsupportedEncodingException e)
         {
             throw new PropertyException("encoding", this.getEncoding(), e);
+        }
+    }
+
+    /**
+     * Reads a Bankleitzahlendatei form an URL initializing the instance to
+     * hold its data.
+     *
+     * @param resource an URL to a Bankleitzahlendatei.
+     *
+     * @throws NullPointerException if {@code resource} is {@code null}.
+     * @throws IllegalArgumentException if {@code resource} does not provide
+     * a valid Bankleitzahlendatei.
+     * @throws IOException if reading fails.
+     */
+    private void readBankfile(final URL resource) throws IOException
+    {
+        String line = null;
+        InputStream stream = null;
+        BankleitzahlInfo rec = null;
+        final BufferedReader reader;
+
+        if(resource == null)
+        {
+            throw new NullPointerException("resource");
+        }
+
+        this.records.clear();
+
+        if(this.getLogger().isDebugEnabled())
+        {
+            this.getLogger().debug(BankleitzahlenDateiBundle.
+                getFileNameInfoMessage(Locale.getDefault()).
+                format(new Object[] { resource.toExternalForm() }));
+
+        }
+
+        try
+        {
+            stream = resource.openStream();
+            reader = new BufferedReader(new InputStreamReader(
+                stream, this.getEncoding()));
+
+            while((line = reader.readLine()) != null)
+            {
+                rec = new BankleitzahlInfo();
+                rec.parse(line);
+
+                if(this.records.put(rec.getSerialNumber(), rec) != null)
+                {
+                    throw new IllegalArgumentException(
+                        rec.getSerialNumber().toString());
+
+                }
+            }
+
+            this.cachedRecords = null;
+        }
+        finally
+        {
+            if(stream != null)
+            {
+                stream.close();
+            }
         }
     }
 

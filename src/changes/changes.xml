@@ -27,5 +27,24 @@
       classes.]]>
       </action>
     </release>
+    
+    <release version="1.1" date="2007-12-23"
+             description="Feature enhancements.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added classes<ul>
+      <li><code>org.jdtaus.banking.util.swing.AlphaNumericText27TextField</code></li>
+      <li><code>org.jdtaus.banking.util.swing.BankleitzahlTextField</code></li>
+      <li><code>org.jdtaus.banking.util.swing.KontonummerTextField</code></li>
+      <li><code>org.jdtaus.banking.util.swing.Referenznummer10TextField</code></li>
+      <li><code>org.jdtaus.banking.util.swing.Referenznummer11TextField</code></li>
+      </ul>
+      Updated classes<ul>
+      <li><code>org.jdtaus.banking.util.BankleitzahlenDatei</code>:<p>
+      Added a constructor taking the encoding to use for reading a file.
+      </p></li></ul>]]>
+      </action>
+    </release>
+
   </body>
 </document>

@@ -68,5 +68,109 @@
         
       </jdtaus:properties>
     </jdtaus:implementation>
+    <!--                                                                     -->
+    <!-- Swing components.                                                   -->
+    <!--                                                                     -->
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.AlphaNumericText27TextField"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${organization.name}"
+                           jdtaus:version="${pom.version}"
+                           jdtaus:final="true">
+
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="validating"
+                         jdtaus:type="boolean"
+                         jdtaus:value="true"
+                         jdtaus:api="true"/>
+
+        <jdtaus:property jdtaus:name="normalizing"
+                         jdtaus:type="boolean"
+                         jdtaus:value="true"
+                         jdtaus:api="true"/>
+
+      </jdtaus:properties>
+    </jdtaus:implementation>
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.KontonummerTextField"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${organization.name}"
+                           jdtaus:version="${pom.version}"
+                           jdtaus:final="true">
+
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="validating"
+                         jdtaus:type="boolean"
+                         jdtaus:value="true"
+                         jdtaus:api="true"/>
+
+        <jdtaus:property jdtaus:name="format"
+                         jdtaus:type="int"
+                         jdtaus:value="4001"
+                         jdtaus:api="true"/>
+
+      </jdtaus:properties>
+    </jdtaus:implementation>
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.Referenznummer10TextField"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${organization.name}"
+                           jdtaus:version="${pom.version}"
+                           jdtaus:final="true">
+
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="validating"
+                         jdtaus:type="boolean"
+                         jdtaus:value="true"
+                         jdtaus:api="true"/>
+
+        <jdtaus:property jdtaus:name="format"
+                         jdtaus:type="int"
+                         jdtaus:value="5001"
+                         jdtaus:api="true"/>
+
+      </jdtaus:properties>
+    </jdtaus:implementation>
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.Referenznummer11TextField"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${organization.name}"
+                           jdtaus:version="${pom.version}"
+                           jdtaus:final="true">
+
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="validating"
+                         jdtaus:type="boolean"
+                         jdtaus:value="true"
+                         jdtaus:api="true"/>
+
+        <jdtaus:property jdtaus:name="format"
+                         jdtaus:type="int"
+                         jdtaus:value="6001"
+                         jdtaus:api="true"/>
+
+      </jdtaus:properties>
+    </jdtaus:implementation>
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.BankleitzahlTextField"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${organization.name}"
+                           jdtaus:version="${pom.version}"
+                           jdtaus:final="true">
+
+      <jdtaus:dependencies>
+        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"
+                           jdtaus:name="BankleitzahlenVerzeichnis"
+                           jdtaus:bound="true"/>
+
+      </jdtaus:dependencies>
+      <jdtaus:properties>
+        <jdtaus:property jdtaus:name="validating"
+                         jdtaus:type="boolean"
+                         jdtaus:value="true"
+                         jdtaus:api="true"/>
+
+        <jdtaus:property jdtaus:name="format"
+                         jdtaus:type="int"
+                         jdtaus:value="3001"
+                         jdtaus:api="true"/>
+
+      </jdtaus:properties>
+    </jdtaus:implementation>
   </jdtaus:implementations>
 </jdtaus:module>
