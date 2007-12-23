@@ -15,5 +15,17 @@
         </action>
     </release>
 
+    <release version="1.2" date="2007-12-23"
+             description="Feature enhancements.">
+
+        <action dev="schulte2005" type="update"><![CDATA[
+        Added classes<ul>
+        <li><code>org.jdtaus.banking.messages.UnknownBankleitzahlMessage</code></li>
+        <li><code>org.jdtaus.banking.messages.BankleitzahlExpirationMessage</code></li>
+        <li><code>org.jdtaus.banking.messages.BankleitzahlReplacementMessage</code></li>
+        </ul>]]>
+        </action>
+    </release>
+
   </body>
 </document>
