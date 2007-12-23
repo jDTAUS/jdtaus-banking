@@ -102,6 +102,9 @@
                 <bundle>org.jdtaus.banking.messages.TextschluesselConstraintMessage</bundle>
                 <bundle>org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage</bundle>
                 <bundle>org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.UnknownBankleitzahlMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.BankleitzahlExpirationMessage</bundle>
+                <bundle>org.jdtaus.banking.messages.BankleitzahlReplacementMessage</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>

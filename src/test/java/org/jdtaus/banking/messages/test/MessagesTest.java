@@ -24,10 +24,14 @@ import java.util.Date;
 import java.util.Locale;
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.jdtaus.banking.Bankleitzahl;
+import org.jdtaus.banking.BankleitzahlInfo;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 import org.jdtaus.banking.messages.AnalysesFileMessage;
+import org.jdtaus.banking.messages.BankleitzahlExpirationMessage;
+import org.jdtaus.banking.messages.BankleitzahlReplacementMessage;
 import org.jdtaus.banking.messages.ChecksumErrorMessage;
 import org.jdtaus.banking.messages.ChecksumsFileMessage;
 import org.jdtaus.banking.messages.CurrencyConstraintMessage;
@@ -41,6 +45,7 @@ import org.jdtaus.banking.messages.IllegalScheduleMessage;
 import org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage;
 import org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage;
 import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
+import org.jdtaus.banking.messages.UnknownBankleitzahlMessage;
 import org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage;
 import org.jdtaus.core.text.Message;
 
@@ -89,6 +94,14 @@ public class MessagesTest extends TestCase
 
         this.assertNotNull(new UpdatesBankleitzahlenDateiMessage());
         this.assertNotNull(new ReadsBankleitzahlenDateiMessage());
+        this.assertNotNull(new UnknownBankleitzahlMessage(
+            Bankleitzahl.valueOf("88888888")));
+
+        final BankleitzahlInfo testInfo = new BankleitzahlInfo();
+        testInfo.setBankCode(Bankleitzahl.valueOf("88888888"));
+
+        this.assertNotNull(new BankleitzahlExpirationMessage(testInfo));
+        this.assertNotNull(new BankleitzahlReplacementMessage(testInfo));
     }
 
     private void assertNotNull(final Message message)
