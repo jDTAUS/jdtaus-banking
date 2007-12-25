@@ -144,64 +144,6 @@ public final class Referenznummer11TextField extends JFormattedTextField
     //--------------------------------------------------------------Properties--
     //--Referenznummer11TextField-----------------------------------------------
 
-    /** {@code InputVerifier} used for validation. */
-    private transient final InputVerifier inputVerifier = new InputVerifier()
-    {
-        public boolean verify(final JComponent input)
-        {
-            boolean valid = true;
-
-            if(isValidating() && input instanceof JTextComponent)
-            {
-                final String text = ((JTextComponent) input).getText();
-
-                if(text != null && text.trim().length() > 0)
-                {
-                    try
-                    {
-                        Referenznummer11.parse(text);
-                    }
-                    catch(ParseException e)
-                    {
-                        valid = false;
-                    }
-                }
-            }
-
-            return valid;
-        }
-    };
-
-    /** {@code AbstractFormatter} used for parsing and formatting. */
-    private transient AbstractFormatter formatter = new AbstractFormatter()
-    {
-        public Object stringToValue(final String text)
-        throws ParseException
-        {
-            Object value = null;
-
-            if(text != null && text.trim().length() > 0)
-            {
-                value = Referenznummer11.parse(text);
-            }
-
-            return value;
-        }
-
-        public String valueToString(final Object value)
-        throws ParseException
-        {
-            String ret = null;
-
-            if(value instanceof Referenznummer11)
-            {
-                ret = ((Referenznummer11) value).format(getFormat());
-            }
-
-            return ret;
-        }
-    };
-
     /** Creates a new default {@code Referenznummer11TextField} instance. */
     public Referenznummer11TextField()
     {
@@ -209,10 +151,70 @@ public final class Referenznummer11TextField extends JFormattedTextField
 
         this.initializeProperties(META.getProperties());
         this.assertValidProperties();
-
-        this.setInputVerifier(this.inputVerifier);
-        this.setFormatter(this.formatter);
         this.setColumns(Referenznummer11.MAX_CHARACTERS);
+        this.setFormatterFactory(new AbstractFormatterFactory()
+        {
+            public AbstractFormatter getFormatter(final JFormattedTextField ftf)
+            {
+                return new AbstractFormatter()
+                {
+                    public Object stringToValue(final String text)
+                    throws ParseException
+                    {
+                        Object value = null;
+
+                        if(text != null && text.trim().length() > 0)
+                        {
+                            value = Referenznummer11.parse(text);
+                        }
+
+                        return value;
+                    }
+
+                    public String valueToString(final Object value)
+                    throws ParseException
+                    {
+                        String ret = null;
+
+                        if(value instanceof Referenznummer11)
+                        {
+                            ret =
+                                ((Referenznummer11) value).format(getFormat());
+
+                        }
+
+                        return ret;
+                    }
+                };
+            }
+        });
+
+        this.setInputVerifier(new InputVerifier()
+        {
+            public boolean verify(final JComponent input)
+            {
+                boolean valid = true;
+
+                if(isValidating() && input instanceof JTextComponent)
+                {
+                    final String text = ((JTextComponent) input).getText();
+
+                    if(text != null && text.trim().length() > 0)
+                    {
+                        try
+                        {
+                            Referenznummer11.parse(text);
+                        }
+                        catch(ParseException e)
+                        {
+                            valid = false;
+                        }
+                    }
+                }
+
+                return valid;
+            }
+        });
     }
 
     /**

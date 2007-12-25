@@ -147,78 +147,83 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
     //--------------------------------------------------------------Properties--
     //--AlphaNumericText27TextField---------------------------------------------
 
-    /** {@code InputVerifier} used for validation. */
-    private transient final InputVerifier inputVerifier = new InputVerifier()
-    {
-        public boolean verify(final JComponent input)
-        {
-            boolean valid = true;
-
-            if(isValidating() && input instanceof JTextComponent)
-            {
-                final String text = ((JTextComponent) input).getText();
-
-                if(text != null && text.trim().length() > 0)
-                {
-                    try
-                    {
-                        AlphaNumericText27.parse(isNormalizing() ?
-                            AlphaNumericText27.normalize(text) : text);
-
-                    }
-                    catch(ParseException e)
-                    {
-                        valid = false;
-                    }
-                }
-            }
-
-            return valid;
-        }
-    };
-
-    /** {@code AbstractFormatter} used for parsing and formatting. */
-    private transient AbstractFormatter formatter = new AbstractFormatter()
-    {
-        public Object stringToValue(final String text)
-        throws ParseException
-        {
-            Object value = null;
-
-            if(text != null && text.trim().length() > 0)
-            {
-                value = AlphaNumericText27.parse(isNormalizing() ?
-                    AlphaNumericText27.normalize(text) : text);
-
-            }
-
-            return value;
-        }
-
-        public String valueToString(final Object value)
-        throws ParseException
-        {
-            String ret = null;
-
-            if(value instanceof AlphaNumericText27)
-            {
-                final AlphaNumericText27 txt = (AlphaNumericText27) value;
-                ret = txt.isEmpty() ? null : txt.format().trim();
-            }
-
-            return ret;
-        }
-    };
-
     /** Creates a new default {@code AlphaNumericText27TextField} instance. */
     public AlphaNumericText27TextField()
     {
         super();
-
         this.initializeProperties(META.getProperties());
-        this.setFormatter(this.formatter);
-        this.setInputVerifier(this.inputVerifier);
         this.setColumns(AlphaNumericText27.MAX_LENGTH);
+        this.setFormatterFactory(new AbstractFormatterFactory()
+        {
+            public AbstractFormatter getFormatter(final JFormattedTextField ftf)
+            {
+                return new AbstractFormatter()
+                {
+                    public Object stringToValue(final String text)
+                    throws ParseException
+                    {
+                        Object value = null;
+
+                        if(text != null && text.trim().length() > 0)
+                        {
+                            value = AlphaNumericText27.parse(isNormalizing()
+                            ? AlphaNumericText27.normalize(text)
+                            : text);
+
+                        }
+
+                        return value;
+                    }
+
+                    public String valueToString(final Object value)
+                    throws ParseException
+                    {
+                        String ret = null;
+
+                        if(value instanceof AlphaNumericText27)
+                        {
+                            final AlphaNumericText27 txt =
+                                (AlphaNumericText27) value;
+
+                            ret = txt.isEmpty() ?
+                                null : txt.format().trim();
+
+                        }
+
+                        return ret;
+                    }
+                };
+            }
+        });
+
+        this.setInputVerifier(new InputVerifier()
+        {
+            public boolean verify(final JComponent input)
+            {
+                boolean valid = true;
+
+                if(isValidating() && input instanceof JTextComponent)
+                {
+                    final String text = ((JTextComponent) input).getText();
+
+                    if(text != null && text.trim().length() > 0)
+                    {
+                        try
+                        {
+                            AlphaNumericText27.parse(isNormalizing() ?
+                                AlphaNumericText27.normalize(text) : text);
+
+                        }
+                        catch(ParseException e)
+                        {
+                            valid = false;
+                        }
+                    }
+                }
+
+                return valid;
+            }
+        });
     }
 
     /**

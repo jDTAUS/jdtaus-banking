@@ -46,5 +46,20 @@
       </action>
     </release>
 
+    <release version="1.1.1" date="2007-12-25"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated classes<ul>
+      <li><code>org.jdtaus.banking.util.swing.AlphaNumericText27TextField</code></li>
+      <li><code>org.jdtaus.banking.util.swing.BankleitzahlTextField</code></li>
+      <li><code>org.jdtaus.banking.util.swing.KontonummerTextField</code></li>
+      <li><code>org.jdtaus.banking.util.swing.Referenznummer10TextField</code></li>
+      <li><code>org.jdtaus.banking.util.swing.Referenznummer11TextField</code></li>
+      <blockqote>to additionally setup an AbstractFormatterFactory during
+      instantiation.</blockquote></ul>]]>
+      </action>
+    </release>
+
   </body>
 </document>
