@@ -27,5 +27,15 @@
         </action>
     </release>
 
+    <release version="1.2.1" date="2007-12-25"
+             description="Maintenance release.">
+
+        <action dev="schulte2005" type="update"><![CDATA[
+        Updated classes<ul>
+        <li><code>org.jdtaus.banking.messages.UnknownBankleitzahlMessage</code>
+        <blockquote>to correctly format message text.</blockquote></li></ul>]]>
+        </action>
+    </release>
+
   </body>
 </document>

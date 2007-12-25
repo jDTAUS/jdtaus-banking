@@ -84,7 +84,8 @@ public final class UnknownBankleitzahlMessage extends Message
     public String getText(final Locale locale)
     {
         return UnknownBankleitzahlMessageBundle.
-            getUnknownBankleitzahlText(locale);
+            getUnknownBankleitzahlMessage(locale).format(
+            this.getFormatArguments(locale));
 
     }
 
