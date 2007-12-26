@@ -57,5 +57,17 @@
       </action>
     </release>
 
+    <release version="1.4" date="2007-12-26"
+             description="Feature enhancements.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added classes<ul>
+      <li><code>org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver</code></li>
+      <blockquote>to resolve <code>Message</code>s for <code>PhysicalFileException</code>s
+      introduced in the <code>jdtaus-core-utilities</code> artifact as of
+      version 1.3</blockquote></ul>]]>
+      </action>
+    </release>
+
   </body>
 </document>
