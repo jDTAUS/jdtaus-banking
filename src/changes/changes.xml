@@ -69,5 +69,13 @@
       </action>
     </release>
 
+    <release version="1.4.1" date="2007-12-27"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Added missing metadata.]]>
+      </action>
+    </release>
+
   </body>
 </document>
