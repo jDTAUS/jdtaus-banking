@@ -238,5 +238,19 @@
 
       </jdtaus:properties>
     </jdtaus:implementation>
+    
+    <!--                                                                     -->
+    <!-- PhysicalFileExceptionMessageResolver                                -->
+    <!--                                                                     -->
+    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver"
+                           jdtaus:name="${pom.name}"
+                           jdtaus:vendor="${pom.organization.name}"
+                           jdtaus:version="${pom.version}"
+                           jdtaus:final="true">
+
+      <jdtaus:implementedSpecifications>
+        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.core.lang.util.ExceptionMessageResolver"/>
+      </jdtaus:implementedSpecifications>
+    </jdtaus:implementation>
   </jdtaus:implementations>
 </jdtaus:module>
