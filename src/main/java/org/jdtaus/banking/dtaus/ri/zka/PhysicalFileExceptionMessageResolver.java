@@ -38,7 +38,7 @@ import org.jdtaus.core.text.Messages;
  *
  * @see ExceptionMessageResolver
  */
-public class PhysicalFileExceptionMessageResolver
+public final class PhysicalFileExceptionMessageResolver
     implements ExceptionMessageResolver
 {
     //--Implementation----------------------------------------------------------
