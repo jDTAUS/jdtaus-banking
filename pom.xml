@@ -9,12 +9,12 @@
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
   <groupId>org.jdtaus.banking.dtaus</groupId>
   <name>jDTAUS Banking RI DTAUS</name>
-  <version>1.4.2-SNAPSHOT</version>
+  <version>1.4.2</version>
   <description>jDTAUS DTAUS reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/branches/jdtaus-banking-ri-dtaus-1.x</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/branches/jdtaus-banking-ri-dtaus-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/branches/jdtaus-banking-ri-dtaus-1.x</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/tags/jdtaus-banking-ri-dtaus-1.4.2</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/tags/jdtaus-banking-ri-dtaus-1.4.2</developerConnection>
+    <url>http://jdtaus.svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/tags/jdtaus-banking-ri-dtaus-1.4.2</url>
   </scm>
   <build>
     <resources>
