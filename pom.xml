@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus</groupId>
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <description><![CDATA[
   jDTAUS Banking provides a library for electronic banking facilities. This is
   the parent module for the library artifacts.]]>
@@ -94,6 +94,7 @@
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
           <configuration>
+            <inputEncoding>UTF-8</inputEncoding>
             <outputEncoding>UTF-8</outputEncoding>
             <locales>en</locales>
           </configuration>
@@ -113,7 +114,7 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags</tagBase>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -130,7 +131,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
     </plugins>
   </build>
   <modules>
