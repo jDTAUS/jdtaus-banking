@@ -9,7 +9,7 @@
   <artifactId>jdtaus-banking-utilities</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking Utilities</name>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.1.2</version>
   <description>jDTAUS banking utility components.</description>
   <dependencies>
     <dependency>
@@ -30,9 +30,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/branches/jdtaus-banking-utilities-1.x</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/branches/jdtaus-banking-utilities-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-utilities/branches/jdtaus-banking-utilities-1.x</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/jdtaus-banking-utilities-1.1.2</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/jdtaus-banking-utilities-1.1.2</developerConnection>
+    <url>http://jdtaus.svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/jdtaus-banking-utilities-1.1.2</url>
   </scm>
   <build>
     <resources>
