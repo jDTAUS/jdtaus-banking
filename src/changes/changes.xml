@@ -27,7 +27,7 @@
       classes.]]>
       </action>
     </release>
-    
+
     <release version="1.1" date="2007-12-23"
              description="Feature enhancements.">
 
@@ -58,6 +58,15 @@
       <li><code>org.jdtaus.banking.util.swing.Referenznummer11TextField</code></li>
       <blockqote>to additionally setup an AbstractFormatterFactory during
       instantiation.</blockquote></ul>]]>
+      </action>
+    </release>
+
+    <release version="1.1.2" date="2008-03-13"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added various missing serial version UID fields. Updated to latest mojo
+      releases.]]>
       </action>
     </release>
 

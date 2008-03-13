@@ -50,6 +50,12 @@ import org.jdtaus.core.container.PropertyException;
  */
 public final class KontonummerTextField extends JFormattedTextField
 {
+    //--Constants---------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.1.x classes. */
+    private static final long serialVersionUID = -959284086262750493L;
+
+    //---------------------------------------------------------------Constants--
     //--Implementation----------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
@@ -84,11 +90,11 @@ public final class KontonummerTextField extends JFormattedTextField
         }
 
         p = meta.getProperty("format");
-        this._format = ((java.lang.Integer) p.getValue()).intValue();
+        this.pFormat = ((java.lang.Integer) p.getValue()).intValue();
 
 
         p = meta.getProperty("validating");
-        this._validating = ((java.lang.Boolean) p.getValue()).booleanValue();
+        this.pValidating = ((java.lang.Boolean) p.getValue()).booleanValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -111,7 +117,7 @@ public final class KontonummerTextField extends JFormattedTextField
      * Property {@code format}.
      * @serial
      */
-    private int _format;
+    private int pFormat;
 
     /**
      * Gets the value of property <code>format</code>.
@@ -120,14 +126,14 @@ public final class KontonummerTextField extends JFormattedTextField
      */
     public int getFormat()
     {
-        return this._format;
+        return this.pFormat;
     }
 
     /**
      * Property {@code validating}.
      * @serial
      */
-    private boolean _validating;
+    private boolean pValidating;
 
     /**
      * Gets the value of property <code>validating</code>.
@@ -136,7 +142,7 @@ public final class KontonummerTextField extends JFormattedTextField
      */
     public boolean isValidating()
     {
-        return this._validating;
+        return this.pValidating;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -149,70 +155,85 @@ public final class KontonummerTextField extends JFormattedTextField
     {
         super();
 
-        this.initializeProperties(META.getProperties());
+        this.initializeProperties( META.getProperties() );
         this.assertValidProperties();
-        this.setColumns(Kontonummer.MAX_CHARACTERS);
-        this.setFormatterFactory(new AbstractFormatterFactory()
-        {
-            public AbstractFormatter getFormatter(final JFormattedTextField ftf)
+        this.setColumns( Kontonummer.MAX_CHARACTERS );
+        this.setFormatterFactory(
+            new AbstractFormatterFactory()
             {
-                return new AbstractFormatter()
+
+                public AbstractFormatter getFormatter(
+                    final JFormattedTextField ftf )
                 {
-                    public Object stringToValue(final String text)
-                    throws ParseException
+                    return new AbstractFormatter()
                     {
-                        Object value = null;
 
-                        if(text != null && text.trim().length() > 0)
+                        public Object stringToValue( final String text )
+                            throws ParseException
                         {
-                            value = Kontonummer.parse(text);
+                            Object value = null;
+
+                            if ( text != null && text.trim().
+                                length() > 0 )
+                            {
+                                value =
+                                    Kontonummer.parse( text );
+                            }
+
+                            return value;
                         }
 
-                        return value;
-                    }
-
-                    public String valueToString(final Object value)
-                    throws ParseException
-                    {
-                        String ret = null;
-
-                        if(value instanceof Kontonummer)
+                        public String valueToString( final Object value )
+                            throws ParseException
                         {
-                            ret = ((Kontonummer) value).format(getFormat());
+                            String ret = null;
+
+                            if ( value instanceof Kontonummer )
+                            {
+                                final Kontonummer kto = ( Kontonummer ) value;
+                                ret = kto.format( getFormat() );
+                            }
+
+                            return ret;
                         }
 
-                        return ret;
-                    }
-                };
-            }
-        });
-
-        this.setInputVerifier(new InputVerifier()
-        {
-            public boolean verify(final JComponent input)
-            {
-                boolean valid = true;
-
-                if(isValidating() && input instanceof JTextComponent)
-                {
-                    final String text = ((JTextComponent) input).getText();
-
-                    if(text != null && text.trim().length() > 0)
-                    {
-                        try
-                        {
-                            Kontonummer.parse(text);
-                        }
-                        catch(ParseException e)
-                        {
-                            valid = false;
-                        }
-                    }
+                    };
                 }
 
-                return valid;
-            }
-        });
+            } );
+
+        this.setInputVerifier(
+            new InputVerifier()
+            {
+
+                public boolean verify( final JComponent input )
+                {
+                    boolean valid = true;
+
+                    if ( isValidating() &&
+                        input instanceof JTextComponent )
+                    {
+                        final String text =
+                            ( ( JTextComponent ) input ).getText();
+
+                        if ( text != null &&
+                            text.trim().length() > 0 )
+                        {
+                            try
+                            {
+                                Kontonummer.parse( text );
+                            }
+                            catch ( ParseException e )
+                            {
+                                valid = false;
+                            }
+                        }
+                    }
+
+                    return valid;
+                }
+
+            } );
     }
 
     /**
@@ -222,7 +243,7 @@ public final class KontonummerTextField extends JFormattedTextField
      */
     public Kontonummer getKontonummer()
     {
-        return (Kontonummer) this.getValue();
+        return ( Kontonummer ) this.getValue();
     }
 
     /**
@@ -238,15 +259,15 @@ public final class KontonummerTextField extends JFormattedTextField
      * @see Kontonummer#ELECTRONIC_FORMAT
      * @see Kontonummer#LETTER_FORMAT
      */
-    public void setFormat(final int format)
+    public void setFormat( final int format )
     {
-        if(format != Kontonummer.ELECTRONIC_FORMAT &&
-            format != Kontonummer.LETTER_FORMAT)
+        if ( format != Kontonummer.ELECTRONIC_FORMAT &&
+            format != Kontonummer.LETTER_FORMAT )
         {
-            throw new IllegalArgumentException(Integer.toString(format));
+            throw new IllegalArgumentException( Integer.toString( format ) );
         }
 
-        this._format = format;
+        this.pFormat = format;
     }
 
     /**
@@ -255,9 +276,9 @@ public final class KontonummerTextField extends JFormattedTextField
      * @param validating {@code true} to validate the fields' values;
      * {@code false} to not validate the fields' values.
      */
-    public void setValidating(boolean validating)
+    public void setValidating( boolean validating )
     {
-        this._validating = validating;
+        this.pValidating = validating;
     }
 
     /**
@@ -267,11 +288,11 @@ public final class KontonummerTextField extends JFormattedTextField
      */
     private void assertValidProperties()
     {
-        if(this.getFormat() != Kontonummer.ELECTRONIC_FORMAT &&
-            this.getFormat() != Kontonummer.LETTER_FORMAT)
+        if ( this.getFormat() != Kontonummer.ELECTRONIC_FORMAT &&
+            this.getFormat() != Kontonummer.LETTER_FORMAT )
         {
-            throw new PropertyException("format",
-                Integer.toString(this.getFormat()));
+            throw new PropertyException( "format",
+                                         Integer.toString( this.getFormat() ) );
 
         }
     }

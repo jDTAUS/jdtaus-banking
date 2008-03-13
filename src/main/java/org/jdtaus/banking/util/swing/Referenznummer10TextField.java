@@ -50,6 +50,12 @@ import org.jdtaus.core.container.PropertyException;
  */
 public final class Referenznummer10TextField extends JFormattedTextField
 {
+    //--Constants---------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.1.x classes. */
+    private static final long serialVersionUID = -7966250999405224485L;
+
+    //---------------------------------------------------------------Constants--
     //--Implementation----------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
@@ -84,11 +90,11 @@ public final class Referenznummer10TextField extends JFormattedTextField
         }
 
         p = meta.getProperty("format");
-        this._format = ((java.lang.Integer) p.getValue()).intValue();
+        this.pFormat = ((java.lang.Integer) p.getValue()).intValue();
 
 
         p = meta.getProperty("validating");
-        this._validating = ((java.lang.Boolean) p.getValue()).booleanValue();
+        this.pValidating = ((java.lang.Boolean) p.getValue()).booleanValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -111,7 +117,7 @@ public final class Referenznummer10TextField extends JFormattedTextField
      * Property {@code format}.
      * @serial
      */
-    private int _format;
+    private int pFormat;
 
     /**
      * Gets the value of property <code>format</code>.
@@ -120,14 +126,14 @@ public final class Referenznummer10TextField extends JFormattedTextField
      */
     public int getFormat()
     {
-        return this._format;
+        return this.pFormat;
     }
 
     /**
      * Property {@code validating}.
      * @serial
      */
-    private boolean _validating;
+    private boolean pValidating;
 
     /**
      * Gets the value of property <code>validating</code>.
@@ -136,7 +142,7 @@ public final class Referenznummer10TextField extends JFormattedTextField
      */
     public boolean isValidating()
     {
-        return this._validating;
+        return this.pValidating;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -149,72 +155,87 @@ public final class Referenznummer10TextField extends JFormattedTextField
     {
         super();
 
-        this.initializeProperties(META.getProperties());
+        this.initializeProperties( META.getProperties() );
         this.assertValidProperties();
-        this.setColumns(Referenznummer10.MAX_CHARACTERS);
-        this.setFormatterFactory(new AbstractFormatterFactory()
-        {
-            public AbstractFormatter getFormatter(final JFormattedTextField ftf)
+        this.setColumns( Referenznummer10.MAX_CHARACTERS );
+        this.setFormatterFactory(
+            new AbstractFormatterFactory()
             {
-                return new AbstractFormatter()
+
+                public AbstractFormatter getFormatter(
+                    final JFormattedTextField ftf )
                 {
-                    public Object stringToValue(final String text)
-                    throws ParseException
+                    return new AbstractFormatter()
                     {
-                        Object value = null;
 
-                        if(text != null && text.trim().length() > 0)
+                        public Object stringToValue( final String text )
+                            throws ParseException
                         {
-                            value = Referenznummer10.parse(text);
+                            Object value = null;
+
+                            if ( text != null && text.trim().
+                                length() > 0 )
+                            {
+                                value =
+                                    Referenznummer10.parse( text );
+                            }
+
+                            return value;
                         }
 
-                        return value;
-                    }
-
-                    public String valueToString(final Object value)
-                    throws ParseException
-                    {
-                        String ret = null;
-
-                        if(value instanceof Referenznummer10)
+                        public String valueToString( final Object value )
+                            throws ParseException
                         {
-                            ret =
-                                ((Referenznummer10) value).format(getFormat());
+                            String ret = null;
 
+                            if ( value instanceof Referenznummer10 )
+                            {
+                                final Referenznummer10 ref =
+                                    ( Referenznummer10 ) value;
+
+                                ret = ref.format( getFormat() );
+                            }
+
+                            return ret;
                         }
 
-                        return ret;
-                    }
-                };
-            }
-        });
-
-        this.setInputVerifier(new InputVerifier()
-        {
-            public boolean verify(final JComponent input)
-            {
-                boolean valid = true;
-
-                if(isValidating() && input instanceof JTextComponent)
-                {
-                    final String text = ((JTextComponent) input).getText();
-
-                    if(text != null && text.trim().length() > 0)
-                    {
-                        try
-                        {
-                            Referenznummer10.parse(text);
-                        }
-                        catch(ParseException e)
-                        {
-                            valid = false;
-                        }
-                    }
+                    };
                 }
 
-                return valid;
-            }
-        });
+            } );
+
+        this.setInputVerifier(
+            new InputVerifier()
+            {
+
+                public boolean verify( final JComponent input )
+                {
+                    boolean valid = true;
+
+                    if ( isValidating() &&
+                        input instanceof JTextComponent )
+                    {
+                        final String text =
+                            ( ( JTextComponent ) input ).getText();
+
+                        if ( text != null &&
+                            text.trim().length() > 0 )
+                        {
+                            try
+                            {
+                                Referenznummer10.parse( text );
+                            }
+                            catch ( ParseException e )
+                            {
+                                valid = false;
+                            }
+                        }
+                    }
+
+                    return valid;
+                }
+
+            } );
     }
 
     /**
@@ -224,7 +245,7 @@ public final class Referenznummer10TextField extends JFormattedTextField
      */
     public Referenznummer10 getReferenznummer10()
     {
-        return (Referenznummer10) this.getValue();
+        return ( Referenznummer10 ) this.getValue();
     }
 
     /**
@@ -240,15 +261,15 @@ public final class Referenznummer10TextField extends JFormattedTextField
      * @see Referenznummer10#ELECTRONIC_FORMAT
      * @see Referenznummer10#LETTER_FORMAT
      */
-    public void setFormat(final int format)
+    public void setFormat( final int format )
     {
-        if(format != Referenznummer10.ELECTRONIC_FORMAT &&
-            format != Referenznummer10.LETTER_FORMAT)
+        if ( format != Referenznummer10.ELECTRONIC_FORMAT &&
+            format != Referenznummer10.LETTER_FORMAT )
         {
-            throw new IllegalArgumentException(Integer.toString(format));
+            throw new IllegalArgumentException( Integer.toString( format ) );
         }
 
-        this._format = format;
+        this.pFormat = format;
     }
 
     /**
@@ -257,9 +278,9 @@ public final class Referenznummer10TextField extends JFormattedTextField
      * @param validating {@code true} to validate the fields' values;
      * {@code false} to not validate the fields' values.
      */
-    public void setValidating(boolean validating)
+    public void setValidating( boolean validating )
     {
-        this._validating = validating;
+        this.pValidating = validating;
     }
 
     /**
@@ -269,11 +290,11 @@ public final class Referenznummer10TextField extends JFormattedTextField
      */
     private void assertValidProperties()
     {
-        if(this.getFormat() != Referenznummer10.ELECTRONIC_FORMAT &&
-            this.getFormat() != Referenznummer10.LETTER_FORMAT)
+        if ( this.getFormat() != Referenznummer10.ELECTRONIC_FORMAT &&
+            this.getFormat() != Referenznummer10.LETTER_FORMAT )
         {
-            throw new PropertyException("format",
-                Integer.toString(this.getFormat()));
+            throw new PropertyException( "format",
+                                         Integer.toString( this.getFormat() ) );
 
         }
     }

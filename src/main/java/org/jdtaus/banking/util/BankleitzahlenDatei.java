@@ -90,7 +90,7 @@ public final class BankleitzahlenDatei
         }
 
         p = meta.getProperty("encoding");
-        this._encoding = (java.lang.String) p.getValue();
+        this.pEncoding = (java.lang.String) p.getValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -102,7 +102,7 @@ public final class BankleitzahlenDatei
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>TaskMonitor</code> implementation. */
-    private transient TaskMonitor _dependency1;
+    private transient TaskMonitor dTaskMonitor;
 
     /**
      * Gets the configured <code>TaskMonitor</code> implementation.
@@ -112,9 +112,9 @@ public final class BankleitzahlenDatei
     private TaskMonitor getTaskMonitor()
     {
         TaskMonitor ret = null;
-        if(this._dependency1 != null)
+        if(this.dTaskMonitor != null)
         {
-            ret = this._dependency1;
+            ret = this.dTaskMonitor;
         }
         else
         {
@@ -127,7 +127,7 @@ public final class BankleitzahlenDatei
                 getDependencies().getDependency("TaskMonitor").
                 isBound())
             {
-                this._dependency1 = ret;
+                this.dTaskMonitor = ret;
             }
         }
 
@@ -140,7 +140,7 @@ public final class BankleitzahlenDatei
         return ret;
     }
     /** Configured <code>Logger</code> implementation. */
-    private transient Logger _dependency0;
+    private transient Logger dLogger;
 
     /**
      * Gets the configured <code>Logger</code> implementation.
@@ -150,9 +150,9 @@ public final class BankleitzahlenDatei
     private Logger getLogger()
     {
         Logger ret = null;
-        if(this._dependency0 != null)
+        if(this.dLogger != null)
         {
-            ret = this._dependency0;
+            ret = this.dLogger;
         }
         else
         {
@@ -165,7 +165,7 @@ public final class BankleitzahlenDatei
                 getDependencies().getDependency("Logger").
                 isBound())
             {
-                this._dependency0 = ret;
+                this.dLogger = ret;
             }
         }
 
@@ -189,7 +189,7 @@ public final class BankleitzahlenDatei
      * Property {@code encoding}.
      * @serial
      */
-    private java.lang.String _encoding;
+    private java.lang.String pEncoding;
 
     /**
      * Gets the value of property <code>encoding</code>.
@@ -198,7 +198,7 @@ public final class BankleitzahlenDatei
      */
     private java.lang.String getEncoding()
     {
-        return this._encoding;
+        return this.pEncoding;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -207,7 +207,7 @@ public final class BankleitzahlenDatei
     //--BankleitzahlenDatei-----------------------------------------------------
 
     /** Records held by the instance. */
-    private Map records = new HashMap(5000);
+    private Map records = new HashMap( 5000 );
     private BankleitzahlInfo[] cachedRecords;
 
     /**
@@ -222,12 +222,12 @@ public final class BankleitzahlenDatei
      * a valid Bankleitzahlendatei.
      * @throws IOException if reading fails.
      */
-    public BankleitzahlenDatei(final URL resource) throws IOException
+    public BankleitzahlenDatei( final URL resource ) throws IOException
     {
         super();
-        this.initializeProperties(META.getProperties());
+        this.initializeProperties( META.getProperties() );
         this.assertValidProperties();
-        this.readBankfile(resource);
+        this.readBankfile( resource );
     }
 
     /**
@@ -244,14 +244,14 @@ public final class BankleitzahlenDatei
      * a valid Bankleitzahlendatei.
      * @throws IOException if reading fails.
      */
-    public BankleitzahlenDatei(final URL resource, final String encoding)
-    throws IOException
+    public BankleitzahlenDatei( final URL resource, final String encoding )
+        throws IOException
     {
         super();
-        this.initializeProperties(META.getProperties());
-        this._encoding = encoding;
+        this.initializeProperties( META.getProperties() );
+        this.pEncoding = encoding;
         this.assertValidProperties();
-        this.readBankfile(resource);
+        this.readBankfile( resource );
     }
 
     /**
@@ -261,10 +261,10 @@ public final class BankleitzahlenDatei
      */
     public BankleitzahlInfo[] getRecords()
     {
-        if(this.cachedRecords == null)
+        if ( this.cachedRecords == null )
         {
-            this.cachedRecords = (BankleitzahlInfo[]) this.records.values().
-                toArray(new BankleitzahlInfo[this.records.size()]);
+            this.cachedRecords = ( BankleitzahlInfo[] ) this.records.values().
+                toArray( new BankleitzahlInfo[ this.records.size() ] );
 
         }
 
@@ -282,14 +282,14 @@ public final class BankleitzahlenDatei
      *
      * @throws NullPointerException if {@code serialNumber} is {@code null}.
      */
-    public BankleitzahlInfo getRecord(final Integer serialNumber)
+    public BankleitzahlInfo getRecord( final Integer serialNumber )
     {
-        if(serialNumber == null)
+        if ( serialNumber == null )
         {
-            throw new NullPointerException("serialNumber");
+            throw new NullPointerException( "serialNumber" );
         }
 
-        return (BankleitzahlInfo) this.records.get(serialNumber);
+        return ( BankleitzahlInfo ) this.records.get( serialNumber );
     }
 
     /**
@@ -303,11 +303,11 @@ public final class BankleitzahlenDatei
      * @throws IllegalArgumentException if {@code file} cannot be used for
      * updating this instance.
      */
-    public void update(final BankleitzahlenDatei file)
+    public void update( final BankleitzahlenDatei file )
     {
-        if(file == null)
+        if ( file == null )
         {
-            throw new NullPointerException("file");
+            throw new NullPointerException( "file" );
         }
 
         int i;
@@ -318,107 +318,113 @@ public final class BankleitzahlenDatei
 
         int progress = 0;
         Task task = new Task();
-        task.setIndeterminate(false);
-        task.setCancelable(false);
-        task.setDescription(new UpdatesBankleitzahlenDateiMessage());
-        task.setMinimum(0);
-        task.setMaximum(file.getRecords().length);
-        task.setProgress(progress);
+        task.setIndeterminate( false );
+        task.setCancelable( false );
+        task.setDescription( new UpdatesBankleitzahlenDateiMessage() );
+        task.setMinimum( 0 );
+        task.setMaximum( file.getRecords().length );
+        task.setProgress( progress );
 
         try
         {
-            this.getTaskMonitor().monitor(task);
+            this.getTaskMonitor().monitor( task );
 
-            for(i = file.getRecords().length - 1; i >= 0; i--)
+            for ( i = file.getRecords().length - 1; i >= 0; i-- )
             {
-                task.setProgress(progress++);
+                task.setProgress( progress++ );
                 newVersion = file.getRecords()[i];
-                if('A' == newVersion.getChangeLabel())
+                if ( 'A' == newVersion.getChangeLabel() )
                 {
-                    if(this.records.put(
-                        newVersion.getSerialNumber(), newVersion) != null)
+                    if ( this.records.put(
+                        newVersion.getSerialNumber(), newVersion ) != null )
                     {
                         throw new IllegalArgumentException(
-                            newVersion.toString());
+                            newVersion.toString() );
 
                     }
 
-                    if(log)
+                    if ( log )
                     {
-                        this.getLogger().debug(BankleitzahlenDateiBundle.
-                            getAddRecordInfoMessage(Locale.getDefault()).
-                            format(new Object[] {
-                            new Character(newVersion.getChangeLabel()),
-                            newVersion.getSerialNumber() }));
+                        this.getLogger().debug(
+                            BankleitzahlenDateiBundle.getInstance().
+                            getAddRecordInfoMessage( Locale.getDefault() ).
+                            format( new Object[] {
+                                    new Character( newVersion.getChangeLabel() ),
+                                    newVersion.getSerialNumber()
+                                } ) );
 
                     }
                 }
-                else if('M' == newVersion.getChangeLabel() ||
-                    'D' == newVersion.getChangeLabel())
+                else if ( 'M' == newVersion.getChangeLabel() ||
+                    'D' == newVersion.getChangeLabel() )
                 {
-                    if(this.records.put(newVersion.getSerialNumber(),
-                        newVersion) == null)
+                    if ( this.records.put( newVersion.getSerialNumber(),
+                                           newVersion ) == null )
                     {
                         throw new IllegalArgumentException(
-                            newVersion.toString());
+                            newVersion.toString() );
 
                     }
 
-                    if(log)
+                    if ( log )
                     {
-                        this.getLogger().debug(BankleitzahlenDateiBundle.
-                            getModifyRecordInfoMessage(Locale.getDefault()).
-                            format(new Object[] {
-                            new Character(newVersion.getChangeLabel()),
-                            newVersion.getSerialNumber() }));
+                        this.getLogger().debug(
+                            BankleitzahlenDateiBundle.getInstance().
+                            getModifyRecordInfoMessage( Locale.getDefault() ).
+                            format( new Object[] {
+                                    new Character( newVersion.getChangeLabel() ),
+                                    newVersion.getSerialNumber()
+                                } ) );
 
                     }
 
                 }
-                else if('U' == newVersion.getChangeLabel() &&
-                    !this.records.containsKey(newVersion.getSerialNumber()))
+                else if ( 'U' == newVersion.getChangeLabel() &&
+                    !this.records.containsKey( newVersion.getSerialNumber() ) )
                 {
-                    throw new IllegalArgumentException(newVersion.toString());
+                    throw new IllegalArgumentException( newVersion.toString() );
                 }
             }
         }
         finally
         {
-            this.getTaskMonitor().finish(task);
+            this.getTaskMonitor().finish( task );
         }
 
         progress = 0;
         task = new Task();
-        task.setIndeterminate(false);
-        task.setCancelable(false);
-        task.setDescription(new UpdatesBankleitzahlenDateiMessage());
-        task.setMinimum(0);
-        task.setMaximum(this.records.size());
-        task.setProgress(progress);
+        task.setIndeterminate( false );
+        task.setCancelable( false );
+        task.setDescription( new UpdatesBankleitzahlenDateiMessage() );
+        task.setMinimum( 0 );
+        task.setMaximum( this.records.size() );
+        task.setProgress( progress );
 
         try
         {
-            this.getTaskMonitor().monitor(task);
+            this.getTaskMonitor().monitor( task );
 
-            for(it = this.records.values().iterator(); it.hasNext();)
+            for ( it = this.records.values().iterator(); it.hasNext();)
             {
-                task.setProgress(progress++);
-                oldVersion = (BankleitzahlInfo) it.next();
+                task.setProgress( progress++ );
+                oldVersion = ( BankleitzahlInfo ) it.next();
 
-                if('D' == oldVersion.getChangeLabel())
+                if ( 'D' == oldVersion.getChangeLabel() )
                 {
-                    newVersion = file.getRecord(oldVersion.getSerialNumber());
-                    if(newVersion == null)
+                    newVersion = file.getRecord( oldVersion.getSerialNumber() );
+                    if ( newVersion == null )
                     {
                         it.remove();
 
-                        if(log)
+                        if ( log )
                         {
-                            this.getLogger().debug(BankleitzahlenDateiBundle.
-                                getRemoveRecordInfoMessage(Locale.getDefault()).
-                                format(new Object[] {
-                                new Character(oldVersion.getChangeLabel()),
-                                oldVersion.getSerialNumber() }));
+                            this.getLogger().debug(
+                                BankleitzahlenDateiBundle.getInstance().
+                                getRemoveRecordInfoMessage( Locale.getDefault() ).
+                                format( new Object[] {
+                                        new Character( oldVersion.getChangeLabel() ),
+                                        oldVersion.getSerialNumber()
+                                    } ) );
 
                         }
                     }
@@ -427,7 +433,7 @@ public final class BankleitzahlenDatei
         }
         finally
         {
-            this.getTaskMonitor().finish(task);
+            this.getTaskMonitor().finish( task );
         }
 
         this.cachedRecords = null;
@@ -440,18 +446,18 @@ public final class BankleitzahlenDatei
      */
     private void assertValidProperties()
     {
-        if(this.getEncoding() == null || this.getEncoding().length() == 0)
+        if ( this.getEncoding() == null || this.getEncoding().length() == 0 )
         {
-            throw new PropertyException("encoding", this.getEncoding());
+            throw new PropertyException( "encoding", this.getEncoding() );
         }
 
         try
         {
-            "".getBytes(this.getEncoding());
+            "".getBytes( this.getEncoding() );
         }
-        catch(UnsupportedEncodingException e)
+        catch ( UnsupportedEncodingException e )
         {
-            throw new PropertyException("encoding", this.getEncoding(), e);
+            throw new PropertyException( "encoding", this.getEncoding(), e );
         }
     }
 
@@ -466,43 +472,44 @@ public final class BankleitzahlenDatei
      * a valid Bankleitzahlendatei.
      * @throws IOException if reading fails.
      */
-    private void readBankfile(final URL resource) throws IOException
+    private void readBankfile( final URL resource ) throws IOException
     {
         String line = null;
         InputStream stream = null;
         BankleitzahlInfo rec = null;
         final BufferedReader reader;
 
-        if(resource == null)
+        if ( resource == null )
         {
-            throw new NullPointerException("resource");
+            throw new NullPointerException( "resource" );
         }
 
         this.records.clear();
 
-        if(this.getLogger().isDebugEnabled())
+        if ( this.getLogger().isDebugEnabled() )
         {
-            this.getLogger().debug(BankleitzahlenDateiBundle.
-                getFileNameInfoMessage(Locale.getDefault()).
-                format(new Object[] { resource.toExternalForm() }));
+            this.getLogger().debug(
+                BankleitzahlenDateiBundle.getInstance().
+                getFileNameInfoMessage( Locale.getDefault() ).
+                format( new Object[] { resource.toExternalForm() } ) );
 
         }
 
         try
         {
             stream = resource.openStream();
-            reader = new BufferedReader(new InputStreamReader(
-                stream, this.getEncoding()));
+            reader = new BufferedReader( new InputStreamReader(
+                                         stream, this.getEncoding() ) );
 
-            while((line = reader.readLine()) != null)
+            while ( ( line = reader.readLine() ) != null )
             {
                 rec = new BankleitzahlInfo();
-                rec.parse(line);
+                rec.parse( line );
 
-                if(this.records.put(rec.getSerialNumber(), rec) != null)
+                if ( this.records.put( rec.getSerialNumber(), rec ) != null )
                 {
                     throw new IllegalArgumentException(
-                        rec.getSerialNumber().toString());
+                        rec.getSerialNumber().toString() );
 
                 }
             }
@@ -511,7 +518,7 @@ public final class BankleitzahlenDatei
         }
         finally
         {
-            if(stream != null)
+            if ( stream != null )
             {
                 stream.close();
             }

@@ -22,7 +22,7 @@
   Author     : Christian Schulte <cs@jdtaus.org>
   Version    : $Id$
   Description: Runtime configuration for the ${pom.name} module.
-        
+
 -->
 
 <jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
@@ -32,40 +32,40 @@
                jdtaus:name="${pom.name}"
                jdtaus:description="${pom.description}"
                jdtaus:version="1.1">
-  
+
   <jdtaus:implementations>
     <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.BankleitzahlenDatei"
                            jdtaus:name="BankleitzahlenDatei"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}"
                            jdtaus:final="true">
-      
+
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
                            jdtaus:name="Logger"
                            jdtaus:bound="true">
-          
+
           <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name" 
+            <jdtaus:property jdtaus:name="name"
                              jdtaus:type="java.lang.String"
                              jdtaus:value="org.jdtaus.banking.util.BankleitzahlenDatei"
                              jdtaus:api="true"/>
-            
+
           </jdtaus:properties>
-          
+
         </jdtaus:dependency>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
                            jdtaus:name="TaskMonitor"
                            jdtaus:bound="true">
-          
+
         </jdtaus:dependency>
       </jdtaus:dependencies>
-      
+
       <jdtaus:properties>
         <jdtaus:property jdtaus:name="encoding"
                          jdtaus:type="java.lang.String"
                          jdtaus:value="ISO-8859-1"/>
-        
+
       </jdtaus:properties>
     </jdtaus:implementation>
     <!--                                                                     -->

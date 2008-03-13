@@ -53,6 +53,12 @@ import org.jdtaus.core.container.Property;
  */
 public final class AlphaNumericText27TextField extends JFormattedTextField
 {
+    //--Constants---------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.1.x classes. */
+    private static final long serialVersionUID = -8152767220100367519L;
+
+    //---------------------------------------------------------------Constants--
     //--Implementation----------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
@@ -87,11 +93,11 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
         }
 
         p = meta.getProperty("normalizing");
-        this._normalizing = ((java.lang.Boolean) p.getValue()).booleanValue();
+        this.pNormalizing = ((java.lang.Boolean) p.getValue()).booleanValue();
 
 
         p = meta.getProperty("validating");
-        this._validating = ((java.lang.Boolean) p.getValue()).booleanValue();
+        this.pValidating = ((java.lang.Boolean) p.getValue()).booleanValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -114,7 +120,7 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
      * Property {@code normalizing}.
      * @serial
      */
-    private boolean _normalizing;
+    private boolean pNormalizing;
 
     /**
      * Gets the value of property <code>normalizing</code>.
@@ -123,14 +129,14 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
      */
     public boolean isNormalizing()
     {
-        return this._normalizing;
+        return this.pNormalizing;
     }
 
     /**
      * Property {@code validating}.
      * @serial
      */
-    private boolean _validating;
+    private boolean pValidating;
 
     /**
      * Gets the value of property <code>validating</code>.
@@ -139,7 +145,7 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
      */
     public boolean isValidating()
     {
-        return this._validating;
+        return this.pValidating;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -151,79 +157,96 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
     public AlphaNumericText27TextField()
     {
         super();
-        this.initializeProperties(META.getProperties());
-        this.setColumns(AlphaNumericText27.MAX_LENGTH);
-        this.setFormatterFactory(new AbstractFormatterFactory()
-        {
-            public AbstractFormatter getFormatter(final JFormattedTextField ftf)
+        this.initializeProperties( META.getProperties() );
+        this.setColumns( AlphaNumericText27.MAX_LENGTH );
+        this.setFormatterFactory(
+            new AbstractFormatterFactory()
             {
-                return new AbstractFormatter()
+
+                public AbstractFormatter getFormatter(
+                    final JFormattedTextField ftf )
                 {
-                    public Object stringToValue(final String text)
-                    throws ParseException
+                    return new AbstractFormatter()
                     {
-                        Object value = null;
 
-                        if(text != null && text.trim().length() > 0)
+                        public Object stringToValue( final String text )
+                            throws ParseException
                         {
-                            value = AlphaNumericText27.parse(isNormalizing()
-                            ? AlphaNumericText27.normalize(text)
-                            : text);
+                            Object value = null;
 
+                            if ( text != null && text.trim().
+                                length() > 0 )
+                            {
+                                value = AlphaNumericText27.parse(
+                                    isNormalizing()
+                                    ? AlphaNumericText27.normalize( text )
+                                    : text );
+
+                            }
+
+                            return value;
                         }
 
-                        return value;
-                    }
-
-                    public String valueToString(final Object value)
-                    throws ParseException
-                    {
-                        String ret = null;
-
-                        if(value instanceof AlphaNumericText27)
+                        public String valueToString( final Object value )
+                            throws ParseException
                         {
-                            final AlphaNumericText27 txt =
-                                (AlphaNumericText27) value;
+                            String ret = null;
 
-                            ret = txt.isEmpty() ?
-                                null : txt.format().trim();
+                            if ( value instanceof AlphaNumericText27 )
+                            {
+                                final AlphaNumericText27 txt =
+                                    ( AlphaNumericText27 ) value;
 
+                                ret = txt.isEmpty()
+                                    ? null
+                                    : txt.format().trim();
+
+                            }
+
+                            return ret;
                         }
 
-                        return ret;
-                    }
-                };
-            }
-        });
-
-        this.setInputVerifier(new InputVerifier()
-        {
-            public boolean verify(final JComponent input)
-            {
-                boolean valid = true;
-
-                if(isValidating() && input instanceof JTextComponent)
-                {
-                    final String text = ((JTextComponent) input).getText();
-
-                    if(text != null && text.trim().length() > 0)
-                    {
-                        try
-                        {
-                            AlphaNumericText27.parse(isNormalizing() ?
-                                AlphaNumericText27.normalize(text) : text);
-
-                        }
-                        catch(ParseException e)
-                        {
-                            valid = false;
-                        }
-                    }
+                    };
                 }
 
-                return valid;
-            }
-        });
+            } );
+
+        this.setInputVerifier(
+            new InputVerifier()
+            {
+
+                public boolean verify( final JComponent input )
+                {
+                    boolean valid = true;
+
+                    if ( isValidating() &&
+                        input instanceof JTextComponent )
+                    {
+                        final String text =
+                            ( ( JTextComponent ) input ).getText();
+
+                        if ( text != null &&
+                            text.trim().length() > 0 )
+                        {
+                            try
+                            {
+                                AlphaNumericText27.parse(
+                                    isNormalizing()
+                                    ? AlphaNumericText27.normalize( text )
+                                    : text );
+
+                            }
+                            catch ( ParseException e )
+                            {
+                                valid = false;
+                            }
+                        }
+                    }
+
+                    return valid;
+                }
+
+            } );
     }
 
     /**
@@ -233,7 +256,7 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
      */
     public AlphaNumericText27 getAlphaNumericText27()
     {
-        return (AlphaNumericText27) this.getValue();
+        return ( AlphaNumericText27 ) this.getValue();
     }
 
     /**
@@ -242,9 +265,9 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
      * @param value {@code true} to use a normalizing parser; {@code false} to
      * use a strict parser (defaults to {@code true}).
      */
-    public void setNormalizing(final boolean value)
+    public void setNormalizing( final boolean value )
     {
-        this._normalizing = value;
+        this.pNormalizing = value;
     }
 
     /**
@@ -253,9 +276,9 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
      * @param validating {@code true} to validate the fields' values;
      * {@code false} to not validate the fields' values.
      */
-    public void setValidating(boolean validating)
+    public void setValidating( boolean validating )
     {
-        this._validating = validating;
+        this.pValidating = validating;
     }
 
     //---------------------------------------------AlphaNumericText27TextField--

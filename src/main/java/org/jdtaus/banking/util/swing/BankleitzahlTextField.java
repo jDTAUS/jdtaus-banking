@@ -69,6 +69,12 @@ import org.jdtaus.core.container.PropertyException;
  */
 public final class BankleitzahlTextField extends JFormattedTextField
 {
+    //--Constants---------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.1.x classes. */
+    private static final long serialVersionUID = -5461742987164339047L;
+
+    //---------------------------------------------------------------Constants--
     //--Implementation----------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
@@ -103,11 +109,11 @@ public final class BankleitzahlTextField extends JFormattedTextField
         }
 
         p = meta.getProperty("format");
-        this._format = ((java.lang.Integer) p.getValue()).intValue();
+        this.pFormat = ((java.lang.Integer) p.getValue()).intValue();
 
 
         p = meta.getProperty("validating");
-        this._validating = ((java.lang.Boolean) p.getValue()).booleanValue();
+        this.pValidating = ((java.lang.Boolean) p.getValue()).booleanValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -119,7 +125,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>BankleitzahlenVerzeichnis</code> implementation. */
-    private transient BankleitzahlenVerzeichnis _dependency0;
+    private transient BankleitzahlenVerzeichnis dBankleitzahlenVerzeichnis;
 
     /**
      * Gets the configured <code>BankleitzahlenVerzeichnis</code> implementation.
@@ -129,9 +135,9 @@ public final class BankleitzahlTextField extends JFormattedTextField
     private BankleitzahlenVerzeichnis getBankleitzahlenVerzeichnis()
     {
         BankleitzahlenVerzeichnis ret = null;
-        if(this._dependency0 != null)
+        if(this.dBankleitzahlenVerzeichnis != null)
         {
-            ret = this._dependency0;
+            ret = this.dBankleitzahlenVerzeichnis;
         }
         else
         {
@@ -144,7 +150,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
                 getDependencies().getDependency("BankleitzahlenVerzeichnis").
                 isBound())
             {
-                this._dependency0 = ret;
+                this.dBankleitzahlenVerzeichnis = ret;
             }
         }
 
@@ -168,7 +174,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
      * Property {@code format}.
      * @serial
      */
-    private int _format;
+    private int pFormat;
 
     /**
      * Gets the value of property <code>format</code>.
@@ -177,14 +183,14 @@ public final class BankleitzahlTextField extends JFormattedTextField
      */
     public int getFormat()
     {
-        return this._format;
+        return this.pFormat;
     }
 
     /**
      * Property {@code validating}.
      * @serial
      */
-    private boolean _validating;
+    private boolean pValidating;
 
     /**
      * Gets the value of property <code>validating</code>.
@@ -193,7 +199,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
      */
     public boolean isValidating()
     {
-        return this._validating;
+        return this.pValidating;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -206,87 +212,106 @@ public final class BankleitzahlTextField extends JFormattedTextField
     {
         super();
 
-        this.initializeProperties(META.getProperties());
+        this.initializeProperties( META.getProperties() );
         this.assertValidProperties();
-        this.setColumns(Bankleitzahl.MAX_CHARACTERS);
-        this.setFormatterFactory(new AbstractFormatterFactory()
-        {
-            public AbstractFormatter getFormatter(final JFormattedTextField ftf)
+        this.setColumns( Bankleitzahl.MAX_CHARACTERS );
+        this.setFormatterFactory(
+            new AbstractFormatterFactory()
             {
-                return new AbstractFormatter()
+
+                public AbstractFormatter getFormatter(
+                    final JFormattedTextField ftf )
                 {
-                    public Object stringToValue(final String text)
-                    throws ParseException
+                    return new AbstractFormatter()
                     {
-                        Object value = null;
 
-                        if(text != null && text.trim().length() > 0)
+                        public Object stringToValue( final String text )
+                            throws ParseException
                         {
-                            value = Bankleitzahl.parse(text);
+                            Object value = null;
+
+                            if ( text != null && text.trim().
+                                length() > 0 )
+                            {
+                                value = Bankleitzahl.parse( text );
+                            }
+
+                            return value;
                         }
 
-                        return value;
-                    }
-
-                    public String valueToString(final Object value)
-                    throws ParseException
-                    {
-                        String ret = null;
-
-                        if(value instanceof Bankleitzahl)
+                        public String valueToString( final Object value )
+                            throws ParseException
                         {
-                            ret = ((Bankleitzahl) value).format(getFormat());
+                            String ret = null;
+
+                            if ( value instanceof Bankleitzahl )
+                            {
+                                final Bankleitzahl blz = ( Bankleitzahl ) value;
+                                ret = blz.format( getFormat() );
+                            }
+
+                            return ret;
                         }
 
-                        return ret;
-                    }
-                };
-            }
-        });
-
-        this.setInputVerifier(new InputVerifier()
-        {
-            public boolean verify(final JComponent input)
-            {
-                boolean valid = true;
-
-                if(isValidating() && input instanceof JTextComponent)
-                {
-                    final String text = ((JTextComponent) input).getText();
-
-                    if(text != null && text.trim().length() > 0)
-                    {
-                        try
-                        {
-                            Bankleitzahl.parse(text);
-                        }
-                        catch(ParseException e)
-                        {
-                            valid = false;
-                        }
-                    }
+                    };
                 }
 
-                return valid;
-            }
-        });
+            } );
 
-        this.addPropertyChangeListener("value", new PropertyChangeListener()
-        {
-            public void propertyChange(final PropertyChangeEvent evt)
+        this.setInputVerifier(
+            new InputVerifier()
             {
-                if(isValidating())
+
+                public boolean verify( final JComponent input )
+                {
+                    boolean valid = true;
+
+                    if ( isValidating() &&
+                        input instanceof JTextComponent )
+                    {
+                        final String text =
+                            ( ( JTextComponent ) input ).getText();
+
+                        if ( text != null &&
+                            text.trim().length() > 0 )
+                        {
+                            try
+                            {
+                                Bankleitzahl.parse( text );
+                            }
+                            catch ( ParseException e )
+                            {
+                                valid = false;
+                            }
+                        }
+                    }
+
+                    return valid;
+                }
+
+            } );
+
+        this.addPropertyChangeListener(
+            "value", new PropertyChangeListener()
+        {
+
+            public void propertyChange( final PropertyChangeEvent evt )
+            {
+                if ( isValidating() )
                 {
                     new Thread()
                     {
+
                         public void run()
                         {
                             updateTooltip();
                         }
-                    }.start();
+
+                        }.start();
                 }
             }
-        });
+
+            } );
     }
 
     /**
@@ -296,7 +321,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
      */
     public Bankleitzahl getBankleitzahl()
     {
-        return (Bankleitzahl) this.getValue();
+        return ( Bankleitzahl ) this.getValue();
     }
 
     /**
@@ -312,15 +337,15 @@ public final class BankleitzahlTextField extends JFormattedTextField
      * @see Bankleitzahl#ELECTRONIC_FORMAT
      * @see Bankleitzahl#LETTER_FORMAT
      */
-    public void setFormat(final int format)
+    public void setFormat( final int format )
     {
-        if(format != Bankleitzahl.ELECTRONIC_FORMAT &&
-            format != Bankleitzahl.LETTER_FORMAT)
+        if ( format != Bankleitzahl.ELECTRONIC_FORMAT &&
+            format != Bankleitzahl.LETTER_FORMAT )
         {
-            throw new IllegalArgumentException(Integer.toString(format));
+            throw new IllegalArgumentException( Integer.toString( format ) );
         }
 
-        this._format = format;
+        this.pFormat = format;
     }
 
     /**
@@ -329,9 +354,9 @@ public final class BankleitzahlTextField extends JFormattedTextField
      * @param validating {@code true} to validate the fields' values;
      * {@code false} to not validate the fields' values.
      */
-    public void setValidating(boolean validating)
+    public void setValidating( boolean validating )
     {
-        this._validating = validating;
+        this.pValidating = validating;
     }
 
     /**
@@ -347,62 +372,70 @@ public final class BankleitzahlTextField extends JFormattedTextField
 
         try
         {
-            if(blz != null)
+            if ( blz != null )
             {
                 final BankleitzahlInfo headOffice =
-                    this.getBankleitzahlenVerzeichnis().getHeadOffice(blz);
+                    this.getBankleitzahlenVerzeichnis().getHeadOffice( blz );
 
                 final StringBuffer tooltip =
-                    new StringBuffer(200).append("<html>");
+                    new StringBuffer( 200 ).append( "<html>" );
 
-                if(headOffice != null)
+                if ( headOffice != null )
                 {
                     final NumberFormat plzFmt =
-                        new DecimalFormat("00000");
+                        new DecimalFormat( "00000" );
 
-                    tooltip.append("<b>").append(headOffice.getName()).
-                        append("</b><br>").append(headOffice.
-                        getDescription()).append("<br>").append(
-                        plzFmt.format(headOffice.getPostalCode())).
-                        append(' ').append(headOffice.getCity());
+                    tooltip.append( "<b>" ).append( headOffice.getName() ).
+                        append( "</b><br>" ).append( headOffice.getDescription() ).
+                        append( "<br>" ).append(
+                        plzFmt.format( headOffice.getPostalCode() ) ).
+                        append( ' ' ).append( headOffice.getCity() );
 
                 }
                 else
                 {
-                    UIManager.getLookAndFeel().provideErrorFeedback(this);
-                    tooltip.append(new UnknownBankleitzahlMessage(blz).
-                        getText(Locale.getDefault()));
+                    UIManager.getLookAndFeel().provideErrorFeedback( this );
+                    tooltip.append(
+                        new UnknownBankleitzahlMessage( blz ).getText(
+                        Locale.getDefault() ) );
 
                 }
 
-                tooltipText = tooltip.append("</html>").toString();
+                tooltipText = tooltip.append( "</html>" ).toString();
             }
         }
-        catch(BankleitzahlExpirationException e)
+        catch ( BankleitzahlExpirationException e )
         {
-            UIManager.getLookAndFeel().provideErrorFeedback(this);
+            UIManager.getLookAndFeel().provideErrorFeedback( this );
 
-            final StringBuffer tooltip = new StringBuffer(200).append("<html>");
-            tooltip.append(new BankleitzahlExpirationMessage(
-                e.getExpiredBankleitzahlInfo()).getText(Locale.getDefault()));
+            final StringBuffer tooltip =
+                new StringBuffer( 200 ).append( "<html>" );
+            tooltip.append( new BankleitzahlExpirationMessage(
+                            e.getExpiredBankleitzahlInfo() ).getText(
+                            Locale.getDefault() ) );
 
-            tooltip.append("<br>");
+            tooltip.append( "<br>" );
 
-            tooltip.append(new BankleitzahlReplacementMessage(
-                e.getReplacingBankleitzahlInfo()).getText(Locale.getDefault()));
+            tooltip.append( new BankleitzahlReplacementMessage(
+                            e.getReplacingBankleitzahlInfo() ).getText(
+                            Locale.getDefault() ) );
 
-            tooltip.append("</html>");
+            tooltip.append( "</html>" );
             tooltipText = tooltip.toString();
         }
 
         final String finalText = tooltipText;
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
+        SwingUtilities.invokeLater(
+            new Runnable()
             {
-                setToolTipText(finalText);
-            }
-        });
+
+                public void run()
+                {
+                    setToolTipText( finalText );
+                }
+
+            } );
+
     }
 
     /**
@@ -412,11 +445,11 @@ public final class BankleitzahlTextField extends JFormattedTextField
      */
     private void assertValidProperties()
     {
-        if(this.getFormat() != Bankleitzahl.ELECTRONIC_FORMAT &&
-            this.getFormat() != Bankleitzahl.LETTER_FORMAT)
+        if ( this.getFormat() != Bankleitzahl.ELECTRONIC_FORMAT &&
+            this.getFormat() != Bankleitzahl.LETTER_FORMAT )
         {
-            throw new PropertyException("format",
-                Integer.toString(this.getFormat()));
+            throw new PropertyException( "format",
+                                         Integer.toString( this.getFormat() ) );
 
         }
     }
