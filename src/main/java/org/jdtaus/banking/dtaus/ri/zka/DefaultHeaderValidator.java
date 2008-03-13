@@ -130,15 +130,15 @@ public final class DefaultHeaderValidator
         }
 
         p = meta.getProperty("maxDateMillis");
-        this._maxDateMillis = ((java.lang.Long) p.getValue()).longValue();
+        this.pMaxDateMillis = ((java.lang.Long) p.getValue()).longValue();
 
 
         p = meta.getProperty("minDateMillis");
-        this._minDateMillis = ((java.lang.Long) p.getValue()).longValue();
+        this.pMinDateMillis = ((java.lang.Long) p.getValue()).longValue();
 
 
         p = meta.getProperty("maxScheduleDays");
-        this._maxScheduleDays = ((java.lang.Integer) p.getValue()).intValue();
+        this.pMaxScheduleDays = ((java.lang.Integer) p.getValue()).intValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -163,7 +163,7 @@ public final class DefaultHeaderValidator
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>CurrencyMapper</code> implementation. */
-    private transient CurrencyMapper _dependency0;
+    private transient CurrencyMapper dCurrencyMapper;
 
     /**
      * Gets the configured <code>CurrencyMapper</code> implementation.
@@ -173,9 +173,9 @@ public final class DefaultHeaderValidator
     private CurrencyMapper getCurrencyMapper()
     {
         CurrencyMapper ret = null;
-        if(this._dependency0 != null)
+        if(this.dCurrencyMapper != null)
         {
-            ret = this._dependency0;
+            ret = this.dCurrencyMapper;
         }
         else
         {
@@ -188,7 +188,7 @@ public final class DefaultHeaderValidator
                 getDependencies().getDependency("CurrencyMapper").
                 isBound())
             {
-                this._dependency0 = ret;
+                this.dCurrencyMapper = ret;
             }
         }
 
@@ -212,7 +212,7 @@ public final class DefaultHeaderValidator
      * Property {@code maxDateMillis}.
      * @serial
      */
-    private long _maxDateMillis;
+    private long pMaxDateMillis;
 
     /**
      * Gets the value of property <code>maxDateMillis</code>.
@@ -221,14 +221,14 @@ public final class DefaultHeaderValidator
      */
     private long getMaxDateMillis()
     {
-        return this._maxDateMillis;
+        return this.pMaxDateMillis;
     }
 
     /**
      * Property {@code minDateMillis}.
      * @serial
      */
-    private long _minDateMillis;
+    private long pMinDateMillis;
 
     /**
      * Gets the value of property <code>minDateMillis</code>.
@@ -237,14 +237,14 @@ public final class DefaultHeaderValidator
      */
     private long getMinDateMillis()
     {
-        return this._minDateMillis;
+        return this.pMinDateMillis;
     }
 
     /**
      * Property {@code maxScheduleDays}.
      * @serial
      */
-    private int _maxScheduleDays;
+    private int pMaxScheduleDays;
 
     /**
      * Gets the value of property <code>maxScheduleDays</code>.
@@ -253,7 +253,7 @@ public final class DefaultHeaderValidator
      */
     private int getMaxScheduleDays()
     {
-        return this._maxScheduleDays;
+        return this.pMaxScheduleDays;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -261,197 +261,200 @@ public final class DefaultHeaderValidator
     //--------------------------------------------------------------Properties--
     //--HeaderValidator---------------------------------------------------------
 
-    public IllegalHeaderException assertValidHeader(final Header header,
-        IllegalHeaderException result)
+    public IllegalHeaderException assertValidHeader(
+        final Header header, IllegalHeaderException result )
     {
-        if(header == null)
+        if ( header == null )
         {
-            throw new NullPointerException("header");
+            throw new NullPointerException( "header" );
         }
 
         final List messages = new LinkedList();
-        final Map properties = new HashMap(20);
+        final Map properties = new HashMap( 20 );
 
-        if(header.getCreateDate() == null)
+        if ( header.getCreateDate() == null )
         {
-            properties.put(Header.PROP_CREATEDATE,
-                new MandatoryPropertyMessage());
-
-        }
-        else if(!this.checkDate(header.getCreateDate()))
-        {
-            properties.put(Header.PROP_CREATEDATE,
-                new IllegalDateMessage(header.getCreateDate(),
-                new Date(this.getMinDateMillis()),
-                new Date(this.getMaxDateMillis())));
+            properties.put( Header.PROP_CREATEDATE,
+                            new MandatoryPropertyMessage() );
 
         }
-
-        if(header.getExecutionDate() != null &&
-            !this.checkDate(header.getExecutionDate()))
+        else if ( !this.checkDate( header.getCreateDate() ) )
         {
-            properties.put(Header.PROP_EXECUTIONDATE,
-                new IllegalDateMessage(header.getExecutionDate(),
-                new Date(this.getMinDateMillis()),
-                new Date(this.getMaxDateMillis())));
-
-        }
-        if(header.getType() == null)
-        {
-            properties.put(Header.PROP_TYPE, new MandatoryPropertyMessage());
-        }
-        else if(header.getType().isSendByBank() &&
-            header.getBankData() == null)
-        {
-            properties.put(Header.PROP_BANKDATA,
-                new MandatoryPropertyMessage());
+            properties.put( Header.PROP_CREATEDATE, new IllegalDateMessage(
+                            header.getCreateDate(),
+                            new Date( this.getMinDateMillis() ),
+                            new Date( this.getMaxDateMillis() ) ) );
 
         }
 
-        if(header.getCustomer() == null)
+        if ( header.getExecutionDate() != null &&
+            !this.checkDate( header.getExecutionDate() ) )
         {
-            properties.put(Header.PROP_CUSTOMER,
-                new MandatoryPropertyMessage());
+            properties.put( Header.PROP_EXECUTIONDATE, new IllegalDateMessage(
+                            header.getExecutionDate(),
+                            new Date( this.getMinDateMillis() ),
+                            new Date( this.getMaxDateMillis() ) ) );
 
         }
-        if(header.getBank() == null)
+        if ( header.getType() == null )
         {
-            properties.put(Header.PROP_BANK,
-                new MandatoryPropertyMessage());
-
+            properties.put( Header.PROP_TYPE, new MandatoryPropertyMessage() );
         }
-        if(header.getAccount() == null)
+        else if ( header.getType().isSendByBank() &&
+            header.getBankData() == null )
         {
-            properties.put(Header.PROP_ACCOUNT,
-                new MandatoryPropertyMessage());
-
-        }
-        if(header.getCurrency() == null)
-        {
-            properties.put(Header.PROP_CURRENCY,
-                new MandatoryPropertyMessage());
+            properties.put( Header.PROP_BANKDATA,
+                            new MandatoryPropertyMessage() );
 
         }
 
-        if(header.getCreateDate() != null)
+        if ( header.getCustomer() == null )
         {
-            if(header.getCurrency() != null)
+            properties.put( Header.PROP_CUSTOMER,
+                            new MandatoryPropertyMessage() );
+
+        }
+        if ( header.getBank() == null )
+        {
+            properties.put( Header.PROP_BANK,
+                            new MandatoryPropertyMessage() );
+
+        }
+        if ( header.getAccount() == null )
+        {
+            properties.put( Header.PROP_ACCOUNT,
+                            new MandatoryPropertyMessage() );
+
+        }
+        if ( header.getCurrency() == null )
+        {
+            properties.put( Header.PROP_CURRENCY,
+                            new MandatoryPropertyMessage() );
+
+        }
+
+        if ( header.getCreateDate() != null )
+        {
+            if ( header.getCurrency() != null )
             {
                 try
                 {
-                    this.getCurrencyMapper().getDtausCode(header.getCurrency(),
-                        header.getCreateDate());
+                    this.getCurrencyMapper().getDtausCode(
+                        header.getCurrency(), header.getCreateDate() );
 
                 }
-                catch(UnsupportedCurrencyException ex)
+                catch ( UnsupportedCurrencyException ex )
                 {
-                    properties.put(Header.PROP_CURRENCY,
-                        new IllegalCurrencyMessage(header.getCurrency().
-                        getCurrencyCode(), header.getCreateDate()));
+                    properties.put( Header.PROP_CURRENCY,
+                                    new IllegalCurrencyMessage(
+                                    header.getCurrency().getCurrencyCode(),
+                                    header.getCreateDate() ) );
 
                 }
             }
 
-            if(!this.checkSchedule(header.getCreateDate(),
-                header.getExecutionDate()))
+            if ( !this.checkSchedule( header.getCreateDate(),
+                                      header.getExecutionDate() ) )
             {
-                messages.add(new IllegalScheduleMessage(header.getCreateDate(),
-                    header.getExecutionDate(), this.getMaxScheduleDays()));
+                messages.add( new IllegalScheduleMessage(
+                              header.getCreateDate(), header.getExecutionDate(),
+                              this.getMaxScheduleDays() ) );
 
             }
         }
 
-        if(properties.size() > 0 || messages.size() > 0)
+        if ( properties.size() > 0 || messages.size() > 0 )
         {
-            if(result == null)
+            if ( result == null )
             {
                 result = new IllegalHeaderException();
             }
 
-            for(Iterator it = properties.entrySet().iterator(); it.hasNext();)
+            for ( Iterator it = properties.entrySet().iterator(); it.hasNext();)
             {
-                final Map.Entry entry = (Map.Entry) it.next();
-                result.addMessage((String) entry.getKey(),
-                    (Message) entry.getValue());
+                final Map.Entry entry = ( Map.Entry ) it.next();
+                result.addMessage( ( String ) entry.getKey(),
+                                   ( Message ) entry.getValue() );
 
             }
-            for(Iterator it = messages.iterator(); it.hasNext();)
+            for ( Iterator it = messages.iterator(); it.hasNext();)
             {
-                result.addMessage((Message) it.next());
+                result.addMessage( ( Message ) it.next() );
             }
         }
 
         return result;
     }
 
-    public IllegalHeaderException assertValidHeader(final LogicalFile lFile,
-        final Header header, final CurrencyCounter counter,
-        IllegalHeaderException result) throws IOException
+    public IllegalHeaderException assertValidHeader(
+        final LogicalFile lFile, final Header header,
+        final CurrencyCounter counter, IllegalHeaderException result )
+        throws IOException
     {
-        if(lFile == null)
+        if ( lFile == null )
         {
-            throw new NullPointerException("lFile");
+            throw new NullPointerException( "lFile" );
         }
-        if(header == null)
+        if ( header == null )
         {
-            throw new NullPointerException("header");
+            throw new NullPointerException( "header" );
         }
-        if(counter == null)
+        if ( counter == null )
         {
-            throw new NullPointerException("counter");
+            throw new NullPointerException( "counter" );
         }
 
-        IllegalHeaderException e = this.assertValidHeader(header, result);
+        IllegalHeaderException e = this.assertValidHeader( header, result );
         final LogicalFileType oldLabel = lFile.getHeader().getType();
         final LogicalFileType newLabel = header.getType();
 
-        if(oldLabel != null && lFile.getChecksum().getTransactionCount() > 0 &&
-            (oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed()) ||
-            (oldLabel.isRemittanceAllowed() && !newLabel.isRemittanceAllowed()))
+        if ( oldLabel != null && lFile.getChecksum().getTransactionCount() > 0 &&
+            ( oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed() ) ||
+            ( oldLabel.isRemittanceAllowed() && !newLabel.isRemittanceAllowed() ) )
         {
-            if(e == null)
+            if ( e == null )
             {
                 e = new IllegalHeaderException();
             }
 
-            e.addMessage(Header.PROP_TYPE,
-                new TextschluesselConstraintMessage(newLabel,
-                lFile.getTransaction(0).getType()));
+            e.addMessage( Header.PROP_TYPE, new TextschluesselConstraintMessage(
+                          newLabel, lFile.getTransaction( 0 ).getType() ) );
 
         }
 
         final Currency[] oldCurrencies = this.getCurrencyMapper().
-            getDtausCurrencies(lFile.getHeader().getCreateDate());
+            getDtausCurrencies( lFile.getHeader().getCreateDate() );
 
         final Currency[] newCurrencies = this.getCurrencyMapper().
-            getDtausCurrencies(header.getCreateDate());
+            getDtausCurrencies( header.getCreateDate() );
 
-        if(!Arrays.equals(oldCurrencies, newCurrencies))
+        if ( !Arrays.equals( oldCurrencies, newCurrencies ) )
         {
             final Currency[] current = counter.getCurrencies();
-            for(int i = current.length - 1; i >= 0; i--)
+            for ( int i = current.length - 1; i >= 0; i-- )
             {
                 boolean currencyKept = false;
 
-                for(int j = newCurrencies.length - 1; j >= 0; j--)
+                for ( int j = newCurrencies.length - 1; j >= 0; j-- )
                 {
-                    if(newCurrencies[j].getCurrencyCode().
-                        equals(current[i].getCurrencyCode()))
+                    if ( newCurrencies[j].getCurrencyCode().
+                        equals( current[i].getCurrencyCode() ) )
                     {
                         currencyKept = true;
                         break;
                     }
                 }
 
-                if(!currencyKept)
+                if ( !currencyKept )
                 {
-                    if(e == null)
+                    if ( e == null )
                     {
                         e = new IllegalHeaderException();
                     }
 
-                    e.addMessage(new CurrencyConstraintMessage(
-                        current[i].getCurrencyCode(), header.getCreateDate()));
+                    e.addMessage( new CurrencyConstraintMessage(
+                                  current[i].getCurrencyCode(),
+                                  header.getCreateDate() ) );
 
                 }
             }
@@ -469,7 +472,7 @@ public final class DefaultHeaderValidator
     /** Creates a new {@code DefaultHeaderValidator} instance. */
     public DefaultHeaderValidator()
     {
-        this(META);
+        this( META );
         this.initialize();
     }
 
@@ -480,7 +483,7 @@ public final class DefaultHeaderValidator
      */
     private long getMaxScheduleDaysMillis()
     {
-        if(this.maxScheduleDaysMillis < 0L)
+        if ( this.maxScheduleDaysMillis < 0L )
         {
             this.maxScheduleDaysMillis = this.getMaxScheduleDays() * 86400000L;
         }
@@ -495,23 +498,26 @@ public final class DefaultHeaderValidator
      */
     private void assertValidProperties()
     {
-        if(this.getMinDateMillis() < 0L)
+        if ( this.getMinDateMillis() < 0L )
         {
-            throw new PropertyException("minDateMillis",
-                Long.toString(this.getMinDateMillis()));
+            throw new PropertyException(
+                "minDateMillis",
+                Long.toString( this.getMinDateMillis() ) );
 
         }
-        if(this.getMaxDateMillis() < 0L ||
-            this.getMinDateMillis() > this.getMaxDateMillis())
+        if ( this.getMaxDateMillis() < 0L ||
+            this.getMinDateMillis() > this.getMaxDateMillis() )
         {
-            throw new PropertyException("maxDateMillis",
-                Long.toString(this.getMaxDateMillis()));
+            throw new PropertyException(
+                "maxDateMillis",
+                Long.toString( this.getMaxDateMillis() ) );
 
         }
-        if(this.getMaxScheduleDays() < 0)
+        if ( this.getMaxScheduleDays() < 0 )
         {
-            throw new PropertyException("maxScheduleDays",
-                Integer.toString(this.getMaxScheduleDays()));
+            throw new PropertyException(
+                "maxScheduleDays",
+                Integer.toString( this.getMaxScheduleDays() ) );
 
         }
     }
@@ -523,11 +529,11 @@ public final class DefaultHeaderValidator
      *
      * @return {@code true} if {@code date} is legal; {@code false} if not.
      */
-    private boolean checkDate(final Date date)
+    private boolean checkDate( final Date date )
     {
         boolean valid = false;
 
-        if(date != null)
+        if ( date != null )
         {
             final long millis = date.getTime();
             valid = millis >= this.getMinDateMillis() &&
@@ -547,15 +553,15 @@ public final class DefaultHeaderValidator
      * @return {@code true} if {@code createDate} and {@code executionDate} is
      * a legal combination; {@code false} if not.
      */
-    private boolean checkSchedule(final Date createDate,
-        final Date executionDate)
+    private boolean checkSchedule( final Date createDate,
+                                    final Date executionDate )
     {
         boolean valid = createDate != null;
 
-        if(valid)
+        if ( valid )
         {
             final long createMillis = createDate.getTime();
-            if(executionDate != null)
+            if ( executionDate != null )
             {
                 final long executionMillis = executionDate.getTime();
                 valid = executionMillis >= createMillis &&

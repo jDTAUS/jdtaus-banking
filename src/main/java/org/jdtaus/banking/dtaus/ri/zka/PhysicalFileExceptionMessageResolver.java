@@ -129,15 +129,15 @@ public final class PhysicalFileExceptionMessageResolver
     //--------------------------------------------------------------Properties--
     //--ExceptionMessageResolver------------------------------------------------
 
-    public Message[] resolve(final Exception exception)
+    public Message[] resolve( final Exception exception )
     {
         Message[] resolved = null;
 
-        if(exception != null && exception instanceof PhysicalFileException)
+        if ( exception != null && exception instanceof PhysicalFileException )
         {
-            final PhysicalFileException e = (PhysicalFileException) exception;
+            final PhysicalFileException e = ( PhysicalFileException ) exception;
             final Messages msgs = new Messages();
-            msgs.addMessages(e.getMessages());
+            msgs.addMessages( e.getMessages() );
             resolved = msgs.getMessages();
         }
 
@@ -150,7 +150,7 @@ public final class PhysicalFileExceptionMessageResolver
     /** Creates a new {@code PhysicalFileExceptionMessageResolver} instance. */
     public PhysicalFileExceptionMessageResolver()
     {
-        this(META);
+        this( META );
     }
 
     //------------------------------------PhysicalFileExceptionMessageResolver--

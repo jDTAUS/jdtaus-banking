@@ -125,19 +125,19 @@ public final class DefaultTransactionValidator
         }
 
         p = meta.getProperty("maxDescriptions");
-        this._maxDescriptions = ((java.lang.Integer) p.getValue()).intValue();
+        this.pMaxDescriptions = ((java.lang.Integer) p.getValue()).intValue();
 
 
         p = meta.getProperty("minDescriptions");
-        this._minDescriptions = ((java.lang.Integer) p.getValue()).intValue();
+        this.pMinDescriptions = ((java.lang.Integer) p.getValue()).intValue();
 
 
         p = meta.getProperty("maxAmount");
-        this._maxAmount = ((java.lang.Long) p.getValue()).longValue();
+        this.pMaxAmount = ((java.lang.Long) p.getValue()).longValue();
 
 
         p = meta.getProperty("minAmount");
-        this._minAmount = ((java.lang.Long) p.getValue()).longValue();
+        this.pMinAmount = ((java.lang.Long) p.getValue()).longValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -162,7 +162,7 @@ public final class DefaultTransactionValidator
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>CurrencyMapper</code> implementation. */
-    private transient CurrencyMapper _dependency1;
+    private transient CurrencyMapper dCurrencyMapper;
 
     /**
      * Gets the configured <code>CurrencyMapper</code> implementation.
@@ -172,9 +172,9 @@ public final class DefaultTransactionValidator
     private CurrencyMapper getCurrencyMapper()
     {
         CurrencyMapper ret = null;
-        if(this._dependency1 != null)
+        if(this.dCurrencyMapper != null)
         {
-            ret = this._dependency1;
+            ret = this.dCurrencyMapper;
         }
         else
         {
@@ -187,7 +187,7 @@ public final class DefaultTransactionValidator
                 getDependencies().getDependency("CurrencyMapper").
                 isBound())
             {
-                this._dependency1 = ret;
+                this.dCurrencyMapper = ret;
             }
         }
 
@@ -200,7 +200,7 @@ public final class DefaultTransactionValidator
         return ret;
     }
     /** Configured <code>TextschluesselVerzeichnis</code> implementation. */
-    private transient TextschluesselVerzeichnis _dependency0;
+    private transient TextschluesselVerzeichnis dTextschluesselVerzeichnis;
 
     /**
      * Gets the configured <code>TextschluesselVerzeichnis</code> implementation.
@@ -210,9 +210,9 @@ public final class DefaultTransactionValidator
     private TextschluesselVerzeichnis getTextschluesselVerzeichnis()
     {
         TextschluesselVerzeichnis ret = null;
-        if(this._dependency0 != null)
+        if(this.dTextschluesselVerzeichnis != null)
         {
-            ret = this._dependency0;
+            ret = this.dTextschluesselVerzeichnis;
         }
         else
         {
@@ -225,7 +225,7 @@ public final class DefaultTransactionValidator
                 getDependencies().getDependency("TextschluesselVerzeichnis").
                 isBound())
             {
-                this._dependency0 = ret;
+                this.dTextschluesselVerzeichnis = ret;
             }
         }
 
@@ -249,7 +249,7 @@ public final class DefaultTransactionValidator
      * Property {@code maxDescriptions}.
      * @serial
      */
-    private int _maxDescriptions;
+    private int pMaxDescriptions;
 
     /**
      * Gets the value of property <code>maxDescriptions</code>.
@@ -258,14 +258,14 @@ public final class DefaultTransactionValidator
      */
     private int getMaxDescriptions()
     {
-        return this._maxDescriptions;
+        return this.pMaxDescriptions;
     }
 
     /**
      * Property {@code minDescriptions}.
      * @serial
      */
-    private int _minDescriptions;
+    private int pMinDescriptions;
 
     /**
      * Gets the value of property <code>minDescriptions</code>.
@@ -274,14 +274,14 @@ public final class DefaultTransactionValidator
      */
     private int getMinDescriptions()
     {
-        return this._minDescriptions;
+        return this.pMinDescriptions;
     }
 
     /**
      * Property {@code maxAmount}.
      * @serial
      */
-    private long _maxAmount;
+    private long pMaxAmount;
 
     /**
      * Gets the value of property <code>maxAmount</code>.
@@ -290,14 +290,14 @@ public final class DefaultTransactionValidator
      */
     private long getMaxAmount()
     {
-        return this._maxAmount;
+        return this.pMaxAmount;
     }
 
     /**
      * Property {@code minAmount}.
      * @serial
      */
-    private long _minAmount;
+    private long pMinAmount;
 
     /**
      * Gets the value of property <code>minAmount</code>.
@@ -306,7 +306,7 @@ public final class DefaultTransactionValidator
      */
     private long getMinAmount()
     {
-        return this._minAmount;
+        return this.pMinAmount;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -316,151 +316,154 @@ public final class DefaultTransactionValidator
 
     public IllegalTransactionException assertValidTransaction(
         final LogicalFile lFile, final Transaction transaction,
-        IllegalTransactionException result) throws IOException
+        IllegalTransactionException result ) throws IOException
     {
-        if(lFile == null)
+        if ( lFile == null )
         {
-            throw new NullPointerException("lFile");
+            throw new NullPointerException( "lFile" );
         }
-        if(transaction == null)
+        if ( transaction == null )
         {
-            throw new NullPointerException("transaction");
+            throw new NullPointerException( "transaction" );
         }
 
-        final Map properties = new HashMap(20);
+        final Map properties = new HashMap( 20 );
         final LogicalFileType lFileType = lFile.getHeader().getType();
         final Textschluessel[] allowedTypes =
             this.getTextschluesselVerzeichnis().search(
             lFileType.isDebitAllowed(),
-            lFileType.isRemittanceAllowed());
+            lFileType.isRemittanceAllowed() );
 
-        if(transaction.getExecutiveAccount() == null)
+        if ( transaction.getExecutiveAccount() == null )
         {
-            properties.put(Transaction.PROP_EXECUTIVEACCOUNT,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_EXECUTIVEACCOUNT,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(transaction.getExecutiveBank() == null)
+        if ( transaction.getExecutiveBank() == null )
         {
-            properties.put(Transaction.PROP_EXECUTIVEBANK,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_EXECUTIVEBANK,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(transaction.getExecutiveName() == null)
+        if ( transaction.getExecutiveName() == null )
         {
-            properties.put(Transaction.PROP_EXECUTIVENAME,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_EXECUTIVENAME,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(transaction.getTargetAccount() == null)
+        if ( transaction.getTargetAccount() == null )
         {
-            properties.put(Transaction.PROP_TARGETACCOUNT,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_TARGETACCOUNT,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(transaction.getTargetBank() == null)
+        if ( transaction.getTargetBank() == null )
         {
-            properties.put(Transaction.PROP_TARGETBANK,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_TARGETBANK,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(transaction.getTargetName() == null)
+        if ( transaction.getTargetName() == null )
         {
-            properties.put(Transaction.PROP_TARGETNAME,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_TARGETNAME,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(transaction.getType() == null)
+        if ( transaction.getType() == null )
         {
-            properties.put(Transaction.PROP_TYPE,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_TYPE,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(transaction.getCurrency() == null)
+        if ( transaction.getCurrency() == null )
         {
-            properties.put(Transaction.PROP_CURRENCY,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_CURRENCY,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(transaction.getAmount() == null)
+        if ( transaction.getAmount() == null )
         {
-            properties.put(Transaction.PROP_AMOUNT,
-                new MandatoryPropertyMessage());
+            properties.put( Transaction.PROP_AMOUNT,
+                            new MandatoryPropertyMessage() );
 
         }
-        if(allowedTypes != null && transaction.getType() != null)
+        if ( allowedTypes != null && transaction.getType() != null )
         {
             int i;
-            for(i = allowedTypes.length - 1; i >= 0; i--)
+            for ( i = allowedTypes.length - 1; i >= 0; i-- )
             {
-                if(allowedTypes[i].equals(transaction.getType()))
+                if ( allowedTypes[i].equals( transaction.getType() ) )
                 {
                     break;
                 }
             }
-            if(i < 0)
+            if ( i < 0 )
             {
-                properties.put(Transaction.PROP_TYPE,
-                    new TextschluesselConstraintMessage(lFileType,
-                    transaction.getType()));
+                properties.put( Transaction.PROP_TYPE,
+                                new TextschluesselConstraintMessage(
+                                lFileType, transaction.getType() ) );
 
             }
         }
-        else if(transaction.getType() != null)
+        else if ( transaction.getType() != null )
         {
-            properties.put(Transaction.PROP_TYPE,
-                new TextschluesselConstraintMessage(lFileType,
-                transaction.getType()));
+            properties.put( Transaction.PROP_TYPE,
+                            new TextschluesselConstraintMessage(
+                            lFileType, transaction.getType() ) );
 
         }
 
-        if(transaction.getAmount() != null &&
-            !(transaction.getAmount().longValue() >= this.getMinAmount() &&
-            transaction.getAmount().longValue() <= this.getMaxAmount()))
+        if ( transaction.getAmount() != null &&
+            !( transaction.getAmount().longValue() >= this.getMinAmount() &&
+            transaction.getAmount().longValue() <= this.getMaxAmount() ) )
         {
-            properties.put(Transaction.PROP_AMOUNT,
-                new IllegalAmountMessage(transaction.getAmount()));
+            properties.put( Transaction.PROP_AMOUNT, new IllegalAmountMessage(
+                            transaction.getAmount() ) );
 
         }
-        if(!(transaction.getDescriptions().length >= this.getMinDescriptions() &&
-            transaction.getDescriptions().length <= this.getMaxDescriptions()))
+        if ( !( transaction.getDescriptions().length >=
+            this.getMinDescriptions() &&
+            transaction.getDescriptions().length <= this.getMaxDescriptions() ) )
         {
-            properties.put(Transaction.PROP_DESCRIPTIONS,
-                new IllegalDescriptionCountMessage(
-                AbstractLogicalFile.MAX_DESCRIPTIONS,
-                transaction.getDescriptions().length));
+            properties.put( Transaction.PROP_DESCRIPTIONS,
+                            new IllegalDescriptionCountMessage(
+                            AbstractLogicalFile.MAX_DESCRIPTIONS,
+                            transaction.getDescriptions().length ) );
 
         }
 
-        if(transaction.getCurrency() != null)
+        if ( transaction.getCurrency() != null )
         {
             try
             {
-                this.getCurrencyMapper().getDtausCode(transaction.getCurrency(),
-                    lFile.getHeader().getCreateDate());
+                this.getCurrencyMapper().getDtausCode(
+                    transaction.getCurrency(),
+                    lFile.getHeader().getCreateDate() );
 
             }
-            catch(UnsupportedCurrencyException ex)
+            catch ( UnsupportedCurrencyException ex )
             {
-                properties.put(Transaction.PROP_CURRENCY,
-                    new IllegalCurrencyMessage(transaction.getCurrency().
-                    getCurrencyCode(), lFile.getHeader().getCreateDate()));
+                properties.put( Transaction.PROP_CURRENCY,
+                                new IllegalCurrencyMessage(
+                                transaction.getCurrency().getCurrencyCode(),
+                                lFile.getHeader().getCreateDate() ) );
 
             }
         }
 
-        if(properties.size() > 0)
+        if ( properties.size() > 0 )
         {
-            if(result == null)
+            if ( result == null )
             {
                 result = new IllegalTransactionException();
             }
 
-            for(Iterator it = properties.entrySet().iterator(); it.hasNext();)
+            for ( Iterator it = properties.entrySet().iterator(); it.hasNext();)
             {
-                final Map.Entry entry = (Map.Entry) it.next();
-                result.addMessage((String) entry.getKey(),
-                    (Message) entry.getValue());
+                final Map.Entry entry = ( Map.Entry ) it.next();
+                result.addMessage( ( String ) entry.getKey(),
+                                   ( Message ) entry.getValue() );
 
             }
         }
@@ -474,7 +477,7 @@ public final class DefaultTransactionValidator
     /** Created a new {@code DefaultTransactionValidator} instance. */
     public DefaultTransactionValidator()
     {
-        this(META);
+        this( META );
         this.initialize();
     }
 
@@ -485,30 +488,34 @@ public final class DefaultTransactionValidator
      */
     private void assertValidProperties()
     {
-        if(this.getMinAmount() < 0L)
+        if ( this.getMinAmount() < 0L )
         {
-            throw new PropertyException("minAmount",
-                Long.toString(this.getMinAmount()));
+            throw new PropertyException(
+                "minAmount",
+                Long.toString( this.getMinAmount() ) );
 
         }
-        if(this.getMaxAmount() < 0L ||
-            this.getMinAmount() > this.getMaxAmount())
+        if ( this.getMaxAmount() < 0L ||
+            this.getMinAmount() > this.getMaxAmount() )
         {
-            throw new PropertyException("maxAmount",
-                Long.toString(this.getMaxAmount()));
+            throw new PropertyException(
+                "maxAmount",
+                Long.toString( this.getMaxAmount() ) );
 
         }
-        if(this.getMinDescriptions() < 0)
+        if ( this.getMinDescriptions() < 0 )
         {
-            throw new PropertyException("minDescriptions",
-                Integer.toString(this.getMinDescriptions()));
+            throw new PropertyException(
+                "minDescriptions",
+                Integer.toString( this.getMinDescriptions() ) );
 
         }
-        if(this.getMaxDescriptions() < 0 ||
-            this.getMinDescriptions() > this.getMaxDescriptions())
+        if ( this.getMaxDescriptions() < 0 ||
+            this.getMinDescriptions() > this.getMaxDescriptions() )
         {
-            throw new PropertyException("maxDescriptions",
-                Integer.toString(this.getMaxDescriptions()));
+            throw new PropertyException(
+                "maxDescriptions",
+                Integer.toString( this.getMaxDescriptions() ) );
 
         }
     }

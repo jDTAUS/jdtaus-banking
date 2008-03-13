@@ -38,7 +38,7 @@ public class DefaultPhysicalFileFactoryTest extends PhysicalFileFactoryTest
 
     public PhysicalFileFactory getPhysicalFileFactory()
     {
-        if(this.factory == null)
+        if ( this.factory == null )
         {
             this.factory = new DefaultPhysicalFileFactory();
         }

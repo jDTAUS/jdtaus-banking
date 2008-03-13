@@ -74,7 +74,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     //--Konstanten--------------------------------------------------------------
 
     // Vom Format vorgegebene Längen.
-
     /** Maximale Anzahl unterstützter Transaktionen pro logischer Datei. */
     protected static final int MAX_TRANSACTIONS = 9999999;
 
@@ -94,8 +93,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * Index = Exponent,
      * Wert = 10er Potenz.
      */
-    protected static final long[] EXP10 = new long[
-        AbstractLogicalFile.FORMAT_MAX_DIGITS + 1];
+    protected static final long[] EXP10 =
+        new long[ AbstractLogicalFile.FORMAT_MAX_DIGITS + 1 ];
 
     /**
      * Index = Ziffer,
@@ -109,26 +108,26 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * Index = ASCII-Code einer Ziffer,
      * Wert = Ziffer.
      */
-    protected static final byte[] ASCII_TO_DIGITS = new byte[60];
+    protected static final byte[] ASCII_TO_DIGITS = new byte[ 60 ];
 
     /**
      * Index = Ziffer,
      * Wert = EBCDI-Zeichen.
      */
     protected static final byte[] DIGITS_TO_EBCDI = {
-        (byte) 0xF0, (byte) 0xF1, (byte) 0xF2, (byte) 0xF3, (byte) 0xF4,
-        (byte) 0xF5, (byte) 0xF6, (byte) 0xF7, (byte) 0xF8, (byte) 0xF9
-
+        ( byte ) 0xF0, ( byte ) 0xF1, ( byte ) 0xF2, ( byte ) 0xF3,
+        ( byte ) 0xF4, ( byte ) 0xF5, ( byte ) 0xF6, ( byte ) 0xF7,
+        ( byte ) 0xF8, ( byte ) 0xF9
     };
 
     /**
      * Index = EBCDI-Code einer Ziffer,
      * Wert = Ziffer.
      */
-    protected static final byte[] EBCDI_TO_DIGITS = new byte[0xFA];
+    protected static final byte[] EBCDI_TO_DIGITS = new byte[ 0xFA ];
 
     /** Konstante 10^7. */
-    protected static final double EXP10_7 = Math.pow(10, 7);
+    protected static final double EXP10_7 = Math.pow( 10, 7 );
 
     /** Maximale Anzahl unterstützter Verwendungszweckzeilen. */
     protected static final int MAX_DESCRIPTIONS = 14;
@@ -150,15 +149,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     /** Datums-Format mit zweistelliger Jahresangabe. */
     protected final DateFormat shortDateFormat =
-        new SimpleDateFormat("ddMMyy", Locale.GERMANY);
+        new SimpleDateFormat( "ddMMyy", Locale.GERMANY );
 
     /** Datums-Format mit vierstelliger Jahresangabe. */
     protected final DateFormat longDateFormat =
-        new SimpleDateFormat("ddMMyyyy", Locale.GERMANY);
+        new SimpleDateFormat( "ddMMyyyy", Locale.GERMANY );
 
     /** Puffer zum Lesen und Schreiben von Daten. */
     protected final byte[] buffer =
-        new byte[AbstractLogicalFile.FORMAT_MAX_CHARS + 1];
+        new byte[ AbstractLogicalFile.FORMAT_MAX_CHARS + 1 ];
 
     /** Satzabschnitt-Offset des A-Datensatzes. */
     private long headerBlock;
@@ -179,7 +178,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected Checksum cachedChecksum = null;
 
     /** Calendar der Instanz. */
-    protected final Calendar calendar = Calendar.getInstance(Locale.GERMANY);
+    protected final Calendar calendar = Calendar.getInstance( Locale.GERMANY );
 
     /**
      * Abbildung von ISO Währungs-Codes zur Anzahl der vorhandenen Zahlungen
@@ -193,15 +192,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /** Statische Initialisierung der konstanten Felder. */
     static
     {
-        for(int i = 0; i <= AbstractLogicalFile.FORMAT_MAX_DIGITS; i++)
+        for ( int i = 0; i <= AbstractLogicalFile.FORMAT_MAX_DIGITS; i++ )
         {
             AbstractLogicalFile.EXP10[i] =
-                (long) Math.floor(Math.pow(10.00D, i));
+                ( long ) Math.floor( Math.pow( 10.00D, i ) );
 
         }
 
-        Arrays.fill(AbstractLogicalFile.ASCII_TO_DIGITS, (byte) -1);
-        Arrays.fill(AbstractLogicalFile.EBCDI_TO_DIGITS, (byte) -1);
+        Arrays.fill( AbstractLogicalFile.ASCII_TO_DIGITS, ( byte ) -1 );
+        Arrays.fill( AbstractLogicalFile.EBCDI_TO_DIGITS, ( byte ) -1 );
         AbstractLogicalFile.ASCII_TO_DIGITS[48] = 0;
         AbstractLogicalFile.ASCII_TO_DIGITS[49] = 1;
         AbstractLogicalFile.ASCII_TO_DIGITS[50] = 2;
@@ -227,8 +226,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /** Erzeugt eine neue {@code AbstractLogicalFile} Instanz. */
     protected AbstractLogicalFile()
     {
-        this.calendar.setLenient(false);
-        Arrays.fill(this.buffer, (byte) -1);
+        this.calendar.setLenient( false );
+        Arrays.fill( this.buffer, ( byte ) -1 );
     }
 
     /**
@@ -242,14 +241,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * Instanz nicht geschrieben werden können.
      */
     protected void setStructuredFile(
-        final StructuredFileOperations structuredFile) throws IOException
+        final StructuredFileOperations structuredFile ) throws IOException
     {
-        if(structuredFile == null)
+        if ( structuredFile == null )
         {
-            throw new NullPointerException("structuredFile");
+            throw new NullPointerException( "structuredFile" );
         }
 
-        if(this.persistence != null)
+        if ( this.persistence != null )
         {
             this.persistence.flush();
         }
@@ -258,7 +257,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         this.cachedHeader = null;
         this.cachedChecksum = null;
         this.index = null;
-        Arrays.fill(this.buffer, (byte) -1);
+        Arrays.fill( this.buffer, ( byte ) -1 );
     }
 
     //-----------------------------------------------------------Konstruktoren--
@@ -272,8 +271,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     protected abstract TaskMonitor getTaskMonitorImpl();
 
-    protected abstract TextschluesselVerzeichnis
-        getTextschluesselVerzeichnisImpl();
+    protected abstract TextschluesselVerzeichnis getTextschluesselVerzeichnisImpl();
 
     protected abstract Implementation getMeta();
 
@@ -310,10 +308,11 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
      * @see #NO_NUMBER
      */
-    protected Long readNumber(final int field, final long block, final int off,
-        final int len, final int encoding) throws IOException
+    protected Long readNumber( final int field, final long block,
+                                final int off, final int len,
+                                final int encoding ) throws IOException
     {
-        return this.readNumber(field, block, off, len, encoding, false);
+        return this.readNumber( field, block, off, len, encoding, false );
     }
 
     /**
@@ -352,8 +351,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
      * @see #NO_NUMBER
      */
-    protected Long readNumber(final int field, final long block, final int off,
-        final int len, final int encoding, final boolean allowSpaces)
+    protected Long readNumber( final int field, final long block,
+                                final int off, final int len,
+                                final int encoding, final boolean allowSpaces )
         throws IOException
     {
         long ret = 0L;
@@ -366,55 +366,56 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final String cset;
         String logViolation = null; // Wenn != null wird der Verstoß geloggt.
 
-        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
+        if ( encoding == AbstractLogicalFile.ENCODING_ASCII )
         {
             table = AbstractLogicalFile.DIGITS_TO_ASCII;
             revTable = AbstractLogicalFile.ASCII_TO_DIGITS;
-            space = (byte) 32;
+            space = ( byte ) 32;
             cset = AbstractLogicalFile.DIN66003;
         }
-        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        else if ( encoding == AbstractLogicalFile.ENCODING_EBCDI )
         {
             table = AbstractLogicalFile.DIGITS_TO_EBCDI;
             revTable = AbstractLogicalFile.EBCDI_TO_DIGITS;
-            space = (byte) 0x40;
+            space = ( byte ) 0x40;
             cset = AbstractLogicalFile.IBM273;
         }
         else
         {
-            throw new IllegalArgumentException(Integer.toString(encoding));
+            throw new IllegalArgumentException( Integer.toString( encoding ) );
         }
 
-        this.persistence.readBlock(block, off, this.buffer, 0, len);
-        for(read = 0; read < len; read++)
+        this.persistence.readBlock( block, off, this.buffer, 0, len );
+        for ( read = 0; read < len; read++ )
         {
-            if(allowSpaces && this.buffer[read] == space)
+            if ( allowSpaces && this.buffer[read] == space )
             {
-                if(logViolation == null)
+                if ( logViolation == null )
                 {
-                    logViolation = Charsets.decode(this.buffer, 0, len, cset);
+                    logViolation = Charsets.decode( this.buffer, 0, len, cset );
                 }
                 this.buffer[read] = table[0];
             }
 
-            if(!(this.buffer[read] >= table[0] &&
-                this.buffer[read] <= table[9]))
+            if ( !( this.buffer[read] >= table[0] &&
+                this.buffer[read] <= table[9] ) )
             {
 
-                msg = new IllegalDataMessage(field,
-                    IllegalDataMessage.TYPE_NUMERIC,
-                    block * this.persistence.getBlockSize() + off,
-                    Charsets.decode(this.buffer, 0, len, cset));
+                msg = new IllegalDataMessage(
+                    field, IllegalDataMessage.TYPE_NUMERIC, block *
+                    this.persistence.getBlockSize() + off,
+                    Charsets.decode( this.buffer, 0, len, cset ) );
 
-                if(AbstractErrorMessage.isErrorsEnabled())
+                if ( AbstractErrorMessage.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(this.getMeta(),
-                        block * this.persistence.getBlockSize() + off);
+                    throw new CorruptedException(
+                        this.getMeta(),
+                        block * this.persistence.getBlockSize() + off );
 
                 }
                 else
                 {
-                    ThreadLocalMessages.getMessages().addMessage(msg);
+                    ThreadLocalMessages.getMessages().addMessage( msg );
                 }
 
                 ret = AbstractLogicalFile.NO_NUMBER;
@@ -422,7 +423,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
             else
             {
-                if(this.buffer[read] < 0)
+                if ( this.buffer[read] < 0 )
                 {
                     ret += revTable[this.buffer[read] + 256] *
                         AbstractLogicalFile.EXP10[len - read - 1];
@@ -437,20 +438,23 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
         }
 
-        if(logViolation != null)
+        if ( logViolation != null )
         {
-            if(this.getLoggerImpl().isInfoEnabled())
+            if ( this.getLoggerImpl().isInfoEnabled() )
             {
-                fmt = AbstractLogicalFileBundle.
-                    getReadNumberIllegalFileInfoMessage(Locale.getDefault());
+                fmt = AbstractLogicalFileBundle.getInstance().
+                    getReadNumberIllegalFileInfoMessage( Locale.getDefault() );
 
-                this.getLoggerImpl().info(fmt.format(new Object[] {
-                    logViolation, new Long(ret)
-                }));
+                this.getLoggerImpl().info(
+                    fmt.format( new Object[] {
+                                logViolation,
+                                new Long( ret )
+                            } ) );
+
             }
         }
 
-        return new Long(ret);
+        return new Long( ret );
     }
 
     //----------------------------------------------------long readNumber(...)--
@@ -477,42 +481,42 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see #ENCODING_EBCDI
      * @see org.jdtaus.banking.dtaus.Fields
      */
-    protected void writeNumber(final int field, final long block,
-        final int off, final int len, long number,
-        final int encoding) throws IOException
+    protected void writeNumber( final int field, final long block,
+                                 final int off, final int len, long number,
+                                 final int encoding ) throws IOException
     {
         int i;
         int pos;
-        final long maxValue =  AbstractLogicalFile.EXP10[len] - 1L;
+        final long maxValue = AbstractLogicalFile.EXP10[len] - 1L;
         byte digit;
         final byte[] table;
 
-        if(number < 0L || number > maxValue)
+        if ( number < 0L || number > maxValue )
         {
-            throw new IllegalArgumentException(Long.toString(number));
+            throw new IllegalArgumentException( Long.toString( number ) );
         }
 
-        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
+        if ( encoding == AbstractLogicalFile.ENCODING_ASCII )
         {
             table = AbstractLogicalFile.DIGITS_TO_ASCII;
         }
-        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        else if ( encoding == AbstractLogicalFile.ENCODING_EBCDI )
         {
             table = AbstractLogicalFile.DIGITS_TO_EBCDI;
         }
         else
         {
-            throw new IllegalArgumentException(Integer.toString(encoding));
+            throw new IllegalArgumentException( Integer.toString( encoding ) );
         }
 
-        for(i = len - 1, pos = 0; i >= 0; i--, pos++)
+        for ( i = len - 1, pos = 0; i >= 0; i--, pos++ )
         {
-            digit = (byte) Math.floor(number / AbstractLogicalFile.EXP10[i]);
-            number -= (digit * AbstractLogicalFile.EXP10[i]);
+            digit = ( byte ) Math.floor( number / AbstractLogicalFile.EXP10[i] );
+            number -= ( digit * AbstractLogicalFile.EXP10[i] );
             this.buffer[pos] = table[digit];
         }
 
-        this.persistence.writeBlock(block, off, this.buffer, 0, len);
+        this.persistence.writeBlock( block, off, this.buffer, 0, len );
     }
 
     //---------------------------------------------------void writeNumber(...)--
@@ -545,50 +549,52 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.AbstractErrorMessage
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
-    protected AlphaNumericText27 readAlphaNumeric(final int field,
-        final long block, final int off, final int len, final int encoding)
-        throws IOException
+    protected AlphaNumericText27 readAlphaNumeric(
+        final int field, final long block, final int off, final int len,
+        final int encoding ) throws IOException
     {
         final String cset;
         final String str;
         AlphaNumericText27 txt = null;
 
-        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
+        if ( encoding == AbstractLogicalFile.ENCODING_ASCII )
         {
             cset = AbstractLogicalFile.DIN66003;
         }
-        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        else if ( encoding == AbstractLogicalFile.ENCODING_EBCDI )
         {
             cset = AbstractLogicalFile.IBM273;
         }
         else
         {
-            throw new IllegalArgumentException(Integer.toString(encoding));
+            throw new IllegalArgumentException( Integer.toString( encoding ) );
         }
 
-        this.persistence.readBlock(block, off, this.buffer, 0, len);
-        str = Charsets.decode(this.buffer, 0, len, cset);
+        this.persistence.readBlock( block, off, this.buffer, 0, len );
+        str = Charsets.decode( this.buffer, 0, len, cset );
 
         try
         {
-            txt = AlphaNumericText27.parse(str);
+            txt = AlphaNumericText27.parse( str );
         }
-        catch(ParseException e)
+        catch ( ParseException e )
         {
             txt = null;
-            final Message msg = new IllegalDataMessage(field,
-                IllegalDataMessage.TYPE_ALPHA_NUMERIC,
-                block * this.persistence.getBlockSize() + off, str);
+            final Message msg =
+                new IllegalDataMessage(
+                field, IllegalDataMessage.TYPE_ALPHA_NUMERIC, block *
+                this.persistence.getBlockSize() + off, str );
 
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if ( AbstractErrorMessage.isErrorsEnabled() )
             {
-                throw new CorruptedException(this.getMeta(),
-                    block * this.persistence.getBlockSize() + off);
+                throw new CorruptedException(
+                    this.getMeta(), block * this.persistence.getBlockSize() +
+                    off );
 
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                ThreadLocalMessages.getMessages().addMessage( msg );
             }
         }
 
@@ -620,9 +626,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see #ENCODING_EBCDI
      * @see org.jdtaus.banking.dtaus.Fields
      */
-    protected void writeAlphaNumeric(final int field, final long block,
-        final int off, final int len, final String str,
-        final int encoding) throws IOException
+    protected void writeAlphaNumeric( final int field, final long block,
+                                       final int off, final int len,
+                                       final String str, final int encoding )
+        throws IOException
     {
         final int length;
         final int delta;
@@ -631,52 +638,52 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final byte space;
         final String cset;
 
-        if(str == null)
+        if ( str == null )
         {
-            throw new NullPointerException("str");
+            throw new NullPointerException( "str" );
         }
-        if((length = str.length()) > len)
+        if ( ( length = str.length() ) > len )
         {
-            throw new IllegalArgumentException(str);
+            throw new IllegalArgumentException( str );
         }
 
-        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
+        if ( encoding == AbstractLogicalFile.ENCODING_ASCII )
         {
-            space = (byte) 32;
+            space = ( byte ) 32;
             cset = AbstractLogicalFile.DIN66003;
         }
-        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        else if ( encoding == AbstractLogicalFile.ENCODING_EBCDI )
         {
-            space = (byte) 0x40;
+            space = ( byte ) 0x40;
             cset = AbstractLogicalFile.IBM273;
         }
         else
         {
-            throw new IllegalArgumentException(Integer.toString(encoding));
+            throw new IllegalArgumentException( Integer.toString( encoding ) );
         }
 
         c = str.toCharArray();
-        for(int i = c.length - 1; i >= 0; i--)
+        for ( int i = c.length - 1; i >= 0; i-- )
         {
-            if(!AlphaNumericText27.checkAlphaNumeric(c[i]))
+            if ( !AlphaNumericText27.checkAlphaNumeric( c[i] ) )
             {
-                throw new IllegalArgumentException(Character.toString(c[i]));
+                throw new IllegalArgumentException( Character.toString( c[i] ) );
             }
         }
 
-        buf = Charsets.encode(str, cset);
-        if(length < len)
+        buf = Charsets.encode( str, cset );
+        if ( length < len )
         {
             delta = len - length;
-            System.arraycopy(buf, 0, this.buffer, 0, buf.length);
-            Arrays.fill(this.buffer, buf.length, buf.length + delta, space);
+            System.arraycopy( buf, 0, this.buffer, 0, buf.length );
+            Arrays.fill( this.buffer, buf.length, buf.length + delta, space );
         }
         else
         {
-            System.arraycopy(buf, 0, this.buffer, 0, buf.length);
+            System.arraycopy( buf, 0, this.buffer, 0, buf.length );
         }
 
-        this.persistence.writeBlock(block, off, this.buffer, 0, len);
+        this.persistence.writeBlock( block, off, this.buffer, 0, len );
     }
 
     //---------------------------------------------void writeAlphaNumeric(...)--
@@ -713,8 +720,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.AbstractErrorMessage
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
-    protected Date readShortDate(final int field, final long block,
-        final int off, final int encoding) throws IOException
+    protected Date readShortDate( final int field, final long block,
+                                   final int off, final int encoding )
+        throws IOException
     {
         final int len;
         final String cset;
@@ -724,89 +732,95 @@ public abstract class AbstractLogicalFile implements LogicalFile
         boolean legal = false;
         Message msg;
 
-        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
+        if ( encoding == AbstractLogicalFile.ENCODING_ASCII )
         {
             cset = AbstractLogicalFile.DIN66003;
         }
-        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        else if ( encoding == AbstractLogicalFile.ENCODING_EBCDI )
         {
             cset = AbstractLogicalFile.IBM273;
         }
         else
         {
-            throw new IllegalArgumentException(Integer.toString(encoding));
+            throw new IllegalArgumentException( Integer.toString( encoding ) );
         }
 
         try
         {
-            this.persistence.readBlock(block, off, this.buffer, 0, 6);
-            str = Charsets.decode(this.buffer, 0, 6, cset);
+            this.persistence.readBlock( block, off, this.buffer, 0, 6 );
+            str = Charsets.decode( this.buffer, 0, 6, cset );
             len = str.trim().length();
-            if(len == 6)
+            if ( len == 6 )
             {
                 this.calendar.clear();
                 // Tag
-                this.calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(
-                    str.substring(0, 2)).intValue());
+                this.calendar.set( Calendar.DAY_OF_MONTH, Integer.valueOf(
+                                   str.substring( 0, 2 ) ).intValue() );
 
                 // Monat
-                this.calendar.set(Calendar.MONTH,
-                    Integer.valueOf(str.substring(2, 4)).intValue() - 1);
+                this.calendar.set( Calendar.MONTH,
+                                   Integer.valueOf( str.substring( 2, 4 ) ).
+                                   intValue() - 1 );
 
                 // Jahr
-                int year = Integer.valueOf(str.substring(4, 6)).intValue();
-                year = year <= 79 ? 2000 + year : 1900 + year;
-                this.calendar.set(Calendar.YEAR, year);
+                int year = Integer.valueOf( str.substring( 4, 6 ) ).intValue();
+                year = year <= 79
+                    ? 2000 + year
+                    : 1900 + year;
+
+                this.calendar.set( Calendar.YEAR, year );
                 ret = this.calendar.getTime();
 
-                if(!this.checkDate(ret))
+                if ( !this.checkDate( ret ) )
                 {
-                    msg = new IllegalDataMessage(field,
-                        IllegalDataMessage.TYPE_SHORTDATE,
-                        block * this.persistence.getBlockSize() + off, str);
+                    msg = new IllegalDataMessage(
+                        field, IllegalDataMessage.TYPE_SHORTDATE, block *
+                        this.persistence.getBlockSize() + off, str );
 
-                    if(AbstractErrorMessage.isErrorsEnabled())
+                    if ( AbstractErrorMessage.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(this.getMeta(),
-                            block * this.persistence.getBlockSize() + off);
+                        throw new CorruptedException(
+                            this.getMeta(), block *
+                            this.persistence.getBlockSize() + off );
 
                     }
                     else
                     {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
+                        ThreadLocalMessages.getMessages().addMessage( msg );
                     }
 
                     ret = null;
                 }
             }
 
-            if(len == 0 || len == 6)
+            if ( len == 0 || len == 6 )
             {
                 legal = true;
             }
 
         }
-        catch(NumberFormatException e)
+        catch ( NumberFormatException e )
         {
             ret = null;
             legal = false;
         }
 
-        if(!legal)
+        if ( !legal )
         {
-            msg = new IllegalDataMessage(field,
-                IllegalDataMessage.TYPE_SHORTDATE,
-                block * this.persistence.getBlockSize() + off, str);
+            msg = new IllegalDataMessage(
+                field, IllegalDataMessage.TYPE_SHORTDATE, block *
+                this.persistence.getBlockSize() + off, str );
 
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if ( AbstractErrorMessage.isErrorsEnabled() )
             {
-                throw new CorruptedException(this.getMeta(),
-                    block * this.persistence.getBlockSize() + off);
+                throw new CorruptedException(
+                    this.getMeta(), block * this.persistence.getBlockSize() +
+                    off );
 
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                ThreadLocalMessages.getMessages().addMessage( msg );
             }
         }
 
@@ -817,7 +831,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     //--void writeShortDate(...)------------------------------------------------
 
     /** Hilfs-Puffer. */
-    private final StringBuffer shortDateBuffer = new StringBuffer(6);
+    private final StringBuffer shortDateBuffer = new StringBuffer( 6 );
 
     /**
      * Hilfs-Methode zum Schreiben einer Datums-Angabe mit zweistelliger
@@ -841,64 +855,69 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see #ENCODING_EBCDI
      * @see org.jdtaus.banking.dtaus.Fields
      */
-    protected void writeShortDate(final int field, final long block,
-        final int off, final Date date, final int encoding) throws IOException
+    protected void writeShortDate( final int field, final long block,
+                                    final int off, final Date date,
+                                    final int encoding ) throws IOException
     {
         int i;
         final byte[] buf;
         final String cset;
 
-        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
+        if ( encoding == AbstractLogicalFile.ENCODING_ASCII )
         {
             cset = AbstractLogicalFile.DIN66003;
         }
-        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        else if ( encoding == AbstractLogicalFile.ENCODING_EBCDI )
         {
             cset = AbstractLogicalFile.IBM273;
         }
         else
         {
-            throw new IllegalArgumentException(Integer.toString(encoding));
+            throw new IllegalArgumentException( Integer.toString( encoding ) );
         }
 
-        if(date != null)
+        if ( date != null )
         {
-            if(!this.checkDate(date))
+            if ( !this.checkDate( date ) )
             {
-                throw new IllegalArgumentException(date.toString());
+                throw new IllegalArgumentException( date.toString() );
             }
 
-            this.shortDateBuffer.setLength(0);
+            this.shortDateBuffer.setLength( 0 );
             this.calendar.clear();
-            this.calendar.setTime(date);
+            this.calendar.setTime( date );
             // Tag
-            i = this.calendar.get(Calendar.DAY_OF_MONTH);
-            if(i < 10)
+            i = this.calendar.get( Calendar.DAY_OF_MONTH );
+            if ( i < 10 )
             {
-                this.shortDateBuffer.append('0');
+                this.shortDateBuffer.append( '0' );
             }
-            this.shortDateBuffer.append(i);
+            this.shortDateBuffer.append( i );
             // Monat
-            i = this.calendar.get(Calendar.MONTH) + 1;
-            if(i < 10)
+            i = this.calendar.get( Calendar.MONTH ) + 1;
+            if ( i < 10 )
             {
-                this.shortDateBuffer.append('0');
+                this.shortDateBuffer.append( '0' );
             }
-            this.shortDateBuffer.append(i);
+            this.shortDateBuffer.append( i );
             // Jahr
-            i = this.calendar.get(Calendar.YEAR);
-            this.shortDateBuffer.append(i >= 2000 && i <= 2009 ? "0" : "");
-            this.shortDateBuffer.append(i >= 1980 && i < 2000 ?
-                i - 1900 : i - 2000);
+            i = this.calendar.get( Calendar.YEAR );
+            this.shortDateBuffer.append( i >= 2000 && i <= 2009
+                                         ? "0"
+                                         : "" );
 
-            buf = Charsets.encode(this.shortDateBuffer.toString(), cset);
+            this.shortDateBuffer.append( i >= 1980 && i < 2000
+                                         ? i - 1900
+                                         : i - 2000 );
+
+            buf = Charsets.encode( this.shortDateBuffer.toString(), cset );
         }
         else
         {
-            buf = Charsets.encode("      ", cset);
+            buf = Charsets.encode( "      ", cset );
         }
 
-        this.persistence.writeBlock(block, off, buf, 0, 6);
+        this.persistence.writeBlock( block, off, buf, 0, 6 );
     }
 
     //------------------------------------------------void writeShortDate(...)--
@@ -919,9 +938,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @return gelesenes Datum oder {@code null} wenn nicht gelesen werden kann.
      *
-     * @throws PhysicalFileError wenn die Datei Fehler enthält und
-     * {@link org.jdtaus.banking.dtaus.spi.AbstractErrorMessage#isErrorsEnabled()}
-     * gleich {@code true} ist.
      * @throws IOException wenn nicht gelesen werden kann.
      *
      * @see #ENCODING_ASCII
@@ -930,8 +946,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.AbstractErrorMessage
      * @see org.jdtaus.banking.dtaus.spi.ThreadLocalMessages
      */
-    protected Date readLongDate(final int field, final long block,
-        final int off, final int encoding) throws IOException
+    protected Date readLongDate( final int field, final long block,
+                                  final int off, final int encoding )
+        throws IOException
     {
         final int len;
         final String cset;
@@ -941,55 +958,57 @@ public abstract class AbstractLogicalFile implements LogicalFile
         String str = null;
         Message msg;
 
-        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
+        if ( encoding == AbstractLogicalFile.ENCODING_ASCII )
         {
             cset = AbstractLogicalFile.DIN66003;
         }
-        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        else if ( encoding == AbstractLogicalFile.ENCODING_EBCDI )
         {
             cset = AbstractLogicalFile.IBM273;
         }
         else
         {
-            throw new IllegalArgumentException(Integer.toString(encoding));
+            throw new IllegalArgumentException( Integer.toString( encoding ) );
         }
 
         try
         {
-            this.persistence.readBlock(block, off, this.buffer, 0, 8);
-            str = Charsets.decode(this.buffer, 0, 8, cset);
+            this.persistence.readBlock( block, off, this.buffer, 0, 8 );
+            str = Charsets.decode( this.buffer, 0, 8, cset );
             len = str.trim().length();
-            if(len == 8)
+            if ( len == 8 )
             {
                 this.calendar.clear();
                 // Tag
-                this.calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(
-                    str.substring(0, 2)).intValue());
+                this.calendar.set( Calendar.DAY_OF_MONTH, Integer.valueOf(
+                                   str.substring( 0, 2 ) ).intValue() );
 
                 // Monat
-                this.calendar.set(Calendar.MONTH,
-                    Integer.valueOf(str.substring(2, 4)).intValue() - 1);
+                this.calendar.set( Calendar.MONTH,
+                                   Integer.valueOf( str.substring( 2, 4 ) ).
+                                   intValue() - 1 );
 
                 // Jahr
-                this.calendar.set(Calendar.YEAR, Integer.valueOf(
-                    str.substring(4, 8)).intValue());
+                this.calendar.set( Calendar.YEAR, Integer.valueOf(
+                                   str.substring( 4, 8 ) ).intValue() );
 
                 ret = this.calendar.getTime();
-                if(!this.checkDate(ret))
+                if ( !this.checkDate( ret ) )
                 {
-                    msg = new IllegalDataMessage(field,
-                        IllegalDataMessage.TYPE_LONGDATE,
-                        block * this.persistence.getBlockSize() + off, str);
+                    msg = new IllegalDataMessage(
+                        field, IllegalDataMessage.TYPE_LONGDATE, block *
+                        this.persistence.getBlockSize() + off, str );
 
-                    if(AbstractErrorMessage.isErrorsEnabled())
+                    if ( AbstractErrorMessage.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(this.getMeta(),
-                            block * this.persistence.getBlockSize() + off);
+                        throw new CorruptedException(
+                            this.getMeta(), block *
+                            this.persistence.getBlockSize() + off );
 
                     }
                     else
                     {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
+                        ThreadLocalMessages.getMessages().addMessage( msg );
                     }
 
                     ret = null;
@@ -997,33 +1016,34 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
             }
 
-            if(len == 0 || len == 8)
+            if ( len == 0 || len == 8 )
             {
                 legal = true;
             }
 
         }
-        catch(NumberFormatException e)
+        catch ( NumberFormatException e )
         {
             legal = false;
             ret = null;
         }
 
-        if(!legal)
+        if ( !legal )
         {
-            msg = new IllegalDataMessage(field,
-                IllegalDataMessage.TYPE_LONGDATE,
-                block * this.persistence.getBlockSize() + off, str);
+            msg = new IllegalDataMessage(
+                field, IllegalDataMessage.TYPE_LONGDATE, block *
+                this.persistence.getBlockSize() + off, str );
 
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if ( AbstractErrorMessage.isErrorsEnabled() )
             {
-                throw new CorruptedException(this.getMeta(),
-                    block * this.persistence.getBlockSize() + off);
+                throw new CorruptedException(
+                    this.getMeta(), block * this.persistence.getBlockSize() +
+                    off );
 
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                ThreadLocalMessages.getMessages().addMessage( msg );
             }
         }
 
@@ -1034,7 +1054,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     //--void writeShortDate(...)------------------------------------------------
 
     /** Hilfs-Puffer. */
-    private final StringBuffer longDateBuffer = new StringBuffer(8);
+    private final StringBuffer longDateBuffer = new StringBuffer( 8 );
 
     /**
      * Hilfs-Methode zum Schreiben einer Datums-Angabe mit vierstelliger
@@ -1056,62 +1076,62 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see #ENCODING_EBCDI
      * @see org.jdtaus.banking.dtaus.Fields
      */
-    protected void writeLongDate(final int field, final long block,
-        final int off, final Date date,
-        final int encoding) throws IOException
+    protected void writeLongDate( final int field, final long block,
+                                   final int off, final Date date,
+                                   final int encoding ) throws IOException
     {
         int i;
         final byte[] buf;
         final String cset;
 
-        if(encoding == AbstractLogicalFile.ENCODING_ASCII)
+        if ( encoding == AbstractLogicalFile.ENCODING_ASCII )
         {
             cset = AbstractLogicalFile.DIN66003;
         }
-        else if(encoding == AbstractLogicalFile.ENCODING_EBCDI)
+        else if ( encoding == AbstractLogicalFile.ENCODING_EBCDI )
         {
             cset = AbstractLogicalFile.IBM273;
         }
         else
         {
-            throw new IllegalArgumentException(Integer.toString(encoding));
+            throw new IllegalArgumentException( Integer.toString( encoding ) );
         }
 
-        if(date != null)
+        if ( date != null )
         {
-            if(!this.checkDate(date))
+            if ( !this.checkDate( date ) )
             {
-                throw new IllegalArgumentException(date.toString());
+                throw new IllegalArgumentException( date.toString() );
             }
 
-            this.longDateBuffer.setLength(0);
+            this.longDateBuffer.setLength( 0 );
             this.calendar.clear();
-            this.calendar.setTime(date);
+            this.calendar.setTime( date );
             // Tag
-            i = this.calendar.get(Calendar.DAY_OF_MONTH);
-            if(i < 10)
+            i = this.calendar.get( Calendar.DAY_OF_MONTH );
+            if ( i < 10 )
             {
-                this.longDateBuffer.append('0');
+                this.longDateBuffer.append( '0' );
             }
-            this.longDateBuffer.append(i);
+            this.longDateBuffer.append( i );
             // Monat
-            i = this.calendar.get(Calendar.MONTH) + 1;
-            if(i < 10)
+            i = this.calendar.get( Calendar.MONTH ) + 1;
+            if ( i < 10 )
             {
-                this.longDateBuffer.append('0');
+                this.longDateBuffer.append( '0' );
             }
-            this.longDateBuffer.append(i);
+            this.longDateBuffer.append( i );
             // Jahr
-            i = this.calendar.get(Calendar.YEAR);
-            this.longDateBuffer.append(i);
-            buf = Charsets.encode(this.longDateBuffer.toString(), cset);
+            i = this.calendar.get( Calendar.YEAR );
+            this.longDateBuffer.append( i );
+            buf = Charsets.encode( this.longDateBuffer.toString(), cset );
         }
         else
         {
-            buf = Charsets.encode("        ", cset);
+            buf = Charsets.encode( "        ", cset );
         }
 
-        this.persistence.writeBlock(block, off, buf, 0, 8);
+        this.persistence.writeBlock( block, off, buf, 0, 8 );
     }
 
     //-------------------------------------------------void writeLongDate(...)--
@@ -1144,26 +1164,29 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
      * @see #NO_NUMBER
      */
-    protected long readNumberPackedPositive(final int field, final long block,
-        final int off, final int len, final boolean sign) throws IOException
+    protected long readNumberPackedPositive(
+        final int field, final long block, final int off, final int len,
+        final boolean sign ) throws IOException
     {
         long ret = 0L;
         final int nibbles = 2 * len;
-        int exp = nibbles - (sign ? 2 : 1);
+        int exp = nibbles - ( sign
+            ? 2
+            : 1 );
         boolean highNibble = true;
         int nibble = 0;
         int read = 0;
         int digit;
         Message msg;
 
-        this.persistence.readBlock(block, off, this.buffer, 0, len);
-        for(; nibble < nibbles; nibble++, exp--)
+        this.persistence.readBlock( block, off, this.buffer, 0, len );
+        for (; nibble < nibbles; nibble++, exp-- )
         {
-            if(highNibble)
+            if ( highNibble )
             {
-                if(this.buffer[read] < 0)
+                if ( this.buffer[read] < 0 )
                 {
-                    digit = (this.buffer[read] + 256) >> 4;
+                    digit = ( this.buffer[read] + 256 ) >> 4;
                 }
                 else
                 {
@@ -1174,29 +1197,30 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
             else
             {
-                digit = (this.buffer[read++] & 0xF);
+                digit = ( this.buffer[read++] & 0xF );
                 highNibble = true;
             }
 
             // Vorzeichen des letzten Nibbles.
-            if(sign && exp < 0)
+            if ( sign && exp < 0 )
             {
-                if(digit != 0xC)
+                if ( digit != 0xC )
                 {
-                    msg = new IllegalDataMessage(field,
-                        IllegalDataMessage.TYPE_PACKET_POSITIVE,
-                        block * this.persistence.getBlockSize() + off,
-                        Integer.toString(digit));
+                    msg = new IllegalDataMessage(
+                        field, IllegalDataMessage.TYPE_PACKET_POSITIVE, block *
+                        this.persistence.getBlockSize() + off,
+                        Integer.toString( digit ) );
 
-                    if(AbstractErrorMessage.isErrorsEnabled())
+                    if ( AbstractErrorMessage.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(this.getMeta(),
-                            block * this.persistence.getBlockSize() + off);
+                        throw new CorruptedException(
+                            this.getMeta(), block *
+                            this.persistence.getBlockSize() + off );
 
                     }
                     else
                     {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
+                        ThreadLocalMessages.getMessages().addMessage( msg );
                     }
 
                     ret = AbstractLogicalFile.NO_NUMBER;
@@ -1205,28 +1229,29 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
             else
             {
-                if(digit < 0 || digit > 9)
+                if ( digit < 0 || digit > 9 )
                 {
-                    msg = new IllegalDataMessage(field,
-                        IllegalDataMessage.TYPE_PACKET_POSITIVE,
-                        block * this.persistence.getBlockSize() + off,
-                        Integer.toString(digit));
+                    msg = new IllegalDataMessage(
+                        field, IllegalDataMessage.TYPE_PACKET_POSITIVE, block *
+                        this.persistence.getBlockSize() + off,
+                        Integer.toString( digit ) );
 
-                    if(!AbstractErrorMessage.isErrorsEnabled())
+                    if ( !AbstractErrorMessage.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(this.getMeta(),
-                            block * this.persistence.getBlockSize() + off);
+                        throw new CorruptedException(
+                            this.getMeta(), block *
+                            this.persistence.getBlockSize() + off );
 
                     }
                     else
                     {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
+                        ThreadLocalMessages.getMessages().addMessage( msg );
                     }
 
                     ret = AbstractLogicalFile.NO_NUMBER;
                     break;
                 }
-                ret += (digit & 0xF) * AbstractLogicalFile.EXP10[exp];
+                ret += ( digit & 0xF ) * AbstractLogicalFile.EXP10[exp];
             }
         }
 
@@ -1256,42 +1281,44 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @see org.jdtaus.banking.dtaus.Fields
      */
-    protected void writeNumberPackedPositive(final int field, final long block,
-        final int off, final int len, long number,
-        final boolean sign) throws IOException
+    protected void writeNumberPackedPositive(
+        final int field, final long block, final int off, final int len,
+        long number, final boolean sign ) throws IOException
     {
         int i;
         int pos = 0;
         final int nibbles = len * 2;
-        final int digits = nibbles - (sign ? 1 : 0);
+        final int digits = nibbles - ( sign
+            ? 1
+            : 0 );
         int exp = digits - 1;
-        final long maxValue =  AbstractLogicalFile.EXP10[digits] - 1L;
+        final long maxValue = AbstractLogicalFile.EXP10[digits] - 1L;
         byte b = 0;
         byte digit;
         boolean highNibble = true;
 
-        if(number < 0L || number > maxValue)
+        if ( number < 0L || number > maxValue )
         {
-            throw new IllegalArgumentException(Long.toString(number));
+            throw new IllegalArgumentException( Long.toString( number ) );
         }
 
-        for(i = 0; i < nibbles; i++, exp--)
+        for ( i = 0; i < nibbles; i++, exp-- )
         {
             // Vorzeichen des letzten Nibbles.
-            if(sign && exp < 0)
+            if ( sign && exp < 0 )
             {
                 digit = 0xC;
             }
             else
             {
-                digit = (byte) Math.floor(
-                    number / AbstractLogicalFile.EXP10[exp]);
+                digit = ( byte ) Math.floor(
+                    number / AbstractLogicalFile.EXP10[exp] );
 
-                number -= (digit * AbstractLogicalFile.EXP10[exp]);
+                number -= ( digit * AbstractLogicalFile.EXP10[exp] );
             }
-            if(highNibble)
+            if ( highNibble )
             {
-                b = (byte) (((byte) (digit << 4)) & 0xF0);
+                b = ( byte ) ( ( ( byte ) ( digit << 4 ) ) & 0xF0 );
                 highNibble = false;
             }
             else
@@ -1302,7 +1329,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             }
         }
 
-        this.persistence.writeBlock(block, off, this.buffer, 0, len);
+        this.persistence.writeBlock( block, off, this.buffer, 0, len );
     }
 
     //-------------------------------------void writeNumberPackedPositive(...)--
@@ -1325,24 +1352,25 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @see org.jdtaus.banking.dtaus.Fields
      */
-    protected long readNumberBinary(final int field, final long block,
-        final int off, final int len) throws IOException
+    protected long readNumberBinary(
+        final int field, final long block, final int off, final int len )
+        throws IOException
     {
-        if(len <= 0 || len > 8)
+        if ( len <= 0 || len > 8 )
         {
-            throw new IllegalArgumentException(Integer.toString(len));
+            throw new IllegalArgumentException( Integer.toString( len ) );
         }
 
         long ret = 0L;
-        int shift = (len - 1) * 8;
+        int shift = ( len - 1 ) * 8;
         int i;
         long read;
 
-        this.persistence.readBlock(block, off, this.buffer, 0, len);
-        for(i = 0; i < len; i++, shift -= 8)
+        this.persistence.readBlock( block, off, this.buffer, 0, len );
+        for ( i = 0; i < len; i++, shift -= 8 )
         {
             read = this.buffer[i] << shift;
-            if(read < 0)
+            if ( read < 0 )
             {
                 read += 256;
             }
@@ -1372,23 +1400,24 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @see org.jdtaus.banking.dtaus.Fields
      */
-    protected void writeNumberBinary(final int field, final long block,
-        final int off, final int len, final long number) throws IOException
+    protected void writeNumberBinary( final int field, final long block,
+                                       final int off, final int len,
+                                       final long number ) throws IOException
     {
-        if(len <= 0 || len > 8)
+        if ( len <= 0 || len > 8 )
         {
-            throw new IllegalArgumentException(Integer.toString(len));
+            throw new IllegalArgumentException( Integer.toString( len ) );
         }
 
-        int shift = (len - 1) * 8;
+        int shift = ( len - 1 ) * 8;
         int i;
 
-        for(i = 0; i < len; i++, shift -= 8)
+        for ( i = 0; i < len; i++, shift -= 8 )
         {
-            this.buffer[i] = (byte) ((number >> shift) & 0xFFL);
+            this.buffer[i] = ( byte ) ( ( number >> shift ) & 0xFFL );
         }
 
-        this.persistence.writeBlock(block, off, this.buffer, 0, len);
+        this.persistence.writeBlock( block, off, this.buffer, 0, len );
     }
 
     //---------------------------------------------void writeNumberBinary(...)--
@@ -1402,12 +1431,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws NullPointerException {@code if(checksum == null)}
      */
-    protected boolean checkTransactionId(final int id,
-        final Checksum checksum)
+    protected boolean checkTransactionId( final int id,
+                                           final Checksum checksum )
     {
-        if(checksum == null)
+        if ( checksum == null )
         {
-            throw new NullPointerException("checksum");
+            throw new NullPointerException( "checksum" );
         }
 
         final int count = checksum.getTransactionCount();
@@ -1422,7 +1451,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @param transactionCount zu prüfende Menge Transaktionen.
      */
-    protected boolean checkTransactionCount(final int transactionCount)
+    protected boolean checkTransactionCount( final int transactionCount )
     {
         return transactionCount >= 0 &&
             transactionCount <= AbstractLogicalFile.MAX_TRANSACTIONS;
@@ -1446,26 +1475,28 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @param isMandatory {@code true} wenn bei der Prüfung vorausgesetzt werden
      * soll, daß ein Betrag eine Pflichtangabe ist; {@code false} wenn nicht.
      */
-    protected final void checkAmount(final int field, final long block,
-        final int off, final long amount, final boolean isMandatory)
+    protected final void checkAmount( final int field, final long block,
+                                        final int off, final long amount,
+                                        final boolean isMandatory )
     {
         final Message msg;
 
-        if(!this.checkAmount(amount, isMandatory))
+        if ( !this.checkAmount( amount, isMandatory ) )
         {
-            msg = new IllegalDataMessage(field, IllegalDataMessage.TYPE_NUMERIC,
-                block * this.persistence.getBlockSize() + off,
-                Long.toString(amount));
+            msg = new IllegalDataMessage(
+                field, IllegalDataMessage.TYPE_NUMERIC, block *
+                this.persistence.getBlockSize() + off, Long.toString( amount ) );
 
-            if(AbstractErrorMessage.isErrorsEnabled())
+            if ( AbstractErrorMessage.isErrorsEnabled() )
             {
-                throw new CorruptedException(this.getMeta(),
-                    block * this.persistence.getBlockSize() + off);
+                throw new CorruptedException(
+                    this.getMeta(), block * this.persistence.getBlockSize() +
+                    off );
 
             }
             else
             {
-                ThreadLocalMessages.getMessages().addMessage(msg);
+                ThreadLocalMessages.getMessages().addMessage( msg );
             }
         }
     }
@@ -1481,10 +1512,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @return {@code true} wenn {@code amount} einem gültigen Transaktions-
      * Betrag entspricht; {@code false} sonst.
      */
-    protected boolean checkAmount(final long amount,
-        final boolean isMandatory)
+    protected boolean checkAmount( final long amount,
+                                    final boolean isMandatory )
     {
-        return (isMandatory ? amount > 0L : amount >= 0L) &&
+        return ( isMandatory
+            ? amount > 0L
+            : amount >= 0L ) &&
             amount < 100000000000L;
 
     }
@@ -1513,11 +1546,11 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @return {@code true} wenn {@code date} im gültigen Bereich liegt;
      * {@code false} wenn nicht,
      */
-    protected boolean checkDate(final Date date)
+    protected boolean checkDate( final Date date )
     {
         boolean valid = false;
 
-        if(date != null)
+        if ( date != null )
         {
             final long millis = date.getTime();
             valid = millis >= VALID_DATES_START_MILLIS &&
@@ -1538,15 +1571,15 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * {@code executionDate} einer gültigen Auftrags-Terminierung entspricht;
      * {@code false} wenn nicht;
      */
-    protected boolean checkSchedule(final Date createDate,
-        final Date executionDate)
+    protected boolean checkSchedule( final Date createDate,
+                                      final Date executionDate )
     {
         boolean valid = createDate != null;
 
-        if(valid)
+        if ( valid )
         {
             final long createMillis = createDate.getTime();
-            if(executionDate != null)
+            if ( executionDate != null )
             {
                 final long executionMillis = executionDate.getTime();
                 valid = executionMillis >= createMillis &&
@@ -1569,49 +1602,53 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * werden soll.
      * @param checksum aktuelle Prüfsumme zur Initialisierung des Index.
      */
-    protected void resizeIndex(final int index, final Checksum checksum)
+    protected void resizeIndex( final int index, final Checksum checksum )
     {
         long[] newIndex;
         int newLength;
-        final int oldLength = this.index == null ? 0 : this.index.length;
+        final int oldLength = this.index == null
+            ? 0
+            : this.index.length;
 
         // Index initialisieren.
-        if(this.index == null)
+        if ( this.index == null )
         {
             this.index = this.getMemoryManagerImpl().
-                allocateLongs(checksum.getTransactionCount() + 1);
+                allocateLongs( checksum.getTransactionCount() + 1 );
 
-            Arrays.fill(this.index, -1L);
+            Arrays.fill( this.index, -1L );
             this.index[0] = 1L;
         }
 
-        while(this.index.length < index + 1)
+        while ( this.index.length < index + 1 )
         {
             newLength = this.index.length * 2;
-            if(newLength <= index)
+            if ( newLength <= index )
             {
                 newLength = index + 1;
             }
-            else if(newLength > AbstractLogicalFile.MAX_TRANSACTIONS)
+            else if ( newLength > AbstractLogicalFile.MAX_TRANSACTIONS )
             {
                 newLength = AbstractLogicalFile.MAX_TRANSACTIONS;
             }
 
-            newIndex = this.getMemoryManagerImpl().allocateLongs(newLength);
-            System.arraycopy(this.index, 0, newIndex, 0, this.index.length);
-            Arrays.fill(newIndex, this.index.length, newIndex.length, -1L);
+            newIndex = this.getMemoryManagerImpl().allocateLongs( newLength );
+            System.arraycopy( this.index, 0, newIndex, 0, this.index.length );
+            Arrays.fill( newIndex, this.index.length, newIndex.length, -1L );
             this.index = newIndex;
         }
 
-        if(this.getLoggerImpl().isDebugEnabled() &&
-            this.index.length != oldLength)
+        if ( this.getLoggerImpl().isDebugEnabled() &&
+            this.index.length != oldLength )
         {
-            final MessageFormat fmt =  AbstractLogicalFileBundle.
-                getLogResizeIndexMessage(Locale.getDefault());
+            final MessageFormat fmt = AbstractLogicalFileBundle.getInstance().
+                getLogResizeIndexMessage( Locale.getDefault() );
 
-            this.getLoggerImpl().debug(fmt.format(new Object[] {
-                new Long(this.index.length)
-            }));
+            this.getLoggerImpl().debug(
+                fmt.format( new Object[] {
+                            new Long( this.index.length )
+                        } ) );
+
         }
     }
 
@@ -1627,7 +1664,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract char getBlockType(long block) throws IOException;
+    protected abstract char getBlockType( long block ) throws IOException;
 
     //---------------------------------------------------int getBlockType(...)--
     //--void checksumTransaction(...)-------------------------------------------
@@ -1647,8 +1684,9 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract int checksumTransaction(long block,
-        Transaction transaction, Checksum checksum) throws IOException;
+    protected abstract int checksumTransaction(
+        long block, Transaction transaction, Checksum checksum )
+        throws IOException;
 
     //-------------------------------------------void checksumTransaction(...)--
     //--int blockCount(...)-----------------------------------------------------
@@ -1661,7 +1699,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @return Anzahl der von {@code transaction} belegten Satzabschnitte.
      */
-    protected abstract int blockCount(Transaction transaction);
+    protected abstract int blockCount( Transaction transaction );
 
     /**
      * Ermittlung der belegten Satzabschnitte einer Transaktion.
@@ -1674,7 +1712,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract int blockCount(long block) throws IOException;
+    protected abstract int blockCount( long block ) throws IOException;
 
     //-----------------------------------------------------int blockCount(...)--
 
@@ -1689,7 +1727,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract Header readHeader(long headerBlock) throws IOException;
+    protected abstract Header readHeader( long headerBlock ) throws IOException;
 
     /**
      * Schreibt den A Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1701,8 +1739,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht geschrieben werden kann.
      */
-    protected abstract void writeHeader(long headerBlock, Header header)
-    throws IOException;
+    protected abstract void writeHeader( long headerBlock, Header header )
+        throws IOException;
 
     /**
      * Liest den E Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1715,8 +1753,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract Checksum readChecksum(long checksumBlock)
-    throws IOException;
+    protected abstract Checksum readChecksum( long checksumBlock )
+        throws IOException;
 
     /**
      * Schreibt den E Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1728,8 +1766,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht geschrieben werden kann.     *
      */
-    protected abstract void writeChecksum(long checksumBlock,
-        Checksum checksum) throws IOException;
+    protected abstract void writeChecksum(
+        long checksumBlock, Checksum checksum ) throws IOException;
 
     /**
      * Liest einen C Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1742,8 +1780,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht gelesen werden kann.
      */
-    protected abstract Transaction readTransaction(long block,
-        Transaction transaction) throws IOException;
+    protected abstract Transaction readTransaction(
+        long block, Transaction transaction ) throws IOException;
 
     /**
      * Schreibt einen C Datensatz. Die entsprechenden Vor- und Nachbedingungen
@@ -1755,8 +1793,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      *
      * @throws IOException wenn nicht geschrieben werden kann.
      */
-    protected abstract void writeTransaction(long block,
-        Transaction transaction) throws IOException;
+    protected abstract void writeTransaction(
+        long block, Transaction transaction ) throws IOException;
 
     //--Property "headerBlock"--------------------------------------------------
 
@@ -1780,13 +1818,13 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @throws IOException wenn die aktuelle Anzahl Satzabschnitte nicht
      * ermittelt werden kann.
      */
-    protected void setHeaderBlock(final long headerBlock) throws IOException
+    protected void setHeaderBlock( final long headerBlock ) throws IOException
     {
-        if(headerBlock < 0L ||
-            headerBlock > this.persistence.getBlockCount())
+        if ( headerBlock < 0L ||
+            headerBlock > this.persistence.getBlockCount() )
         {
 
-            throw new IllegalArgumentException("headerBlock=" + headerBlock);
+            throw new IllegalArgumentException( "headerBlock=" + headerBlock );
         }
 
         this.headerBlock = headerBlock;
@@ -1816,14 +1854,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * ermittelt werden kann.
      */
     protected void setChecksumBlock(
-        final long checksumBlock) throws IOException
+        final long checksumBlock ) throws IOException
     {
 
-        if(checksumBlock <= this.getHeaderBlock() ||
-            checksumBlock > this.persistence.getBlockCount())
+        if ( checksumBlock <= this.getHeaderBlock() ||
+            checksumBlock > this.persistence.getBlockCount() )
         {
-            throw new IllegalArgumentException("checksumBlock=" +
-                checksumBlock);
+            throw new IllegalArgumentException( "checksumBlock=" +
+                                                checksumBlock );
 
         }
 
@@ -1835,57 +1873,58 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     public Header getHeader() throws IOException
     {
-        if(this.cachedHeader == null)
+        if ( this.cachedHeader == null )
         {
-            this.cachedHeader = this.readHeader(this.getHeaderBlock());
+            this.cachedHeader = this.readHeader( this.getHeaderBlock() );
         }
-        return (Header) this.cachedHeader.clone();
+        return ( Header ) this.cachedHeader.clone();
     }
 
-    public Header setHeader(final Header header) throws IOException
+    public Header setHeader( final Header header ) throws IOException
     {
         HeaderValidator validator = null;
         IllegalHeaderException result = null;
         final Header old = this.getHeader();
         final Specification validatorSpec = ModelFactory.getModel().
-            getModules().getSpecification(HeaderValidator.class.getName());
+            getModules().getSpecification( HeaderValidator.class.getName() );
 
-        for(int i = validatorSpec.getImplementations().
-            getImplementations().length - 1; i >= 0; i--)
+        for ( int i = validatorSpec.getImplementations().
+            getImplementations().length - 1; i >= 0; i-- )
         {
-            validator = (HeaderValidator) ContainerFactory.getContainer().
-                getImplementation(HeaderValidator.class,
-                validatorSpec.getImplementations().getImplementation(i).
-                getName());
+            validator = ( HeaderValidator ) ContainerFactory.getContainer().
+                getImplementation( HeaderValidator.class,
+                                   validatorSpec.getImplementations().
+                                   getImplementation( i ).
+                                   getName() );
 
-            result = validator.assertValidHeader(this, header, this.counter,
-                result);
+            result = validator.assertValidHeader( this, header, this.counter,
+                                                  result );
 
         }
 
-        if(result != null && result.getMessages().length > 0)
+        if ( result != null && result.getMessages().length > 0 )
         {
             throw result;
         }
 
-        this.writeHeader(this.getHeaderBlock(), header);
-        this.cachedHeader = (Header) header.clone();
+        this.writeHeader( this.getHeaderBlock(), header );
+        this.cachedHeader = ( Header ) header.clone();
         return old;
     }
 
     public Checksum getChecksum() throws IOException
     {
-        if(this.cachedChecksum == null)
+        if ( this.cachedChecksum == null )
         {
-            this.cachedChecksum = this.readChecksum(this.getChecksumBlock());
+            this.cachedChecksum = this.readChecksum( this.getChecksumBlock() );
         }
-        return (Checksum) this.cachedChecksum.clone();
+        return ( Checksum ) this.cachedChecksum.clone();
     }
 
-    protected void setChecksum(final Checksum checksum) throws IOException
+    protected void setChecksum( final Checksum checksum ) throws IOException
     {
-        this.writeChecksum(this.getChecksumBlock(), checksum);
-        this.cachedChecksum = (Checksum) checksum.clone();
+        this.writeChecksum( this.getChecksumBlock(), checksum );
+        this.cachedChecksum = ( Checksum ) checksum.clone();
     }
 
     protected void checksum() throws IOException
@@ -1904,31 +1943,32 @@ public abstract class AbstractLogicalFile implements LogicalFile
         try
         {
             final long blockCount = this.persistence.getBlockCount();
-            task.setIndeterminate(true);
-            task.setCancelable(false);
-            task.setDescription(new ChecksumsFileMessage());
-            this.getTaskMonitorImpl().monitor(task);
+            task.setIndeterminate( true );
+            task.setCancelable( false );
+            task.setDescription( new ChecksumsFileMessage() );
+            this.getTaskMonitorImpl().monitor( task );
 
             block = startBlock;
-            type = this.getBlockType(block++);
-            this.setChecksumBlock(block);
-            if(type != 'A')
+            type = this.getBlockType( block++ );
+            this.setChecksumBlock( block );
+            if ( type != 'A' )
             {
-                msg = new IllegalDataMessage(Fields.FIELD_A2,
-                    IllegalDataMessage.TYPE_CONSTANT,
-                    block - 1L * this.persistence.getBlockSize() +
-                    DTAUSDisk.ARECORD_OFFSETS[1], Character.toString(type));
+                msg = new IllegalDataMessage(
+                    Fields.FIELD_A2, IllegalDataMessage.TYPE_CONSTANT, block -
+                    1L * this.persistence.getBlockSize() +
+                    DTAUSDisk.ARECORD_OFFSETS[1], Character.toString( type ) );
 
-                if(AbstractErrorMessage.isErrorsEnabled())
+                if ( AbstractErrorMessage.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(this.getMeta(),
+                    throw new CorruptedException(
+                        this.getMeta(),
                         block * this.persistence.getBlockSize() +
-                        DTAUSDisk.ARECORD_OFFSETS[1]);
+                        DTAUSDisk.ARECORD_OFFSETS[1] );
 
                 }
                 else
                 {
-                    ThreadLocalMessages.getMessages().addMessage(msg);
+                    ThreadLocalMessages.getMessages().addMessage( msg );
                 }
             }
             else
@@ -1936,67 +1976,71 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 this.getHeader(); // A-Datensatz prüfen.
                 this.counter = new CurrencyCounter();
 
-                while(block < blockCount &&
-                    (type = this.getBlockType(block)) == 'C')
+                while ( block < blockCount &&
+                    ( type = this.getBlockType( block ) ) == 'C' )
                 {
                     final int id = count - 1;
                     final long blocks;
 
-                    this.resizeIndex(id, c);
+                    this.resizeIndex( id, c );
                     this.index[id] = blockOffset;
-                    blocks = this.checksumTransaction(block, t, c);
+                    blocks = this.checksumTransaction( block, t, c );
 
-                    if(t.getCurrency() != null)
+                    if ( t.getCurrency() != null )
                     {
-                        this.counter.add(t.getCurrency());
+                        this.counter.add( t.getCurrency() );
                     }
 
                     block += blocks;
                     blockOffset += blocks;
-                    c.setTransactionCount(count++);
-                    this.setChecksumBlock(block);
+                    c.setTransactionCount( count++ );
+                    this.setChecksumBlock( block );
                 }
 
-                this.setChecksumBlock(block);
-                if(type == 'E')
+                this.setChecksumBlock( block );
+                if ( type == 'E' )
                 {
                     stored = this.getChecksum();
-                    if(!stored.equals(c))
+                    if ( !stored.equals( c ) )
                     {
-                        msg = new ChecksumErrorMessage(stored, c,
-                            this.getHeaderBlock() *
-                            this.persistence.getBlockSize());
+                        msg =
+                            new ChecksumErrorMessage(
+                            stored, c, this.getHeaderBlock() *
+                            this.persistence.getBlockSize() );
 
-                        if(AbstractErrorMessage.isErrorsEnabled())
+                        if ( AbstractErrorMessage.isErrorsEnabled() )
                         {
-                            throw new CorruptedException(this.getMeta(),
-                                block * this.persistence.getBlockSize());
+                            throw new CorruptedException(
+                                this.getMeta(), block *
+                                this.persistence.getBlockSize() );
 
                         }
                         else
                         {
-                            ThreadLocalMessages.getMessages().addMessage(msg);
+                            ThreadLocalMessages.getMessages().addMessage( msg );
                         }
                     }
                 }
                 else
                 {
-                    msg = new IllegalDataMessage(Fields.FIELD_E2,
-                        IllegalDataMessage.TYPE_CONSTANT,
+                    msg =
+                        new IllegalDataMessage(
+                        Fields.FIELD_E2, IllegalDataMessage.TYPE_CONSTANT,
                         block * this.persistence.getBlockSize() +
                         DTAUSDisk.ERECORD_OFFSETS[1],
-                        Character.toString(type));
+                        Character.toString( type ) );
 
-                    if(AbstractErrorMessage.isErrorsEnabled())
+                    if ( AbstractErrorMessage.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(this.getMeta(),
-                            block * this.persistence.getBlockSize() +
-                            DTAUSDisk.ERECORD_OFFSETS[1]);
+                        throw new CorruptedException(
+                            this.getMeta(), block *
+                            this.persistence.getBlockSize() +
+                            DTAUSDisk.ERECORD_OFFSETS[1] );
 
                     }
                     else
                     {
-                        ThreadLocalMessages.getMessages().addMessage(msg);
+                        ThreadLocalMessages.getMessages().addMessage( msg );
                     }
 
                 }
@@ -2004,125 +2048,129 @@ public abstract class AbstractLogicalFile implements LogicalFile
         }
         finally
         {
-            this.getTaskMonitorImpl().finish(task);
+            this.getTaskMonitorImpl().finish( task );
         }
     }
 
-    public final void createTransaction(final Transaction transaction)
-    throws IOException
+    public final void createTransaction( final Transaction transaction )
+        throws IOException
     {
-        this.addTransaction(transaction);
+        this.addTransaction( transaction );
     }
 
     public int addTransaction(
-        final Transaction transaction) throws IOException
+        final Transaction transaction ) throws IOException
     {
         final int transactionId;
         final int blockCount;
         final Checksum checksum = this.getChecksum();
         final int newCount = checksum.getTransactionCount() + 1;
 
-        if(!this.checkTransactionCount(newCount))
+        if ( !this.checkTransactionCount( newCount ) )
         {
-            throw new ArrayIndexOutOfBoundsException(newCount);
+            throw new ArrayIndexOutOfBoundsException( newCount );
         }
 
         TransactionValidator validator = null;
         IllegalTransactionException result = null;
-        final Specification validatorSpec = ModelFactory.getModel().
-            getModules().getSpecification(TransactionValidator.class.getName());
+        final Specification validatorSpec =
+            ModelFactory.getModel().
+            getModules().getSpecification( TransactionValidator.class.getName() );
 
-        for(int i = validatorSpec.getImplementations().
-            getImplementations().length - 1; i >= 0; i--)
+        for ( int i = validatorSpec.getImplementations().
+            getImplementations().length - 1; i >= 0; i-- )
         {
-            validator = (TransactionValidator) ContainerFactory.getContainer().
-                getImplementation(TransactionValidator.class,
-                validatorSpec.getImplementations().getImplementation(i).
-                getName());
+            validator = ( TransactionValidator ) ContainerFactory.getContainer().
+                getImplementation( TransactionValidator.class,
+                                   validatorSpec.getImplementations().
+                                   getImplementation( i ).
+                                   getName() );
 
-            result = validator.assertValidTransaction(this, transaction,
-                result);
+            result = validator.assertValidTransaction( this, transaction,
+                                                       result );
 
         }
 
-        if(result != null && result.getMessages().length > 0)
+        if ( result != null && result.getMessages().length > 0 )
         {
             throw result;
         }
 
-        this.counter.add(transaction.getCurrency());
+        this.counter.add( transaction.getCurrency() );
 
-        checksum.setTransactionCount(newCount);
-        checksum.add(transaction);
+        checksum.setTransactionCount( newCount );
+        checksum.add( transaction );
         transactionId = checksum.getTransactionCount() - 1;
-        blockCount = this.blockCount(transaction);
-        this.persistence.insertBlocks(this.getChecksumBlock(), blockCount);
-        this.setChecksumBlock(this.getChecksumBlock() + blockCount);
-        this.resizeIndex(transactionId, checksum);
+        blockCount = this.blockCount( transaction );
+        this.persistence.insertBlocks( this.getChecksumBlock(), blockCount );
+        this.setChecksumBlock( this.getChecksumBlock() + blockCount );
+        this.resizeIndex( transactionId, checksum );
         this.index[transactionId] = this.getChecksumBlock() - blockCount -
             this.getHeaderBlock();
 
-        this.writeTransaction(this.getHeaderBlock() +
-            this.index[transactionId], transaction);
+        this.writeTransaction( this.getHeaderBlock() +
+                               this.index[transactionId], transaction );
 
-        this.writeChecksum(this.getChecksumBlock(), checksum);
+        this.writeChecksum( this.getChecksumBlock(), checksum );
         this.cachedChecksum = checksum;
 
         return transactionId;
     }
 
-    public Transaction getTransaction(final int index) throws IOException
+    public Transaction getTransaction( final int index ) throws IOException
     {
         final Checksum checksum = this.getChecksum();
-        if(!this.checkTransactionId(index, checksum))
+        if ( !this.checkTransactionId( index, checksum ) )
         {
-            throw new ArrayIndexOutOfBoundsException(index);
+            throw new ArrayIndexOutOfBoundsException( index );
         }
 
-        return this.readTransaction(this.getHeaderBlock() +
-            this.index[index], new Transaction());
+        return this.readTransaction( this.getHeaderBlock() +
+                                     this.index[index], new Transaction() );
 
     }
 
-    public Transaction setTransaction(final int index,
-        final Transaction transaction) throws IOException
+    public Transaction setTransaction(
+        final int index, final Transaction transaction ) throws IOException
     {
         final Checksum checksum = this.getChecksum();
-        if(!this.checkTransactionId(index, checksum))
+        if ( !this.checkTransactionId( index, checksum ) )
         {
-            throw new ArrayIndexOutOfBoundsException(index);
+            throw new ArrayIndexOutOfBoundsException( index );
         }
 
         TransactionValidator validator = null;
         IllegalTransactionException result = null;
-        final Specification validatorSpec = ModelFactory.getModel().
-            getModules().getSpecification(TransactionValidator.class.getName());
+        final Specification validatorSpec =
+            ModelFactory.getModel().
+            getModules().getSpecification( TransactionValidator.class.getName() );
 
-        for(int i = validatorSpec.getImplementations().
-            getImplementations().length - 1; i >= 0; i--)
+        for ( int i = validatorSpec.getImplementations().
+            getImplementations().length - 1; i >= 0; i-- )
         {
-            validator = (TransactionValidator) ContainerFactory.getContainer().
-                getImplementation(TransactionValidator.class,
-                validatorSpec.getImplementations().getImplementation(i).
-                getName());
+            validator = ( TransactionValidator ) ContainerFactory.getContainer().
+                getImplementation( TransactionValidator.class,
+                                   validatorSpec.getImplementations().
+                                   getImplementation( i ).
+                                   getName() );
 
-            result = validator.assertValidTransaction(this, transaction,
-                result);
+            result = validator.assertValidTransaction( this, transaction,
+                                                       result );
 
         }
 
-        if(result != null && result.getMessages().length > 0)
+        if ( result != null && result.getMessages().length > 0 )
         {
             throw result;
         }
 
-        final Transaction old = this.getTransaction(index);
+        final Transaction old = this.getTransaction( index );
 
-        if(!old.getCurrency().getCurrencyCode().
-            equals(transaction.getCurrency().getCurrencyCode()))
+        if ( !old.getCurrency().getCurrencyCode().
+            equals( transaction.getCurrency().getCurrencyCode() ) )
         {
-            this.counter.substract(old.getCurrency());
-            this.counter.add(transaction.getCurrency());
+            this.counter.substract( old.getCurrency() );
+            this.counter.add( transaction.getCurrency() );
         }
 
         final int oldBlocks;
@@ -2130,80 +2178,80 @@ public abstract class AbstractLogicalFile implements LogicalFile
         final int delta;
         int i;
 
-        checksum.substract(old);
-        checksum.add(transaction);
-        oldBlocks = this.blockCount(old);
-        newBlocks = this.blockCount(transaction);
-        if(oldBlocks < newBlocks)
+        checksum.substract( old );
+        checksum.add( transaction );
+        oldBlocks = this.blockCount( old );
+        newBlocks = this.blockCount( transaction );
+        if ( oldBlocks < newBlocks )
         {
             delta = newBlocks - oldBlocks;
-            this.persistence.insertBlocks(this.getHeaderBlock() +
-                this.index[index], delta);
+            this.persistence.insertBlocks( this.getHeaderBlock() +
+                                           this.index[index], delta );
 
-            for(i = index + 1; i < this.index.length; i++)
+            for ( i = index + 1; i < this.index.length; i++ )
             {
-                if(this.index[i] != -1L)
+                if ( this.index[i] != -1L )
                 {
                     this.index[i] += delta;
                 }
             }
-            this.setChecksumBlock(this.getChecksumBlock() + delta);
+            this.setChecksumBlock( this.getChecksumBlock() + delta );
         }
-        else if(oldBlocks > newBlocks)
+        else if ( oldBlocks > newBlocks )
         {
             delta = oldBlocks - newBlocks;
-            this.persistence.deleteBlocks(this.getHeaderBlock() +
-                this.index[index], delta);
+            this.persistence.deleteBlocks( this.getHeaderBlock() +
+                                           this.index[index], delta );
 
-            for(i = index + 1; i < this.index.length; i++)
+            for ( i = index + 1; i < this.index.length; i++ )
             {
-                if(this.index[i] != -1L)
+                if ( this.index[i] != -1L )
                 {
                     this.index[i] -= delta;
                 }
             }
-            this.setChecksumBlock(this.getChecksumBlock() - delta);
+            this.setChecksumBlock( this.getChecksumBlock() - delta );
         }
-        this.writeTransaction(this.getHeaderBlock() + this.index[index],
-            transaction);
+        this.writeTransaction( this.getHeaderBlock() + this.index[index],
+                               transaction );
 
-        this.writeChecksum(this.getChecksumBlock(), checksum);
+        this.writeChecksum( this.getChecksumBlock(), checksum );
         this.cachedChecksum = checksum;
         return old;
     }
 
-    public Transaction removeTransaction(final int index) throws IOException
+    public Transaction removeTransaction( final int index ) throws IOException
     {
         final Checksum checksum = this.getChecksum();
-        if(!this.checkTransactionId(index, checksum))
+        if ( !this.checkTransactionId( index, checksum ) )
         {
-            throw new ArrayIndexOutOfBoundsException(index);
+            throw new ArrayIndexOutOfBoundsException( index );
         }
 
-        final Transaction removed = this.getTransaction(index);
+        final Transaction removed = this.getTransaction( index );
 
-        this.counter.substract(removed.getCurrency());
+        this.counter.substract( removed.getCurrency() );
 
-        checksum.setTransactionCount(checksum.getTransactionCount() - 1);
-        checksum.substract(removed);
+        checksum.setTransactionCount( checksum.getTransactionCount() - 1 );
+        checksum.substract( removed );
 
         final int blockCount = this.blockCount(
-            this.getHeaderBlock() + this.index[index]);
+            this.getHeaderBlock() + this.index[index] );
 
-        this.persistence.deleteBlocks(this.getHeaderBlock() +
-            this.index[index], blockCount);
+        this.persistence.deleteBlocks( this.getHeaderBlock() +
+                                       this.index[index], blockCount );
 
-        this.setChecksumBlock(this.getChecksumBlock() - blockCount);
-        for(int i = index + 1; i < this.index.length; i++)
+        this.setChecksumBlock( this.getChecksumBlock() - blockCount );
+        for ( int i = index + 1; i < this.index.length; i++ )
         {
-            if(this.index[i] != -1L)
+            if ( this.index[i] != -1L )
             {
                 this.index[i] -= blockCount;
             }
             this.index[i - 1] = this.index[i];
         }
 
-        this.writeChecksum(this.getChecksumBlock(), checksum);
+        this.writeChecksum( this.getChecksumBlock(), checksum );
         this.cachedChecksum = checksum;
         return removed;
     }

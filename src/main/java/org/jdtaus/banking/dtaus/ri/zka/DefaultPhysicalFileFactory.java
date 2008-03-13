@@ -123,7 +123,7 @@ public final class DefaultPhysicalFileFactory
         }
 
         p = meta.getProperty("defaultFormat");
-        this._defaultFormat = ((java.lang.Integer) p.getValue()).intValue();
+        this.pDefaultFormat = ((java.lang.Integer) p.getValue()).intValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -159,7 +159,7 @@ public final class DefaultPhysicalFileFactory
      * Property {@code defaultFormat}.
      * @serial
      */
-    private int _defaultFormat;
+    private int pDefaultFormat;
 
     /**
      * Gets the value of property <code>defaultFormat</code>.
@@ -168,7 +168,7 @@ public final class DefaultPhysicalFileFactory
      */
     private int getDefaultFormat()
     {
-        return this._defaultFormat;
+        return this.pDefaultFormat;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -176,31 +176,31 @@ public final class DefaultPhysicalFileFactory
     //--------------------------------------------------------------Properties--
     //--PhysicalFileFactory-----------------------------------------------------
 
-    public PhysicalFile createPhysicalFile(final FileOperations ops,
-        final int format) throws IOException
+    public PhysicalFile createPhysicalFile(
+        final FileOperations ops, final int format ) throws IOException
     {
-        if(ops == null)
+        if ( ops == null )
         {
-            throw new NullPointerException("ops");
+            throw new NullPointerException( "ops" );
         }
-        if(format != FORMAT_DISK && format != FORMAT_TAPE)
+        if ( format != FORMAT_DISK && format != FORMAT_TAPE )
         {
-            throw new IllegalArgumentException(Integer.toString(format));
+            throw new IllegalArgumentException( Integer.toString( format ) );
         }
 
         try
         {
-            ops.setLength(0L);
-            return this.getPhysicalFile(ops, format);
+            ops.setLength( 0L );
+            return this.getPhysicalFile( ops, format );
         }
-        catch(PhysicalFileException e)
+        catch ( PhysicalFileException e )
         {
-            throw new AssertionError(e);
+            throw new AssertionError( e );
         }
     }
 
-    public int analyse(final FileOperations fileOperations)
-    throws PhysicalFileException, IOException
+    public int analyse( final FileOperations fileOperations )
+        throws PhysicalFileException, IOException
     {
         int blockSize = 128;
         long remainder = 0;
@@ -211,29 +211,31 @@ public final class DefaultPhysicalFileFactory
         Message msg;
 
         final Message[] messages;
-        final byte[] buf = new byte[4];
+        final byte[] buf = new byte[ 4 ];
         final String str;
         final long length;
 
-        if(fileOperations == null)
+        if ( fileOperations == null )
         {
-            throw new NullPointerException("fileOperations");
+            throw new NullPointerException( "fileOperations" );
         }
 
         length = fileOperations.getLength();
         try
         {
             ThreadLocalMessages.getMessages().clear();
-            AbstractErrorMessage.setErrorsEnabled(false);
+            AbstractErrorMessage.setErrorsEnabled( false );
 
-            if(length >= 128)
+            if ( length >= 128 )
             { // mindestens ein Disketten-Satzabschnitt.
                 // die ersten 4 Byte lesen.
-                fileOperations.setFilePointer(0L);
+                fileOperations.setFilePointer( 0L );
                 do
                 {
-                    read = fileOperations.read(buf, total, buf.length - total);
-                    if(read == -1)
+                    read = fileOperations.read( buf, total,
+                                                buf.length - total );
+
+                    if ( read == -1 )
                     {
                         throw new EOFException();
                     }
@@ -241,11 +243,12 @@ public final class DefaultPhysicalFileFactory
                     {
                         total += read;
                     }
-                } while(total < buf.length);
+                }
+                while ( total < buf.length );
 
                 // Diskettenformat prüfen "0128".
-                str = Charsets.decode(buf, "ISO646-DE");
-                if("0128".equals(str))
+                str = Charsets.decode( buf, "ISO646-DE" );
+                if ( "0128".equals( str ) )
                 {
                     remainder = length % blockSize;
                 }
@@ -256,7 +259,7 @@ public final class DefaultPhysicalFileFactory
                     size |= 0xFF;
                     size &= buf[1];
 
-                    if(size == 150)
+                    if ( size == 150 )
                     {
                         ret = PhysicalFileFactory.FORMAT_TAPE;
                         blockSize = 150;
@@ -264,112 +267,114 @@ public final class DefaultPhysicalFileFactory
                     }
                     else
                     {
-                        msg = new IllegalDataMessage(Fields.FIELD_A1,
-                            IllegalDataMessage.TYPE_CONSTANT, 0L, str);
+                        msg =
+                            new IllegalDataMessage(
+                            Fields.FIELD_A1, IllegalDataMessage.TYPE_CONSTANT,
+                            0L, str );
 
-                        if(AbstractErrorMessage.isErrorsEnabled())
+                        if ( AbstractErrorMessage.isErrorsEnabled() )
                         {
-                            throw new CorruptedException(META, 0L);
+                            throw new CorruptedException( META, 0L );
                         }
                         else
                         {
-                            ThreadLocalMessages.getMessages().addMessage(msg);
+                            ThreadLocalMessages.getMessages().addMessage( msg );
                         }
                     }
                 }
             }
             else
             {
-                msg = new IllegalFileLengthMessage(length, blockSize);
-                if(AbstractErrorMessage.isErrorsEnabled())
+                msg = new IllegalFileLengthMessage( length, blockSize );
+                if ( AbstractErrorMessage.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(META, length);
+                    throw new CorruptedException( META, length );
                 }
                 else
                 {
-                    ThreadLocalMessages.getMessages().addMessage(msg);
+                    ThreadLocalMessages.getMessages().addMessage( msg );
                 }
             }
 
-            if(remainder > 0)
+            if ( remainder > 0 )
             {
-                msg = new IllegalFileLengthMessage(length, blockSize);
-                if(AbstractErrorMessage.isErrorsEnabled())
+                msg = new IllegalFileLengthMessage( length, blockSize );
+                if ( AbstractErrorMessage.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(META, length);
+                    throw new CorruptedException( META, length );
                 }
                 else
                 {
-                    ThreadLocalMessages.getMessages().addMessage(msg);
+                    ThreadLocalMessages.getMessages().addMessage( msg );
                 }
             }
 
             messages = ThreadLocalMessages.getMessages().getMessages();
-            if(messages.length > 0)
+            if ( messages.length > 0 )
             {
-                throw new PhysicalFileException(messages);
+                throw new PhysicalFileException( messages );
             }
 
             return ret;
         }
         finally
         {
-            AbstractErrorMessage.setErrorsEnabled(true);
+            AbstractErrorMessage.setErrorsEnabled( true );
         }
     }
 
-    public PhysicalFile getPhysicalFile(final FileOperations ops)
-    throws PhysicalFileException, IOException
+    public PhysicalFile getPhysicalFile( final FileOperations ops )
+        throws PhysicalFileException, IOException
     {
-        return this.getPhysicalFile(ops, this.getDefaultFormat());
+        return this.getPhysicalFile( ops, this.getDefaultFormat() );
     }
 
-    public PhysicalFile createPhysicalFile(final File file, final int format)
-    throws IOException
+    public PhysicalFile createPhysicalFile( final File file, final int format )
+        throws IOException
     {
-        if(file == null)
+        if ( file == null )
         {
-            throw new NullPointerException("file");
+            throw new NullPointerException( "file" );
         }
 
         return this.createPhysicalFile(
             new CoalescingFileOperations(
             new RandomAccessFileOperations(
-            new RandomAccessFile(file, "rw"))), format);
+            new RandomAccessFile( file, "rw" ) ) ), format );
 
     }
 
-    public int analyse(final File file)
-    throws PhysicalFileException, IOException
+    public int analyse( final File file )
+        throws PhysicalFileException, IOException
     {
-        if(file == null)
+        if ( file == null )
         {
-            throw new NullPointerException("file");
+            throw new NullPointerException( "file" );
         }
 
         final FileOperations ops = new ReadAheadFileOperations(
             new RandomAccessFileOperations(
-            new RandomAccessFile(file, "r")));
+            new RandomAccessFile( file, "r" ) ) );
 
-        final int format = this.analyse(ops);
+        final int format = this.analyse( ops );
 
         ops.close();
 
         return format;
     }
 
-    public PhysicalFile getPhysicalFile(final File file)
-    throws PhysicalFileException, IOException
+    public PhysicalFile getPhysicalFile( final File file )
+        throws PhysicalFileException, IOException
     {
-        if(file == null)
+        if ( file == null )
         {
-            throw new NullPointerException("file");
+            throw new NullPointerException( "file" );
         }
 
         return this.getPhysicalFile(
             new ReadAheadFileOperations(
             new RandomAccessFileOperations(
-            new RandomAccessFile(file, "rw"))));
+            new RandomAccessFile( file, "rw" ) ) ) );
 
     }
 
@@ -379,7 +384,7 @@ public final class DefaultPhysicalFileFactory
     /** Creates a new {@code DefaultPhysicalFileFactory} instance. */
     public DefaultPhysicalFileFactory()
     {
-        this(DefaultPhysicalFileFactory.META);
+        this( DefaultPhysicalFileFactory.META );
         this.initialize();
     }
 
@@ -391,43 +396,46 @@ public final class DefaultPhysicalFileFactory
     private void assertValidProperties()
     {
         final int defaultFormat = this.getDefaultFormat();
-        if(defaultFormat != PhysicalFileFactory.FORMAT_DISK &&
-            defaultFormat != PhysicalFileFactory.FORMAT_TAPE)
+        if ( defaultFormat != PhysicalFileFactory.FORMAT_DISK &&
+            defaultFormat != PhysicalFileFactory.FORMAT_TAPE )
         {
 
-            throw new PropertyException("defaultFormat",
-                new Integer(defaultFormat));
+            throw new PropertyException( "defaultFormat",
+                                         new Integer( defaultFormat ) );
 
         }
     }
 
-    private PhysicalFile getPhysicalFile(final FileOperations ops,
-        int format) throws PhysicalFileException, IOException
+    private PhysicalFile getPhysicalFile(
+        final FileOperations ops, int format )
+        throws PhysicalFileException, IOException
     {
-        if(ops == null)
+        if ( ops == null )
         {
-            throw new NullPointerException("ops");
+            throw new NullPointerException( "ops" );
         }
-        if(format != FORMAT_DISK && format != FORMAT_TAPE)
+        if ( format != FORMAT_DISK && format != FORMAT_TAPE )
         {
-            throw new IllegalArgumentException(Integer.toString(format));
+            throw new IllegalArgumentException( Integer.toString( format ) );
         }
 
         final DefaultPhysicalFile ret;
         final Message[] messages;
         final StructuredFileOperations sops;
-        format = ops.getLength() > 0 ? this.analyse(ops) : format;
+        format = ops.getLength() > 0
+            ? this.analyse( ops )
+            : format;
 
-        switch(format)
+        switch ( format )
         {
             case PhysicalFileFactory.FORMAT_DISK:
                 sops = new StructuredFileOperations(
-                    PhysicalFileFactory.FORMAT_DISK, ops);
+                    PhysicalFileFactory.FORMAT_DISK, ops );
 
                 break;
             case PhysicalFileFactory.FORMAT_TAPE:
                 sops = new StructuredFileOperations(
-                    PhysicalFileFactory.FORMAT_TAPE, ops);
+                    PhysicalFileFactory.FORMAT_TAPE, ops );
 
                 break;
             default:
@@ -438,21 +446,21 @@ public final class DefaultPhysicalFileFactory
         try
         {
             ThreadLocalMessages.getMessages().clear();
-            AbstractErrorMessage.setErrorsEnabled(false);
+            AbstractErrorMessage.setErrorsEnabled( false );
 
-            ret = new DefaultPhysicalFile(sops);
+            ret = new DefaultPhysicalFile( sops );
 
             messages = ThreadLocalMessages.getMessages().getMessages();
-            if(messages.length > 0)
+            if ( messages.length > 0 )
             {
-                throw new PhysicalFileException(messages);
+                throw new PhysicalFileException( messages );
             }
 
             return ret;
         }
         finally
         {
-            AbstractErrorMessage.setErrorsEnabled(true);
+            AbstractErrorMessage.setErrorsEnabled( true );
         }
     }
 

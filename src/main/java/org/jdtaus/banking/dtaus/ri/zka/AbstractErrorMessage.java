@@ -54,10 +54,12 @@ public abstract class AbstractErrorMessage extends Message
     /** {@code ThreadLocal} {@code Boolean}. */
     private static final ThreadLocal current = new ThreadLocal()
     {
+
         protected Object initialValue()
         {
             return Boolean.TRUE;
         }
+
     };
 
     /**
@@ -70,9 +72,9 @@ public abstract class AbstractErrorMessage extends Message
      */
     public static boolean isErrorsEnabled()
     {
-        Boolean fatal = (Boolean) current.get();
+        Boolean fatal = ( Boolean ) current.get();
 
-        if(fatal == null)
+        if ( fatal == null )
         {
             throw new IllegalStateException();
         }
@@ -88,9 +90,11 @@ public abstract class AbstractErrorMessage extends Message
      * {@code false} to assemble instances using {@code ThreadLocalMessages} and
      * not throw any exception.
      */
-    public static void setErrorsEnabled(final boolean enabled)
+    public static void setErrorsEnabled( final boolean enabled )
     {
-        current.set(enabled ? Boolean.TRUE : Boolean.FALSE);
+        current.set( enabled
+                     ? Boolean.TRUE
+                     : Boolean.FALSE );
     }
 
     //----------------------------------------------------AbstractErrorMessage--

@@ -115,72 +115,75 @@ public final class DefaultPhysicalFile implements PhysicalFile
      * @throws IOException wenn nicht gelesen werden kann.
      */
     public DefaultPhysicalFile(
-        final StructuredFileOperations structuredFile) throws IOException
+        final StructuredFileOperations structuredFile ) throws IOException
     {
         super();
-        this.initializeProperties(DefaultPhysicalFile.META.getProperties());
+        this.initializeProperties( DefaultPhysicalFile.META.getProperties() );
 
-        if(structuredFile == null)
+        if ( structuredFile == null )
         {
-            throw new NullPointerException("structuredFile");
+            throw new NullPointerException( "structuredFile" );
         }
 
         this.structuredFile = structuredFile;
         this.structuredFile.addStructuredFileListener(
             new StructuredFileListener()
-        {
-
-            public void blocksInserted(long l, long l0) throws IOException
             {
-                final int fileIndex;
 
-                if((fileIndex = this.getFileIndex(l)) >= 0)
+                public void blocksInserted( long l, long l0 ) throws IOException
                 {
-                    // Increment properties headerBlock and checksumBlock for
-                    // all remaining files.
-                    for(int i = fileIndex + 1; i < dtausCount; i++)
+                    final int fileIndex;
+
+                    if ( ( fileIndex = this.getFileIndex( l ) ) >= 0 )
                     {
-                        index[i].setHeaderBlock(index[i].getHeaderBlock() + l0);
-                        index[i].setChecksumBlock(
-                            index[i].getChecksumBlock() + l0);
+                        // Increment properties headerBlock and checksumBlock
+                        // for all remaining files.
+                        for ( int i = fileIndex + 1; i < dtausCount; i++ )
+                        {
+                            index[i].setHeaderBlock( index[i].getHeaderBlock() +
+                                                     l0 );
+                            index[i].setChecksumBlock(
+                                index[i].getChecksumBlock() + l0 );
 
-                    }
-                }
-            }
-
-            public void blocksDeleted(long l, long l0) throws IOException
-            {
-                final int fileIndex;
-
-                if((fileIndex = this.getFileIndex(l)) >= 0)
-                {
-                    // Decrement properties headerBlock and checksumBlock for
-                    // all remaining files.
-                    for(int i = fileIndex + 1; i < dtausCount; i++)
-                    {
-                        index[i].setHeaderBlock(index[i].getHeaderBlock() - l0);
-                        index[i].setChecksumBlock(
-                            index[i].getChecksumBlock() - l0);
-
-                    }
-                }
-            }
-
-            private int getFileIndex(final long block)
-            {
-                int i;
-                for(i = dtausCount - 1; i >= 0; i--)
-                {
-                    if(block >= index[i].getHeaderBlock() &&
-                        block <= index[i].getChecksumBlock())
-                    {
-                        break;
+                        }
                     }
                 }
 
-                return i;
-            }
-        });
+                public void blocksDeleted( long l, long l0 ) throws IOException
+                {
+                    final int fileIndex;
+
+                    if ( ( fileIndex = this.getFileIndex( l ) ) >= 0 )
+                    {
+                        // Decrement properties headerBlock and checksumBlock
+                        // for all remaining files.
+                        for ( int i = fileIndex + 1; i < dtausCount; i++ )
+                        {
+                            index[i].setHeaderBlock( index[i].getHeaderBlock() -
+                                                     l0 );
+                            index[i].setChecksumBlock(
+                                index[i].getChecksumBlock() - l0 );
+
+                        }
+                    }
+                }
+
+                private int getFileIndex( final long block )
+                {
+                    int i;
+                    for ( i = dtausCount - 1; i >= 0; i-- )
+                    {
+                        if ( block >= index[i].getHeaderBlock() &&
+                            block <= index[i].getChecksumBlock() )
+                        {
+                            break;
+                        }
+                    }
+
+                    return i;
+                }
+
+            } );
 
         this.checksum();
     }
@@ -192,7 +195,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>TaskMonitor</code> implementation. */
-    private transient TaskMonitor _dependency0;
+    private transient TaskMonitor dTaskMonitor;
 
     /**
      * Gets the configured <code>TaskMonitor</code> implementation.
@@ -202,9 +205,9 @@ public final class DefaultPhysicalFile implements PhysicalFile
     private TaskMonitor getTaskMonitor()
     {
         TaskMonitor ret = null;
-        if(this._dependency0 != null)
+        if(this.dTaskMonitor != null)
         {
-            ret = this._dependency0;
+            ret = this.dTaskMonitor;
         }
         else
         {
@@ -217,7 +220,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
                 getDependencies().getDependency("TaskMonitor").
                 isBound())
             {
-                this._dependency0 = ret;
+                this.dTaskMonitor = ret;
             }
         }
 
@@ -239,75 +242,79 @@ public final class DefaultPhysicalFile implements PhysicalFile
         return this.dtausCount;
     }
 
-    public LogicalFile add(final Header header) throws IOException
+    public LogicalFile add( final Header header ) throws IOException
     {
-        if(header == null)
+        if ( header == null )
         {
-            throw new NullPointerException("header");
+            throw new NullPointerException( "header" );
         }
 
         HeaderValidator validator = null;
         IllegalHeaderException result = null;
         final Specification validatorSpec = ModelFactory.getModel().
-            getModules().getSpecification(HeaderValidator.class.getName());
+            getModules().getSpecification( HeaderValidator.class.getName() );
 
-        for(int i = validatorSpec.getImplementations().
-            getImplementations().length - 1; i >= 0; i--)
+        for ( int i = validatorSpec.getImplementations().
+            getImplementations().length - 1; i >= 0; i-- )
         {
-            validator = (HeaderValidator) ContainerFactory.getContainer().
-                getImplementation(HeaderValidator.class,
-                validatorSpec.getImplementations().getImplementation(i).
-                getName());
+            validator = ( HeaderValidator ) ContainerFactory.getContainer().
+                getImplementation( HeaderValidator.class,
+                                   validatorSpec.getImplementations().
+                                   getImplementation( i ).
+                                   getName() );
 
-            result = validator.assertValidHeader(header, result);
+            result = validator.assertValidHeader( header, result );
         }
 
-        if(result != null && result.getMessages().length > 0)
+        if ( result != null && result.getMessages().length > 0 )
         {
             throw result;
         }
 
         final AbstractLogicalFile lFile = this.newLogicalFile(
-            this.dtausCount == 0 ? 0L :
-                this.index[this.dtausCount - 1].getChecksumBlock() + 1L);
+            this.dtausCount == 0
+            ? 0L
+            : this.index[this.dtausCount - 1].getChecksumBlock() + 1L );
 
-        this.getStructuredFile().insertBlocks(this.dtausCount == 0 ?
-            0L : this.index[this.dtausCount - 1].getChecksumBlock() + 1L, 2L);
+        this.getStructuredFile().insertBlocks(
+            this.dtausCount == 0
+            ? 0L
+            : this.index[this.dtausCount - 1].getChecksumBlock() + 1L, 2L );
 
-        this.resizeIndex(this.dtausCount);
+        this.resizeIndex( this.dtausCount );
         this.index[this.dtausCount] = lFile;
-        lFile.writeHeader(this.index[this.dtausCount].getHeaderBlock(),
-            header);
+        lFile.writeHeader( this.index[this.dtausCount].getHeaderBlock(),
+                           header );
 
-        lFile.writeChecksum(this.index[this.dtausCount].
-            getHeaderBlock() + 1L, new Checksum());
+        lFile.writeChecksum( this.index[this.dtausCount].getHeaderBlock() + 1L,
+                             new Checksum() );
 
         this.index[this.dtausCount].checksum();
         return this.index[this.dtausCount++];
     }
 
-    public LogicalFile get(int dtausId)
+    public LogicalFile get( int dtausId )
     {
-        if(!this.checkLogicalFileExists(dtausId))
+        if ( !this.checkLogicalFileExists( dtausId ) )
         {
-            throw new IllegalArgumentException("dtausId");
+            throw new IllegalArgumentException( "dtausId" );
         }
         return this.index[dtausId];
     }
 
-    public void remove(int dtausId) throws IOException
+    public void remove( int dtausId ) throws IOException
     {
-        if(!this.checkLogicalFileExists(dtausId))
+        if ( !this.checkLogicalFileExists( dtausId ) )
         {
-            throw new IllegalArgumentException("dtausId");
+            throw new IllegalArgumentException( "dtausId" );
         }
         this.getStructuredFile().deleteBlocks(
             this.index[dtausId].getHeaderBlock(),
             this.index[dtausId].getChecksumBlock() -
-            this.index[dtausId].getHeaderBlock() + 1);
+            this.index[dtausId].getHeaderBlock() + 1 );
 
-        System.arraycopy(this.index, dtausId + 1, this.index, dtausId,
-            --this.dtausCount - dtausId);
+        System.arraycopy( this.index, dtausId + 1, this.index, dtausId,
+                          --this.dtausCount - dtausId );
 
     }
 
@@ -325,7 +332,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
         return this.structuredFile;
     }
 
-    private boolean checkLogicalFileExists(int dtausId)
+    private boolean checkLogicalFileExists( int dtausId )
     {
         return dtausId < this.dtausCount && dtausId >= 0;
     }
@@ -339,30 +346,30 @@ public final class DefaultPhysicalFile implements PhysicalFile
         long maximumProgress = blockCount;
         long progressDivisor = 1L;
 
-        while(maximumProgress > Integer.MAX_VALUE)
+        while ( maximumProgress > Integer.MAX_VALUE )
         {
             maximumProgress /= 2L;
             progressDivisor *= 2L;
         }
 
         final Task task = new Task();
-        task.setIndeterminate(false);
-        task.setCancelable(false);
-        task.setDescription(new AnalysesFileMessage());
-        task.setMinimum(0);
-        task.setProgress(0);
-        task.setMaximum((int) maximumProgress);
+        task.setIndeterminate( false );
+        task.setCancelable( false );
+        task.setDescription( new AnalysesFileMessage() );
+        task.setMinimum( 0 );
+        task.setProgress( 0 );
+        task.setMaximum( ( int ) maximumProgress );
 
         try
         {
-            this.getTaskMonitor().monitor(task);
+            this.getTaskMonitor().monitor( task );
 
-            for(long block = 0L; block < blockCount;)
+            for ( long block = 0L; block < blockCount;)
             {
-                task.setProgress((int) (block / progressDivisor));
+                task.setProgress( ( int ) ( block / progressDivisor ) );
 
-                this.resizeIndex(dtausIndex);
-                this.index[dtausIndex] = this.newLogicalFile(block);
+                this.resizeIndex( dtausIndex );
+                this.index[dtausIndex] = this.newLogicalFile( block );
                 this.index[dtausIndex].checksum();
                 block = this.index[dtausIndex++].getChecksumBlock() + 1L;
                 this.dtausCount++;
@@ -370,22 +377,22 @@ public final class DefaultPhysicalFile implements PhysicalFile
         }
         finally
         {
-            this.getTaskMonitor().finish(task);
+            this.getTaskMonitor().finish( task );
         }
     }
 
     private AbstractLogicalFile newLogicalFile(
-        final long headerBlock) throws IOException
+        final long headerBlock ) throws IOException
     {
         final AbstractLogicalFile ret;
 
-        switch(this.getStructuredFile().getBlockSize())
+        switch ( this.getStructuredFile().getBlockSize() )
         {
             case 128:
-                ret = new DTAUSDisk(headerBlock, this.getStructuredFile());
+                ret = new DTAUSDisk( headerBlock, this.getStructuredFile() );
                 break;
             case 150:
-                ret = new DTAUSTape(headerBlock, this.getStructuredFile());
+                ret = new DTAUSTape( headerBlock, this.getStructuredFile() );
                 break;
             default:
                 throw new IllegalStateException();
@@ -395,21 +402,23 @@ public final class DefaultPhysicalFile implements PhysicalFile
         return ret;
     }
 
-    private void resizeIndex(int index)
+    private void resizeIndex( int index )
     {
-        if(this.index == null)
+        if ( this.index == null )
         {
-            this.index = new AbstractLogicalFile[index + 1];
+            this.index = new AbstractLogicalFile[ index + 1 ];
         }
-        else if(this.index.length < index + 1)
+        else if ( this.index.length < index + 1 )
         {
-            while(this.index.length < index + 1)
+            while ( this.index.length < index + 1 )
             {
                 final int newLength = this.index.length * 2;
                 final AbstractLogicalFile[] newIndex =
-                    new AbstractLogicalFile[newLength];
+                    new AbstractLogicalFile[ newLength ];
 
-                System.arraycopy(this.index, 0, newIndex, 0, this.index.length);
+                System.arraycopy( this.index, 0, newIndex, 0,
+                                  this.index.length );
+
                 this.index = newIndex;
             }
         }

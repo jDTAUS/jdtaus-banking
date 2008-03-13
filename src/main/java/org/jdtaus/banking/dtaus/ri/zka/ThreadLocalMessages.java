@@ -41,37 +41,43 @@ public abstract class ThreadLocalMessages
     /** Thread local collections of messages. */
     private static final ThreadLocal current = new ThreadLocal()
     {
+
         public Object initialValue()
         {
             return new Messages()
             {
+
                 /** Number of messages added to the instance. */
                 private int messageCount = 0;
 
-                public void addMessage(final Message message)
+                public void addMessage( final Message message )
                 {
-                    if(this.messageCount + 1L <= Integer.MAX_VALUE &&
-                        this.messageCount + 1 < MAXIMUM_MESSAGES)
+                    if ( this.messageCount + 1L <= Integer.MAX_VALUE &&
+                        this.messageCount + 1 < MAXIMUM_MESSAGES )
                     {
                         this.messageCount++;
-                        super.addMessage(message);
+                        super.addMessage( message );
                     }
                 }
-                public void removeMessage(final Message message)
+
+                public void removeMessage( final Message message )
                 {
-                    if(this.messageCount - 1 >= 0)
+                    if ( this.messageCount - 1 >= 0 )
                     {
                         this.messageCount--;
-                        super.removeMessage(message);
+                        super.removeMessage( message );
                     }
                 }
+
                 public void clear()
                 {
                     this.messageCount = 0;
                     super.clear();
                 }
+
             };
         }
+
     };
 
     /**
@@ -83,7 +89,7 @@ public abstract class ThreadLocalMessages
      */
     public static Messages getMessages()
     {
-        return (Messages) current.get();
+        return ( Messages ) current.get();
     }
 
     //-----------------------------------------------------ThreadLocalMessages--

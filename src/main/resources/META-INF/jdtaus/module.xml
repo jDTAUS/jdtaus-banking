@@ -22,7 +22,7 @@
   Author     : Christian Schulte <cs@jdtaus.org>
   Version    : $Id$
   Description: Runtime configuration for the ${pom.name} module.
-        
+
 -->
 
 <jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
@@ -70,7 +70,7 @@
 
       </jdtaus:dependencies>
     </jdtaus:implementation>
-    
+
     <!--                                                                     -->
     <!-- DTAUSDisk                                                           -->
     <!--                                                                     -->
@@ -86,7 +86,7 @@
                            jdtaus:bound="true">
 
           <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name" 
+            <jdtaus:property jdtaus:name="name"
                              jdtaus:type="java.lang.String"
                              jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"
                              jdtaus:api="true"/>
@@ -116,7 +116,7 @@
 
       </jdtaus:dependencies>
     </jdtaus:implementation>
-    
+
     <!--                                                                     -->
     <!-- DTAUSTape                                                           -->
     <!--                                                                     -->
@@ -132,7 +132,7 @@
                            jdtaus:bound="true">
 
           <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name" 
+            <jdtaus:property jdtaus:name="name"
                              jdtaus:type="java.lang.String"
                              jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"
                              jdtaus:api="true"/>
@@ -238,7 +238,7 @@
 
       </jdtaus:properties>
     </jdtaus:implementation>
-    
+
     <!--                                                                     -->
     <!-- PhysicalFileExceptionMessageResolver                                -->
     <!--                                                                     -->

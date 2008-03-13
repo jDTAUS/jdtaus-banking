@@ -44,43 +44,42 @@ import org.jdtaus.core.io.util.RandomAccessFileOperations;
  */
 public class PhysicalFileTest extends TestCase
 {
-
     //--Tests-------------------------------------------------------------------
 
     public void testGetLogicalFileCount() throws Exception
     {
-        final PhysicalFile file = LogicalFileTest.
-            getDTAUSValidHeaderChecksumAndTransaction(true);
+        final PhysicalFile file =
+            LogicalFileTest.getDTAUSValidHeaderChecksumAndTransaction( true );
 
-        Assert.assertTrue(file.count() == 1);
+        Assert.assertTrue( file.count() == 1 );
     }
 
     public void testAddDeleteSimple() throws Exception
     {
-        final File tmp = File.createTempFile("jdtaus", "tmp");
+        final File tmp = File.createTempFile( "jdtaus", "tmp" );
         final FileOperations ops = new RandomAccessFileOperations(
-            new RandomAccessFile(tmp.getAbsolutePath(), "rw"));
+            new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
 
         final PhysicalFileFactory factory =
-            (PhysicalFileFactory) ContainerFactory.getContainer().
-            getImplementation(PhysicalFileFactory.class,
-            "jDTAUS Banking SPI");
+            ( PhysicalFileFactory ) ContainerFactory.getContainer().
+            getImplementation( PhysicalFileFactory.class,
+                               "jDTAUS Banking SPI" );
 
-        final PhysicalFile pFile = factory.getPhysicalFile(ops);
-        Assert.assertTrue(pFile.count() == 0);
+        final PhysicalFile pFile = factory.getPhysicalFile( ops );
+        Assert.assertTrue( pFile.count() == 0 );
 
         final Header header = HeaderTest.getLegalHeader();
-        final LogicalFile lFile = pFile.add(header);
+        final LogicalFile lFile = pFile.add( header );
         final Transaction transaction = TransactionTest.getLegalTransaction();
-        lFile.addTransaction(transaction);
-        System.out.println(lFile.getTransaction(0));
-        lFile.removeTransaction(0);
-        pFile.remove(0);
-        Assert.assertTrue(ops.getLength() == 0L);
+        lFile.addTransaction( transaction );
+        System.out.println( lFile.getTransaction( 0 ) );
+        lFile.removeTransaction( 0 );
+        pFile.remove( 0 );
+        Assert.assertTrue( ops.getLength() == 0L );
 
-        if(!tmp.delete())
+        if ( !tmp.delete() )
         {
-            System.err.println("Could not delete " + tmp.getAbsolutePath());
+            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
         }
     }
 
@@ -96,127 +95,126 @@ public class PhysicalFileTest extends TestCase
         final int fileCount = 10;
         final int transactionCount = 10;
 
-        final File tmp = File.createTempFile("jdtaus", "tmp");
+        final File tmp = File.createTempFile( "jdtaus", "tmp" );
         FileOperations ops = new RandomAccessFileOperations(
-            new RandomAccessFile(tmp.getAbsolutePath(), "rw"));
+            new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
 
-        PhysicalFileFactory factory = (PhysicalFileFactory) ContainerFactory.
-            getContainer().getImplementation(PhysicalFileFactory.class,
-            "jDTAUS Banking SPI");
+        PhysicalFileFactory factory =
+            ( PhysicalFileFactory ) ContainerFactory.getContainer().
+            getImplementation( PhysicalFileFactory.class,
+                               "jDTAUS Banking SPI" );
 
-        file = factory.getPhysicalFile(ops);
-
-        try
-        {
-            file.add(null);
-            super.fail("NullPointerException not thrown");
-        }
-        catch (NullPointerException e)
-        {
-        }
+        file = factory.getPhysicalFile( ops );
 
         try
         {
-            file.add(HeaderTest.getIllegalHeader());
-            super.fail("IllegalArgumentException not thrown");
+            file.add( null );
+            super.fail( "NullPointerException not thrown" );
         }
-        catch (IllegalArgumentException e)
-        {
-        }
-        catch(NullPointerException e)
+        catch ( NullPointerException e )
         {
         }
 
-        for(files = 0; files < fileCount; files++)
+        try
+        {
+            file.add( HeaderTest.getIllegalHeader() );
+            super.fail( "IllegalArgumentException not thrown" );
+        }
+        catch ( IllegalArgumentException e )
+        {
+        }
+        catch ( NullPointerException e )
+        {
+        }
+
+        for ( files = 0; files < fileCount; files++ )
         {
             h = HeaderTest.getLegalHeader();
-            h.setReference(Referenznummer10.valueOf(new Long(files)));
-            file.add(h);
+            h.setReference( Referenznummer10.valueOf( new Long( files ) ) );
+            file.add( h );
         }
 
-        Assert.assertTrue(file.count() == fileCount);
-        for(files = file.count() - 1; files >= 0; files--)
+        Assert.assertTrue( file.count() == fileCount );
+        for ( files = file.count() - 1; files >= 0; files-- )
         {
-            final LogicalFile dtaus = file.get(files);
-            Assert.assertTrue(dtaus.getHeader().getReference().
-                longValue() == files);
+            final LogicalFile dtaus = file.get( files );
+            Assert.assertTrue( dtaus.getHeader().getReference().
+                               longValue() == files );
 
-            for(transactions = 0
-                ; transactions < transactionCount; transactions++)
+            for ( transactions = 0; transactions < transactionCount;
+                transactions++ )
             {
 
                 tr = TransactionTest.getLegalTransaction();
-                tr.setReference(Referenznummer11.valueOf(
-                    new Long(transactions)));
+                tr.setReference( Referenznummer11.valueOf(
+                                 new Long( transactions ) ) );
 
-                dtaus.addTransaction(tr);
+                dtaus.addTransaction( tr );
             }
         }
 
-        for(files = file.count() - 1; files >= 0; files--)
+        for ( files = file.count() - 1; files >= 0; files-- )
         {
-            final LogicalFile dtaus = file.get(files);
-            Assert.assertTrue(dtaus.getHeader().getReference().
-                longValue() == files);
+            final LogicalFile dtaus = file.get( files );
+            Assert.assertTrue( dtaus.getHeader().getReference().
+                               longValue() == files );
 
-            for(transactions = dtaus.getChecksum().getTransactionCount() - 1
-                ; transactions >= 0; transactions--)
+            for ( transactions = dtaus.getChecksum().getTransactionCount() - 1;
+                transactions >= 0; transactions-- )
             {
 
-                tr = dtaus.getTransaction(transactions);
-                Assert.assertTrue(tr.getReference().
-                    longValue() == transactions);
+                tr = dtaus.getTransaction( transactions );
+                Assert.assertTrue( tr.getReference().
+                                   longValue() == transactions );
 
             }
         }
 
         // In jeder logischen Datei die erste Transaktion entfernen.
-        for(files = file.count() - 1; files >= 0; files--)
+        for ( files = file.count() - 1; files >= 0; files-- )
         {
-            final LogicalFile dtaus = file.get(files);
-            Assert.assertTrue(dtaus.getHeader().getReference().
-                longValue() == files);
+            final LogicalFile dtaus = file.get( files );
+            Assert.assertTrue( dtaus.getHeader().getReference().
+                               longValue() == files );
 
-            dtaus.removeTransaction(0);
+            dtaus.removeTransaction( 0 );
         }
 
         // Erste logische Datei entfernen und Inhalte der anderen Dateien
         // prüfen.
         removed = 0;
-        while((files = file.count()) > 0)
+        while ( ( files = file.count() ) > 0 )
         {
-            file.remove(0);
+            file.remove( 0 );
             removed++;
-            Assert.assertTrue(files - 1 == file.count());
-            for(files = file.count() - 1
-                ; files >= 0; files--)
+            Assert.assertTrue( files - 1 == file.count() );
+            for ( files = file.count() - 1; files >= 0; files-- )
             {
 
-                final LogicalFile dtaus = file.get(files);
-                Assert.assertTrue(dtaus.getHeader().getReference().
-                    longValue() == files + removed);
+                final LogicalFile dtaus = file.get( files );
+                Assert.assertTrue( dtaus.getHeader().getReference().
+                                   longValue() == files + removed );
 
-                for(transactions =
-                    dtaus.getChecksum().getTransactionCount() - 1
-                    ; transactions >= 0; transactions--)
+                for ( transactions =
+                        dtaus.getChecksum().getTransactionCount() - 1;
+                    transactions >= 0; transactions-- )
                 {
 
-                    tr = dtaus.getTransaction(transactions);
-                    Assert.assertTrue(tr.getReference().
-                        longValue() == transactions + 1);
+                    tr = dtaus.getTransaction( transactions );
+                    Assert.assertTrue( tr.getReference().
+                                       longValue() == transactions + 1 );
 
                 }
             }
         }
 
-        Assert.assertTrue(ops.getLength() == 0L);
+        Assert.assertTrue( ops.getLength() == 0L );
 
-        if(!tmp.delete())
+        if ( !tmp.delete() )
         {
-            System.err.println("Could not delete " + tmp.getAbsolutePath());
+            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
         }
     }
 
     //-------------------------------------------------------------------Tests--
-
 }
