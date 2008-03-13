@@ -119,11 +119,11 @@ public final class PropertyBankfileProvider
         }
 
         p = meta.getProperty("configuration");
-        this._configuration = (java.lang.String) p.getValue();
+        this.pConfiguration = (java.lang.String) p.getValue();
 
 
         p = meta.getProperty("dataDirectory");
-        this._dataDirectory = (java.lang.String) p.getValue();
+        this.pDataDirectory = (java.lang.String) p.getValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -159,7 +159,7 @@ public final class PropertyBankfileProvider
      * Property {@code configuration}.
      * @serial
      */
-    private java.lang.String _configuration;
+    private java.lang.String pConfiguration;
 
     /**
      * Gets the value of property <code>configuration</code>.
@@ -168,14 +168,14 @@ public final class PropertyBankfileProvider
      */
     private java.lang.String getConfiguration()
     {
-        return this._configuration;
+        return this.pConfiguration;
     }
 
     /**
      * Property {@code dataDirectory}.
      * @serial
      */
-    private java.lang.String _dataDirectory;
+    private java.lang.String pDataDirectory;
 
     /**
      * Gets the value of property <code>dataDirectory</code>.
@@ -184,7 +184,7 @@ public final class PropertyBankfileProvider
      */
     private java.lang.String getDataDirectory()
     {
-        return this._dataDirectory;
+        return this.pDataDirectory;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -199,42 +199,42 @@ public final class PropertyBankfileProvider
         InputStream stream = null;
         final URL[] ret;
         final Iterator it;
-        final Map sorted = new TreeMap(PROPERTY_SORTER);
+        final Map sorted = new TreeMap( PROPERTY_SORTER );
         final java.util.Properties props = new java.util.Properties();
 
         try
         {
             stream = this.getConfigurationResource().openStream();
-            props.load(stream);
-            sorted.putAll(props);
-            ret = new URL[sorted.size()];
-            for(it = sorted.values().iterator(), i = 0; it.hasNext(); i++)
+            props.load( stream );
+            sorted.putAll( props );
+            ret = new URL[ sorted.size() ];
+            for ( it = sorted.values().iterator(), i = 0; it.hasNext(); i++ )
             {
                 rsrc = this.getDataDirectory() + '/' + it.next().toString();
-                ret[i] = this.getClassLoader().getResource(rsrc);
-                if(ret[i] == null)
+                ret[i] = this.getClassLoader().getResource( rsrc );
+                if ( ret[i] == null )
                 {
-                    throw new ImplementationException(META, rsrc);
+                    throw new ImplementationException( META, rsrc );
                 }
             }
 
             return ret;
         }
-        catch(IOException e)
+        catch ( IOException e )
         {
-            throw new ImplementationException(META, e);
+            throw new ImplementationException( META, e );
         }
         finally
         {
-            if(stream != null)
+            if ( stream != null )
             {
                 try
                 {
                     stream.close();
                 }
-                catch(IOException e)
+                catch ( IOException e )
                 {
-                    throw new ImplementationException(META, e);
+                    throw new ImplementationException( META, e );
                 }
             }
         }
@@ -249,13 +249,14 @@ public final class PropertyBankfileProvider
     /** {@code Comparator} used to sort property keys in ascending order. */
     private static final Comparator PROPERTY_SORTER = new Comparator()
     {
-        public int compare(final Object o1, final Object o2)
+
+        public int compare( final Object o1, final Object o2 )
         {
-            if(!(o1 instanceof String))
+            if ( !( o1 instanceof String ) )
             {
                 throw new ClassCastException();
             }
-            if(!(o2 instanceof String))
+            if ( !( o2 instanceof String ) )
             {
                 throw new ClassCastException();
             }
@@ -264,35 +265,36 @@ public final class PropertyBankfileProvider
             final NumberFormat fmt = NumberFormat.getIntegerInstance();
             try
             {
-                final Number o1Int = fmt.parse(((String) o1).
-                    substring(PREFIX.length()));
+                final Number o1Int =
+                    fmt.parse( ( ( String ) o1 ).substring( PREFIX.length() ) );
 
-                final Number o2Int = fmt.parse(((String) o2).
-                    substring(PREFIX.length()));
+                final Number o2Int =
+                    fmt.parse( ( ( String ) o2 ).substring( PREFIX.length() ) );
 
-                if(o1Int.longValue() < o2Int.longValue())
+                if ( o1Int.longValue() < o2Int.longValue() )
                 {
                     ret = -1;
                 }
-                else if(o1Int.longValue() > o2Int.longValue())
+                else if ( o1Int.longValue() > o2Int.longValue() )
                 {
                     ret = 1;
                 }
 
             }
-            catch(ParseException e)
+            catch ( ParseException e )
             {
-                throw new ImplementationException(META, e);
+                throw new ImplementationException( META, e );
             }
 
             return ret;
         }
+
     };
 
     /** Creates a new {@code PropertyBankfileProvider} instance. */
     public PropertyBankfileProvider()
     {
-        this(META);
+        this( META );
         this.initialize();
     }
 
@@ -303,20 +305,20 @@ public final class PropertyBankfileProvider
      */
     private void assertValidProperties()
     {
-        if(this.getDataDirectory() == null ||
-            this.getDataDirectory().length() == 0)
+        if ( this.getDataDirectory() == null ||
+            this.getDataDirectory().length() == 0 )
         {
 
-            throw new PropertyException("dataDirectory",
-                this.getDataDirectory());
+            throw new PropertyException( "dataDirectory",
+                                         this.getDataDirectory() );
 
         }
-        if(this.getConfiguration() == null ||
+        if ( this.getConfiguration() == null ||
             this.getConfiguration().length() == 0 ||
-            this.getConfigurationResource() == null)
+            this.getConfigurationResource() == null )
         {
-            throw new PropertyException("configuration",
-                this.getConfiguration());
+            throw new PropertyException( "configuration",
+                                         this.getConfiguration() );
 
         }
     }
@@ -333,7 +335,7 @@ public final class PropertyBankfileProvider
      */
     private URL getConfigurationResource()
     {
-        return this.getClassLoader().getResource(this.getConfiguration());
+        return this.getClassLoader().getResource( this.getConfiguration() );
     }
 
     /**
@@ -347,7 +349,7 @@ public final class PropertyBankfileProvider
     private ClassLoader getClassLoader()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if(classLoader == null)
+        if ( classLoader == null )
         {
             classLoader = ClassLoader.getSystemClassLoader();
         }

@@ -39,10 +39,10 @@ public class BundesbankBankleitzahlenVerzeichnisTest
 
     public BankleitzahlenVerzeichnis getBankleitzahlenVerzeichnis()
     {
-        if(this.directory == null)
+        if ( this.directory == null )
         {
             this.directory = new BundesbankBankleitzahlenVerzeichnis();
-            this.setBankleitzahlenVerzeichnis(this.directory);
+            this.setBankleitzahlenVerzeichnis( this.directory );
         }
 
         return super.getBankleitzahlenVerzeichnis();

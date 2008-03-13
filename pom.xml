@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  
+
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.1</version>
+    <version>1.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
@@ -38,7 +38,7 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/tags</tagBase>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
@@ -58,7 +58,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -75,7 +75,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
@@ -96,7 +96,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-container-mojo</artifactId>
@@ -127,7 +127,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
     </plugins>
   </build>
   <dependencies>
@@ -151,7 +151,7 @@
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core</groupId>
-      <artifactId>jdtaus-core-spi</artifactId>
+      <artifactId>jdtaus-core-utilities</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core.container</groupId>
@@ -164,6 +164,10 @@
     <dependency>
       <groupId>org.jdtaus.core.monitor</groupId>
       <artifactId>jdtaus-core-task-monitor</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core.text</groupId>
+      <artifactId>jdtaus-core-application-logger</artifactId>
     </dependency>
   </dependencies>
   <reporting>
@@ -221,7 +225,7 @@
                 <report>changes-report</report>
               </reports>
             </reportSet>
-          </reportSets>          
+          </reportSets>
         </configuration>
       </plugin>
     </plugins>

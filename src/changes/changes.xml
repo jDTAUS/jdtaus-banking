@@ -60,5 +60,14 @@
       </action>
     </release>
 
+    <release version="1.2.4" date="2008-03-13"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added a recent bankfile valid from 2008-03-03 to 2008-06-08 and rebuild
+      with latest mojo releases.]]>
+      </action>
+    </release>
+
   </body>
 </document>

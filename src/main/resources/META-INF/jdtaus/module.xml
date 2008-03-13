@@ -22,7 +22,7 @@
   Author     : Christian Schulte <cs@jdtaus.org>
   Version    : $Id$
   Description: Runtime configuration for the ${pom.name} module.
-        
+
 -->
 
 <jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
@@ -49,24 +49,24 @@
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}"
                            jdtaus:final="true">
-      
+
       <jdtaus:implementedSpecifications>
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"/>
       </jdtaus:implementedSpecifications>
-      
+
       <jdtaus:dependencies>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
                            jdtaus:name="Logger"
                            jdtaus:bound="true">
-          
+
           <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name" 
+            <jdtaus:property jdtaus:name="name"
                              jdtaus:type="java.lang.String"
                              jdtaus:value="org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis"
                              jdtaus:api="true"/>
-            
+
           </jdtaus:properties>
-          
+
         </jdtaus:dependency>
         <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
                            jdtaus:name="ApplicationLogger"
@@ -77,11 +77,11 @@
                            jdtaus:bound="true"/>
 
       </jdtaus:dependencies>
-      
+
       <jdtaus:properties>
         <jdtaus:property jdtaus:name="dateOfExpirationText"
                          jdtaus:type="java.lang.String"
-                         jdtaus:value="2008-03-02"/>
+                         jdtaus:value="2008-06-08"/>
 
         <jdtaus:property jdtaus:name="dateOfExpirationPattern"
                          jdtaus:type="java.lang.String"
@@ -89,27 +89,26 @@
 
       </jdtaus:properties>
     </jdtaus:implementation>
-    
+
     <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.PropertyBankfileProvider"
                            jdtaus:name="jDTAUS Banking SPI"
                            jdtaus:vendor="${pom.organization.name}"
                            jdtaus:version="${pom.version}"
                            jdtaus:final="true">
-      
+
       <jdtaus:implementedSpecifications>
         <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"/>
-      </jdtaus:implementedSpecifications>      
+      </jdtaus:implementedSpecifications>
       <jdtaus:properties>
         <jdtaus:property jdtaus:name="dataDirectory"
                          jdtaus:type="java.lang.String"
                          jdtaus:value="META-INF/jdtaus"/>
-        
+
         <jdtaus:property jdtaus:name="configuration"
                          jdtaus:type="java.lang.String"
                          jdtaus:value="META-INF/jdtaus/BundesbankBankleitzahlenVerzeichnis.properties"/>
 
       </jdtaus:properties>
     </jdtaus:implementation>
-
   </jdtaus:implementations>
 </jdtaus:module>
