@@ -154,6 +154,10 @@
       <artifactId>jdtaus-core-utilities</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-spi</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.core.container</groupId>
       <artifactId>jdtaus-core-client-container</artifactId>
     </dependency>
