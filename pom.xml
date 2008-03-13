@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  
+
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.1</version>
+    <version>1.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
@@ -30,14 +30,14 @@
           <forkMode>never</forkMode>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags</tagBase>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
@@ -57,7 +57,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -138,7 +138,7 @@
                 <report>changes-report</report>
               </reports>
             </reportSet>
-          </reportSets>          
+          </reportSets>
         </configuration>
       </plugin>
     </plugins>

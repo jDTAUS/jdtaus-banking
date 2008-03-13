@@ -38,16 +38,16 @@ public class CharsetsTest extends TestCase
 
     public void testISO646DE() throws Exception
     {
-        final byte[] encoded = Charsets.encode(TEST, "ISO646-DE");
-        final String decoded = Charsets.decode(encoded, "ISO646-DE");
-        Assert.assertEquals(TEST, decoded);
+        final byte[] encoded = Charsets.encode( TEST, "ISO646-DE" );
+        final String decoded = Charsets.decode( encoded, "ISO646-DE" );
+        Assert.assertEquals( TEST, decoded );
     }
 
     public void testIBM273() throws Exception
     {
-        final byte[] encoded = Charsets.encode(TEST, "IBM273");
-        final String decoded = Charsets.decode(encoded, "IBM273");
-        Assert.assertEquals(TEST, decoded);
+        final byte[] encoded = Charsets.encode( TEST, "IBM273" );
+        final String decoded = Charsets.decode( encoded, "IBM273" );
+        Assert.assertEquals( TEST, decoded );
     }
 
     //-------------------------------------------------------------------Tests--
