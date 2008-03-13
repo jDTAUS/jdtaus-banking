@@ -172,7 +172,7 @@ public final class XMLCurrencyDirectory
         }
 
         p = meta.getProperty("reloadIntervalMillis");
-        this._reloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
+        this.pReloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -184,7 +184,7 @@ public final class XMLCurrencyDirectory
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>Logger</code> implementation. */
-    private transient Logger _dependency0;
+    private transient Logger dLogger;
 
     /**
      * Gets the configured <code>Logger</code> implementation.
@@ -194,9 +194,9 @@ public final class XMLCurrencyDirectory
     private Logger getLogger()
     {
         Logger ret = null;
-        if(this._dependency0 != null)
+        if(this.dLogger != null)
         {
-            ret = this._dependency0;
+            ret = this.dLogger;
         }
         else
         {
@@ -209,7 +209,7 @@ public final class XMLCurrencyDirectory
                 getDependencies().getDependency("Logger").
                 isBound())
             {
-                this._dependency0 = ret;
+                this.dLogger = ret;
             }
         }
 
@@ -233,7 +233,7 @@ public final class XMLCurrencyDirectory
      * Property {@code reloadIntervalMillis}.
      * @serial
      */
-    private long _reloadIntervalMillis;
+    private long pReloadIntervalMillis;
 
     /**
      * Gets the value of property <code>reloadIntervalMillis</code>.
@@ -242,7 +242,7 @@ public final class XMLCurrencyDirectory
      */
     private long getReloadIntervalMillis()
     {
-        return this._reloadIntervalMillis;
+        return this.pReloadIntervalMillis;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -277,128 +277,123 @@ public final class XMLCurrencyDirectory
             final Document docs[] = this.parseResources();
             final Collection col = new LinkedList();
 
-            for(int i = docs.length - 1; i >= 0; i--)
+            for ( int i = docs.length - 1; i >= 0; i-- )
             {
-                col.addAll(Arrays.asList(this.transformDocument(docs[i])));
+                col.addAll( Arrays.asList(
+                            this.transformDocument( docs[i] ) ) );
+
             }
 
-            this.isoMap = new HashMap(col.size());
-            this.dtausMap = new HashMap(col.size());
+            this.isoMap = new HashMap( col.size() );
+            this.dtausMap = new HashMap( col.size() );
 
-            for(Iterator it = col.iterator(); it.hasNext();)
+            for ( Iterator it = col.iterator(); it.hasNext();)
             {
-                final XMLCurrency currency = (XMLCurrency) it.next();
-                if(this.isoMap.put(currency.getIsoCode(), currency) != null ||
-                    (currency.getDtausCode() != null && this.dtausMap.
-                    put(currency.getDtausCode(), currency) != null))
+                final XMLCurrency currency = ( XMLCurrency ) it.next();
+                if ( this.isoMap.put( currency.getIsoCode(),
+                                      currency ) != null ||
+                    ( currency.getDtausCode() != null &&
+                    this.dtausMap.put( currency.getDtausCode(),
+                                       currency ) != null ) )
                 {
                     throw new DuplicateCurrencyException(
-                        Currency.getInstance(currency.getIsoCode()));
+                        Currency.getInstance( currency.getIsoCode() ) );
 
                 }
             }
         }
-        catch(IOException e)
+        catch ( IOException e )
         {
-            throw new ImplementationException(META, e);
+            throw new ImplementationException( META, e );
         }
-        catch(ParserConfigurationException e)
+        catch ( ParserConfigurationException e )
         {
-            throw new ImplementationException(META, e);
+            throw new ImplementationException( META, e );
         }
-        catch(SAXException e)
+        catch ( SAXException e )
         {
-            throw new ImplementationException(META, e);
+            throw new ImplementationException( META, e );
         }
-        catch(ParseException e)
+        catch ( ParseException e )
         {
-            throw new ImplementationException(META, e);
+            throw new ImplementationException( META, e );
         }
     }
 
     //----------------------------------------------------ContainerInitializer--
     //--CurrencyDirectory-------------------------------------------------------
 
-    public Currency[] getDtausCurrencies(final Date date)
+    public Currency[] getDtausCurrencies( final Date date )
     {
-        if(date == null)
+        if ( date == null )
         {
-            throw new NullPointerException("date");
+            throw new NullPointerException( "date" );
         }
 
         this.checkForModifications();
 
         final Collection col = new LinkedList();
-        for(Iterator it = this.isoMap.keySet().iterator(); it.hasNext();)
+        for ( Iterator it = this.isoMap.keySet().iterator(); it.hasNext();)
         {
-            final String isoCode = (String) it.next();
-            final XMLCurrency currency = (XMLCurrency) this.isoMap.get(isoCode);
-            if((date.equals(currency.getStartDate()) ||
-                date.after(currency.getStartDate())) &&
-                (currency.getEndDate() == null ||
-                date.equals(currency.getEndDate()) ||
-                date.before(currency.getEndDate())))
+            final String isoCode = ( String ) it.next();
+            final XMLCurrency currency =
+                ( XMLCurrency ) this.isoMap.get( isoCode );
+
+            if ( currency.isValidAt( date ) )
             {
-                col.add(Currency.getInstance(isoCode));
+                col.add( Currency.getInstance( isoCode ) );
             }
         }
 
-        return (Currency[]) col.toArray(new Currency[col.size()]);
+        return ( Currency[] ) col.toArray( new Currency[ col.size() ] );
     }
 
-    public Currency getDtausCurrency(final char code, final Date date)
+    public Currency getDtausCurrency( final char code, final Date date )
     {
-        if(date == null)
+        if ( date == null )
         {
-            throw new NullPointerException("date");
+            throw new NullPointerException( "date" );
         }
 
         this.checkForModifications();
 
         final XMLCurrency currency =
-            (XMLCurrency) this.dtausMap.get(new Character(code));
+            ( XMLCurrency ) this.dtausMap.get( new Character( code ) );
 
         Currency ret = null;
 
-        if(currency != null && (date.equals(currency.getStartDate()) ||
-            date.after(currency.getStartDate())) &&
-            (currency.getEndDate() == null ||
-            date.equals(currency.getEndDate()) ||
-            date.before(currency.getEndDate())))
+        if ( currency != null && currency.isValidAt( date ) )
         {
-            ret = Currency.getInstance(currency.getIsoCode());
+            ret = Currency.getInstance( currency.getIsoCode() );
         }
 
         return ret;
     }
 
-    public char getDtausCode(final Currency currency, final Date date)
+    public char getDtausCode( final Currency currency, final Date date )
     {
-        if(currency == null)
+        if ( currency == null )
         {
-            throw new NullPointerException("currency");
+            throw new NullPointerException( "currency" );
         }
-        if(date == null)
+        if ( date == null )
         {
-            throw new NullPointerException("date");
+            throw new NullPointerException( "date" );
         }
 
         this.checkForModifications();
 
-        final XMLCurrency xml = (XMLCurrency) this.isoMap.
-            get(currency.getCurrencyCode());
+        final XMLCurrency xml =
+            ( XMLCurrency ) this.isoMap.get( currency.getCurrencyCode() );
 
-        if(xml != null && xml.getDtausCode() != null &&
-            (date.equals(xml.getStartDate()) ||
-            date.after(xml.getStartDate())) &&
-            (xml.getEndDate() == null || date.equals(xml.getEndDate()) ||
-            date.before(xml.getEndDate())))
+        if ( xml != null && xml.getDtausCode() != null &&
+            xml.isValidAt( date ) )
         {
             return xml.getDtausCode().charValue();
         }
 
         throw new UnsupportedCurrencyException(
-            currency.getCurrencyCode(), date);
+            currency.getCurrencyCode(), date );
 
     }
 
@@ -414,7 +409,7 @@ public final class XMLCurrencyDirectory
     /** Creates a new {@code XMLCurrencyDirectory} instance. */
     public XMLCurrencyDirectory()
     {
-        this(XMLCurrencyDirectory.META);
+        this( XMLCurrencyDirectory.META );
         this.initialize();
     }
 
@@ -425,10 +420,11 @@ public final class XMLCurrencyDirectory
      */
     private void assertValidProperties()
     {
-        if(this.getReloadIntervalMillis() < 0L)
+        if ( this.getReloadIntervalMillis() < 0L )
         {
-            throw new PropertyException("reloadIntervalMillis",
-                Long.toString(this.getReloadIntervalMillis()));
+            throw new PropertyException(
+                "reloadIntervalMillis",
+                Long.toString( this.getReloadIntervalMillis() ) );
 
         }
     }
@@ -447,21 +443,22 @@ public final class XMLCurrencyDirectory
     private URL[] getResources() throws IOException
     {
         final Collection resources = new HashSet();
-        final Specification providerSpec = ModelFactory.getModel().getModules().
-            getSpecification(CurrenciesProvider.class.getName());
+        final Specification spec = ModelFactory.getModel().getModules().
+            getSpecification( CurrenciesProvider.class.getName() );
 
-        for(int i = providerSpec.getImplementations().size() - 1; i >= 0; i--)
+        for ( int i = spec.getImplementations().size() - 1; i >= 0; i-- )
         {
             final CurrenciesProvider provider =
-                (CurrenciesProvider) ContainerFactory.getContainer().
-                getImplementation(CurrenciesProvider.class,
-                providerSpec.getImplementations().getImplementation(i).
-                getName());
+                ( CurrenciesProvider ) ContainerFactory.getContainer().
+                getImplementation( CurrenciesProvider.class,
+                                   spec.getImplementations().
+                                   getImplementation( i ).
+                                   getName() );
 
-            resources.addAll(Arrays.asList(provider.getResources()));
+            resources.addAll( Arrays.asList( provider.getResources() ) );
         }
 
-        return (URL[]) resources.toArray(new URL[resources.size()]);
+        return ( URL[] ) resources.toArray( new URL[ resources.size() ] );
     }
 
     /**
@@ -471,34 +468,41 @@ public final class XMLCurrencyDirectory
      *
      * @throws NullPointerException if {@code url} is {@code null}.
      */
-    private void monitorResource(final URL url)
+    private void monitorResource( final URL url )
     {
-        if(url == null)
+        if ( url == null )
         {
-            throw new NullPointerException("url");
+            throw new NullPointerException( "url" );
         }
 
         try
         {
-            final File file = new File(new URI(url.toString()));
-            this.monitorMap.put(file, new Long(file.lastModified()));
-            this.getLogger().info(XMLCurrencyDirectoryBundle.
-                getMonitoringInfoMessage(Locale.getDefault()).format(
-                new Object[] { file.getAbsolutePath() }));
+            final File file = new File( new URI( url.toString() ) );
+            this.monitorMap.put( file, new Long( file.lastModified() ) );
+            this.getLogger().info(
+                XMLCurrencyDirectoryBundle.getInstance().
+                getMonitoringInfoMessage( Locale.getDefault() ).
+                format( new Object[] { file.getAbsolutePath() } ) );
 
         }
-        catch(IllegalArgumentException e)
+        catch ( IllegalArgumentException e )
         {
-            this.getLogger().warn(XMLCurrencyDirectoryBundle.
-                getNotMonitoringWarningMessage(Locale.getDefault()).
-                format(new Object[] { url.toExternalForm(), e.getMessage() }));
+            this.getLogger().warn(
+                XMLCurrencyDirectoryBundle.getInstance().
+                getNotMonitoringWarningMessage( Locale.getDefault() ).
+                format( new Object[] { url.toExternalForm(),
+                                       e.getMessage()
+                    } ) );
 
         }
-        catch(URISyntaxException e)
+        catch ( URISyntaxException e )
         {
-            this.getLogger().warn(XMLCurrencyDirectoryBundle.
-                getNotMonitoringWarningMessage(Locale.getDefault()).
-                format(new Object[] { url.toExternalForm(), e.getMessage() }));
+            this.getLogger().warn(
+                XMLCurrencyDirectoryBundle.getInstance().
+                getNotMonitoringWarningMessage( Locale.getDefault() ).
+                format( new Object[] { url.toExternalForm(),
+                                       e.getMessage()
+                    } ) );
 
         }
     }
@@ -506,23 +510,24 @@ public final class XMLCurrencyDirectory
     /** Reloads the XML files when detecting a change. */
     private void checkForModifications()
     {
-        if(System.currentTimeMillis() - this.lastCheck >
-            this.getReloadIntervalMillis() && this.monitorMap.size() > 0)
+        if ( System.currentTimeMillis() - this.lastCheck >
+            this.getReloadIntervalMillis() && this.monitorMap.size() > 0 )
         {
-            for(Iterator it = this.monitorMap.entrySet().
+            for ( Iterator it = this.monitorMap.entrySet().
                 iterator(); it.hasNext();)
             {
-                final Map.Entry entry = (Map.Entry) it.next();
-                final File file = (File) entry.getKey();
-                final Long lastModified = (Long) entry.getValue();
+                final Map.Entry entry = ( Map.Entry ) it.next();
+                final File file = ( File ) entry.getKey();
+                final Long lastModified = ( Long ) entry.getValue();
 
                 assert lastModified != null : "Expected modification time.";
 
-                if(file.lastModified() != lastModified.longValue())
+                if ( file.lastModified() != lastModified.longValue() )
                 {
-                    this.getLogger().info(XMLCurrencyDirectoryBundle.
-                        getChangeInfoMessage(Locale.getDefault()).format(
-                        new Object[] { file.getAbsolutePath() }));
+                    this.getLogger().info(
+                        XMLCurrencyDirectoryBundle.getInstance().
+                        getChangeInfoMessage( Locale.getDefault() ).
+                        format( new Object[] { file.getAbsolutePath() } ) );
 
                     this.initialize();
                     break;
@@ -551,19 +556,19 @@ public final class XMLCurrencyDirectory
 
         final URL[] resources = this.getResources();
         final DocumentBuilder parser = this.getDocumentBuilder();
-        final Document[] ret = new Document[resources.length];
+        final Document[] ret = new Document[ resources.length ];
 
-        for(int i = resources.length - 1; i >= 0; i--)
+        for ( int i = resources.length - 1; i >= 0; i-- )
         {
             try
             {
-                this.monitorResource(resources[i]);
+                this.monitorResource( resources[i] );
                 stream = resources[i].openStream();
-                ret[i] = parser.parse(stream);
+                ret[i] = parser.parse( stream );
             }
             finally
             {
-                if(stream != null)
+                if ( stream != null )
                 {
                     stream.close();
                     stream = null;
@@ -583,54 +588,58 @@ public final class XMLCurrencyDirectory
      *
      * @throws ParseException if parsing values fails.
      */
-    private XMLCurrency[] transformDocument(final Document doc)
-    throws ParseException
+    private XMLCurrency[] transformDocument( final Document doc )
+        throws ParseException
     {
         Element e;
         String str;
         NodeList l;
         XMLCurrency cur;
         final Calendar cal = Calendar.getInstance();
-        final Collection col = new ArrayList(500);
+        final Collection col = new ArrayList( 500 );
 
         l = doc.getDocumentElement().getElementsByTagNameNS(
-            XMLCurrencyDirectory.MODEL_NS, "currency");
+            XMLCurrencyDirectory.MODEL_NS, "currency" );
 
-        for(int i = l.getLength() - 1; i >= 0; i--)
+        for ( int i = l.getLength() - 1; i >= 0; i-- )
         {
-            e = (Element) l.item(i);
+            e = ( Element ) l.item( i );
             cur = new XMLCurrency();
-            cur.setIsoCode(e.getAttributeNS(XMLCurrencyDirectory.MODEL_NS,
-                "isoCode"));
+            cur.setIsoCode( e.getAttributeNS( XMLCurrencyDirectory.MODEL_NS,
+                                              "isoCode" ) );
 
-            str = e.getAttributeNS(XMLCurrencyDirectory.MODEL_NS,
-                "dtausCode");
+            str = e.getAttributeNS( XMLCurrencyDirectory.MODEL_NS,
+                                    "dtausCode" );
 
-            cur.setDtausCode(str != null && str.length() > 0 ?
-                new Character(str.charAt(0)) : null);
+            cur.setDtausCode( str != null && str.length() > 0
+                              ? new Character( str.charAt( 0 ) )
+                              : null );
 
-            str = e.getAttributeNS(XMLCurrencyDirectory.MODEL_NS,
-                "startDate");
+            str = e.getAttributeNS( XMLCurrencyDirectory.MODEL_NS,
+                                    "startDate" );
 
-            cur.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(str));
+            cur.setStartDate(
+                new SimpleDateFormat( "yyyy-MM-dd" ).parse( str ) );
 
-            str = e.getAttributeNS(XMLCurrencyDirectory.MODEL_NS,
-                "endDate");
+            str = e.getAttributeNS( XMLCurrencyDirectory.MODEL_NS,
+                                    "endDate" );
 
-            if(str != null && str.length() > 0)
+            if ( str != null && str.length() > 0 )
             {
-                cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(str));
-                cal.set(Calendar.HOUR_OF_DAY, 23);
-                cal.set(Calendar.MINUTE, 59);
-                cal.set(Calendar.SECOND, 59);
-                cal.set(Calendar.MILLISECOND, 999);
-                cur.setEndDate(cal.getTime());
+                cal.setTime(
+                    new SimpleDateFormat( "yyyy-MM-dd" ).parse( str ) );
+
+                cal.set( Calendar.HOUR_OF_DAY, 23 );
+                cal.set( Calendar.MINUTE, 59 );
+                cal.set( Calendar.SECOND, 59 );
+                cal.set( Calendar.MILLISECOND, 999 );
+                cur.setEndDate( cal.getTime() );
             }
 
-            col.add(cur);
+            col.add( cur );
         }
 
-        return (XMLCurrency[]) col.toArray(new XMLCurrency[col.size()]);
+        return ( XMLCurrency[] ) col.toArray( new XMLCurrency[ col.size() ] );
     }
 
     /**
@@ -654,56 +663,62 @@ public final class XMLCurrencyDirectory
      * @throws ParserConfigurationException if no supported XML parser runtime
      * is available.
      */
-    private DocumentBuilder getDocumentBuilder() throws IOException,
-        ParserConfigurationException
+    private DocumentBuilder getDocumentBuilder()
+        throws IOException, ParserConfigurationException
     {
         final DocumentBuilder xmlBuilder;
         final DocumentBuilderFactory xmlFactory =
             DocumentBuilderFactory.newInstance();
 
-        xmlFactory.setNamespaceAware(true);
+        xmlFactory.setNamespaceAware( true );
         try
         {
-            xmlFactory.setValidating(true);
+            xmlFactory.setValidating( true );
             xmlFactory.setAttribute(
                 XMLCurrencyDirectory.SCHEMA_LANGUAGE_KEY,
-                XMLCurrencyDirectory.SCHEMA_LANGUAGE);
+                XMLCurrencyDirectory.SCHEMA_LANGUAGE );
 
             final URL schema = this.getClassLoader().getResource(
-                XMLCurrencyDirectory.MODEL_XSD);
+                XMLCurrencyDirectory.MODEL_XSD );
 
             xmlFactory.setAttribute(
                 XMLCurrencyDirectory.SCHEMA_SOURCE_KEY,
-                schema.openStream());
+                schema.openStream() );
 
         }
-        catch(IllegalArgumentException e)
+        catch ( IllegalArgumentException e )
         {
-            this.getLogger().warn(XMLCurrencyDirectoryBundle.
-                getNoJAXPValidationWarningMessage(Locale.getDefault()).
-                format(new Object[] { e.getMessage() }));
+            this.getLogger().warn(
+                XMLCurrencyDirectoryBundle.getInstance().
+                getNoJAXPValidationWarningMessage( Locale.getDefault() ).
+                format( new Object[] { e.getMessage() } ) );
 
-            xmlFactory.setValidating(false);
+            xmlFactory.setValidating( false );
         }
 
         xmlBuilder = xmlFactory.newDocumentBuilder();
-        xmlBuilder.setErrorHandler(new ErrorHandler()
-        {
-            public void warning(final SAXParseException e)
+        xmlBuilder.setErrorHandler(
+            new ErrorHandler()
             {
-                getLogger().warn(e.getMessage());
-            }
-            public void fatalError(final SAXParseException e)
-            throws SAXException
-            {
-                throw e;
-            }
-            public void error(final SAXParseException e)
-            throws SAXException
-            {
-                throw e;
-            }
-        });
+
+                public void warning( final SAXParseException e )
+                {
+                    getLogger().warn( e.getMessage() );
+                }
+
+                public void fatalError( final SAXParseException e )
+                    throws SAXException
+                {
+                    throw e;
+                }
+
+                public void error( final SAXParseException e )
+                    throws SAXException
+                {
+                    throw e;
+                }
+
+            } );
 
         return xmlBuilder;
     }
@@ -718,8 +733,10 @@ public final class XMLCurrencyDirectory
      */
     private ClassLoader getClassLoader()
     {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if(classLoader == null)
+        ClassLoader classLoader =
+            Thread.currentThread().getContextClassLoader();
+
+        if ( classLoader == null )
         {
             classLoader = ClassLoader.getSystemClassLoader();
         }

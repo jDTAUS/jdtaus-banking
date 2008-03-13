@@ -30,6 +30,12 @@ import java.util.Date;
  */
 public class XMLCurrency implements Serializable, Cloneable
 {
+    //--Constants---------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 3499875740280116856L;
+
+    //---------------------------------------------------------------Constants--
     //--XMLCurrency-------------------------------------------------------------
 
     /**
@@ -58,6 +64,7 @@ public class XMLCurrency implements Serializable, Cloneable
 
     /** Cached hash-code. */
     private transient int hashCode = NO_HASHCODE;
+
     /** Constant for field {@code hashCode} forcing hash code computation. */
     private static final int NO_HASHCODE = Integer.MIN_VALUE;
 
@@ -76,7 +83,7 @@ public class XMLCurrency implements Serializable, Cloneable
      *
      * @param value the ISO currency code.
      */
-    public void setIsoCode(final String value)
+    public void setIsoCode( final String value )
     {
         this.isoCode = value;
         this.hashCode = NO_HASHCODE;
@@ -97,7 +104,7 @@ public class XMLCurrency implements Serializable, Cloneable
      *
      * @param value the DTAUS currency code or {@code null}.
      */
-    public void setDtausCode(final Character value)
+    public void setDtausCode( final Character value )
     {
         this.dtausCode = value;
         this.hashCode = NO_HASHCODE;
@@ -118,7 +125,7 @@ public class XMLCurrency implements Serializable, Cloneable
      *
      * @param value the start date.
      */
-    public void setStartDate(final Date value)
+    public void setStartDate( final Date value )
     {
         this.startDate = value;
         this.hashCode = NO_HASHCODE;
@@ -139,10 +146,35 @@ public class XMLCurrency implements Serializable, Cloneable
      *
      * @param value the end date.
      */
-    public void setEndDate(final Date value)
+    public void setEndDate( final Date value )
     {
         this.endDate = value;
         this.hashCode = NO_HASHCODE;
+    }
+
+    /**
+     * Checks that the currency is valid at a given date.
+     *
+     * @param date the date with which to check.
+     *
+     * @return {@code true}, if the currency is valid at {@code date};
+     * {@code false} if not.
+     *
+     * @throws NullPointerException if {@code date} is {@code null}.
+     */
+    public boolean isValidAt( final Date date )
+    {
+        if ( date == null )
+        {
+            throw new NullPointerException( "date" );
+        }
+
+        return ( date.equals( this.getStartDate() ) ||
+            date.after( this.getStartDate() ) ) &&
+            ( this.getEndDate() == null ||
+            date.equals( this.getEndDate() ) ||
+            date.before( this.getEndDate() ) );
+
     }
 
     /**
@@ -152,11 +184,11 @@ public class XMLCurrency implements Serializable, Cloneable
      */
     private String internalString()
     {
-        return new StringBuffer(200).
-            append("\n\tisoCode=").append(this.isoCode).
-            append("\n\tdtausCode=").append(this.dtausCode).
-            append("\n\tstartDate=").append(this.startDate).
-            append("\n\tendDate=").append(this.endDate).
+        return new StringBuffer( 200 ).
+            append( "\n\tisoCode=" ).append( this.isoCode ).
+            append( "\n\tdtausCode=" ).append( this.dtausCode ).
+            append( "\n\tstartDate=" ).append( this.startDate ).
+            append( "\n\tendDate=" ).append( this.endDate ).
             toString();
 
     }
@@ -173,21 +205,21 @@ public class XMLCurrency implements Serializable, Cloneable
     {
         try
         {
-            final XMLCurrency ret = (XMLCurrency) super.clone();
-            if(this.startDate != null)
+            final XMLCurrency ret = ( XMLCurrency ) super.clone();
+            if ( this.startDate != null )
             {
-                ret.startDate = (Date) this.startDate.clone();
+                ret.startDate = ( Date ) this.startDate.clone();
             }
-            if(this.endDate != null)
+            if ( this.endDate != null )
             {
-                ret.endDate = (Date) this.endDate.clone();
+                ret.endDate = ( Date ) this.endDate.clone();
             }
 
             return ret;
         }
-        catch(CloneNotSupportedException e)
+        catch ( CloneNotSupportedException e )
         {
-            throw new AssertionError(e);
+            throw new AssertionError( e );
         }
     }
 
@@ -200,21 +232,24 @@ public class XMLCurrency implements Serializable, Cloneable
      * @return {@code true} if this object is the same as {@code o};
      * {@code false} otherwise.
      */
-    public boolean equals(final Object o)
+    public boolean equals( final Object o )
     {
         boolean ret = o == this;
 
-        if(!ret && o instanceof XMLCurrency)
+        if ( !ret && o instanceof XMLCurrency )
         {
-            final XMLCurrency that = (XMLCurrency) o;
+            final XMLCurrency that = ( XMLCurrency ) o;
             ret =
-                (this.isoCode == null ? that.isoCode == null :
-                    this.isoCode.equals(that.isoCode)) &&
-                (this.dtausCode == that.dtausCode) &&
-                (this.startDate == null ? that.startDate == null :
-                    this.startDate.equals(that.startDate)) &&
-                (this.endDate == null ? that.endDate == null :
-                    this.endDate.equals(that.endDate));
+                ( this.isoCode == null
+                ? that.isoCode == null
+                : this.isoCode.equals( that.isoCode ) ) &&
+                ( this.dtausCode == that.dtausCode ) &&
+                ( this.startDate == null
+                ? that.startDate == null
+                : this.startDate.equals( that.startDate ) ) &&
+                ( this.endDate == null
+                ? that.endDate == null
+                : this.endDate.equals( that.endDate ) );
 
         }
 
@@ -228,21 +263,25 @@ public class XMLCurrency implements Serializable, Cloneable
      */
     public int hashCode()
     {
-        if(this.hashCode == NO_HASHCODE)
+        if ( this.hashCode == NO_HASHCODE )
         {
             int hc = 23;
 
-            hc = 37 * hc + (this.dtausCode == null ?
-                0 : (int) this.dtausCode.charValue());
+            hc = 37 * hc + ( this.dtausCode == null
+                ? 0
+                : ( int ) this.dtausCode.charValue() );
 
-            hc = 37 * hc + (this.isoCode == null ?
-                0 : this.isoCode.hashCode());
+            hc = 37 * hc + ( this.isoCode == null
+                ? 0
+                : this.isoCode.hashCode() );
 
-            hc = 37 * hc + (this.startDate == null ?
-                0 : this.startDate.hashCode());
+            hc = 37 * hc + ( this.startDate == null
+                ? 0
+                : this.startDate.hashCode() );
 
-            hc = 37 * hc + (this.endDate == null ?
-                0 : this.endDate.hashCode());
+            hc = 37 * hc + ( this.endDate == null
+                ? 0
+                : this.endDate.hashCode() );
 
             this.hashCode = hc;
         }

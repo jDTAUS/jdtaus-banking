@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  
+
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.1</version>
+    <version>1.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI CurrencyDirectory</name>
-  <version>1.2.2-SNAPSHOT</version>
+  <version>1.3-SNAPSHOT</version>
   <description>jDTAUS CurrencyDirectory reference implementation.</description>
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/branches/jdtaus-banking-ri-currencydirectory-1.x</connection>
@@ -55,7 +55,7 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags</tagBase>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
@@ -75,7 +75,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -92,7 +92,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -118,7 +118,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
@@ -140,7 +140,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-container-mojo</artifactId>
@@ -254,7 +254,7 @@
                 <report>changes-report</report>
               </reports>
             </reportSet>
-          </reportSets>          
+          </reportSets>
         </configuration>
       </plugin>
     </plugins>

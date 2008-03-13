@@ -30,6 +30,12 @@ import java.util.Locale;
  */
 public class DuplicateCurrencyException extends RuntimeException
 {
+    //--Constants---------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 8084715524328704554L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -38,13 +44,15 @@ public class DuplicateCurrencyException extends RuntimeException
      *
      * @param currency the duplicate {@code Currency} instance.
      */
-    public DuplicateCurrencyException(final Currency currency)
+    public DuplicateCurrencyException( final Currency currency )
     {
-        super(DuplicateCurrencyExceptionBundle.
-            getDuplicateCurrencyMessage(Locale.getDefault()).
-            format(currency == null ? null
-            : new Object[] { currency.getCurrencyCode(),
-            currency.getSymbol() }));
+        super( DuplicateCurrencyExceptionBundle.getInstance().
+               getDuplicateCurrencyMessage( Locale.getDefault() ).
+               format( currency == null
+                       ? null
+                       : new Object[] { currency.getCurrencyCode(),
+                                        currency.getSymbol()
+                   } ) );
 
         this.currency = currency;
     }

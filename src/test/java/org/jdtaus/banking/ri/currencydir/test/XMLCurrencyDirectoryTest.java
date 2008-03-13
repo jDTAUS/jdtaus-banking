@@ -39,10 +39,10 @@ public class XMLCurrencyDirectoryTest
 
     public CurrencyMapper getCurrencyMapper()
     {
-        if(this.mapper == null)
+        if ( this.mapper == null )
         {
             this.mapper = new XMLCurrencyDirectory();
-            this.setCurrencyMapper(this.mapper);
+            this.setCurrencyMapper( this.mapper );
         }
 
         return super.getCurrencyMapper();

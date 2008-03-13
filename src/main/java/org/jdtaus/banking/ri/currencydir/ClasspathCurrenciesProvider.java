@@ -114,11 +114,11 @@ public final class ClasspathCurrenciesProvider
         }
 
         p = meta.getProperty("resourceName");
-        this._resourceName = (java.lang.String) p.getValue();
+        this.pResourceName = (java.lang.String) p.getValue();
 
 
         p = meta.getProperty("directoryName");
-        this._directoryName = (java.lang.String) p.getValue();
+        this.pDirectoryName = (java.lang.String) p.getValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -154,7 +154,7 @@ public final class ClasspathCurrenciesProvider
      * Property {@code resourceName}.
      * @serial
      */
-    private java.lang.String _resourceName;
+    private java.lang.String pResourceName;
 
     /**
      * Gets the value of property <code>resourceName</code>.
@@ -163,14 +163,14 @@ public final class ClasspathCurrenciesProvider
      */
     private java.lang.String getResourceName()
     {
-        return this._resourceName;
+        return this.pResourceName;
     }
 
     /**
      * Property {@code directoryName}.
      * @serial
      */
-    private java.lang.String _directoryName;
+    private java.lang.String pDirectoryName;
 
     /**
      * Gets the value of property <code>directoryName</code>.
@@ -179,7 +179,7 @@ public final class ClasspathCurrenciesProvider
      */
     private java.lang.String getDirectoryName()
     {
-        return this._directoryName;
+        return this.pDirectoryName;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -192,14 +192,14 @@ public final class ClasspathCurrenciesProvider
         final ClassLoader classLoader = this.getClassLoader();
         final Collection col = new LinkedList();
         final Enumeration en = classLoader.getResources(
-            this.getDirectoryName() + '/' + this.getResourceName());
+            this.getDirectoryName() + '/' + this.getResourceName() );
 
-        while(en.hasMoreElements())
+        while ( en.hasMoreElements() )
         {
-            col.add(en.nextElement());
+            col.add( en.nextElement() );
         }
 
-        return (URL[]) col.toArray(new URL[col.size()]);
+        return ( URL[] ) col.toArray( new URL[ col.size() ] );
     }
 
     //------------------------------------------------------CurrenciesProvider--
@@ -208,7 +208,7 @@ public final class ClasspathCurrenciesProvider
     /** Creates a new {@code ClasspathCurrenciesProvider} instance. */
     public ClasspathCurrenciesProvider()
     {
-        this(META);
+        this( META );
         this.initialize();
     }
 
@@ -219,18 +219,18 @@ public final class ClasspathCurrenciesProvider
      */
     private void assertValidProperties()
     {
-        if(this.getDirectoryName() == null)
+        if ( this.getDirectoryName() == null )
         {
-            throw new PropertyException("directoryName",
-                this.getDirectoryName());
+            throw new PropertyException( "directoryName",
+                                         this.getDirectoryName() );
 
         }
-        if(this.getResourceName() == null ||
-            this.getResourceName().length() <= 0)
+        if ( this.getResourceName() == null ||
+            this.getResourceName().length() <= 0 )
         {
 
-            throw new PropertyException("resourceName",
-                this.getResourceName());
+            throw new PropertyException( "resourceName",
+                                         this.getResourceName() );
 
         }
     }
@@ -246,7 +246,7 @@ public final class ClasspathCurrenciesProvider
     private ClassLoader getClassLoader()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if(classLoader == null)
+        if ( classLoader == null )
         {
             classLoader = ClassLoader.getSystemClassLoader();
         }

@@ -22,14 +22,14 @@
   Author     : Christian Schulte <cs@jdtaus.org>
   Version    : $Id$
   Description: ZKA currencies.
-        
+
 -->
 <jdtaus:currencies xmlns="http://jdtaus.org/banking/xml/currencies"
                    xmlns:jdtaus="http://jdtaus.org/banking/xml/currencies"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://jdtaus.org/banking/xml/currencies http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/jdtaus-currencies-1.0.xsd"
                    jdtaus:version="1.0">
-  
+
   <jdtaus:currency jdtaus:isoCode="EUR"
                    jdtaus:dtausCode="1"
                    jdtaus:startDate="2002-01-01"/>

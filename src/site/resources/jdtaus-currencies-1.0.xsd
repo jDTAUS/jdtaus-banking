@@ -42,7 +42,7 @@
             xmlns="http://jdtaus.org/banking/xml/currencies"
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
-  
+
   <xsd:annotation>
     <xsd:documentation xml:lang="en"><![CDATA[
       Schema for the XML model of the CurrencyDirectory.]]>
@@ -61,7 +61,7 @@
                      minOccurs="1"
                      maxOccurs="unbounded"
                      type="jdtaus:CurrencyType">
-          
+
           <xsd:unique name="currency-isocode-uniqueness">
             <xsd:annotation>
               <xsd:documentation xml:lang="en"><![CDATA[
@@ -73,22 +73,22 @@
           </xsd:unique>
         </xsd:element>
       </xsd:sequence>
-      
-      <xsd:attribute name="version" 
-                     type="xsd:string" 
+
+      <xsd:attribute name="version"
+                     type="xsd:string"
                      fixed="1.0"
                      use="required">
-        
+
         <xsd:annotation>
           <xsd:documentation xml:lang="en"><![CDATA[
           Model version.]]>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:attribute>
-      
+
     </xsd:complexType>
   </xsd:element>
-    
+
   <xsd:complexType name="CurrencyType">
     <xsd:annotation>
       <xsd:documentation xml:lang="en"><![CDATA[
@@ -103,16 +103,16 @@
                    type="jdtaus:dtausCodeType"
                    use="optional"/>
 
-    <xsd:attribute name="startDate" 
+    <xsd:attribute name="startDate"
                    type="xsd:date"
                    use="required"/>
-    
+
     <xsd:attribute name="endDate"
                    type="xsd:date"
                    use="optional"/>
-    
+
   </xsd:complexType>
-  
+
   <xsd:simpleType name="isoCodeType">
     <xsd:annotation>
       <xsd:documentation xml:lang="en"><![CDATA[

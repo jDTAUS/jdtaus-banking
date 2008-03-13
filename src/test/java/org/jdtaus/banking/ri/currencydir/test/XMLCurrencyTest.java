@@ -38,36 +38,36 @@ public class XMLCurrencyTest
         XMLCurrency c1 = new XMLCurrency();
         XMLCurrency c2 = new XMLCurrency();
 
-        Assert.assertEquals(c1, c2);
-        Assert.assertEquals(c1.hashCode(), c2.hashCode());
+        Assert.assertEquals( c1, c2 );
+        Assert.assertEquals( c1.hashCode(), c2.hashCode() );
 
-        c2.setDtausCode(new Character('X'));
+        c2.setDtausCode( new Character( 'X' ) );
 
-        Assert.assertFalse(c1.equals(c2));
-        Assert.assertFalse(c1.hashCode() == c2.hashCode());
+        Assert.assertFalse( c1.equals( c2 ) );
+        Assert.assertFalse( c1.hashCode() == c2.hashCode() );
 
-        c2.setDtausCode(null);
-        c2.setEndDate(new Date());
+        c2.setDtausCode( null );
+        c2.setEndDate( new Date() );
 
-        Assert.assertFalse(c1.equals(c2));
-        Assert.assertFalse(c1.hashCode() == c2.hashCode());
+        Assert.assertFalse( c1.equals( c2 ) );
+        Assert.assertFalse( c1.hashCode() == c2.hashCode() );
 
-        c2.setEndDate(null);
-        c2.setIsoCode("DEM");
+        c2.setEndDate( null );
+        c2.setIsoCode( "DEM" );
 
-        Assert.assertFalse(c1.equals(c2));
-        Assert.assertFalse(c1.hashCode() == c2.hashCode());
+        Assert.assertFalse( c1.equals( c2 ) );
+        Assert.assertFalse( c1.hashCode() == c2.hashCode() );
 
-        c2.setIsoCode(null);
-        c2.setStartDate(new Date());
+        c2.setIsoCode( null );
+        c2.setStartDate( new Date() );
 
-        Assert.assertFalse(c1.equals(c2));
-        Assert.assertFalse(c1.hashCode() == c2.hashCode());
+        Assert.assertFalse( c1.equals( c2 ) );
+        Assert.assertFalse( c1.hashCode() == c2.hashCode() );
 
-        c2.setStartDate(null);
+        c2.setStartDate( null );
 
-        Assert.assertEquals(c1, c2);
-        Assert.assertEquals(c1.hashCode(), c2.hashCode());
+        Assert.assertEquals( c1, c2 );
+        Assert.assertEquals( c1.hashCode(), c2.hashCode() );
     }
 
     //-------------------------------------------------------------------Tests--
