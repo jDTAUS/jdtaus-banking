@@ -6,10 +6,10 @@
   <body>
     <release version="1.0" date="2007-06-01"
              description="First stable release."/>
-
+    
     <release version="1.1" date="2007-06-01"
              description="Feature enhancements.">
-
+      
       <action dev="schulte2005" type="update"><![CDATA[
       Moved all methods of class <code>RITextschluessel</code> to the API
       class <code>org.jdtaus.banking.Textschluessel</code> and deprecated
@@ -39,17 +39,25 @@
       Updated to 1.1 API.]]>
       </action>
     </release>
-
+    
     <release version="1.2" date="2007-08-01"
              description="Maintenance release.">
-
+      
       <action dev="schulte2005" type="update"><![CDATA[
       Updated the XML module descriptor to the 1.1 model version.]]>
       </action>
     </release>
-
+    
     <release version="1.2.1" date="2007-08-24"
              description="Maintenance release."/>
-
+    
+    <release version="1.2.2" date="2008-03-13"
+             description="Maintenance release.">
+      
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added various missing serial version UID fields. Updated to latest
+      mojo releases.]]>
+      </action>
+    </release>
   </body>
 </document>

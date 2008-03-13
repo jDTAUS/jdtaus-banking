@@ -30,7 +30,12 @@ import org.jdtaus.banking.Textschluessel;
  */
 public class DuplicateTextschluesselException extends RuntimeException
 {
+    //--Constants---------------------------------------------------------------
 
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 5015126446786857205L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -39,13 +44,15 @@ public class DuplicateTextschluesselException extends RuntimeException
      *
      * @param textschluessel the duplicate {@code Textschluessel} instance.
      */
-    public DuplicateTextschluesselException(final Textschluessel textschluessel)
+    public DuplicateTextschluesselException( final Textschluessel textschluessel )
     {
-        super(DuplicateTextschluesselExceptionBundle.
-            getDuplicateTextschluesselMessage(Locale.getDefault()).
-            format(textschluessel == null ? null
-            : new Object[] { new Integer(textschluessel.getKey()),
-            new Integer(textschluessel.getExtension()) }));
+        super( DuplicateTextschluesselExceptionBundle.getInstance().
+               getDuplicateTextschluesselMessage( Locale.getDefault() ).format(
+               textschluessel == null
+               ? null
+               : new Object[] { new Integer( textschluessel.getKey() ),
+                                new Integer( textschluessel.getExtension() )
+           } ) );
 
         this.textschluessel = textschluessel;
     }

@@ -39,10 +39,10 @@ public class XMLTextschluesselVerzeichnisTest
 
     public TextschluesselVerzeichnis getTextschluesselVerzeichnis()
     {
-        if(this.directory == null)
+        if ( this.directory == null )
         {
             this.directory = new XMLTextschluesselVerzeichnis();
-            this.setTextschluesselVerzeichnis(this.directory);
+            this.setTextschluesselVerzeichnis( this.directory );
         }
 
         return super.getTextschluesselVerzeichnis();

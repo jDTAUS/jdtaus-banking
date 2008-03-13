@@ -51,10 +51,10 @@ public final class RITextschluessel extends Textschluessel
      * @deprecated Replaced by
      * {@link Textschluessel#setShortDescription(Locale,String)}
      */
-    public String updateShortDescription(Locale locale,
-        final String shortDescription)
+    public String updateShortDescription( Locale locale,
+                                           final String shortDescription )
     {
-        return super.setShortDescription(locale, shortDescription);
+        return super.setShortDescription( locale, shortDescription );
     }
 
     //--------------------------------------------------------RITextschluessel--

@@ -167,7 +167,7 @@ public final class XMLTextschluesselVerzeichnis
         }
 
         p = meta.getProperty("reloadIntervalMillis");
-        this._reloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
+        this.pReloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
 
     }
 // </editor-fold>//GEN-END:jdtausConstructors
@@ -179,7 +179,7 @@ public final class XMLTextschluesselVerzeichnis
     // This section is managed by jdtaus-container-mojo.
 
     /** Configured <code>Logger</code> implementation. */
-    private transient Logger _dependency0;
+    private transient Logger dLogger;
 
     /**
      * Gets the configured <code>Logger</code> implementation.
@@ -189,9 +189,9 @@ public final class XMLTextschluesselVerzeichnis
     private Logger getLogger()
     {
         Logger ret = null;
-        if(this._dependency0 != null)
+        if(this.dLogger != null)
         {
-            ret = this._dependency0;
+            ret = this.dLogger;
         }
         else
         {
@@ -204,7 +204,7 @@ public final class XMLTextschluesselVerzeichnis
                 getDependencies().getDependency("Logger").
                 isBound())
             {
-                this._dependency0 = ret;
+                this.dLogger = ret;
             }
         }
 
@@ -228,7 +228,7 @@ public final class XMLTextschluesselVerzeichnis
      * Property {@code reloadIntervalMillis}.
      * @serial
      */
-    private long _reloadIntervalMillis;
+    private long pReloadIntervalMillis;
 
     /**
      * Gets the value of property <code>reloadIntervalMillis</code>.
@@ -237,7 +237,7 @@ public final class XMLTextschluesselVerzeichnis
      */
     private long getReloadIntervalMillis()
     {
-        return this._reloadIntervalMillis;
+        return this.pReloadIntervalMillis;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -269,50 +269,52 @@ public final class XMLTextschluesselVerzeichnis
             final Document docs[] = this.parseResources();
             final Collection col = new LinkedList();
 
-            for(int i = docs.length - 1; i >= 0; i--)
+            for ( int i = docs.length - 1; i >= 0; i-- )
             {
-                col.addAll(Arrays.asList(this.transformDocument(docs[i])));
+                col.addAll( Arrays.asList(
+                            this.transformDocument( docs[i] ) ) );
+
             }
 
-            final Map types = new HashMap(col.size());
-            final Collection checked = new ArrayList(col.size());
+            final Map types = new HashMap( col.size() );
+            final Collection checked = new ArrayList( col.size() );
 
-            for(Iterator it = col.iterator(); it.hasNext();)
+            for ( Iterator it = col.iterator(); it.hasNext();)
             {
                 Map keys;
-                final Textschluessel i = (Textschluessel) it.next();
-                final Integer key = new Integer(i.getKey());
-                final Integer ext = new Integer(i.getExtension());
+                final Textschluessel i = ( Textschluessel ) it.next();
+                final Integer key = new Integer( i.getKey() );
+                final Integer ext = new Integer( i.getExtension() );
 
-                if((keys = (Map) types.get(key)) == null)
+                if ( ( keys = ( Map ) types.get( key ) ) == null )
                 {
                     keys = new HashMap();
-                    types.put(key, keys);
+                    types.put( key, keys );
                 }
 
-                if(keys.put(ext, i) != null)
+                if ( keys.put( ext, i ) != null )
                 {
-                    throw new DuplicateTextschluesselException(i);
+                    throw new DuplicateTextschluesselException( i );
                 }
 
-                checked.add(i);
+                checked.add( i );
             }
 
-            this.instances = (Textschluessel[]) checked.
-                toArray(new Textschluessel[checked.size()]);
+            this.instances = ( Textschluessel[] ) checked.toArray(
+                new Textschluessel[ checked.size() ] );
 
         }
-        catch(IOException e)
+        catch ( IOException e )
         {
-            throw new ImplementationException(META, e);
+            throw new ImplementationException( META, e );
         }
-        catch(ParserConfigurationException e)
+        catch ( ParserConfigurationException e )
         {
-            throw new ImplementationException(META, e);
+            throw new ImplementationException( META, e );
         }
-        catch(SAXException e)
+        catch ( SAXException e )
         {
-            throw new ImplementationException(META, e);
+            throw new ImplementationException( META, e );
         }
     }
 
@@ -323,44 +325,45 @@ public final class XMLTextschluesselVerzeichnis
     {
         this.checkForModifications();
 
-        final Textschluessel[] ret = new Textschluessel[this.instances.length];
-        for(int i = ret.length - 1; i >= 0; i--)
+        final Textschluessel[] ret =
+            new Textschluessel[ this.instances.length ];
+        for ( int i = ret.length - 1; i >= 0; i-- )
         {
-            ret[i] = (Textschluessel) this.instances[i].clone();
+            ret[i] = ( Textschluessel ) this.instances[i].clone();
         }
 
         return ret;
     }
 
-    public Textschluessel getTextschluessel(int key, int extension)
+    public Textschluessel getTextschluessel( int key, int extension )
     {
-        if(key < 0 || key > 99)
+        if ( key < 0 || key > 99 )
         {
-            throw new IllegalArgumentException(Integer.toString(key));
+            throw new IllegalArgumentException( Integer.toString( key ) );
         }
-        if(extension < 0 || extension > 999)
+        if ( extension < 0 || extension > 999 )
         {
-            throw new IllegalArgumentException(Integer.toString(extension));
+            throw new IllegalArgumentException( Integer.toString( extension ) );
         }
 
         this.checkForModifications();
 
         Textschluessel ret = null;
 
-        for(int i = this.instances.length - 1; i >= 0; i--)
+        for ( int i = this.instances.length - 1; i >= 0; i-- )
         {
-            if(this.instances[i].getKey() == key)
+            if ( this.instances[i].getKey() == key )
             {
-                if(this.instances[i].isVariable())
+                if ( this.instances[i].isVariable() )
                 {
-                    ret = (Textschluessel) this.instances[i].clone();
+                    ret = ( Textschluessel ) this.instances[i].clone();
                     break;
                 }
                 else
                 {
-                    if(this.instances[i].getExtension() == extension)
+                    if ( this.instances[i].getExtension() == extension )
                     {
-                        ret = (Textschluessel) this.instances[i].clone();
+                        ret = ( Textschluessel ) this.instances[i].clone();
                         break;
                     }
                 }
@@ -370,22 +373,24 @@ public final class XMLTextschluesselVerzeichnis
         return ret;
     }
 
-    public Textschluessel[] search(boolean debit, boolean remittance)
+    public Textschluessel[] search( boolean debit, boolean remittance )
     {
         this.checkForModifications();
 
-        final Collection col = new ArrayList(this.instances.length);
+        final Collection col = new ArrayList( this.instances.length );
 
-        for(int i = this.instances.length - 1; i >= 0; i--)
+        for ( int i = this.instances.length - 1; i >= 0; i-- )
         {
-            if(this.instances[i].isDebit() == debit &&
-                this.instances[i].isRemittance() == remittance)
+            if ( this.instances[i].isDebit() == debit &&
+                this.instances[i].isRemittance() == remittance )
             {
-                col.add(this.instances[i].clone());
+                col.add( this.instances[i].clone() );
             }
         }
 
-        return (Textschluessel[]) col.toArray(new Textschluessel[col.size()]);
+        return ( Textschluessel[] ) col.toArray(
+            new Textschluessel[ col.size() ] );
+
     }
 
     //-----------------------------------------------TextschluesselVerzeichnis--
@@ -400,7 +405,7 @@ public final class XMLTextschluesselVerzeichnis
     /** Creates a new {@code XMLTextschluesselVerzeichnis} instance. */
     public XMLTextschluesselVerzeichnis()
     {
-        this(XMLTextschluesselVerzeichnis.META);
+        this( XMLTextschluesselVerzeichnis.META );
         this.initialize();
     }
 
@@ -411,10 +416,11 @@ public final class XMLTextschluesselVerzeichnis
      */
     private void assertValidProperties()
     {
-        if(this.getReloadIntervalMillis() < 0L)
+        if ( this.getReloadIntervalMillis() < 0L )
         {
-            throw new PropertyException("reloadIntervalMillis",
-                Long.toString(this.getReloadIntervalMillis()));
+            throw new PropertyException(
+                "reloadIntervalMillis",
+                Long.toString( this.getReloadIntervalMillis() ) );
 
         }
     }
@@ -433,21 +439,22 @@ public final class XMLTextschluesselVerzeichnis
     private URL[] getResources() throws IOException
     {
         final Collection resources = new HashSet();
-        final Specification providerSpec = ModelFactory.getModel().getModules().
-            getSpecification(TextschluesselProvider.class.getName());
+        final Specification spec = ModelFactory.getModel().getModules().
+            getSpecification( TextschluesselProvider.class.getName() );
 
-        for(int i = providerSpec.getImplementations().size() - 1; i >= 0; i--)
+        for ( int i = spec.getImplementations().size() - 1; i >= 0; i-- )
         {
             final TextschluesselProvider provider =
-                (TextschluesselProvider) ContainerFactory.getContainer().
-                getImplementation(TextschluesselProvider.class,
-                providerSpec.getImplementations().getImplementation(i).
-                getName());
+                ( TextschluesselProvider ) ContainerFactory.getContainer().
+                getImplementation( TextschluesselProvider.class,
+                                   spec.getImplementations().
+                                   getImplementation( i ).
+                                   getName() );
 
-            resources.addAll(Arrays.asList(provider.getResources()));
+            resources.addAll( Arrays.asList( provider.getResources() ) );
         }
 
-        return (URL[]) resources.toArray(new URL[resources.size()]);
+        return ( URL[] ) resources.toArray( new URL[ resources.size() ] );
     }
 
     /**
@@ -457,34 +464,41 @@ public final class XMLTextschluesselVerzeichnis
      *
      * @throws NullPointerException if {@code url} is {@code null}.
      */
-    private void monitorResource(final URL url)
+    private void monitorResource( final URL url )
     {
-        if(url == null)
+        if ( url == null )
         {
-            throw new NullPointerException("url");
+            throw new NullPointerException( "url" );
         }
 
         try
         {
-            final File file = new File(new URI(url.toString()));
-            this.monitorMap.put(file, new Long(file.lastModified()));
-            this.getLogger().info(XMLTextschluesselVerzeichnisBundle.
-                getMonitoringInfoMessage(Locale.getDefault()).format(
-                new Object[] { file.getAbsolutePath() }));
+            final File file = new File( new URI( url.toString() ) );
+            this.monitorMap.put( file, new Long( file.lastModified() ) );
+            this.getLogger().info(
+                XMLTextschluesselVerzeichnisBundle.getInstance().
+                getMonitoringInfoMessage( Locale.getDefault() ).
+                format( new Object[] { file.getAbsolutePath() } ) );
 
         }
-        catch(IllegalArgumentException e)
+        catch ( IllegalArgumentException e )
         {
-            this.getLogger().warn(XMLTextschluesselVerzeichnisBundle.
-                getNotMonitoringWarningMessage(Locale.getDefault()).
-                format(new Object[] { url.toExternalForm(), e.getMessage() }));
+            this.getLogger().warn(
+                XMLTextschluesselVerzeichnisBundle.getInstance().
+                getNotMonitoringWarningMessage( Locale.getDefault() ).
+                format( new Object[] { url.toExternalForm(),
+                                       e.getMessage()
+                    } ) );
 
         }
-        catch(URISyntaxException e)
+        catch ( URISyntaxException e )
         {
-            this.getLogger().warn(XMLTextschluesselVerzeichnisBundle.
-                getNotMonitoringWarningMessage(Locale.getDefault()).
-                format(new Object[] { url.toExternalForm(), e.getMessage() }));
+            this.getLogger().warn(
+                XMLTextschluesselVerzeichnisBundle.getInstance().
+                getNotMonitoringWarningMessage( Locale.getDefault() ).
+                format( new Object[] { url.toExternalForm(),
+                                       e.getMessage()
+                    } ) );
 
         }
     }
@@ -492,23 +506,24 @@ public final class XMLTextschluesselVerzeichnis
     /** Reloads the XML files when detecting a change. */
     private void checkForModifications()
     {
-        if(System.currentTimeMillis() - this.lastCheck >
-            this.getReloadIntervalMillis() && this.monitorMap.size() > 0)
+        if ( System.currentTimeMillis() - this.lastCheck >
+            this.getReloadIntervalMillis() && this.monitorMap.size() > 0 )
         {
-            for(Iterator it = this.monitorMap.entrySet().
+            for ( Iterator it = this.monitorMap.entrySet().
                 iterator(); it.hasNext();)
             {
-                final Map.Entry entry = (Map.Entry) it.next();
-                final File file = (File) entry.getKey();
-                final Long lastModified = (Long) entry.getValue();
+                final Map.Entry entry = ( Map.Entry ) it.next();
+                final File file = ( File ) entry.getKey();
+                final Long lastModified = ( Long ) entry.getValue();
 
                 assert lastModified != null : "Expected modification time.";
 
-                if(file.lastModified() != lastModified.longValue())
+                if ( file.lastModified() != lastModified.longValue() )
                 {
-                    this.getLogger().info(XMLTextschluesselVerzeichnisBundle.
-                        getChangeInfoMessage(Locale.getDefault()).format(
-                        new Object[] { file.getAbsolutePath() }));
+                    this.getLogger().info(
+                        XMLTextschluesselVerzeichnisBundle.getInstance().
+                        getChangeInfoMessage( Locale.getDefault() ).
+                        format( new Object[] { file.getAbsolutePath() } ) );
 
                     this.initialize();
                     break;
@@ -537,19 +552,19 @@ public final class XMLTextschluesselVerzeichnis
 
         final URL[] resources = this.getResources();
         final DocumentBuilder parser = this.getDocumentBuilder();
-        final Document[] ret = new Document[resources.length];
+        final Document[] ret = new Document[ resources.length ];
 
-        for(int i = resources.length - 1; i >= 0; i--)
+        for ( int i = resources.length - 1; i >= 0; i-- )
         {
             try
             {
-                this.monitorResource(resources[i]);
+                this.monitorResource( resources[i] );
                 stream = resources[i].openStream();
-                ret[i] = parser.parse(stream);
+                ret[i] = parser.parse( stream );
             }
             finally
             {
-                if(stream != null)
+                if ( stream != null )
                 {
                     stream.close();
                     stream = null;
@@ -569,56 +584,58 @@ public final class XMLTextschluesselVerzeichnis
      *
      * @see #transformTextschluessel(Textschluessel, Element)
      */
-    private Textschluessel[] transformDocument(final Document doc)
+    private Textschluessel[] transformDocument( final Document doc )
     {
         Element e;
         String str;
         NodeList l;
         Textschluessel key;
-        final Collection col = new ArrayList(500);
+        final Collection col = new ArrayList( 500 );
 
         l = doc.getDocumentElement().getElementsByTagNameNS(
-            XMLTextschluesselVerzeichnis.MODEL_NS, "transactionTypes");
+            XMLTextschluesselVerzeichnis.MODEL_NS, "transactionTypes" );
 
-        l = ((Element) l.item(0)).getElementsByTagNameNS(
-            XMLTextschluesselVerzeichnis.MODEL_NS, "transactionType");
+        l = ( ( Element ) l.item( 0 ) ).getElementsByTagNameNS(
+            XMLTextschluesselVerzeichnis.MODEL_NS, "transactionType" );
 
-        for(int i = l.getLength() - 1; i >= 0; i--)
+        for ( int i = l.getLength() - 1; i >= 0; i-- )
         {
-            e = (Element) l.item(i);
+            e = ( Element ) l.item( i );
             key = new Textschluessel();
             str = e.getAttributeNS(
                 XMLTextschluesselVerzeichnis.MODEL_NS,
-                "type");
+                "type" );
 
-            key.setDebit("DEBIT".equals(str));
-            key.setRemittance("REMITTANCE".equals(str));
-
-            str = e.getAttributeNS(
-                XMLTextschluesselVerzeichnis.MODEL_NS,
-                "key");
-
-            key.setKey(Integer.valueOf(str).intValue());
+            key.setDebit( "DEBIT".equals( str ) );
+            key.setRemittance( "REMITTANCE".equals( str ) );
 
             str = e.getAttributeNS(
                 XMLTextschluesselVerzeichnis.MODEL_NS,
-                "extension");
+                "key" );
 
-            if("VARIABLE".equals(str))
+            key.setKey( Integer.valueOf( str ).intValue() );
+
+            str = e.getAttributeNS(
+                XMLTextschluesselVerzeichnis.MODEL_NS,
+                "extension" );
+
+            if ( "VARIABLE".equals( str ) )
             {
-                key.setVariable(true);
-                key.setExtension(0);
+                key.setVariable( true );
+                key.setExtension( 0 );
             }
             else
             {
-                key.setExtension(Integer.valueOf(str).intValue());
+                key.setExtension( Integer.valueOf( str ).intValue() );
             }
 
-            this.transformTextschluessel(key, e);
-            col.add(key);
+            this.transformTextschluessel( key, e );
+            col.add( key );
         }
 
-        return (Textschluessel[]) col.toArray(new Textschluessel[col.size()]);
+        return ( Textschluessel[] ) col.toArray(
+            new Textschluessel[ col.size() ] );
+
     }
 
     /**
@@ -631,23 +648,23 @@ public final class XMLTextschluesselVerzeichnis
      * @throws NullPointerException if either {@code key} or {@code xmlKey} is
      * {@code null}.
      */
-    private void transformTextschluessel(final Textschluessel key,
-        final Element xmlKey)
+    private void transformTextschluessel( final Textschluessel key,
+                                           final Element xmlKey )
     {
         String lang;
         String txt;
         Element e;
         final NodeList l = xmlKey.getElementsByTagNameNS(
-            XMLTextschluesselVerzeichnis.MODEL_NS, "description");
+            XMLTextschluesselVerzeichnis.MODEL_NS, "description" );
 
-        for(int i = l.getLength() - 1; i >= 0; i--)
+        for ( int i = l.getLength() - 1; i >= 0; i-- )
         {
-            e = (Element) l.item(i);
-            lang = e.getAttributeNS(XMLTextschluesselVerzeichnis.MODEL_NS,
-                "language");
+            e = ( Element ) l.item( i );
+            lang = e.getAttributeNS( XMLTextschluesselVerzeichnis.MODEL_NS,
+                                     "language" );
 
             txt = e.getFirstChild().getNodeValue();
-            key.setShortDescription(new Locale(lang), txt);
+            key.setShortDescription( new Locale( lang ), txt );
         }
     }
 
@@ -672,56 +689,62 @@ public final class XMLTextschluesselVerzeichnis
      * @throws ParserConfigurationException if no supported XML parser runtime
      * is available.
      */
-    private DocumentBuilder getDocumentBuilder() throws IOException,
-        ParserConfigurationException
+    private DocumentBuilder getDocumentBuilder()
+        throws IOException, ParserConfigurationException
     {
         final DocumentBuilder xmlBuilder;
         final DocumentBuilderFactory xmlFactory =
             DocumentBuilderFactory.newInstance();
 
-        xmlFactory.setNamespaceAware(true);
+        xmlFactory.setNamespaceAware( true );
         try
         {
-            xmlFactory.setValidating(true);
+            xmlFactory.setValidating( true );
             xmlFactory.setAttribute(
                 XMLTextschluesselVerzeichnis.SCHEMA_LANGUAGE_KEY,
-                XMLTextschluesselVerzeichnis.SCHEMA_LANGUAGE);
+                XMLTextschluesselVerzeichnis.SCHEMA_LANGUAGE );
 
             final URL schema = this.getClassLoader().getResource(
-                XMLTextschluesselVerzeichnis.MODEL_XSD);
+                XMLTextschluesselVerzeichnis.MODEL_XSD );
 
             xmlFactory.setAttribute(
                 XMLTextschluesselVerzeichnis.SCHEMA_SOURCE_KEY,
-                schema.openStream());
+                schema.openStream() );
 
         }
-        catch(IllegalArgumentException e)
+        catch ( IllegalArgumentException e )
         {
-            this.getLogger().warn(XMLTextschluesselVerzeichnisBundle.
-                getNoJAXPValidationWarningMessage(Locale.getDefault()).
-                format(new Object[] { e.getMessage() }));
+            this.getLogger().warn(
+                XMLTextschluesselVerzeichnisBundle.getInstance().
+                getNoJAXPValidationWarningMessage( Locale.getDefault() ).
+                format( new Object[] { e.getMessage() } ) );
 
-            xmlFactory.setValidating(false);
+            xmlFactory.setValidating( false );
         }
 
         xmlBuilder = xmlFactory.newDocumentBuilder();
-        xmlBuilder.setErrorHandler(new ErrorHandler()
-        {
-            public void warning(final SAXParseException e)
+        xmlBuilder.setErrorHandler(
+            new ErrorHandler()
             {
-                getLogger().warn(e.getMessage());
-            }
-            public void fatalError(final SAXParseException e)
-            throws SAXException
-            {
-                throw e;
-            }
-            public void error(final SAXParseException e)
-            throws SAXException
-            {
-                throw e;
-            }
-        });
+
+                public void warning( final SAXParseException e )
+                {
+                    getLogger().warn( e.getMessage() );
+                }
+
+                public void fatalError( final SAXParseException e )
+                    throws SAXException
+                {
+                    throw e;
+                }
+
+                public void error( final SAXParseException e )
+                    throws SAXException
+                {
+                    throw e;
+                }
+
+            } );
 
         return xmlBuilder;
     }
@@ -737,7 +760,7 @@ public final class XMLTextschluesselVerzeichnis
     private ClassLoader getClassLoader()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if(classLoader == null)
+        if ( classLoader == null )
         {
             classLoader = ClassLoader.getSystemClassLoader();
         }
