@@ -31,6 +31,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalCurrencyMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = -2259517733162759316L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -55,17 +61,17 @@ public final class IllegalCurrencyMessage extends Message
      * @throws NullPointerException if either {@code currencyCode} or
      * {@code date} is {@code null}.
      */
-    public IllegalCurrencyMessage(final String currencyCode, final Date date)
+    public IllegalCurrencyMessage( final String currencyCode, final Date date )
     {
         super();
 
-        if(currencyCode == null)
+        if ( currencyCode == null )
         {
-            throw new NullPointerException("currencyCode");
+            throw new NullPointerException( "currencyCode" );
         }
-        if(date == null)
+        if ( date == null )
         {
-            throw new NullPointerException("date");
+            throw new NullPointerException( "date" );
         }
 
         this.currencyCode = currencyCode;
@@ -85,7 +91,7 @@ public final class IllegalCurrencyMessage extends Message
      * <li>[1]: date.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] { this.currencyCode, this.date };
     }
@@ -94,12 +100,15 @@ public final class IllegalCurrencyMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The currency {0} is illegal at {1,date,long}.").
+     * <blockquote><pre>
+     * The currency {0} is illegal at {1,date,long}.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return IllegalCurrencyMessageBundle.getIllegalCurrencyMessage(locale).
-            format(this.getFormatArguments(locale));
+        return IllegalCurrencyMessageBundle.getInstance().
+            getIllegalCurrencyMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

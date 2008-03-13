@@ -31,6 +31,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class ChecksumErrorMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 2983079946808628079L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -64,25 +70,26 @@ public final class ChecksumErrorMessage extends Message
      * @throws IllegalArgumentException if {@code storedChecksum} is equal to
      * {@code computedChecksum} or if {@code position} is negative.
      */
-    public ChecksumErrorMessage(final Checksum storedChecksum,
-        final Checksum computedChecksum, final long position)
+    public ChecksumErrorMessage( final Checksum storedChecksum,
+                                  final Checksum computedChecksum,
+                                  final long position )
     {
 
-        if(storedChecksum == null)
+        if ( storedChecksum == null )
         {
-            throw new NullPointerException("storedChecksum");
+            throw new NullPointerException( "storedChecksum" );
         }
-        if(computedChecksum == null)
+        if ( computedChecksum == null )
         {
-            throw new NullPointerException("computedChecksum");
+            throw new NullPointerException( "computedChecksum" );
         }
-        if(storedChecksum.equals(computedChecksum))
+        if ( storedChecksum.equals( computedChecksum ) )
         {
-            throw new IllegalArgumentException(computedChecksum.toString());
+            throw new IllegalArgumentException( computedChecksum.toString() );
         }
-        if(position < 0L)
+        if ( position < 0L )
         {
-            throw new IllegalArgumentException(Long.toString(position));
+            throw new IllegalArgumentException( Long.toString( position ) );
         }
 
         this.storedChecksum = storedChecksum;
@@ -109,18 +116,18 @@ public final class ChecksumErrorMessage extends Message
      * <li>[8]: absolute position of the file with the incorrect checksum.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
-            new Long(this.storedChecksum.getSumAmount()),
-            new Long(this.storedChecksum.getSumTargetAccount()),
-            new Long(this.storedChecksum.getSumTargetBank()),
-            new Integer(this.storedChecksum.getTransactionCount()),
-            new Long(this.computedChecksum.getSumAmount()),
-            new Long(this.computedChecksum.getSumTargetAccount()),
-            new Long(this.computedChecksum.getSumTargetBank()),
-            new Integer(this.computedChecksum.getTransactionCount()),
-            new Long(this.position)
+            new Long( this.storedChecksum.getSumAmount() ),
+            new Long( this.storedChecksum.getSumTargetAccount() ),
+            new Long( this.storedChecksum.getSumTargetBank() ),
+            new Integer( this.storedChecksum.getTransactionCount() ),
+            new Long( this.computedChecksum.getSumAmount() ),
+            new Long( this.computedChecksum.getSumTargetAccount() ),
+            new Long( this.computedChecksum.getSumTargetBank() ),
+            new Integer( this.computedChecksum.getTransactionCount() ),
+            new Long( this.position )
         };
     }
 
@@ -128,12 +135,15 @@ public final class ChecksumErrorMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The checksum of the file beginning at position {0,number} is invalid.").
+     * <blockquote><pre>
+     * The checksum of the file beginning at position {0,number} is invalid.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return ChecksumErrorMessageBundle.getChecksumErrorMessage(locale).
-            format(this.getFormatArguments(locale));
+        return ChecksumErrorMessageBundle.getInstance().
+            getChecksumErrorMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

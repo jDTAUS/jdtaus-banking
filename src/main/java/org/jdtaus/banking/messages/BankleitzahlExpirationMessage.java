@@ -32,6 +32,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class BankleitzahlExpirationMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.2.x classes. */
+    private static final long serialVersionUID = 972991639355392550L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -48,11 +54,11 @@ public final class BankleitzahlExpirationMessage extends Message
      *
      * @throws NullPointerException if {@code info} is {@code null}.
      */
-    public BankleitzahlExpirationMessage(final BankleitzahlInfo info)
+    public BankleitzahlExpirationMessage( final BankleitzahlInfo info )
     {
-        if(info == null)
+        if ( info == null )
         {
-            throw new NullPointerException("info");
+            throw new NullPointerException( "info" );
         }
 
         this.info = info;
@@ -69,10 +75,10 @@ public final class BankleitzahlExpirationMessage extends Message
      * <li>[0]: the expired Bankleitzahl.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
-            this.info.getBankCode().format(Bankleitzahl.LETTER_FORMAT)
+            this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT )
         };
     }
 
@@ -80,13 +86,15 @@ public final class BankleitzahlExpirationMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The Bankleitzahl {0} has expired.").
+     * <blockquote><pre>
+     * The Bankleitzahl {0} has expired.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return BankleitzahlExpirationMessageBundle.
-            getBankleitzahlExpirationMessage(locale).
-            format(this.getFormatArguments(locale));
+        return BankleitzahlExpirationMessageBundle.getInstance().
+            getBankleitzahlExpirationMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

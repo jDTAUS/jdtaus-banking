@@ -3,7 +3,7 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.1</version>
+    <version>1.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
@@ -30,7 +30,7 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/tags</tagBase>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
@@ -49,7 +49,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -66,7 +66,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
@@ -74,7 +74,7 @@
           <skip>false</skip>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
@@ -201,7 +201,7 @@
                 <report>changes-report</report>
               </reports>
             </reportSet>
-          </reportSets>          
+          </reportSets>
         </configuration>
       </plugin>
     </plugins>

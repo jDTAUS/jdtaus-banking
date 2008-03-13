@@ -31,6 +31,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalDateMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 4086935652662010927L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -62,22 +68,22 @@ public final class IllegalDateMessage extends Message
      * @throws NullPointerException if either {@code date},
      * {@code dateRangeStart} or {@code dateRangeEnd} is {@code null}.
      */
-    public IllegalDateMessage(final Date date, final Date dateRangeStart,
-        final Date dateRangeEnd)
+    public IllegalDateMessage( final Date date, final Date dateRangeStart,
+                                final Date dateRangeEnd )
     {
         super();
 
-        if(date == null)
+        if ( date == null )
         {
-            throw new NullPointerException("date");
+            throw new NullPointerException( "date" );
         }
-        if(dateRangeStart == null)
+        if ( dateRangeStart == null )
         {
-            throw new NullPointerException("dateRangeStart");
+            throw new NullPointerException( "dateRangeStart" );
         }
-        if(dateRangeEnd == null)
+        if ( dateRangeEnd == null )
         {
-            throw new NullPointerException("dateRangeEnd");
+            throw new NullPointerException( "dateRangeEnd" );
         }
 
         this.date = date;
@@ -98,7 +104,7 @@ public final class IllegalDateMessage extends Message
      * <li>[2]: the ending date of the range for valid dates.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
             this.date, this.dateRangeStart, this.dateRangeEnd
@@ -109,12 +115,15 @@ public final class IllegalDateMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The date {0,date,long} is either before {1,date,long} or after {2,date,long}.").
+     * <blockquote><pre>
+     * The date {0,date,long} is either before {1,date,long} or after {2,date,long}.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return IllegalDateMessageBundle.getIllegalDateMessage(locale).
-            format(this.getFormatArguments(locale));
+        return IllegalDateMessageBundle.getInstance().
+            getIllegalDateMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

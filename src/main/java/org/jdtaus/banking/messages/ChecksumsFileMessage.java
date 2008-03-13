@@ -30,6 +30,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class ChecksumsFileMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 1362055156122954497L;
+
+    //---------------------------------------------------------------Constants--
     //--Message-----------------------------------------------------------------
 
     /** Empty array. */
@@ -40,7 +46,7 @@ public final class ChecksumsFileMessage extends Message
      *
      * @return an empty array, since the message has no arguments.
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return ARGUMENTS;
     }
@@ -49,12 +55,15 @@ public final class ChecksumsFileMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "Computes checksum.").
+     * <blockquote><pre>
+     * Computes checksum.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return ChecksumsFileMessageBundle.
-            getChecksummingFileText(locale);
+        return ChecksumsFileMessageBundle.getInstance().
+            getChecksummingFileMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

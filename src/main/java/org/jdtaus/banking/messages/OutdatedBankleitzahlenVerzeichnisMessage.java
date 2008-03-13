@@ -32,6 +32,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = -196759846361567335L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -48,11 +54,11 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
      *
      * @throws NullPointerException if {@code dateOfExpiration} is {@code null}.
      */
-    public OutdatedBankleitzahlenVerzeichnisMessage(final Date dateOfExpiration)
+    public OutdatedBankleitzahlenVerzeichnisMessage( final Date dateOfExpiration )
     {
-        if(dateOfExpiration == null)
+        if ( dateOfExpiration == null )
         {
-            throw new NullPointerException("dateOfExpiration");
+            throw new NullPointerException( "dateOfExpiration" );
         }
 
         this.dateOfExpiration = dateOfExpiration;
@@ -69,7 +75,7 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
      * <li>[0]: the date of expiration of the directory.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] { this.dateOfExpiration };
     }
@@ -78,13 +84,15 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The directory of bankcodes expired at {0,date,long}.").
+     * <blockquote><pre>
+     * The directory of bankcodes expired at {0,date,long}.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return OutdatedBankleitzahlenVerzeichnisMessageBundle.
-            getOutdatedDirectoryMessage(locale).
-            format(this.getFormatArguments(locale));
+        return OutdatedBankleitzahlenVerzeichnisMessageBundle.getInstance().
+            getOutdatedDirectoryMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

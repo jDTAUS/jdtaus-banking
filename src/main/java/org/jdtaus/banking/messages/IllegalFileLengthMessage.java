@@ -30,6 +30,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalFileLengthMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 961185282869701368L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -55,20 +61,21 @@ public final class IllegalFileLengthMessage extends Message
      * {@code blockSize} is negative, or if {@code fileLength % blockSize}
      * equals {@code 0}.
      */
-    public IllegalFileLengthMessage(final long fileLength, final int blockSize)
+    public IllegalFileLengthMessage( final long fileLength,
+                                      final int blockSize )
     {
-        if(fileLength < 0)
+        if ( fileLength < 0 )
         {
-            throw new IllegalArgumentException(Long.toString(fileLength));
+            throw new IllegalArgumentException( Long.toString( fileLength ) );
         }
-        if(blockSize <= 0)
+        if ( blockSize <= 0 )
         {
-            throw new IllegalArgumentException(Integer.toString(blockSize));
+            throw new IllegalArgumentException( Integer.toString( blockSize ) );
         }
-        if(fileLength != 0 && fileLength % blockSize == 0)
+        if ( fileLength != 0 && fileLength % blockSize == 0 )
         {
             throw new IllegalArgumentException(
-                Long.toString(fileLength % blockSize));
+                Long.toString( fileLength % blockSize ) );
 
         }
 
@@ -76,7 +83,7 @@ public final class IllegalFileLengthMessage extends Message
         this.blockSize = blockSize;
     }
 
-    //-----------------------------------------------------------Konstruktoren--
+    //------------------------------------------------------------Constructors--
     //--Message-----------------------------------------------------------------
 
     /**
@@ -88,10 +95,10 @@ public final class IllegalFileLengthMessage extends Message
      * <li>[1]: the length of one block in byte.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
-            new Long(this.fileLength), new Integer(this.blockSize)
+            new Long( this.fileLength ), new Integer( this.blockSize )
         };
     }
 
@@ -99,13 +106,15 @@ public final class IllegalFileLengthMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The length of the file ({0, number}) is incompatible to the blocksize {1,number}.").
+     * <blockquote><pre>
+     * The length of the file ({0, number}) is incompatible to the blocksize {1,number}.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return IllegalFileLengthMessageBundle.
-            getIllegalFileLengthMessage(locale).
-            format(this.getFormatArguments(locale));
+        return IllegalFileLengthMessageBundle.getInstance().
+            getIllegalFileLengthMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

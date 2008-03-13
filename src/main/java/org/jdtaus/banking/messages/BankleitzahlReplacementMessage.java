@@ -33,6 +33,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class BankleitzahlReplacementMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.2.x classes. */
+    private static final long serialVersionUID = -4309551284229560988L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -49,11 +55,11 @@ public final class BankleitzahlReplacementMessage extends Message
      *
      * @throws NullPointerException if {@code info} is {@code null}.
      */
-    public BankleitzahlReplacementMessage(final BankleitzahlInfo info)
+    public BankleitzahlReplacementMessage( final BankleitzahlInfo info )
     {
-        if(info == null)
+        if ( info == null )
         {
-            throw new NullPointerException("info");
+            throw new NullPointerException( "info" );
         }
 
         this.info = info;
@@ -70,10 +76,10 @@ public final class BankleitzahlReplacementMessage extends Message
      * <li>[0]: the replacement Bankleitzahl.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
-            this.info.getBankCode().format(Bankleitzahl.LETTER_FORMAT)
+            this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT )
         };
     }
 
@@ -81,13 +87,15 @@ public final class BankleitzahlReplacementMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The bank has published the replacement Bankleitzahl {0}.").
+     * <blockquote><pre>
+     * The bank has published the replacement Bankleitzahl {0}.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return BankleitzahlReplacementMessageBundle.
-            getBankleitzahlReplacementMessage(locale).
-            format(this.getFormatArguments(locale));
+        return BankleitzahlReplacementMessageBundle.getInstance().
+            getBankleitzahlReplacementMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

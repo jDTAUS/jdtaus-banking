@@ -30,6 +30,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class ReadsBankleitzahlenDateiMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.1.x classes. */
+    private static final long serialVersionUID = -7923064314185101629L;
+
+    //---------------------------------------------------------------Constants--
     //--Message-----------------------------------------------------------------
 
     /** Empty array. */
@@ -40,7 +46,7 @@ public final class ReadsBankleitzahlenDateiMessage extends Message
      *
      * @return an empty array, since the message has no arguments.
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return ARGUMENTS;
     }
@@ -49,12 +55,15 @@ public final class ReadsBankleitzahlenDateiMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "Reads bankfiles.").
+     * <blockquote><pre>
+     * Reads bankfiles.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return ReadsBankleitzahlenDateiMessageBundle.
-            getReadingBankfilesText(locale);
+        return ReadsBankleitzahlenDateiMessageBundle.getInstance().
+            getReadingBankfilesMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

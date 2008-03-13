@@ -85,6 +85,9 @@ public final class IllegalDataMessage extends Message
         TYPE_TEXTSCHLUESSEL, TYPE_CURRENCY
     };
 
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 5634623930947949635L;
+
     //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
@@ -127,8 +130,8 @@ public final class IllegalDataMessage extends Message
      *
      * @see org.jdtaus.banking.dtaus.spi.Fields
      */
-    public IllegalDataMessage(final int field, final int type,
-        final long position, final String invalidData)
+    public IllegalDataMessage( final int field, final int type,
+                                final long position, final String invalidData )
     {
         super();
         this.field = field;
@@ -148,19 +151,19 @@ public final class IllegalDataMessage extends Message
     private void assertValidType()
     {
         boolean valid = false;
-        for(int i = TYPES.length - 1; i >= 0 && !valid; i--)
+        for ( int i = TYPES.length - 1; i >= 0 && !valid; i-- )
         {
-            if(TYPES[i] == this.type)
+            if ( TYPES[i] == this.type )
             {
                 valid = true;
                 break;
             }
         }
 
-        if(!valid)
+        if ( !valid )
         {
             throw new IllegalArgumentException(
-                Integer.toString(this.type));
+                Integer.toString( this.type ) );
 
         }
     }
@@ -179,11 +182,11 @@ public final class IllegalDataMessage extends Message
      * <li>[2]: the invalid data.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
-            Integer.toHexString(this.field).toUpperCase(locale),
-            new Long(this.position),
+            Integer.toHexString( this.field ).toUpperCase( locale ),
+            new Long( this.position ),
             this.invalidData
         };
     }
@@ -192,12 +195,15 @@ public final class IllegalDataMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to ""{2}" is no valid value for field {0} (at {1, number}).").
+     * <blockquote><pre>
+     * "{2}" is no valid value for field {0} (at {1, number}).
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return IllegalDataMessageBundle.getIllegalDataMessage(locale).
-            format(this.getFormatArguments(locale));
+        return IllegalDataMessageBundle.getInstance().
+            getIllegalDataMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

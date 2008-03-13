@@ -31,6 +31,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalScheduleMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = -8689097743116031670L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -65,18 +71,19 @@ public final class IllegalScheduleMessage extends Message
      * @throws NullPointerException if {@code createDate} is {@code null}.
      * @throws IllegalArgumentException if {@code maxDays} is negative.
      */
-    public IllegalScheduleMessage(final Date createDate,
-        final Date executionDate, final int maxDays)
+    public IllegalScheduleMessage( final Date createDate,
+                                    final Date executionDate,
+                                    final int maxDays )
     {
         super();
 
-        if(createDate == null)
+        if ( createDate == null )
         {
-            throw new NullPointerException("createDate");
+            throw new NullPointerException( "createDate" );
         }
-        if(maxDays < 0)
+        if ( maxDays < 0 )
         {
-            throw new IllegalArgumentException(Integer.toString(maxDays));
+            throw new IllegalArgumentException( Integer.toString( maxDays ) );
         }
 
         this.createDate = createDate;
@@ -98,10 +105,10 @@ public final class IllegalScheduleMessage extends Message
      * execution date.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
-            this.createDate, this.executionDate, new Integer(this.maxDays)
+            this.createDate, this.executionDate, new Integer( this.maxDays )
         };
     }
 
@@ -109,13 +116,15 @@ public final class IllegalScheduleMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The executiondate {1,date,long} is before create date {0,date,long} or more than {2,number} days thereafter.").
+     * <blockquote><pre>
+     * The executiondate {1,date,long} is before create date {0,date,long} or more than {2,number} days thereafter.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return IllegalScheduleMessageBundle.
-            getIllegalScheduleMessage(locale).
-            format(this.getFormatArguments(locale));
+        return IllegalScheduleMessageBundle.getInstance().
+            getIllegalScheduleMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

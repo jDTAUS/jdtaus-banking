@@ -31,6 +31,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalAmountMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 1922186182644325080L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -46,13 +52,13 @@ public final class IllegalAmountMessage extends Message
      *
      * @throws NullPointerException if {@code amount} is {@code null}.
      */
-    public IllegalAmountMessage(final BigInteger amount)
+    public IllegalAmountMessage( final BigInteger amount )
     {
         super();
 
-        if(amount == null)
+        if ( amount == null )
         {
-            throw new NullPointerException("amount");
+            throw new NullPointerException( "amount" );
         }
 
         this.amount = amount;
@@ -69,7 +75,7 @@ public final class IllegalAmountMessage extends Message
      * <li>[0]: illegal amount.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] { this.amount };
     }
@@ -78,13 +84,15 @@ public final class IllegalAmountMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "{0,number} is no legal amount.").
+     * <blockquote><pre>
+     * {0,number} is no legal amount.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return IllegalAmountMessageBundle.
-            getIllegalAmountMessage(locale).
-            format(this.getFormatArguments(locale));
+        return IllegalAmountMessageBundle.getInstance().
+            getIllegalAmountMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

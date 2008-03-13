@@ -30,6 +30,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalDescriptionCountMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 1131942219877499068L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -52,8 +58,8 @@ public final class IllegalDescriptionCountMessage extends Message
      * @param maxDescriptions the maximum number of supported descriptions.
      * @param requestedDescriptions the requested number of descriptions.
      */
-    public IllegalDescriptionCountMessage(final int maxDescriptions,
-        final int requestedDescriptions)
+    public IllegalDescriptionCountMessage( final int maxDescriptions,
+                                            final int requestedDescriptions )
     {
         super();
 
@@ -74,11 +80,11 @@ public final class IllegalDescriptionCountMessage extends Message
      * <li>[1]: the requested number of descriptions.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
-            new Integer(this.maxDescriptions),
-            new Integer(this.requestedDescriptions)
+            new Integer( this.maxDescriptions ),
+            new Integer( this.requestedDescriptions )
         };
     }
 
@@ -86,13 +92,15 @@ public final class IllegalDescriptionCountMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "The number of descriptions ({1,number}) exceeds the possible number {0,number}.").
+     * <blockquote><pre>
+     * The number of descriptions ({1,number}) exceeds the possible number {0,number}.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return IllegalDescriptionCountMessageBundle.
-            getIllegalDescriptionCountMessage(locale).format(
-            this.getFormatArguments(locale));
+        return IllegalDescriptionCountMessageBundle.getInstance().
+            getIllegalDescriptionCountMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

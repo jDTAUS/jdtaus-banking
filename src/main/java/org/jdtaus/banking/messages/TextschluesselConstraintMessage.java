@@ -33,6 +33,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class TextschluesselConstraintMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = 998685158483386658L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -58,18 +64,18 @@ public final class TextschluesselConstraintMessage extends Message
      * @throws NullPointerException if either {@code fileType} or
      * {@code textschluessel} is {@code null}.
      */
-    public TextschluesselConstraintMessage(final LogicalFileType fileType,
-        final Textschluessel textschluessel)
+    public TextschluesselConstraintMessage( final LogicalFileType fileType,
+                                             final Textschluessel textschluessel )
     {
         super();
 
-        if(fileType == null)
+        if ( fileType == null )
         {
-            throw new NullPointerException("fileType");
+            throw new NullPointerException( "fileType" );
         }
-        if(textschluessel == null)
+        if ( textschluessel == null )
         {
-            throw new NullPointerException("textschluessel");
+            throw new NullPointerException( "textschluessel" );
         }
 
         this.fileType = fileType;
@@ -91,12 +97,12 @@ public final class TextschluesselConstraintMessage extends Message
      * <li>[2]: the extension of the incompatible {@code Textschluessel}.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
             this.fileType.getCode(),
-            new Integer(this.textschluessel.getKey()),
-            new Integer(this.textschluessel.getExtension())
+            new Integer( this.textschluessel.getKey() ),
+            new Integer( this.textschluessel.getExtension() )
         };
     }
 
@@ -104,13 +110,15 @@ public final class TextschluesselConstraintMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "A logical file with label {0} cannot hold transactions with Textschlüssel {1,number,00}{2,number,000}.").
+     * <blockquote><pre>
+     * A logical file with label {0} cannot hold transactions with Textschlüssel {1,number,00}{2,number,000}.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return TextschluesselConstraintMessageBundle.
-            getTextschluesselConstraintMessage(locale).
-            format(this.getFormatArguments(locale));
+        return TextschluesselConstraintMessageBundle.getInstance().
+            getTextschluesselConstraintMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 

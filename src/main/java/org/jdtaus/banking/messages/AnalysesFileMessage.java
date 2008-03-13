@@ -30,6 +30,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class AnalysesFileMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.0.x classes. */
+    private static final long serialVersionUID = -8438801970006640351L;
+
+    //---------------------------------------------------------------Constants--
     //--Message-----------------------------------------------------------------
 
     /** Empty array. */
@@ -40,7 +46,7 @@ public final class AnalysesFileMessage extends Message
      *
      * @return an empty array, since the message has no arguments.
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return ARGUMENTS;
     }
@@ -49,11 +55,16 @@ public final class AnalysesFileMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "Analyses file.").
+     * <blockquote><pre>
+     * Analyses file.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return AnalysesFileMessageBundle.getAnalyzingFileText(locale);
+        return AnalysesFileMessageBundle.getInstance().
+            getAnalyzingFileMessage( locale ).
+            format( this.getFormatArguments( locale ) );
+
     }
 
     //-----------------------------------------------------------------Message--

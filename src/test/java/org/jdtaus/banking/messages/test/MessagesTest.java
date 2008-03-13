@@ -67,46 +67,46 @@ public class MessagesTest extends TestCase
     {
         final Checksum c1 = new Checksum();
         final Checksum c2 = new Checksum();
-        c2.setTransactionCount(1);
+        c2.setTransactionCount( 1 );
 
-        this.assertNotNull(new AnalysesFileMessage());
-        this.assertNotNull(new ChecksumErrorMessage(c1, c2, 0L));
-        this.assertNotNull(new ChecksumsFileMessage());
-        this.assertNotNull(new CurrencyConstraintMessage("DEM", new Date()));
-        this.assertNotNull(new IllegalAmountMessage(new BigInteger("10")));
-        this.assertNotNull(new IllegalCurrencyMessage("DEM", new Date()));
-        this.assertNotNull(new IllegalDataMessage(
-            0xA1, IllegalDataMessage.TYPE_CONSTANT, 0L, "TEST"));
+        this.assertNotNull( new AnalysesFileMessage() );
+        this.assertNotNull( new ChecksumErrorMessage( c1, c2, 0L ) );
+        this.assertNotNull( new ChecksumsFileMessage() );
+        this.assertNotNull( new CurrencyConstraintMessage( "DEM", new Date() ) );
+        this.assertNotNull( new IllegalAmountMessage( new BigInteger( "10" ) ) );
+        this.assertNotNull( new IllegalCurrencyMessage( "DEM", new Date() ) );
+        this.assertNotNull( new IllegalDataMessage(
+                            0xA1, IllegalDataMessage.TYPE_CONSTANT, 0L, "TEST" ) );
 
-        this.assertNotNull(new IllegalDateMessage(
-            new Date(), new Date(), new Date()));
+        this.assertNotNull( new IllegalDateMessage(
+                            new Date(), new Date(), new Date() ) );
 
-        this.assertNotNull(new IllegalDescriptionCountMessage(0, 1));
-        this.assertNotNull(new IllegalFileLengthMessage(1, 3));
-        this.assertNotNull(new IllegalScheduleMessage(
-            new Date(), new Date(), 0));
+        this.assertNotNull( new IllegalDescriptionCountMessage( 0, 1 ) );
+        this.assertNotNull( new IllegalFileLengthMessage( 1, 3 ) );
+        this.assertNotNull( new IllegalScheduleMessage(
+                            new Date(), new Date(), 0 ) );
 
-        this.assertNotNull(new OutdatedBankleitzahlenVerzeichnisMessage(
-            new Date()));
+        this.assertNotNull( new OutdatedBankleitzahlenVerzeichnisMessage(
+                            new Date() ) );
 
-        this.assertNotNull(new TextschluesselConstraintMessage(
-            LogicalFileType.GB, new Textschluessel()));
+        this.assertNotNull( new TextschluesselConstraintMessage(
+                            LogicalFileType.GB, new Textschluessel() ) );
 
-        this.assertNotNull(new UpdatesBankleitzahlenDateiMessage());
-        this.assertNotNull(new ReadsBankleitzahlenDateiMessage());
-        this.assertNotNull(new UnknownBankleitzahlMessage(
-            Bankleitzahl.valueOf("88888888")));
+        this.assertNotNull( new UpdatesBankleitzahlenDateiMessage() );
+        this.assertNotNull( new ReadsBankleitzahlenDateiMessage() );
+        this.assertNotNull( new UnknownBankleitzahlMessage(
+                            Bankleitzahl.valueOf( "88888888" ) ) );
 
         final BankleitzahlInfo testInfo = new BankleitzahlInfo();
-        testInfo.setBankCode(Bankleitzahl.valueOf("88888888"));
+        testInfo.setBankCode( Bankleitzahl.valueOf( "88888888" ) );
 
-        this.assertNotNull(new BankleitzahlExpirationMessage(testInfo));
-        this.assertNotNull(new BankleitzahlReplacementMessage(testInfo));
+        this.assertNotNull( new BankleitzahlExpirationMessage( testInfo ) );
+        this.assertNotNull( new BankleitzahlReplacementMessage( testInfo ) );
     }
 
-    private void assertNotNull(final Message message)
+    private void assertNotNull( final Message message )
     {
-        Assert.assertNotNull(message.getText(Locale.getDefault()));
+        Assert.assertNotNull( message.getText( Locale.getDefault() ) );
     }
 
     //-------------------------------------------------------------------Tests--

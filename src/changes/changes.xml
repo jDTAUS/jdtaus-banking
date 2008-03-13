@@ -37,5 +37,14 @@
         </action>
     </release>
 
+    <release version="1.2.2" date="2008-03-13"
+             description="Maintenance release.">
+
+        <action dev="schulte2005" type="update"><![CDATA[
+        Added various missing serial version UID fields. Updated to latest
+        mojo releases.]]>
+        </action>
+    </release>
+
   </body>
 </document>

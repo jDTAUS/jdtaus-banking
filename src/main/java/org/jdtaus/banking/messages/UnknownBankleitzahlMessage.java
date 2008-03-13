@@ -31,6 +31,12 @@ import org.jdtaus.core.text.Message;
  */
 public final class UnknownBankleitzahlMessage extends Message
 {
+    //--Contstants--------------------------------------------------------------
+
+    /** Serial version UID for backwards compatibility with 1.1.x classes. */
+    private static final long serialVersionUID = -7923064314185101629L;
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
     /**
@@ -47,11 +53,11 @@ public final class UnknownBankleitzahlMessage extends Message
      *
      * @throws NullPointerException if {@code bankCode} is {@code null}.
      */
-    public UnknownBankleitzahlMessage(final Bankleitzahl bankCode)
+    public UnknownBankleitzahlMessage( final Bankleitzahl bankCode )
     {
-        if(bankCode == null)
+        if ( bankCode == null )
         {
-            throw new NullPointerException("bankCode");
+            throw new NullPointerException( "bankCode" );
         }
 
         this.bankCode = bankCode;
@@ -68,10 +74,10 @@ public final class UnknownBankleitzahlMessage extends Message
      * <li>[0]: the unknown Bankleitzahl.</li>
      * </ul>
      */
-    public Object[] getFormatArguments(final Locale locale)
+    public Object[] getFormatArguments( final Locale locale )
     {
         return new Object[] {
-            this.bankCode.format(Bankleitzahl.LETTER_FORMAT)
+            this.bankCode.format( Bankleitzahl.LETTER_FORMAT )
         };
     }
 
@@ -79,13 +85,15 @@ public final class UnknownBankleitzahlMessage extends Message
      * {@inheritDoc}
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
-     * (defaults to "Unknown Bankleitzahl {0}.").
+     * <blockquote><pre>
+     * Unknown Bankleitzahl {0}.
+     * </pre></blockquote>
      */
-    public String getText(final Locale locale)
+    public String getText( final Locale locale )
     {
-        return UnknownBankleitzahlMessageBundle.
-            getUnknownBankleitzahlMessage(locale).format(
-            this.getFormatArguments(locale));
+        return UnknownBankleitzahlMessageBundle.getInstance().
+            getUnknownBankleitzahlMessage( locale ).
+            format( this.getFormatArguments( locale ) );
 
     }
 
