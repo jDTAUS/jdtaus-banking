@@ -20,6 +20,8 @@
 package org.jdtaus.banking.dtaus.ri.zka;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.LogicalFile;
@@ -59,6 +61,12 @@ public final class DefaultPhysicalFile implements PhysicalFile
 
     /** Anzahl vorhandener logischer Dateien. */
     private int dtausCount = 0;
+
+    /** Mapping of attribute names to theire values. */
+    private final java.util.Properties properties;
+
+    /** <code>StructuredFile</code> requirement. **/
+    private StructuredFileOperations structuredFile;
 
     //---------------------------------------------------------------Attribute--
     //--Implementation----------------------------------------------------------
@@ -100,9 +108,6 @@ public final class DefaultPhysicalFile implements PhysicalFile
     //------------------------------------------------------------Constructors--
     //--Konstruktoren-----------------------------------------------------------
 
-    /** <code>StructuredFile</code> requirement. **/
-    private StructuredFileOperations structuredFile;
-
     /**
      * Creates a new {@code DefaultPhysicalFile} instance.
      * <p>Registers a {@code StructuredFileListener} with the given
@@ -110,21 +115,29 @@ public final class DefaultPhysicalFile implements PhysicalFile
      *
      * @param structuredFile the {@code StructuredFile} implementation to
      * operate on.
+     * @param properties configuration properties.
      *
-     * @throws NullPointerException {@code if(structuredFile == null)}
+     * @throws NullPointerException if either {@code structuredFile} or
+     * {@code properties} is {@code null}
      * @throws IOException wenn nicht gelesen werden kann.
      */
     public DefaultPhysicalFile(
-        final StructuredFileOperations structuredFile ) throws IOException
+        final StructuredFileOperations structuredFile,
+        final java.util.Properties properties ) throws IOException
     {
         super();
-        this.initializeProperties( DefaultPhysicalFile.META.getProperties() );
+        this.initializeProperties( META.getProperties() );
 
         if ( structuredFile == null )
         {
             throw new NullPointerException( "structuredFile" );
         }
+        if ( properties == null )
+        {
+            throw new NullPointerException( "properties" );
+        }
 
+        this.properties = properties;
         this.structuredFile = structuredFile;
         this.structuredFile.addStructuredFileListener(
             new StructuredFileListener()
@@ -323,6 +336,26 @@ public final class DefaultPhysicalFile implements PhysicalFile
         this.getStructuredFile().close();
     }
 
+    public int getLogicalFileCount() throws IOException
+    {
+        return this.count();
+    }
+
+    public LogicalFile addLogicalFile( final Header header ) throws IOException
+    {
+        return this.add( header );
+    }
+
+    public LogicalFile getLogicalFile( final int index ) throws IOException
+    {
+        return this.get( index );
+    }
+
+    public void removeLogicalFile( final int index ) throws IOException
+    {
+        this.remove( index );
+    }
+
     //------------------------------------------------------------PhysicalFile--
     //--DefaultPhysicalFile-----------------------------------------------------
 
@@ -397,6 +430,28 @@ public final class DefaultPhysicalFile implements PhysicalFile
             default:
                 throw new IllegalStateException();
 
+        }
+
+        for ( Iterator it = this.properties.entrySet().iterator();
+            it.hasNext();)
+        {
+            final Map.Entry e = ( Map.Entry ) it.next();
+            final String key = ( String ) e.getKey();
+
+            if ( key.startsWith(
+                DefaultPhysicalFileFactory.ATTRIBUTE_SPACE_CHARACTERS_ALLOWED ) )
+            {
+                int field =
+                    Integer.parseInt( key.substring( key.lastIndexOf( '.' ) + 1 ),
+                                      16 );
+
+                final boolean allowed = e.getValue() != null &&
+                    Boolean.valueOf( e.getValue().toString() ).booleanValue();
+
+                ret.getConfiguration().setSpaceCharacterAllowed(
+                    field, allowed );
+
+            }
         }
 
         return ret;

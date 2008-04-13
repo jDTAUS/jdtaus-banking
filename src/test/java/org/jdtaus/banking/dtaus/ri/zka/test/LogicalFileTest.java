@@ -35,6 +35,7 @@ import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFileException;
 import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.Transaction;
+import org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory;
 import org.jdtaus.banking.dtaus.test.HeaderTest;
 import org.jdtaus.banking.dtaus.test.TransactionTest;
 import org.jdtaus.core.container.ContainerFactory;
@@ -290,6 +291,39 @@ public class LogicalFileTest extends TestCase
                    "dtaus0_legal_transaction_standalone" ) );
 
         return factory.getPhysicalFile( ops );
+    }
+
+    protected static PhysicalFile getLegalHeaderAndChecksumOnlyWithSpacesAllowedForA10()
+        throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write( LogicalFileTest.class.getResourceAsStream(
+                   "dtaus0_valid_header_when_spaces_allowed_for_a10_and_checksum" ) );
+
+
+        final java.util.Properties properties = new java.util.Properties();
+        properties.setProperty( DefaultPhysicalFileFactory.ATTRIBUTE_SPACE_CHARACTERS_ALLOWED +
+                                "A10", Boolean.toString( true ) );
+
+        return factory.getPhysicalFile( ops, properties );
+    }
+
+    protected static PhysicalFile getIllegalHeaderAndChecksumAlsoWithSpacesAllowedForA10()
+        throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write( LogicalFileTest.class.getResourceAsStream(
+                   "dtaus0_invalid_header_also_when_spaces_allowed_for_a10_and_checksum" ) );
+
+        final java.util.Properties properties = new java.util.Properties();
+        properties.setProperty( DefaultPhysicalFileFactory.ATTRIBUTE_SPACE_CHARACTERS_ALLOWED +
+                                "A10", Boolean.toString( true ) );
+
+        return factory.getPhysicalFile( ops, properties );
     }
 
     //--------------------------------------------DTAUS getDTAUSSingleHeader()--
@@ -776,6 +810,26 @@ public class LogicalFileTest extends TestCase
         throws Exception
     {
         getDTAUSValidHeaderChecksumAndTransactionMissingCurrencyValid();
+    }
+
+    public void testLegalHeaderAndChecksumOnlyWithSpacesAllowedForA10()
+        throws Exception
+    {
+        getLegalHeaderAndChecksumOnlyWithSpacesAllowedForA10();
+    }
+
+    public void testIllegalHeaderAndChecksumAlsoWithSpacesAllowedForA10()
+        throws Exception
+    {
+        try
+        {
+            getIllegalHeaderAndChecksumAlsoWithSpacesAllowedForA10();
+            fail();
+        }
+        catch ( PhysicalFileException e )
+        {
+            System.out.println( e.toString() );
+        }
     }
 
     //-------------------------------------------------------------------Tests--

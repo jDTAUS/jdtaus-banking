@@ -9,7 +9,7 @@
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
   <groupId>org.jdtaus.banking.dtaus</groupId>
   <name>jDTAUS Banking RI DTAUS</name>
-  <version>1.4.4-SNAPSHOT</version>
+  <version>1.5-SNAPSHOT</version>
   <description>jDTAUS DTAUS reference implementation.</description>
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/branches/jdtaus-banking-ri-dtaus-1.x</connection>
@@ -89,6 +89,7 @@
               <bundles>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile</bundle>
                 <bundle>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile</bundle>
+                <bundle>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory</bundle>
               </bundles>
               <encoding>UTF-8</encoding>
               <locale>en</locale>

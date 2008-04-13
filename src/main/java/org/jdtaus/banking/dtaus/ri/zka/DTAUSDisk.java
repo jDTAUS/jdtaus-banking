@@ -331,7 +331,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
         throws IOException
     {
         super();
-        this.initializeProperties( DTAUSDisk.META.getProperties() );
+        this.initializeProperties( META.getProperties() );
 
         if ( persistence == null )
         {

@@ -23,6 +23,10 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFileException;
@@ -68,6 +72,66 @@ public final class DefaultPhysicalFileFactory
 // </editor-fold>//GEN-END:jdtausImplementation
 
     //----------------------------------------------------------Implementation--
+    //--Constants---------------------------------------------------------------
+
+    /**
+     * Constant for the name of attribute {@code readAheadCaching}.
+     * <p>
+     * The {@code readAheadCaching} attribute is used to enabled or disable the
+     * use of a read-ahead caching algorithm. Its expected value is of type
+     * {@code Boolean}.
+     * </p>
+     */
+    public static final String ATTRIBUTE_READAHEAD_CACHING =
+        DefaultPhysicalFileFactory.class.getName() + ".readAheadCaching";
+
+    /**
+     * Constant for the name of attribute {@code readAheadCacheSize}.
+     * <p>
+     * The {@code readAheadCacheSize} attribute is used to specify the
+     * size of the read-ahead cache. Its expected value is of type
+     * {@code Integer}.
+     * </p>
+     */
+    public static final String ATTRIBUTE_READAHEAD_CACHESIZE =
+        DefaultPhysicalFileFactory.class.getName() + ".readAheadCacheSize";
+
+    /**
+     * Constant for the name of attribute {@code coalescingCaching}.
+     * <p>
+     * The {@code coalescingCaching} attribute is used to enabled or disable the
+     * use of a coalescing caching algorithm. Its expected value is of type
+     * {@code Boolean}.
+     * </p>
+     */
+    public static final String ATTRIBUTE_COALESCING_CACHING =
+        DefaultPhysicalFileFactory.class.getName() + ".coalescingCaching";
+
+    /**
+     * Constant for the name of attribute {@code coalescingBlockSize}.
+     * <p>
+     * The {@code coalescingBlockSize} attribute is used to specify the
+     * value of property {@code blockSize} to use when constructing the
+     * coalescing cache implementation. Its expected value is of type
+     * {@code Integer}.
+     * </p>
+     */
+    public static final String ATTRIBUTE_COALESCING_BLOCKSIZE =
+        DefaultPhysicalFileFactory.class.getName() + ".coalescingBlockSize";
+
+    /**
+     * Constant for the name of attribute {@code spaceCharactersAllowed}.
+     * <p>
+     * The {@code spaceCharactersAllowed} attribute is used to specify numeric
+     * fields for which space characters are to be allowed. It is used as
+     * a prefix with the hexadecimal field constant appended. Its expected value
+     * is of type {@code Boolean}.
+     * </p>
+     */
+    public static final String ATTRIBUTE_SPACE_CHARACTERS_ALLOWED =
+        DefaultPhysicalFileFactory.class.getName() + ".spaceCharactersAllowed.";
+
+    //---------------------------------------------------------------Constants--
     //--Constructors------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
@@ -176,27 +240,22 @@ public final class DefaultPhysicalFileFactory
     //--------------------------------------------------------------Properties--
     //--PhysicalFileFactory-----------------------------------------------------
 
-    public PhysicalFile createPhysicalFile(
-        final FileOperations ops, final int format ) throws IOException
+    public int analyse( final File file )
+        throws PhysicalFileException, IOException
     {
-        if ( ops == null )
+        if ( file == null )
         {
-            throw new NullPointerException( "ops" );
-        }
-        if ( format != FORMAT_DISK && format != FORMAT_TAPE )
-        {
-            throw new IllegalArgumentException( Integer.toString( format ) );
+            throw new NullPointerException( "file" );
         }
 
-        try
-        {
-            ops.setLength( 0L );
-            return this.getPhysicalFile( ops, format );
-        }
-        catch ( PhysicalFileException e )
-        {
-            throw new AssertionError( e );
-        }
+        final FileOperations ops = new RandomAccessFileOperations(
+            new RandomAccessFile( file, "r" ) );
+
+        final int format = this.analyse( ops );
+
+        ops.close();
+
+        return format;
     }
 
     public int analyse( final FileOperations fileOperations )
@@ -205,7 +264,7 @@ public final class DefaultPhysicalFileFactory
         int blockSize = 128;
         long remainder = 0;
         int read = 0;
-        int ret = PhysicalFileFactory.FORMAT_DISK;
+        int ret = FORMAT_DISK;
         int size = 0x000000FF;
         int total = 0;
         Message msg;
@@ -235,7 +294,7 @@ public final class DefaultPhysicalFileFactory
                     read = fileOperations.read( buf, total,
                                                 buf.length - total );
 
-                    if ( read == -1 )
+                    if ( read == FileOperations.EOF )
                     {
                         throw new EOFException();
                     }
@@ -261,7 +320,7 @@ public final class DefaultPhysicalFileFactory
 
                     if ( size == 150 )
                     {
-                        ret = PhysicalFileFactory.FORMAT_TAPE;
+                        ret = FORMAT_TAPE;
                         blockSize = 150;
                         remainder = length % blockSize;
                     }
@@ -323,59 +382,110 @@ public final class DefaultPhysicalFileFactory
         }
     }
 
-    public PhysicalFile getPhysicalFile( final FileOperations ops )
-        throws PhysicalFileException, IOException
-    {
-        return this.getPhysicalFile( ops, this.getDefaultFormat() );
-    }
-
     public PhysicalFile createPhysicalFile( final File file, final int format )
         throws IOException
     {
-        if ( file == null )
-        {
-            throw new NullPointerException( "file" );
-        }
-
-        return this.createPhysicalFile(
-            new CoalescingFileOperations(
-            new RandomAccessFileOperations(
-            new RandomAccessFile( file, "rw" ) ) ), format );
+        return this.createPhysicalFile( file, format,
+                                        this.getDefaultProperties() );
 
     }
 
-    public int analyse( final File file )
-        throws PhysicalFileException, IOException
+    public PhysicalFile createPhysicalFile(
+        final File file, final int format,
+        final java.util.Properties properties ) throws IOException
     {
         if ( file == null )
         {
             throw new NullPointerException( "file" );
         }
 
-        final FileOperations ops = new ReadAheadFileOperations(
-            new RandomAccessFileOperations(
-            new RandomAccessFile( file, "r" ) ) );
+        this.assertValidProperties( properties );
 
-        final int format = this.analyse( ops );
+        FileOperations ops = new RandomAccessFileOperations(
+            new RandomAccessFile( file, "rw" ) );
 
-        ops.close();
+        ops = this.configureCoalescingCaching( ops, properties );
 
-        return format;
+        return this.createPhysicalFile( ops, format, properties );
+    }
+
+    public PhysicalFile createPhysicalFile(
+        final FileOperations ops, final int format ) throws IOException
+    {
+        return this.createPhysicalFile( ops, format,
+                                        this.getDefaultProperties() );
+
+    }
+
+    public PhysicalFile createPhysicalFile(
+        FileOperations ops, final int format,
+        final java.util.Properties properties ) throws IOException
+    {
+        if ( ops == null )
+        {
+            throw new NullPointerException( "ops" );
+        }
+        if ( format != FORMAT_DISK && format != FORMAT_TAPE )
+        {
+            throw new IllegalArgumentException( Integer.toString( format ) );
+        }
+
+        this.assertValidProperties( properties );
+
+        try
+        {
+            ops.setLength( 0L );
+            return this.getPhysicalFile( ops, format, properties );
+        }
+        catch ( PhysicalFileException e )
+        {
+            throw new AssertionError( e );
+        }
     }
 
     public PhysicalFile getPhysicalFile( final File file )
         throws PhysicalFileException, IOException
     {
+        return this.getPhysicalFile( file, this.getDefaultProperties() );
+    }
+
+    public PhysicalFile getPhysicalFile( final FileOperations ops )
+        throws PhysicalFileException, IOException
+    {
+        return this.getPhysicalFile( ops, this.getDefaultProperties() );
+    }
+
+    public PhysicalFile getPhysicalFile(
+        final FileOperations ops, final java.util.Properties properties )
+        throws PhysicalFileException, IOException
+    {
+        if ( ops == null )
+        {
+            throw new NullPointerException( "ops" );
+        }
+
+        this.assertValidProperties( properties );
+
+        return this.getPhysicalFile( ops, this.getDefaultFormat(), properties );
+    }
+
+    public PhysicalFile getPhysicalFile(
+        final File file, final java.util.Properties properties )
+        throws PhysicalFileException, IOException
+    {
         if ( file == null )
         {
             throw new NullPointerException( "file" );
         }
 
-        return this.getPhysicalFile(
-            new ReadAheadFileOperations(
-            new RandomAccessFileOperations(
-            new RandomAccessFile( file, "rw" ) ) ) );
+        this.assertValidProperties( properties );
 
+        FileOperations ops = new RandomAccessFileOperations(
+            new RandomAccessFile( file, "rw" ) );
+
+        ops = this.configureReadAheadCaching( ops, properties );
+
+        return this.getPhysicalFile( ops, properties );
     }
 
     //-----------------------------------------------------PhysicalFileFactory--
@@ -384,7 +494,7 @@ public final class DefaultPhysicalFileFactory
     /** Creates a new {@code DefaultPhysicalFileFactory} instance. */
     public DefaultPhysicalFileFactory()
     {
-        this( DefaultPhysicalFileFactory.META );
+        this( META );
         this.initialize();
     }
 
@@ -396,18 +506,150 @@ public final class DefaultPhysicalFileFactory
     private void assertValidProperties()
     {
         final int defaultFormat = this.getDefaultFormat();
-        if ( defaultFormat != PhysicalFileFactory.FORMAT_DISK &&
-            defaultFormat != PhysicalFileFactory.FORMAT_TAPE )
+        if ( defaultFormat != FORMAT_DISK &&
+            defaultFormat != FORMAT_TAPE )
         {
-
             throw new PropertyException( "defaultFormat",
                                          new Integer( defaultFormat ) );
 
         }
     }
 
+    /**
+     * Checks that given properties are valid.
+     *
+     * @param properties the properties to check.
+     *
+     * @throws NullPointerException if {@code properties} is {@code null}.
+     * @throws IllegalArgumentException if {@code properties} holds invalid
+     * values.
+     */
+    private void assertValidProperties( final java.util.Properties properties )
+    {
+        if ( properties == null )
+        {
+            throw new NullPointerException( "properties" );
+        }
+
+        for ( Iterator it = properties.entrySet().iterator(); it.hasNext();)
+        {
+            final Map.Entry entry = ( Map.Entry ) it.next();
+            final String name = ( String ) entry.getKey();
+            final String value = ( String ) entry.getValue();
+
+            if ( name.startsWith( ATTRIBUTE_SPACE_CHARACTERS_ALLOWED ) )
+            {
+                try
+                {
+                    Integer.parseInt( name.substring(
+                                      name.lastIndexOf( '.' ) + 1 ), 16 );
+
+                }
+                catch ( NumberFormatException e )
+                {
+                    throw new IllegalArgumentException( name + ": " +
+                                                        e.getMessage() );
+
+                }
+            }
+
+            if ( value != null &&
+                ( ATTRIBUTE_READAHEAD_CACHESIZE.equals( name ) ||
+                ATTRIBUTE_COALESCING_BLOCKSIZE.equals( name ) ) )
+            {
+                try
+                {
+                    Integer.parseInt( value );
+                }
+                catch ( NumberFormatException e )
+                {
+                    throw new IllegalArgumentException(
+                        DefaultPhysicalFileFactoryBundle.getInstance().
+                        getIllegalAttributeTypeMessage( Locale.getDefault() ).
+                        format( new Object[] { name, value != null
+                                               ? value.getClass().getName()
+                                               : null, Integer.class.getName()
+                            } ) );
+                }
+            }
+        }
+    }
+
+    private java.util.Properties getDefaultProperties()
+    {
+        final java.util.Properties properties = new java.util.Properties();
+        properties.setProperty( ATTRIBUTE_READAHEAD_CACHING,
+                                Boolean.toString( true ) );
+
+        properties.setProperty( ATTRIBUTE_COALESCING_CACHING,
+                                Boolean.toString( true ) );
+
+        return properties;
+    }
+
+    private FileOperations configureReadAheadCaching(
+        FileOperations ops, final java.util.Properties properties )
+        throws IOException
+    {
+        final String readAheadCaching =
+            properties.getProperty( ATTRIBUTE_READAHEAD_CACHING );
+
+        final String readAheadCacheSize =
+            properties.getProperty( ATTRIBUTE_READAHEAD_CACHESIZE );
+
+        final boolean isReadAheadCaching = readAheadCaching != null &&
+            Boolean.valueOf( readAheadCaching ).booleanValue();
+
+        if ( isReadAheadCaching )
+        {
+            if ( readAheadCacheSize != null )
+            {
+                ops = new ReadAheadFileOperations(
+                    ops, Integer.parseInt( readAheadCacheSize ) );
+
+            }
+            else
+            {
+                ops = new ReadAheadFileOperations( ops );
+            }
+        }
+
+        return ops;
+    }
+
+    private FileOperations configureCoalescingCaching(
+        FileOperations ops, final java.util.Properties properties )
+        throws IOException
+    {
+        final String coalescingCaching =
+            properties.getProperty( ATTRIBUTE_COALESCING_CACHING );
+
+        final String coalescingBlockSize =
+            properties.getProperty( ATTRIBUTE_COALESCING_BLOCKSIZE );
+
+        final boolean isCoalescingCaching = coalescingCaching != null &&
+            Boolean.valueOf( coalescingCaching ).booleanValue();
+
+        if ( isCoalescingCaching )
+        {
+            if ( coalescingBlockSize != null )
+            {
+                ops = new CoalescingFileOperations(
+                    ops, Integer.parseInt( coalescingBlockSize ) );
+
+            }
+            else
+            {
+                ops = new CoalescingFileOperations( ops );
+            }
+        }
+
+        return ops;
+    }
+
     private PhysicalFile getPhysicalFile(
-        final FileOperations ops, int format )
+        final FileOperations ops, int format,
+        final java.util.Properties properties )
         throws PhysicalFileException, IOException
     {
         if ( ops == null )
@@ -419,6 +661,8 @@ public final class DefaultPhysicalFileFactory
             throw new IllegalArgumentException( Integer.toString( format ) );
         }
 
+        this.assertValidProperties( properties );
+
         final DefaultPhysicalFile ret;
         final Message[] messages;
         final StructuredFileOperations sops;
@@ -428,16 +672,14 @@ public final class DefaultPhysicalFileFactory
 
         switch ( format )
         {
-            case PhysicalFileFactory.FORMAT_DISK:
-                sops = new StructuredFileOperations(
-                    PhysicalFileFactory.FORMAT_DISK, ops );
-
+            case FORMAT_DISK:
+                sops = new StructuredFileOperations( FORMAT_DISK, ops );
                 break;
-            case PhysicalFileFactory.FORMAT_TAPE:
-                sops = new StructuredFileOperations(
-                    PhysicalFileFactory.FORMAT_TAPE, ops );
 
+            case FORMAT_TAPE:
+                sops = new StructuredFileOperations( FORMAT_TAPE, ops );
                 break;
+
             default:
                 throw new IllegalStateException();
 
@@ -448,7 +690,7 @@ public final class DefaultPhysicalFileFactory
             ThreadLocalMessages.getMessages().clear();
             AbstractErrorMessage.setErrorsEnabled( false );
 
-            ret = new DefaultPhysicalFile( sops );
+            ret = new DefaultPhysicalFile( sops, properties );
 
             messages = ThreadLocalMessages.getMessages().getMessages();
             if ( messages.length > 0 )

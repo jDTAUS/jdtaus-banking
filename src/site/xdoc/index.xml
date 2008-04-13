@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>jDTAUS Banking RI DTAUS</title>
+    <author email="cs@jdtaus.org">Christian Schulte</author>
+  </properties>
+  <body>
+    <section name="Introduction">
+      <p>
+        This artifact provides the jDTAUS <code>PhysicalFileFactory</code>
+        reference implementation. Starting with version 1.5 support has been
+        added for properties to configure behaviour of the implementation when
+        using one of the methods of the <code>PhysicalFileFactory</code>
+        interface taking a <code>Properties</code> instance. The following
+        properties may be specified:
+        <ul>
+          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.readAheadCaching</code><blockquote>
+              The <code>readAheadCaching</code> property is used to enabled or
+              disable the use of a read-ahead caching algorithm. Its expected
+              value is of type <code>Boolean</code> and defaults to
+              <code>Boolean.TRUE</code>, if using one of the methods of the
+              <code>PhysicalFileFactory</code> interface not taking a
+              <code>Properties</code> instance.
+          </blockquote></li>
+          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.readAheadCacheSize</code><blockquote>
+              The <code>readAheadCacheSize</code> property is used to specify
+              the size of the read-ahead cache if the read-ahead caching
+              algorithm is enabled. Its expected value is of type
+              <code>Integer</code>. If not given a default value is used.
+          </blockquote></li>
+          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.coalescingCaching</code><blockquote>
+              The <code>coalescingCaching</code> property is used to enabled or
+              disable the use of a coalescing caching algorithm. Its expected
+              value is of type <code>Boolean</code> and defaults to
+              <code>Boolean.TRUE</code>, if using one of the methods of the
+              <code>PhysicalFileFactory</code> interface not taking a
+              <code>Properties</code> instance.
+          </blockquote></li>
+          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.coalescingBlockSize</code><blockquote>
+              The <code>coalescingBlockSize</code> property is used to specify
+              the block size of the coalescing cache if the coalescing caching
+              algorithm is enabled. Its expected value is of type
+              <code>Integer</code>. If not given a default value is used.
+          </blockquote></li>
+          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.spaceCharactersAllowed.<i>Field</i></code><blockquote>
+              The <code>spaceCharactersAllowed</code> property is used to
+              specify numeric fields for which space characters are to be
+              allowed. It is used as a prefix with the hexadecimal field
+              constant appended. Its expected value is of type
+              <code>Boolean</code>. By default no space characters are allowed
+              for any numeric field. To enable support for space characters for
+              e.g. field 10 of an A record (A10) a property with name
+              <code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.spaceCharactersAllowed.A10</code>
+              needs to be specified with a value equal to <code>Boolean.TRUE</code>.
+              This will lead to space characters getting converted to zero
+              digits if occuring in field A10.
+          </blockquote></li>
+        </ul>
+      </p>
+    </section>
+  </body>
+</document>

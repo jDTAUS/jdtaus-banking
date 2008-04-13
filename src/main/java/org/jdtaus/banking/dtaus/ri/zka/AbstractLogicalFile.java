@@ -312,7 +312,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
                                 final int off, final int len,
                                 final int encoding ) throws IOException
     {
-        return this.readNumber( field, block, off, len, encoding, false );
+        return this.readNumber( field, block, off, len, encoding,
+                                this.getConfiguration().
+                                isSpaceCharacterAllowed( field ) );
+
     }
 
     /**
@@ -358,7 +361,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     {
         long ret = 0L;
         int read;
-        final Message msg;
         final byte space;
         final byte[] table;
         final byte[] revTable;
@@ -394,14 +396,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 {
                     logViolation = Charsets.decode( this.buffer, 0, len, cset );
                 }
+
                 this.buffer[read] = table[0];
             }
 
             if ( !( this.buffer[read] >= table[0] &&
                 this.buffer[read] <= table[9] ) )
             {
-
-                msg = new IllegalDataMessage(
+                final Message msg = new IllegalDataMessage(
                     field, IllegalDataMessage.TYPE_NUMERIC, block *
                     this.persistence.getBlockSize() + off,
                     Charsets.decode( this.buffer, 0, len, cset ) );
@@ -1654,7 +1656,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
     //---------------------------------------------------void resizeIndex(...)--
     //--int getBlockType(...)---------------------------------------------------
-
     /**
      * Ermittelt den Typ eines Satzabschnitts.
      *
@@ -1797,7 +1798,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         long block, Transaction transaction ) throws IOException;
 
     //--Property "headerBlock"--------------------------------------------------
-
     /**
      * Liest den Wert der Property {@code headerBlock}.
      *
@@ -1869,6 +1869,39 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
     //------------------------------------------------Property "checksumBlock"--
+    //--Property "configuration"------------------------------------------------
+
+    /**
+     * Implementation configuration.
+     */
+    private Configuration configuration;
+
+    /**
+     * Gets the value of property {@code configuration}.
+     *
+     * @return Implementation configuration.
+     */
+    protected Configuration getConfiguration()
+    {
+        if ( this.configuration == null )
+        {
+            this.configuration = new Configuration();
+        }
+
+        return this.configuration;
+    }
+
+    /**
+     * Sets the value of property {@code configuration}.
+     *
+     * @param configuration Implementation configuration.
+     */
+    protected void setConfiguration( final Configuration configuration )
+    {
+        this.configuration = configuration;
+    }
+
+    //------------------------------------------------Property "configuration"--
     //--LogicalFile-------------------------------------------------------------
 
     public Header getHeader() throws IOException

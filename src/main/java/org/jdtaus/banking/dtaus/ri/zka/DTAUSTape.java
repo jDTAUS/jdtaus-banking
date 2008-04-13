@@ -320,7 +320,7 @@ public final class DTAUSTape extends AbstractLogicalFile
         throws IOException
     {
         super();
-        this.initializeProperties( DTAUSTape.META.getProperties() );
+        this.initializeProperties( META.getProperties() );
 
         if ( persistence == null )
         {

@@ -94,5 +94,14 @@
       </action>
     </release>
 
+    <release version="1.5" date="2008-04-13"
+             description="Feature enhancements.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added support for configuration properties introduced in the 1.4 API
+      version.]]>
+      </action>
+    </release>
+
   </body>
 </document>
