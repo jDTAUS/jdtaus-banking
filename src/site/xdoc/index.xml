@@ -61,7 +61,7 @@
       </subsection>
       <subsection name="DTAUS">
         <p>
-          The <a href="jdtaus-banking-ri-dtaus/project-summary.html">
+          The <a href="jdtaus-banking-ri-dtaus/index.html">
           DTAUS artifact</a> provides the jDTAUS <code>PhysicalFileFactory</code>
           <a href="jdtaus-banking-ri-dtaus/apidocs/index.html">reference
           implementation</a> backed by the Core I/O facilities.
