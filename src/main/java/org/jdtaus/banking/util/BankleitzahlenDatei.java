@@ -311,7 +311,6 @@ public final class BankleitzahlenDatei
         }
 
         int i;
-        final Iterator it;
         final boolean log = this.getLogger().isDebugEnabled();
         BankleitzahlInfo oldVersion;
         BankleitzahlInfo newVersion;
@@ -335,23 +334,36 @@ public final class BankleitzahlenDatei
                 newVersion = file.getRecords()[i];
                 if ( 'A' == newVersion.getChangeLabel() )
                 {
-                    if ( this.records.put(
-                        newVersion.getSerialNumber(), newVersion ) != null )
+                    oldVersion = ( BankleitzahlInfo ) this.records.get(
+                        newVersion.getSerialNumber() );
+
+                    if ( oldVersion != null &&
+                        oldVersion.getChangeLabel() != 'D' )
                     {
                         throw new IllegalArgumentException(
-                            newVersion.toString() );
+                            BankleitzahlenDateiBundle.getInstance().
+                            getCannotAddDuplicateRecordMessage(
+                            Locale.getDefault() ).format(
+                            new Object[]
+                            {
+                                newVersion.getSerialNumber()
+                            } ) );
 
                     }
+
+                    this.records.put( newVersion.getSerialNumber(), newVersion );
 
                     if ( log )
                     {
                         this.getLogger().debug(
                             BankleitzahlenDateiBundle.getInstance().
                             getAddRecordInfoMessage( Locale.getDefault() ).
-                            format( new Object[] {
-                                    new Character( newVersion.getChangeLabel() ),
-                                    newVersion.getSerialNumber()
-                                } ) );
+                            format( new Object[]
+                                    {
+                                        new Character(
+                                        newVersion.getChangeLabel() ),
+                                        newVersion.getSerialNumber()
+                                    } ) );
 
                     }
                 }
@@ -362,7 +374,13 @@ public final class BankleitzahlenDatei
                                            newVersion ) == null )
                     {
                         throw new IllegalArgumentException(
-                            newVersion.toString() );
+                            BankleitzahlenDateiBundle.getInstance().
+                            getCannotModifyNonexistentRecordMessage(
+                            Locale.getDefault() ).format(
+                            new Object[]
+                            {
+                                newVersion.getSerialNumber()
+                            } ) );
 
                     }
 
@@ -371,10 +389,12 @@ public final class BankleitzahlenDatei
                         this.getLogger().debug(
                             BankleitzahlenDateiBundle.getInstance().
                             getModifyRecordInfoMessage( Locale.getDefault() ).
-                            format( new Object[] {
-                                    new Character( newVersion.getChangeLabel() ),
-                                    newVersion.getSerialNumber()
-                                } ) );
+                            format( new Object[]
+                                    {
+                                        new Character(
+                                        newVersion.getChangeLabel() ),
+                                        newVersion.getSerialNumber()
+                                    } ) );
 
                     }
 
@@ -382,7 +402,15 @@ public final class BankleitzahlenDatei
                 else if ( 'U' == newVersion.getChangeLabel() &&
                     !this.records.containsKey( newVersion.getSerialNumber() ) )
                 {
-                    throw new IllegalArgumentException( newVersion.toString() );
+                    throw new IllegalArgumentException(
+                        BankleitzahlenDateiBundle.getInstance().
+                        getCannotModifyNonexistentRecordMessage(
+                        Locale.getDefault() ).format(
+                        new Object[]
+                        {
+                            newVersion.getSerialNumber()
+                        } ) );
+
                 }
             }
         }
@@ -403,8 +431,7 @@ public final class BankleitzahlenDatei
         try
         {
             this.getTaskMonitor().monitor( task );
-
-            for ( it = this.records.values().iterator(); it.hasNext();)
+            for ( Iterator it = this.records.values().iterator(); it.hasNext();)
             {
                 task.setProgress( progress++ );
                 oldVersion = ( BankleitzahlInfo ) it.next();
@@ -421,10 +448,12 @@ public final class BankleitzahlenDatei
                             this.getLogger().debug(
                                 BankleitzahlenDateiBundle.getInstance().
                                 getRemoveRecordInfoMessage( Locale.getDefault() ).
-                                format( new Object[] {
-                                        new Character( oldVersion.getChangeLabel() ),
-                                        oldVersion.getSerialNumber()
-                                    } ) );
+                                format( new Object[]
+                                        {
+                                            new Character(
+                                            oldVersion.getChangeLabel() ),
+                                            oldVersion.getSerialNumber()
+                                        } ) );
 
                         }
                     }
@@ -491,7 +520,10 @@ public final class BankleitzahlenDatei
             this.getLogger().debug(
                 BankleitzahlenDateiBundle.getInstance().
                 getFileNameInfoMessage( Locale.getDefault() ).
-                format( new Object[] { resource.toExternalForm() } ) );
+                format( new Object[]
+                        {
+                            resource.toExternalForm()
+                        } ) );
 
         }
 
@@ -509,7 +541,13 @@ public final class BankleitzahlenDatei
                 if ( this.records.put( rec.getSerialNumber(), rec ) != null )
                 {
                     throw new IllegalArgumentException(
-                        rec.getSerialNumber().toString() );
+                        BankleitzahlenDateiBundle.getInstance().
+                        getCannotAddDuplicateRecordMessage(
+                        Locale.getDefault() ).format(
+                        new Object[]
+                        {
+                            rec.getSerialNumber()
+                        } ) );
 
                 }
             }
