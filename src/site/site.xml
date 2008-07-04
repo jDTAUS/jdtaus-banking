@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="jDTAUS Banking">
-  <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-classic-skin</artifactId>
-  </skin>
   <body>
 
     <head>
