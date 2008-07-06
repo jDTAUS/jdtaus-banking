@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.2</version>
+    <version>1.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
@@ -30,59 +31,13 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/tags</tagBase>
         </configuration>
       </plugin>
-
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sign</id>
-            <phase>package</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-            <configuration>
-              <storepass>${jarsign.storepass}</storepass>
-              <keypass>${jarsign.keypass}</keypass>
-              <alias>${jarsign.alias}</alias>
-              <signedjar>${project.build.directory}/signed/${project.build.finalName}.jar</signedjar>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-            <configuration>
-              <keyname>${gpg.keyname}</keyname>
-              <passphrase>${gpg.passphrase}</passphrase>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkMode>never</forkMode>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-resource-mojo</artifactId>
         <executions>
           <execution>
-            <id>default</id>
+            <id>generate</id>
             <goals>
-              <goal>test-messageformat</goal>
               <goal>generate-bundles</goal>
             </goals>
             <configuration>
@@ -112,25 +67,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <groupId>org.jdtaus.mojo</groupId>
-        <artifactId>jdtaus-container-mojo</artifactId>
-        <executions>
-          <execution>
-            <id>clean</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>clean-sources</goal>
-            </goals>
-            <configuration>
-              <encoding>UTF-8</encoding>
-              <classPathElementsExcludeRegexp>.*jdtaus-core-api.*jar</classPathElementsExcludeRegexp>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
     </plugins>
   </build>
   <dependencies>
