@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
@@ -10,12 +8,12 @@
   <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI Textschluesselverzeichnis</name>
-  <version>1.2.3-SNAPSHOT</version>
+  <version>1.2.3</version>
   <description>jDTAUS TextschluesselVerzeichnis reference implementation.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/branches/jdtaus-banking-ri-textschluesselverzeichnis-1.x</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/branches/jdtaus-banking-ri-textschluesselverzeichnis-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/branches/jdtaus-banking-ri-textschluesselverzeichnis-1.x</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/jdtaus-banking-ri-textschluesselverzeichnis-1.2.3</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/jdtaus-banking-ri-textschluesselverzeichnis-1.2.3</developerConnection>
+    <url>http://jdtaus.svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/tags/jdtaus-banking-ri-textschluesselverzeichnis-1.2.3</url>
   </scm>
   <build>
     <resources>
