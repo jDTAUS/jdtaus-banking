@@ -1,6 +1,9 @@
 /*
- *  jDTAUS - DTAUS fileformat.
- *  Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+ *  jDTAUS Banking RI DTAUS
+ *  Copyright (c) 2005 Christian Schulte
+ *
+ *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+ *  <cs@jdtaus.org> (+49 2331 3543887)
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
