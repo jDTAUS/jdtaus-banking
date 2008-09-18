@@ -85,5 +85,13 @@
       </action>
     </release>
 
+    <release version="1.2.7" date="2008-09-18"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added a recent bankfile valid to 2008-12-07.]]>
+      </action>
+    </release>
+
   </body>
 </document>
