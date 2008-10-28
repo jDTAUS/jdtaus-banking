@@ -27,20 +27,13 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedList;
-import org.jdtaus.core.container.ContainerInitializer;
-import org.jdtaus.core.container.Dependency;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
-import org.jdtaus.core.container.PropertyException;
+import org.jdtaus.core.container.ContainerFactory;
 
 /**
  * Classpath {@code TextschluesselProvider} implementation.
- * <p>This implementation provides resources from the classpath holding
- * Textschlüssel instances. Property {@code resourceName} holds the name of the
- * resources to provide and property {@code directoryName} holds the name of the
- * directory holding these resources.</p>
+ * <p>This implementation provides resources by searching the classpath.
+ * Property {@code resourceName} holds the name of the resources to search and
+ * defaults to {@code META-INF/jdtaus/textschluessel.xml}.</p>
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -48,141 +41,37 @@ import org.jdtaus.core.container.PropertyException;
  * @see XMLTextschluesselVerzeichnis
  */
 public final class ClasspathTextschluesselProvider
-    implements ContainerInitializer, TextschluesselProvider
+    implements TextschluesselProvider
 {
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(ClasspathTextschluesselProvider.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
-    /**
-     * <code>ClasspathTextschluesselProvider</code> implementation constructor.
-     *
-     * @param meta Implementation meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private ClasspathTextschluesselProvider(final Implementation meta)
+    /** Standard implementation constructor <code>org.jdtaus.banking.ri.txtdirectory.ClasspathTextschluesselProvider</code>. */
+    public ClasspathTextschluesselProvider()
     {
         super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
-    }
-    /**
-     * <code>ClasspathTextschluesselProvider</code> dependency constructor.
-     *
-     * @param meta dependency meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private ClasspathTextschluesselProvider(final Dependency meta)
-    {
-        super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
     }
 
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("resourceName");
-        this.pResourceName = (java.lang.String) p.getValue();
-
-
-        p = meta.getProperty("directoryName");
-        this.pDirectoryName = (java.lang.String) p.getValue();
-
-    }
 // </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
-    //--ContainerInitializer----------------------------------------------------
-
-    /**
-     * Initializes the instance.
-     *
-     * @see #assertValidProperties()
-     */
-    public void initialize()
-    {
-        this.assertValidProperties();
-    }
-
-    //----------------------------------------------------ContainerInitializer--
-    //--Dependencies------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
-    // This section is managed by jdtaus-container-mojo.
-
-// </editor-fold>//GEN-END:jdtausDependencies
-
-    //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code resourceName}.
-     * @serial
-     */
-    private java.lang.String pResourceName;
-
-    /**
-     * Gets the value of property <code>resourceName</code>.
+     * Gets the value of property <code>defaultResourceName</code>.
      *
-     * @return the value of property <code>resourceName</code>.
+     * @return Default name of the classpath resource to search.
      */
-    private java.lang.String getResourceName()
+    private java.lang.String getDefaultResourceName()
     {
-        return this.pResourceName;
-    }
+        return (java.lang.String) ContainerFactory.getContainer().
+            getProperty( this, "defaultResourceName" );
 
-    /**
-     * Property {@code directoryName}.
-     * @serial
-     */
-    private java.lang.String pDirectoryName;
-
-    /**
-     * Gets the value of property <code>directoryName</code>.
-     *
-     * @return the value of property <code>directoryName</code>.
-     */
-    private java.lang.String getDirectoryName()
-    {
-        return this.pDirectoryName;
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -192,71 +81,103 @@ public final class ClasspathTextschluesselProvider
 
     public URL[] getResources() throws IOException
     {
-        final ClassLoader classLoader = this.getClassLoader();
         final Collection col = new LinkedList();
-        final Enumeration en = classLoader.getResources(
-            this.getDirectoryName() + '/' + this.getResourceName() );
+        final Enumeration en =
+            this.getClassLoader().getResources( this.getResourceName() );
 
         while ( en.hasMoreElements() )
         {
             col.add( en.nextElement() );
         }
 
-        return ( URL[] ) col.toArray( new URL[ col.size() ] );
+        return (URL[]) col.toArray( new URL[ col.size() ] );
     }
 
     //--------------------------------------------------TextschluesselProvider--
     //--ClasspathTextschluesselProvider-----------------------------------------
 
-    /** Creates a new {@code ClasspathTextschluesselProvider} instance. */
-    public ClasspathTextschluesselProvider()
+    /** Classloader searched for resources. */
+    private ClassLoader classLoader;
+
+    /** Name of the classpath resource to search. */
+    private String resourceName;
+
+    /**
+     * Creates a new {@code ClasspathTextschluesselProvider} instance taking
+     * the name of the classpath resource to search.
+     *
+     * @param resourceName name of the classpath resource to search.
+     */
+    public ClasspathTextschluesselProvider( final String resourceName )
     {
-        this( META );
-        this.initialize();
+        this( resourceName, null );
     }
 
     /**
-     * Checks configured properties.
+     * Creates a new {@code ClasspathTextschluesselProvider} instance taking
+     * the classloader to search for resources.
      *
-     * @throws PropertyException if properties hold invalid values.
+     * @param classLoader the classloader to search for resources.
      */
-    private void assertValidProperties()
+    public ClasspathTextschluesselProvider( final ClassLoader classLoader )
     {
-        if ( this.getDirectoryName() == null )
-        {
-            throw new PropertyException( "directoryName",
-                                         this.getDirectoryName() );
-
-        }
-        if ( this.getResourceName() == null ||
-            this.getResourceName().length() <= 0 )
-        {
-            throw new PropertyException( "resourceName",
-                                         this.getResourceName() );
-
-        }
+        this( null, classLoader );
     }
 
     /**
-     * Gets the classloader used for loading XML resources.
-     * <p>The reference implementation will use the current thread's context
-     * classloader and will fall back to the system classloader if the
-     * current thread has no context classloader set.</p>
+     * Creates a new {@code ClasspathTextschluesselProvider} instance taking
+     * the name of the classpath resource to search and the classloader to
+     * search for resources.
      *
-     * @return the classloader to be used for loading XML resources.
+     * @param resourceName name of the classpath resource to search.
+     * @param classLoader the classloader to search for resources.
      */
-    private ClassLoader getClassLoader()
+    public ClasspathTextschluesselProvider( final String resourceName,
+                                            final ClassLoader classLoader )
     {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if ( classLoader == null )
+        this.resourceName = resourceName;
+        this.classLoader = classLoader;
+    }
+
+    /**
+     * Gets the name of the classpath resource to search.
+     *
+     * @return the name of the classpath resource to search.
+     */
+    public String getResourceName()
+    {
+        if ( this.resourceName == null )
         {
-            classLoader = ClassLoader.getSystemClassLoader();
+            this.resourceName = this.getDefaultResourceName();
         }
 
-        assert classLoader != null :
-            "Expected ClassLoader.getSystemClassLoader() to not return null.";
+        return this.resourceName;
+    }
 
-        return classLoader;
+    /**
+     * Gets the classloader searched for resources.
+     * <p>This method returns either the current thread's context classloader or
+     * this classes classloader, if the current thread has no context classloader
+     * set. A custom classloader can be specified by using one of the
+     * constructors taking a classloader.</p>
+     *
+     * @return the classloader to search for resources.
+     */
+    public ClassLoader getClassLoader()
+    {
+        if ( this.classLoader == null )
+        {
+            this.classLoader =
+                Thread.currentThread().getContextClassLoader();
+
+        }
+
+        if ( this.classLoader == null )
+        {
+            this.classLoader = this.getClass().getClassLoader();
+        }
+
+        return this.classLoader;
     }
 
     //-----------------------------------------ClasspathTextschluesselProvider--

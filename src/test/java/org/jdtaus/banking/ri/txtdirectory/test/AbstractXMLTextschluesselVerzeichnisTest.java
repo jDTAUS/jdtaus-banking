@@ -27,15 +27,15 @@ import org.jdtaus.banking.it.TextschluesselVerzeichnisTest;
 import org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis;
 
 /**
- * Tests the {@link TextschluesselVerzeichnis} implementation.
+ * Base tests for the {@link XMLTextschluesselVerzeichnis} implementation.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class XMLTextschluesselVerzeichnisTest
+public abstract class AbstractXMLTextschluesselVerzeichnisTest
     extends TextschluesselVerzeichnisTest
 {
-    //--XMLTextschluesselVerzeichnisTest----------------------------------------
+    //--TextschluesselVerzeichnisTest-------------------------------------------
 
     /** The implementation to test. */
     private TextschluesselVerzeichnis directory;
@@ -44,6 +44,7 @@ public class XMLTextschluesselVerzeichnisTest
     {
         if ( this.directory == null )
         {
+            Thread.currentThread().setContextClassLoader( this.getClassLoader() );
             this.directory = new XMLTextschluesselVerzeichnis();
             this.setTextschluesselVerzeichnis( this.directory );
         }
@@ -51,8 +52,10 @@ public class XMLTextschluesselVerzeichnisTest
         return super.getTextschluesselVerzeichnis();
     }
 
-    //----------------------------------------XMLTextschluesselVerzeichnisTest--
-    //--Tests-------------------------------------------------------------------
+    //-------------------------------------------TextschluesselVerzeichnisTest--
+    //--AbstractXMLTextschluesselVerzeichnisTest--------------------------------
 
-    //-------------------------------------------------------------------Tests--
+    protected abstract ClassLoader getClassLoader();
+
+    //--------------------------------AbstractXMLTextschluesselVerzeichnisTest--
 }

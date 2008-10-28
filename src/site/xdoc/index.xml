@@ -2,46 +2,69 @@
 <document>
   <properties>
     <title>jDTAUS Banking RI Textschluesselverzeichnis</title>
-    <author email="cs@jdtaus.org">Christian Schulte</author>
+    <author email="cs@jdtaus.org">Christian Schulte
+    </author>
   </properties>
   <body>
     <section name="Introduction">
       <p>
         This artifact provides a <code>TextschluesselVerzeichnis</code>
-        implementation backed by XML files. See the XML schema
-        <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.1.xsd">jdtaus-textschluessel-1.1.xsd</a>
-        for further information regarding these XML documents.
-        XML resources are read using any available
-        <a href="apidocs/org/jdtaus/banking/ri/txtdirectory/TextschluesselProvider.html">TextschluesselProvider</a>
-        implementation. The <a href="apidocs/org/jdtaus/banking/ri/txtdirectory/ClasspathTextschluesselProvider.html">ClasspathTextschluesselProvider</a>
-        default implementation expects the XML documents to be located in
-        directory <code>META-INF/jdtaus</code> named <code>textschluessel.xml</code>.
-        This location can be changed by updating the configuration file
-        located at <code>META-INF/jdtaus/module.xml</code>.
-      </p>
-    </section>
-    <section name="Upgrading from 1.0">
-      <p>
-        All released 1.0 artifacts come with a default
-        <code>textschluessel.xml</code> document located at
-        <code>META-INF/jdtaus/textschluessel.xml</code> holding Textschlüssel
-        instances as specified by <a href="http://www.zka.de">ZKA</a>. Starting
-        with version 1.1 this default XML document is no longer part of the
-        artifact's jar file. When upgrading your application to 1.1 you need to
-        provide the Textschlüssel configuration yourself by either placing at
-        least one XML document in the application's classpath for use by class
-        <code>ClasspathTextschluesselProvider</code> or by supplying a custom
-        <code>TextschluesselProvider</code> implementation providing the
-        Textschlüssel resources. The former default document is available for
-        download as a starting point from <a href="textschluessel.xml">here</a>.
+        implementation backed by XML documents.
       </p>
       <p>
-        Starting with version 1.1 the <code>name</code> attribute of the
-        &lt;transactionType&gt; XML element has been removed from the
-        XML schema. It is recommended to update any XML documents by removing
-        that attribute and specifically to also update any XML document's
-        <code>schemaLocation</code> attribute to point to the new 1.1 schema
-        document located at <code>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.1.xsd</code>.
+        The implementation supports documents conforming to schemas as listed in
+        the following table. Support for deprecated schemas may be removed in
+        next major releases so that it is recommended to upgrade any documents
+        to conform to the latest schema before upgrading to such releases.
+        <table>
+          <tr>
+            <th>Namespace URI</th>
+            <th>Schema location</th>
+            <th>Default document</th>
+            <th>Introduced in</th>
+            <th>End of support</th>
+          </tr>
+          <tr>
+            <td>http://jdtaus.org/banking/xml/textschluessel</td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.0.xsd">jdtaus-textschluessel-1.0.xsd</a>
+            </td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.0.xml">textschluessel-1.0.xml</a>
+            </td>
+            <td>1.0</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>http://jdtaus.org/banking/xml/textschluessel</td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.1.xsd">jdtaus-textschluessel-1.1.xsd</a>
+            </td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.1.xml">textschluessel-1.1.xml</a>
+            </td>
+            <td>1.1</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>http://jdtaus.org/banking/model/textschluessel</td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/xsd/jdtaus-textschluessel-1.2.xsd">jdtaus-textschluessel-1.2.xsd</a>
+            </td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.2.xml">textschluessel-1.2.xml</a>
+            </td>
+            <td>1.3</td>
+            <td></td>
+          </tr>
+        </table>
+      </p>
+      <p>
+        To provide any documents to the implementation, an application's
+        classpath needs to be setup to contain documents for use by
+        <a href="apidocs/org/jdtaus/banking/ri/txtdirectory/ClasspathTextschluesselProvider.html">the classpath <code>TextschluesselProvider</code> implementation</a>
+        which searches for classpath resources in a configurable location
+        (defaulting to <code>META-INF/jdtaus/textschluessel.xml</code>).
       </p>
     </section>
   </body>

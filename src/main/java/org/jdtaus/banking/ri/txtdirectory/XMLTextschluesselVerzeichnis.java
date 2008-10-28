@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
@@ -43,18 +44,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.core.container.ContainerFactory;
-import org.jdtaus.core.container.ContainerInitializer;
-import org.jdtaus.core.container.ContextFactory;
-import org.jdtaus.core.container.ContextInitializer;
-import org.jdtaus.core.container.Dependency;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ImplementationException;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
-import org.jdtaus.core.container.Specification;
 import org.jdtaus.core.logging.spi.Logger;
+import org.jdtaus.core.sax.util.EntityResolverChain;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -71,108 +63,48 @@ import org.xml.sax.SAXParseException;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
- *
- * @see #initialize()
  */
-public final class XMLTextschluesselVerzeichnis
-    implements TextschluesselVerzeichnis, ContainerInitializer
+public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
 {
     //--Constants---------------------------------------------------------------
 
     /** JAXP configuration key to the Schema implementation attribute. */
-    public static final String SCHEMA_LANGUAGE_KEY =
+    private static final String SCHEMA_LANGUAGE_KEY =
         "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-    /** JAXP Schema implementation to use. */
-    public static final String SCHEMA_LANGUAGE =
+    /**
+     * JAXP Schema implementation to use.
+     * @see javax.xml.XMLConstants#W3C_XML_SCHEMA_NS_URI
+     */
+    private static final String SCHEMA_LANGUAGE =
         "http://www.w3.org/2001/XMLSchema";
 
-    /** JAXP configuration key for setting the Schema source. */
-    public static final String SCHEMA_SOURCE_KEY =
-        "http://java.sun.com/xml/jaxp/properties/schemaSource";
-
     /** jDTAUS {@code textschluessel} namespace URI. */
-    public static final String MODEL_NS =
+    private static final String TEXTSCHLUESSEL_NS =
         "http://jdtaus.org/banking/xml/textschluessel";
 
-    /** Location of the jdtaus-textschluessel-1.0.xsd schema. */
-    public static final String MODEL_XSD =
-        "org/jdtaus/banking/xml/textschluessel/jdtaus-textschluessel-1.1.xsd";
+    /** jDTAUS {@code banking} namespace URI. */
+    private static final String BANKING_NS =
+        "http://jdtaus.org/banking/model";
 
     /** Version supported by this implementation. */
-    public static final String SUPPORTED_VERSION = "1.1";
+    private static final String[] SUPPORTED_VERSIONS =
+    {
+        "1.0", "1.1"
+    };
 
     //---------------------------------------------------------------Constants--
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(XMLTextschluesselVerzeichnis.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
-    /**
-     * <code>XMLTextschluesselVerzeichnis</code> implementation constructor.
-     *
-     * @param meta Implementation meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private XMLTextschluesselVerzeichnis(final Implementation meta)
+    /** Standard implementation constructor <code>org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis</code>. */
+    public XMLTextschluesselVerzeichnis()
     {
         super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
-    }
-    /**
-     * <code>XMLTextschluesselVerzeichnis</code> dependency constructor.
-     *
-     * @param meta dependency meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private XMLTextschluesselVerzeichnis(final Dependency meta)
-    {
-        super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
     }
 
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("reloadIntervalMillis");
-        this.pReloadIntervalMillis = ((java.lang.Long) p.getValue()).longValue();
-
-    }
 // </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
@@ -181,9 +113,6 @@ public final class XMLTextschluesselVerzeichnis
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
-    /** Configured <code>Logger</code> implementation. */
-    private transient Logger dLogger;
-
     /**
      * Gets the configured <code>Logger</code> implementation.
      *
@@ -191,34 +120,23 @@ public final class XMLTextschluesselVerzeichnis
      */
     private Logger getLogger()
     {
-        Logger ret = null;
-        if(this.dLogger != null)
-        {
-            ret = this.dLogger;
-        }
-        else
-        {
-            ret = (Logger) ContainerFactory.getContainer().
-                getDependency(XMLTextschluesselVerzeichnis.class,
-                "Logger");
+        return (Logger) ContainerFactory.getContainer().
+            getDependency( this, "Logger" );
 
-            if(ModelFactory.getModel().getModules().
-                getImplementation(XMLTextschluesselVerzeichnis.class.getName()).
-                getDependencies().getDependency("Logger").
-                isBound())
-            {
-                this.dLogger = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
     }
+
+    /**
+     * Gets the configured <code>TextschluesselProvider</code> implementation.
+     *
+     * @return the configured <code>TextschluesselProvider</code> implementation.
+     */
+    private TextschluesselProvider[] getTextschluesselProvider()
+    {
+        return (TextschluesselProvider[]) ContainerFactory.getContainer().
+            getDependency( this, "TextschluesselProvider" );
+
+    }
+
 // </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
@@ -228,114 +146,51 @@ public final class XMLTextschluesselVerzeichnis
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code reloadIntervalMillis}.
-     * @serial
-     */
-    private long pReloadIntervalMillis;
-
-    /**
-     * Gets the value of property <code>reloadIntervalMillis</code>.
+     * Gets the value of property <code>defaultReloadIntervalMillis</code>.
      *
-     * @return the value of property <code>reloadIntervalMillis</code>.
+     * @return Default number of milliseconds to pass before resources are checked for modifications.
      */
-    private long getReloadIntervalMillis()
+    private java.lang.Long getDefaultReloadIntervalMillis()
     {
-        return this.pReloadIntervalMillis;
+        return (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "defaultReloadIntervalMillis" );
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
-    //--ContainerInitializer----------------------------------------------------
-
-    /** Holds the loaded Textschlüssel instances. */
-    private Textschluessel[] instances;
-
-    /**
-     * Initializes the instance to hold the parsed XML Textschluessel instances.
-     *
-     * @throws ImplementationException if no XML resources can be parsed.
-     *
-     * @see #assertValidProperties()
-     * @see #parseResources()
-     * @see #transformDocument(Document)
-     */
-    public void initialize()
-    {
-        this.assertValidProperties();
-
-        this.monitorMap = new HashMap();
-        this.lastCheck = System.currentTimeMillis();
-
-        try
-        {
-            final Document docs[] = this.parseResources();
-            final Collection col = new LinkedList();
-
-            for ( int i = docs.length - 1; i >= 0; i-- )
-            {
-                col.addAll( Arrays.asList(
-                            this.transformDocument( docs[i] ) ) );
-
-            }
-
-            final Map types = new HashMap( col.size() );
-            final Collection checked = new ArrayList( col.size() );
-
-            for ( Iterator it = col.iterator(); it.hasNext();)
-            {
-                Map keys;
-                final Textschluessel i = ( Textschluessel ) it.next();
-                final Integer key = new Integer( i.getKey() );
-                final Integer ext = new Integer( i.getExtension() );
-
-                if ( ( keys = ( Map ) types.get( key ) ) == null )
-                {
-                    keys = new HashMap();
-                    types.put( key, keys );
-                }
-
-                if ( keys.put( ext, i ) != null )
-                {
-                    throw new DuplicateTextschluesselException( i );
-                }
-
-                checked.add( i );
-            }
-
-            this.instances = ( Textschluessel[] ) checked.toArray(
-                new Textschluessel[ checked.size() ] );
-
-        }
-        catch ( IOException e )
-        {
-            throw new ImplementationException( META, e );
-        }
-        catch ( ParserConfigurationException e )
-        {
-            throw new ImplementationException( META, e );
-        }
-        catch ( SAXException e )
-        {
-            throw new ImplementationException( META, e );
-        }
-    }
-
-    //----------------------------------------------------ContainerInitializer--
     //--TextschluesselVerzeichnis-----------------------------------------------
 
     public Textschluessel[] getTextschluessel()
     {
-        this.checkForModifications();
-
-        final Textschluessel[] ret =
-            new Textschluessel[ this.instances.length ];
-        for ( int i = ret.length - 1; i >= 0; i-- )
+        try
         {
-            ret[i] = ( Textschluessel ) this.instances[i].clone();
-        }
+            this.assertValidProperties();
+            this.assertInitialized();
+            this.checkForModifications();
 
-        return ret;
+            final Textschluessel[] ret =
+                new Textschluessel[ this.instances.length ];
+            for ( int i = ret.length - 1; i >= 0; i-- )
+            {
+                ret[i] = (Textschluessel) this.instances[i].clone();
+            }
+
+            return ret;
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( SAXException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 
     public Textschluessel getTextschluessel( int key, int extension )
@@ -349,55 +204,95 @@ public final class XMLTextschluesselVerzeichnis
             throw new IllegalArgumentException( Integer.toString( extension ) );
         }
 
-        this.checkForModifications();
-
-        Textschluessel ret = null;
-
-        for ( int i = this.instances.length - 1; i >= 0; i-- )
+        try
         {
-            if ( this.instances[i].getKey() == key )
+            this.assertValidProperties();
+            this.assertInitialized();
+            this.checkForModifications();
+
+            Textschluessel ret = null;
+
+            for ( int i = this.instances.length - 1; i >= 0; i-- )
             {
-                if ( this.instances[i].isVariable() )
+                if ( this.instances[i].getKey() == key )
                 {
-                    ret = ( Textschluessel ) this.instances[i].clone();
-                    break;
-                }
-                else
-                {
-                    if ( this.instances[i].getExtension() == extension )
+                    if ( this.instances[i].isVariable() )
                     {
-                        ret = ( Textschluessel ) this.instances[i].clone();
+                        ret = (Textschluessel) this.instances[i].clone();
                         break;
+                    }
+                    else
+                    {
+                        if ( this.instances[i].getExtension() == extension )
+                        {
+                            ret = (Textschluessel) this.instances[i].clone();
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        return ret;
+            return ret;
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( SAXException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 
     public Textschluessel[] search( boolean debit, boolean remittance )
     {
-        this.checkForModifications();
-
-        final Collection col = new ArrayList( this.instances.length );
-
-        for ( int i = this.instances.length - 1; i >= 0; i-- )
+        try
         {
-            if ( this.instances[i].isDebit() == debit &&
-                this.instances[i].isRemittance() == remittance )
+            this.assertValidProperties();
+            this.assertInitialized();
+            this.checkForModifications();
+
+            final Collection col = new ArrayList( this.instances.length );
+
+            for ( int i = this.instances.length - 1; i >= 0; i-- )
             {
-                col.add( this.instances[i].clone() );
+                if ( this.instances[i].isDebit() == debit &&
+                    this.instances[i].isRemittance() == remittance )
+                {
+                    col.add( this.instances[i].clone() );
+                }
             }
+
+            return (Textschluessel[]) col.toArray(
+                new Textschluessel[ col.size() ] );
+
         }
-
-        return ( Textschluessel[] ) col.toArray(
-            new Textschluessel[ col.size() ] );
-
+        catch ( IOException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( SAXException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 
     //-----------------------------------------------TextschluesselVerzeichnis--
     //--XMLTextschluesselVerzeichnis--------------------------------------------
+
+    /** Flag indicating that initialization has been performed. */
+    private boolean initialized;
+
+    /** Holds the loaded Textschlüssel instances. */
+    private Textschluessel[] instances;
 
     /** Maps {@code File} instances to theire last modification timestamp. */
     private Map monitorMap;
@@ -405,11 +300,111 @@ public final class XMLTextschluesselVerzeichnis
     /** Holds the timestamp resources got checked for modifications. */
     private long lastCheck;
 
-    /** Creates a new {@code XMLTextschluesselVerzeichnis} instance. */
-    public XMLTextschluesselVerzeichnis()
+    /**
+     * Number of milliseconds to pass before resources are checked for
+     * modifications.
+     */
+    private Long reloadIntervalMillis;
+
+    /**
+     * Creates a new {@code XMLTextschluesselVerzeichnis} instance taking the
+     * number of milliseconds to pass before resources are checked for
+     * modifications.
+     *
+     * @param reloadIntervalMillis number of milliseconds to pass before
+     * resources are checked for modifications.
+     */
+    public XMLTextschluesselVerzeichnis( final long reloadIntervalMillis )
     {
-        this( XMLTextschluesselVerzeichnis.META );
-        this.initialize();
+        this();
+
+        if ( reloadIntervalMillis > 0 )
+        {
+            this.reloadIntervalMillis = new Long( reloadIntervalMillis );
+        }
+    }
+
+    /**
+     * Gets the number of milliseconds to pass before resources are checked for
+     * modifications.
+     *
+     * @return the number of milliseconds to pass before resources are checked
+     * for modifications.
+     */
+    public long getReloadIntervalMillis()
+    {
+        if ( this.reloadIntervalMillis == null )
+        {
+            this.reloadIntervalMillis = this.getDefaultReloadIntervalMillis();
+        }
+
+        return this.reloadIntervalMillis.longValue();
+    }
+
+    /**
+     * Initializes the instance to hold the parsed XML Textschluessel instances.
+     *
+     * @throws IOException if retrieving resources fails.
+     * @throws ParserConfigurationException if configuring the XML parser fails.
+     * @throws SAXException if parsing resources fails.
+     *
+     * @see #assertValidProperties()
+     * @see #parseResources()
+     * @see #transformDocument(Document)
+     */
+    private void assertInitialized() throws IOException,
+        ParserConfigurationException, SAXException
+    {
+        if ( !this.initialized )
+        {
+            this.monitorMap = new HashMap();
+            this.lastCheck = System.currentTimeMillis();
+
+            final List/*<Document>*/ documents = this.parseResources();
+            final Collection parsedTextschluessel = new LinkedList();
+
+            for ( Iterator it = documents.iterator(); it.hasNext(); )
+            {
+                final Document document = (Document) it.next();
+                parsedTextschluessel.addAll(
+                    this.transformDocument( document ) );
+
+            }
+
+            final Map types = new HashMap( parsedTextschluessel.size() );
+            final Collection checked =
+                new ArrayList( parsedTextschluessel.size() );
+
+            for ( Iterator it = parsedTextschluessel.iterator(); it.hasNext(); )
+            {
+                Map keys;
+                final Textschluessel i = (Textschluessel) it.next();
+                final Integer key = new Integer( i.getKey() );
+                final Integer ext = new Integer( i.getExtension() );
+
+                if ( ( keys = (Map) types.get( key ) ) == null )
+                {
+                    keys = new HashMap();
+                    types.put( key, keys );
+                }
+
+                if ( keys.put( ext, i ) != null )
+                {
+                    throw new DuplicateTextschluesselException( i );
+                }
+
+                checked.add( i );
+            }
+
+            this.instances = (Textschluessel[]) checked.toArray(
+                new Textschluessel[ checked.size() ] );
+
+            this.getLogger().info( this.getTextschluesselInfoMessage(
+                new Integer( this.instances.length ),
+                new Integer( documents.size() ) ) );
+
+            this.initialized = true;
+        }
     }
 
     /**
@@ -435,29 +430,22 @@ public final class XMLTextschluesselVerzeichnis
      * @return XML resources provided by any available
      * {@code TextschluesselProvider} implementation.
      *
-     * @throws IOException if getting the resources fails.
+     * @throws IOException if retrieving the resources fails.
      *
      * @see TextschluesselProvider
      */
     private URL[] getResources() throws IOException
     {
         final Collection resources = new HashSet();
-        final Specification spec = ModelFactory.getModel().getModules().
-            getSpecification( TextschluesselProvider.class.getName() );
+        final TextschluesselProvider[] provider =
+            this.getTextschluesselProvider();
 
-        for ( int i = spec.getImplementations().size() - 1; i >= 0; i-- )
+        for ( int i = provider.length - 1; i >= 0; i-- )
         {
-            final TextschluesselProvider provider =
-                ( TextschluesselProvider ) ContainerFactory.getContainer().
-                getImplementation( TextschluesselProvider.class,
-                                   spec.getImplementations().
-                                   getImplementation( i ).
-                                   getName() );
-
-            resources.addAll( Arrays.asList( provider.getResources() ) );
+            resources.addAll( Arrays.asList( provider[i].getResources() ) );
         }
 
-        return ( URL[] ) resources.toArray( new URL[ resources.size() ] );
+        return (URL[]) resources.toArray( new URL[ resources.size() ] );
     }
 
     /**
@@ -479,29 +467,19 @@ public final class XMLTextschluesselVerzeichnis
             final File file = new File( new URI( url.toString() ) );
             this.monitorMap.put( file, new Long( file.lastModified() ) );
             this.getLogger().info(
-                XMLTextschluesselVerzeichnisBundle.getInstance().
-                getMonitoringInfoMessage( Locale.getDefault() ).
-                format( new Object[] { file.getAbsolutePath() } ) );
+                this.getMonitoringInfoMessage( file.getAbsolutePath() ) );
 
         }
         catch ( IllegalArgumentException e )
         {
-            this.getLogger().warn(
-                XMLTextschluesselVerzeichnisBundle.getInstance().
-                getNotMonitoringWarningMessage( Locale.getDefault() ).
-                format( new Object[] { url.toExternalForm(),
-                                       e.getMessage()
-                    } ) );
+            this.getLogger().info( this.getNotMonitoringWarningMessage(
+                url.toExternalForm(), e.getMessage() ) );
 
         }
         catch ( URISyntaxException e )
         {
-            this.getLogger().warn(
-                XMLTextschluesselVerzeichnisBundle.getInstance().
-                getNotMonitoringWarningMessage( Locale.getDefault() ).
-                format( new Object[] { url.toExternalForm(),
-                                       e.getMessage()
-                    } ) );
+            this.getLogger().info( this.getNotMonitoringWarningMessage(
+                url.toExternalForm(), e.getMessage() ) );
 
         }
     }
@@ -513,22 +491,20 @@ public final class XMLTextschluesselVerzeichnis
             this.getReloadIntervalMillis() && this.monitorMap.size() > 0 )
         {
             for ( Iterator it = this.monitorMap.entrySet().
-                iterator(); it.hasNext();)
+                iterator(); it.hasNext(); )
             {
-                final Map.Entry entry = ( Map.Entry ) it.next();
-                final File file = ( File ) entry.getKey();
-                final Long lastModified = ( Long ) entry.getValue();
+                final Map.Entry entry = (Map.Entry) it.next();
+                final File file = (File) entry.getKey();
+                final Long lastModified = (Long) entry.getValue();
 
                 assert lastModified != null : "Expected modification time.";
 
                 if ( file.lastModified() != lastModified.longValue() )
                 {
-                    this.getLogger().info(
-                        XMLTextschluesselVerzeichnisBundle.getInstance().
-                        getChangeInfoMessage( Locale.getDefault() ).
-                        format( new Object[] { file.getAbsolutePath() } ) );
+                    this.getLogger().info( this.getChangeInfoMessage(
+                        file.getAbsolutePath() ) );
 
-                    this.initialize();
+                    this.initialized = false;
                     break;
                 }
             }
@@ -543,236 +519,580 @@ public final class XMLTextschluesselVerzeichnis
      * @see #getResources()
      * @see #getDocumentBuilder()
      *
-     * @throws IOException if reading the schema fails.
-     * @throws ParserConfigurationException if no supported XML parser runtime
-     * is available.
+     * @throws ParserConfigurationException if configuring the parser fails.
+     * @throws IOException if reading resources fails.
      * @throws SAXException if parsing fails.
      */
-    private Document[] parseResources() throws
-        IOException, ParserConfigurationException, SAXException
+    private List/*<Document>*/ parseResources() throws
+        ParserConfigurationException, IOException, SAXException
     {
         InputStream stream = null;
 
         final URL[] resources = this.getResources();
         final DocumentBuilder parser = this.getDocumentBuilder();
-        final Document[] ret = new Document[ resources.length ];
+        final List documents = new LinkedList();
 
         for ( int i = resources.length - 1; i >= 0; i-- )
         {
-            try
+            final URL resource = resources[i];
+            parser.setErrorHandler( new ErrorHandler()
             {
-                this.monitorResource( resources[i] );
-                stream = resources[i].openStream();
-                ret[i] = parser.parse( stream );
-            }
-            finally
-            {
-                if ( stream != null )
+
+                public void warning( final SAXParseException e )
+                    throws SAXException
                 {
-                    stream.close();
-                    stream = null;
+                    getLogger().warn( getParseExceptionMessage(
+                        resource.toExternalForm(),
+                        e.getMessage(), new Integer( e.getLineNumber() ),
+                        new Integer( e.getColumnNumber() ) ) );
+
                 }
-            }
+
+                public void error( final SAXParseException e )
+                    throws SAXException
+                {
+                    throw new SAXException( getParseExceptionMessage(
+                        resource.toExternalForm(),
+                        e.getMessage(), new Integer( e.getLineNumber() ),
+                        new Integer( e.getColumnNumber() ) ), e );
+
+                }
+
+                public void fatalError( final SAXParseException e )
+                    throws SAXException
+                {
+                    throw new SAXException( getParseExceptionMessage(
+                        resource.toExternalForm(),
+                        e.getMessage(), new Integer( e.getLineNumber() ),
+                        new Integer( e.getColumnNumber() ) ), e );
+
+                }
+
+            } );
+
+            this.monitorResource( resource );
+            stream = resource.openStream();
+            documents.add( parser.parse( stream ) );
+            stream.close();
         }
 
-        return ret;
+        return documents;
     }
 
     /**
-     * Transforms a XML document to the Textschluessel instances it contains.
+     * Transforms a document to the Textschluessel instances it contains.
      *
      * @param doc the document to transform.
      *
      * @return an array of Textschluessel instances from the given document.
      *
+     * @throws IllegalArgumentException if {@code doc} cannot be transformed.
+     *
      * @see #transformTextschluessel(Textschluessel, Element)
+     * @see #transformTexts(Textschluessel, Element)
      */
-    private Textschluessel[] transformDocument( final Document doc )
+    private List/*<Textschluessel>*/ transformDocument( final Document doc )
     {
-        Element e;
-        String str;
-        NodeList l;
-        Textschluessel key;
-        final Collection col = new ArrayList( 500 );
+        String modelVersion = null;
+        final String namespace = doc.getDocumentElement().getNamespaceURI();
 
-        l = doc.getDocumentElement().getElementsByTagNameNS(
-            XMLTextschluesselVerzeichnis.MODEL_NS, "transactionTypes" );
-
-        l = ( ( Element ) l.item( 0 ) ).getElementsByTagNameNS(
-            XMLTextschluesselVerzeichnis.MODEL_NS, "transactionType" );
-
-        for ( int i = l.getLength() - 1; i >= 0; i-- )
+        if ( namespace == null )
         {
-            e = ( Element ) l.item( i );
-            key = new Textschluessel();
-            str = e.getAttributeNS(
-                XMLTextschluesselVerzeichnis.MODEL_NS,
-                "type" );
+            throw new RuntimeException(
+                this.getUnsupportedNamespaceMessage( namespace ) );
 
-            key.setDebit( "DEBIT".equals( str ) );
-            key.setRemittance( "REMITTANCE".equals( str ) );
+        }
+        else if ( TEXTSCHLUESSEL_NS.equals( namespace ) )
+        {
+            modelVersion = doc.getDocumentElement().
+                getAttributeNS( namespace, "version" );
 
-            str = e.getAttributeNS(
-                XMLTextschluesselVerzeichnis.MODEL_NS,
-                "key" );
+        }
+        else if ( BANKING_NS.equals( namespace ) )
+        {
+            modelVersion = doc.getDocumentElement().
+                getAttributeNS( namespace, "modelVersion" );
 
-            key.setKey( Integer.valueOf( str ).intValue() );
+        }
+        else
+        {
+            throw new RuntimeException(
+                this.getUnsupportedNamespaceMessage( namespace ) );
 
-            str = e.getAttributeNS(
-                XMLTextschluesselVerzeichnis.MODEL_NS,
-                "extension" );
-
-            if ( "VARIABLE".equals( str ) )
-            {
-                key.setVariable( true );
-                key.setExtension( 0 );
-            }
-            else
-            {
-                key.setExtension( Integer.valueOf( str ).intValue() );
-            }
-
-            this.transformTextschluessel( key, e );
-            col.add( key );
         }
 
-        return ( Textschluessel[] ) col.toArray(
-            new Textschluessel[ col.size() ] );
+        boolean supportedModelVersion = false;
+        for ( int i = SUPPORTED_VERSIONS.length - 1; i >= 0; i-- )
+        {
+            if ( SUPPORTED_VERSIONS[i].equals( modelVersion ) )
+            {
+                supportedModelVersion = true;
+                break;
+            }
+        }
 
+        if ( !supportedModelVersion )
+        {
+            throw new RuntimeException(
+                this.getUnsupportedModelVersionMessage( modelVersion ) );
+
+        }
+
+        final List textschluessel = new LinkedList();
+
+        if ( namespace.equals( TEXTSCHLUESSEL_NS ) )
+        {
+            textschluessel.addAll(
+                this.transformTextschluesselDocument( doc ) );
+
+        }
+        else if ( namespace.equals( BANKING_NS ) )
+        {
+            textschluessel.addAll(
+                this.transformBankingDocument( doc ) );
+
+        }
+
+        return textschluessel;
     }
 
     /**
-     * Transforms a {@code &lt;transactionType&gt;} element to the corresponding
-     * {@code Textschluessel} instance.
+     * Transforms a document from deprecated {@code textschluessel} namespace
+     * to the {@code Textschluessel} instances it contains.
      *
-     * @param key the instance to be populated with data.
-     * @param xmlKey the XML element to read the data for {@code key} from.
+     * @param doc the document to transform.
      *
-     * @throws NullPointerException if either {@code key} or {@code xmlKey} is
-     * {@code null}.
+     * @return an list of Textschluessel instances from the given document.
+     *
+     * @throws IllegalArgumentException if {@code doc} contains invalid content.
      */
-    private void transformTextschluessel( final Textschluessel key,
-                                           final Element xmlKey )
+    private List/*<Textschluessel>*/ transformTextschluesselDocument(
+        final Document doc )
     {
-        String lang;
-        String txt;
-        Element e;
-        final NodeList l = xmlKey.getElementsByTagNameNS(
-            XMLTextschluesselVerzeichnis.MODEL_NS, "description" );
+        final List list = new LinkedList();
+        final NodeList typeList = doc.getDocumentElement().
+            getElementsByTagNameNS(
+            TEXTSCHLUESSEL_NS, "transactionTypes" );
 
-        for ( int i = l.getLength() - 1; i >= 0; i-- )
+        for ( int i = typeList.getLength() - 1; i >= 0; i-- )
         {
-            e = ( Element ) l.item( i );
-            lang = e.getAttributeNS( XMLTextschluesselVerzeichnis.MODEL_NS,
-                                     "language" );
+            final Element parent = (Element) typeList.item( i );
+            if ( parent.getParentNode().equals( doc.getDocumentElement() ) )
+            {
+                final NodeList type = parent.getElementsByTagNameNS(
+                    TEXTSCHLUESSEL_NS, "transactionType" );
 
-            txt = e.getFirstChild().getNodeValue();
-            key.setShortDescription( new Locale( lang ), txt );
+                for ( int t = type.getLength() - 1; t >= 0; t-- )
+                {
+                    final Element e = (Element) type.item( t );
+                    if ( e.getParentNode().equals( parent ) )
+                    {
+                        final Textschluessel textschluessel =
+                            new Textschluessel();
+
+                        list.add( textschluessel );
+
+                        final String textschluesselType =
+                            e.getAttributeNS( TEXTSCHLUESSEL_NS, "type" );
+
+                        textschluessel.setDebit(
+                            "DEBIT".equals( textschluesselType ) );
+
+                        textschluessel.setRemittance(
+                            "REMITTANCE".equals( textschluesselType ) );
+
+                        textschluessel.setKey(
+                            Integer.valueOf( e.getAttributeNS(
+                            TEXTSCHLUESSEL_NS, "key" ) ).intValue() );
+
+                        final String extension =
+                            e.getAttributeNS( TEXTSCHLUESSEL_NS, "extension" );
+
+                        if ( "VARIABLE".equals( extension ) )
+                        {
+                            textschluessel.setVariable( true );
+                            textschluessel.setExtension( 0 );
+                        }
+                        else
+                        {
+                            textschluessel.setExtension(
+                                Integer.valueOf( extension ).intValue() );
+
+                        }
+
+                        final NodeList descriptions = e.getElementsByTagNameNS(
+                            TEXTSCHLUESSEL_NS, "description" );
+
+                        for ( int d = descriptions.getLength() - 1; d >= 0;
+                            d-- )
+                        {
+                            final Element description =
+                                (Element) descriptions.item( d );
+
+                            if ( description.getParentNode().equals( e ) )
+                            {
+                                final String language =
+                                    description.getAttributeNS(
+                                    TEXTSCHLUESSEL_NS, "language" );
+
+                                final String text =
+                                    description.getFirstChild().getNodeValue();
+
+                                textschluessel.setShortDescription(
+                                    new Locale( language.toLowerCase() ),
+                                    text );
+
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+        return list;
+    }
+
+    /**
+     * Transforms a document from the {@code banking} namespace to the
+     * {@code Textschluessel} instances it contains.
+     *
+     * @param doc the document to transform.
+     *
+     * @return an list of Textschluessel instances from the given document.
+     *
+     * @throws IllegalArgumentException if {@code doc} contains invalid content.
+     */
+    private List/*<Textschluessel>*/ transformBankingDocument(
+        final Document doc )
+    {
+        final List list = new LinkedList();
+        final String systemLanguage = Locale.getDefault().getLanguage().
+            toLowerCase();
+
+        final NodeList typeList = doc.getDocumentElement().
+            getElementsByTagNameNS( BANKING_NS, "textschluessel" );
+
+        for ( int i = typeList.getLength() - 1; i >= 0; i-- )
+        {
+            final Element e = (Element) typeList.item( i );
+            if ( e.getParentNode().equals( doc.getDocumentElement() ) )
+            {
+                final Textschluessel textschluessel = new Textschluessel();
+                list.add( textschluessel );
+
+                textschluessel.setKey( Integer.valueOf( e.getAttributeNS(
+                    BANKING_NS, "key" ) ).intValue() );
+
+                if ( e.hasAttributeNS( BANKING_NS, "extension" ) )
+                {
+                    textschluessel.setExtension( Integer.valueOf(
+                        e.getAttributeNS( BANKING_NS, "extension" ) ).
+                        intValue() );
+
+                }
+
+                textschluessel.setDebit( Boolean.valueOf( e.getAttributeNS(
+                    BANKING_NS, "debit" ) ).booleanValue() );
+
+                textschluessel.setRemittance( Boolean.valueOf( e.getAttributeNS(
+                    BANKING_NS, "remittance" ) ).booleanValue() );
+
+                textschluessel.setVariable( Boolean.valueOf( e.getAttributeNS(
+                    BANKING_NS, "variableExtension" ) ).booleanValue() );
+
+                final NodeList texts = e.getElementsByTagNameNS(
+                    BANKING_NS, "texts" );
+
+                for ( int t = texts.getLength() - 1; t >= 0; t-- )
+                {
+                    final Element textsElement = (Element) texts.item( t );
+                    if ( textsElement.getParentNode().equals( e ) )
+                    {
+                        final String defaultLanguage =
+                            textsElement.getAttributeNS( BANKING_NS,
+                            "defaultLanguage" ).toLowerCase();
+
+                        boolean hasSystemLanguage = false;
+                        String defaultText = null;
+
+                        final NodeList l = textsElement.getElementsByTagNameNS(
+                            BANKING_NS, "text" );
+
+                        for ( int d = l.getLength() - 1; d >= 0; d-- )
+                        {
+                            final Element description = (Element) l.item( d );
+                            if ( description.getParentNode().
+                                equals( textsElement ) )
+                            {
+                                final String language =
+                                    description.getAttributeNS( BANKING_NS,
+                                    "language" ).toLowerCase();
+
+                                final String text = description.getFirstChild().
+                                    getNodeValue();
+
+                                if ( language.equals( defaultLanguage ) )
+                                {
+                                    defaultText = text;
+                                }
+
+                                if ( systemLanguage.equals( language ) )
+                                {
+                                    hasSystemLanguage = true;
+                                }
+
+                                textschluessel.setShortDescription(
+                                    new Locale( language ), text );
+
+                            }
+                        }
+
+                        if ( !hasSystemLanguage )
+                        {
+                            textschluessel.setShortDescription(
+                                new Locale( systemLanguage ), defaultText );
+
+                        }
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
     /**
      * Creates a new {@code DocumentBuilder} to use for parsing the XML
      * resources.
-     * <p>This method tries to set the following JAXP properties on the system's
+     * <p>This method tries to set the following JAXP property on the system's
      * default XML parser:
      * <ul>
      * <li>{@code http://java.sun.com/xml/jaxp/properties/schemaLanguage} set to
      * {@code http://www.w3.org/2001/XMLSchema}</li>
-     * <li>{@code http://java.sun.com/xml/jaxp/properties/schemaSource} set to
-     * an {@code InputStream} to the XML schema to use for validating
-     * resources</li>
-     * </ul> When setting one of these properties fails, a non-validating
+     * </ul> When setting this property fails, a non-validating
      * {@code DocumentBuilder} is returned and a warning message is logged.</p>
      *
-     * @return a new {@code DocumentBuilder} to be used for parsing the XML
-     * resources.
+     * @return a new {@code DocumentBuilder} to be used for parsing resources.
      *
-     * @throws IOException if reading the schema fails.
-     * @throws ParserConfigurationException if no supported XML parser runtime
-     * is available.
+     * @throws ParserConfigurationException if configuring the XML parser fails.
      */
     private DocumentBuilder getDocumentBuilder()
-        throws IOException, ParserConfigurationException
+        throws ParserConfigurationException
     {
         final DocumentBuilder xmlBuilder;
         final DocumentBuilderFactory xmlFactory =
             DocumentBuilderFactory.newInstance();
 
         xmlFactory.setNamespaceAware( true );
+
         try
         {
             xmlFactory.setValidating( true );
-            xmlFactory.setAttribute(
-                XMLTextschluesselVerzeichnis.SCHEMA_LANGUAGE_KEY,
-                XMLTextschluesselVerzeichnis.SCHEMA_LANGUAGE );
-
-            final URL schema = this.getClassLoader().getResource(
-                XMLTextschluesselVerzeichnis.MODEL_XSD );
-
-            xmlFactory.setAttribute(
-                XMLTextschluesselVerzeichnis.SCHEMA_SOURCE_KEY,
-                schema.openStream() );
-
+            xmlFactory.setAttribute( SCHEMA_LANGUAGE_KEY, SCHEMA_LANGUAGE );
         }
         catch ( IllegalArgumentException e )
         {
-            this.getLogger().warn(
-                XMLTextschluesselVerzeichnisBundle.getInstance().
-                getNoJAXPValidationWarningMessage( Locale.getDefault() ).
-                format( new Object[] { e.getMessage() } ) );
+            this.getLogger().info(
+                this.getNoJAXPValidationWarningMessage( e.getMessage() ) );
 
             xmlFactory.setValidating( false );
         }
 
         xmlBuilder = xmlFactory.newDocumentBuilder();
-        xmlBuilder.setErrorHandler(
-            new ErrorHandler()
-            {
-
-                public void warning( final SAXParseException e )
-                {
-                    getLogger().warn( e.getMessage() );
-                }
-
-                public void fatalError( final SAXParseException e )
-                    throws SAXException
-                {
-                    throw e;
-                }
-
-                public void error( final SAXParseException e )
-                    throws SAXException
-                {
-                    throw e;
-                }
-
-            } );
-
+        xmlBuilder.setEntityResolver( new EntityResolverChain() );
         return xmlBuilder;
     }
 
+    //--------------------------------------------XMLTextschluesselVerzeichnis--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
     /**
-     * Gets the classloader used for loading XML resources.
-     * <p>The reference implementation will use the current thread's context
-     * classloader and will fall back to the system classloader if the
-     * current thread has no context classloader set.</p>
+     * Gets the text of message <code>noJAXPValidationWarning</code>.
+     * <blockquote><pre>Keine JAXP Validierung verfügbar. {0}</pre></blockquote>
+     * <blockquote><pre>No JAXP validation available. {0}</pre></blockquote>
      *
-     * @return the classloader to be used for loading XML resources.
+     * @param detailMessage format argument.
+     *
+     * @return the text of message <code>noJAXPValidationWarning</code>.
      */
-    private ClassLoader getClassLoader()
+    private String getNoJAXPValidationWarningMessage(
+            java.lang.String detailMessage )
     {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if ( classLoader == null )
-        {
-            classLoader = ClassLoader.getSystemClassLoader();
-        }
+        return ContainerFactory.getContainer().
+            getMessage( this, "noJAXPValidationWarning",
+                new Object[]
+                {
+                    detailMessage
+                });
 
-        assert classLoader != null :
-            "Expected ClassLoader.getSystemClassLoader() to not return null.";
-
-        return classLoader;
     }
 
-    //--------------------------------------------XMLTextschluesselVerzeichnis--
+    /**
+     * Gets the text of message <code>notMonitoringWarning</code>.
+     * <blockquote><pre>{0} kann bei Änderung nicht automatisch neu geladen werden. {1}</pre></blockquote>
+     * <blockquote><pre>{0} cannot be monitored. {1}</pre></blockquote>
+     *
+     * @param resourceName format argument.
+     * @param detailMessage format argument.
+     *
+     * @return the text of message <code>notMonitoringWarning</code>.
+     */
+    private String getNotMonitoringWarningMessage(
+            java.lang.String resourceName,
+            java.lang.String detailMessage )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "notMonitoringWarning",
+                new Object[]
+                {
+                    resourceName,
+                    detailMessage
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>changeInfo</code>.
+     * <blockquote><pre>{0} aktualisiert.</pre></blockquote>
+     * <blockquote><pre>{0} changed.</pre></blockquote>
+     *
+     * @param resourceName format argument.
+     *
+     * @return the text of message <code>changeInfo</code>.
+     */
+    private String getChangeInfoMessage(
+            java.lang.String resourceName )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "changeInfo",
+                new Object[]
+                {
+                    resourceName
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>monitoringInfo</code>.
+     * <blockquote><pre>{0} wird bei Änderung automatisch neu geladen.</pre></blockquote>
+     * <blockquote><pre>Monitoring {0} for changes.</pre></blockquote>
+     *
+     * @param resourceName format argument.
+     *
+     * @return the text of message <code>monitoringInfo</code>.
+     */
+    private String getMonitoringInfoMessage(
+            java.lang.String resourceName )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "monitoringInfo",
+                new Object[]
+                {
+                    resourceName
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>textschluesselInfo</code>.
+     * <blockquote><pre>{1,choice,0#Kein Dokument|1#Ein Dokument|1<{1} Dokumente} gelesen. {0,choice,0#Keine|1#Einen|1<{0}} Textschlüssel verarbeitet.</pre></blockquote>
+     * <blockquote><pre>Read {1,choice,0#no document|1#one document|1<{1} documents}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.</pre></blockquote>
+     *
+     * @param entityCount format argument.
+     * @param documentCount format argument.
+     *
+     * @return the text of message <code>textschluesselInfo</code>.
+     */
+    private String getTextschluesselInfoMessage(
+            java.lang.Number entityCount,
+            java.lang.Number documentCount )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "textschluesselInfo",
+                new Object[]
+                {
+                    entityCount,
+                    documentCount
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>unsupportedNamespace</code>.
+     * <blockquote><pre>Ungültiger XML-Namensraum {0}.</pre></blockquote>
+     * <blockquote><pre>Unsupported XML namespace {0}.</pre></blockquote>
+     *
+     * @param namespace format argument.
+     *
+     * @return the text of message <code>unsupportedNamespace</code>.
+     */
+    private String getUnsupportedNamespaceMessage(
+            java.lang.String namespace )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "unsupportedNamespace",
+                new Object[]
+                {
+                    namespace
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>unsupportedModelVersion</code>.
+     * <blockquote><pre>Keine Unterstützung für Modellversion {0}.</pre></blockquote>
+     * <blockquote><pre>Unsupported model version {0}.</pre></blockquote>
+     *
+     * @param modelVersion format argument.
+     *
+     * @return the text of message <code>unsupportedModelVersion</code>.
+     */
+    private String getUnsupportedModelVersionMessage(
+            java.lang.String modelVersion )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "unsupportedModelVersion",
+                new Object[]
+                {
+                    modelVersion
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>parseException</code>.
+     * <blockquote><pre>Fehler bei der Verarbeitung der Resource "{0}" in Zeile {2}, Spalte {3}. {1}</pre></blockquote>
+     * <blockquote><pre>Error parsing resource "{0}" at line {2}, column {3}. {1}</pre></blockquote>
+     *
+     * @param resourceName format argument.
+     * @param cause format argument.
+     * @param line format argument.
+     * @param column format argument.
+     *
+     * @return the text of message <code>parseException</code>.
+     */
+    private String getParseExceptionMessage(
+            java.lang.String resourceName,
+            java.lang.String cause,
+            java.lang.Number line,
+            java.lang.Number column )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "parseException",
+                new Object[]
+                {
+                    resourceName,
+                    cause,
+                    line,
+                    column
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

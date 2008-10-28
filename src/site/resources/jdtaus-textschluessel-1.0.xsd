@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-  jDTAUS - DTAUS fileformat.
-  Copyright (c) 2005 Christian Schulte <cs@schulte.it>
+  jDTAUS Banking RI Textschluesselverzeichnis
+  Copyright (c) 2005 Christian Schulte
+
+  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+  <cs@jdtaus.org> (+49 2331 3543887)
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -22,7 +25,7 @@
   Autor       : Christian Schulte <cs@jdtaus.org>
   Beschreibung: Schema for the XML model of the TextschluesselVerzeichnis.
 
-  Beispiel:
+  Example usage:
 
   <?xml version="1.0" encoding="UTF-8"?>
   <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml/textschluessel"
@@ -43,195 +46,5 @@
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
 
-  <xsd:annotation>
-    <xsd:documentation xml:lang="en"><![CDATA[
-      Schema for the XML model of the Textschlüsselverzeichnis.]]>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsd:element name="textschluessel">
-    <xsd:complexType>
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en"><![CDATA[
-        Contains Textschluessel entities.]]>
-        </xsd:documentation>
-      </xsd:annotation>
-      <xsd:sequence>
-        <xsd:element name="transactionTypes"
-                     minOccurs="1"
-                     maxOccurs="1"
-                     type="jdtaus:TransactionTypes">
-
-          <xsd:unique name="transactiontype-name-uniqueness">
-            <xsd:annotation>
-              <xsd:documentation xml:lang="en"><![CDATA[
-              Name uniqueness.]]>
-              </xsd:documentation>
-            </xsd:annotation>
-            <xsd:selector xpath="jdtaus:transactionType"/>
-            <xsd:field xpath="@jdtaus:name"/>
-          </xsd:unique>
-          <xsd:unique name="transactiontype-code-uniqueness">
-            <xsd:annotation>
-              <xsd:documentation xml:lang="en"><![CDATA[
-              Code uniqueness.]]>
-              </xsd:documentation>
-            </xsd:annotation>
-            <xsd:selector xpath="jdtaus:transactionType"/>
-            <xsd:field xpath="@jdtaus:key"/>
-            <xsd:field xpath="@jdtaus:extension"/>
-          </xsd:unique>
-        </xsd:element>
-      </xsd:sequence>
-
-      <xsd:attribute name="version"
-                     type="xsd:string"
-                     fixed="1.0"
-                     use="required">
-
-        <xsd:annotation>
-          <xsd:documentation xml:lang="en"><![CDATA[
-          Model version.]]>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:attribute>
-
-    </xsd:complexType>
-  </xsd:element>
-
-  <xsd:complexType name="TransactionTypes">
-    <xsd:sequence>
-      <xsd:element name="transactionType"
-                   type="jdtaus:TransactionType"
-                   minOccurs="1"
-                   maxOccurs="unbounded">
-
-        <xsd:annotation>
-          <xsd:documentation xml:lang="en"><![CDATA[
-            Textschlüssel.]]>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:unique name="transactiontype-language-uniqueness">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en"><![CDATA[
-              Language uniqueness.]]>
-            </xsd:documentation>
-          </xsd:annotation>
-          <xsd:selector xpath="jdtaus:description"/>
-          <xsd:field xpath="@jdtaus:language"/>
-        </xsd:unique>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="TransactionType">
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en"><![CDATA[
-        Textschlüssel.]]>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="description"
-                   type="jdtaus:Description"
-                   minOccurs="2"
-                   maxOccurs="unbounded"/>
-
-    </xsd:sequence>
-    <xsd:attribute name="name"
-                   type="jdtaus:constantNameType"
-                   use="required"/>
-
-    <xsd:attribute name="key"
-                   type="jdtaus:keyType"
-                   use="required"/>
-
-    <xsd:attribute name="extension"
-                   type="jdtaus:extensionType"
-                   use="required"/>
-
-    <xsd:attribute name="type"
-                   type="jdtaus:paymentType"
-                   use="required"/>
-
-  </xsd:complexType>
-
-  <xsd:simpleType name="keyType">
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en"><![CDATA[
-        Key of a Textschlüssel.]]>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:integer">
-      <xsd:minInclusive value="0"/>
-      <xsd:maxExclusive value="100"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <xsd:simpleType name="extensionType">
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en"><![CDATA[
-        Extension of a Textschlüssel.]]>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:pattern value="(VARIABLE|\d{1,3})"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <xsd:complexType name="Description">
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en"><![CDATA[
-        Description supporting multiple languages.]]>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:simpleContent>
-      <xsd:extension base="jdtaus:descriptionContent">
-        <xsd:attribute name="language"
-                       type="xsd:language"
-                       use="required"/>
-
-      </xsd:extension>
-    </xsd:simpleContent>
-  </xsd:complexType>
-
-  <xsd:simpleType name="descriptionContent">
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en"><![CDATA[
-        A description is allowed to be at most 100 characters long and must
-        at least contain one character.]]>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:minLength value="1"/>
-      <xsd:maxLength value="100"/>
-      <xsd:whiteSpace value="collapse"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <xsd:simpleType name="constantNameType">
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en"><![CDATA[
-        Name for a constant. Allowed characters are capital letters, digits,
-        and the underscore. A constant name is not allowed to begin with digits,
-        or to begin or end with underscores.]]>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:whiteSpace value="collapse"/>
-      <xsd:pattern value="[A-Z].*[A-Z0-9_].*[A-Z0-9].*"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <xsd:simpleType name="paymentType">
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en"> <![CDATA[
-        Type of a payment. Either "DEBIT" or "REMITTANCE".]]>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:NCName">
-      <xsd:enumeration value="DEBIT"/>
-      <xsd:enumeration value="REMITTANCE"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
+  <xsd:import schemaLocation="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-textschluessel-1.0.xsd"/>
 </xsd:schema>
