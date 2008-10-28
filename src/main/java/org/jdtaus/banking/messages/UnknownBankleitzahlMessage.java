@@ -24,6 +24,7 @@ package org.jdtaus.banking.messages;
 
 import java.util.Locale;
 import org.jdtaus.banking.Bankleitzahl;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -40,7 +41,7 @@ public final class UnknownBankleitzahlMessage extends Message
     private static final long serialVersionUID = -7923064314185101629L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * Bankleitzahl of the message.
@@ -65,9 +66,6 @@ public final class UnknownBankleitzahlMessage extends Message
 
         this.bankCode = bankCode;
     }
-
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -94,11 +92,39 @@ public final class UnknownBankleitzahlMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return UnknownBankleitzahlMessageBundle.getInstance().
-            getUnknownBankleitzahlMessage( locale ).
-            format( this.getFormatArguments( locale ) );
+        return this.getUnknownBankleitzahlMessage(
+            this.bankCode.format( Bankleitzahl.LETTER_FORMAT ) );
 
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>unknownBankleitzahl</code>.
+     * <blockquote><pre>Unbekannte Bankleitzahl {0}.</pre></blockquote>
+     * <blockquote><pre>Unknown Bankleitzahl {0}.</pre></blockquote>
+     *
+     * @param unknownBankleitzahl format argument.
+     *
+     * @return the text of message <code>unknownBankleitzahl</code>.
+     */
+    private String getUnknownBankleitzahlMessage(
+            java.lang.String unknownBankleitzahl )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "unknownBankleitzahl",
+                new Object[]
+                {
+                    unknownBankleitzahl
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

@@ -24,6 +24,7 @@ package org.jdtaus.banking.messages;
 
 import java.math.BigInteger;
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -40,7 +41,7 @@ public final class IllegalAmountMessage extends Message
     private static final long serialVersionUID = 1922186182644325080L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * The illegal amount.
@@ -67,9 +68,6 @@ public final class IllegalAmountMessage extends Message
         this.amount = amount;
     }
 
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -93,11 +91,37 @@ public final class IllegalAmountMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return IllegalAmountMessageBundle.getInstance().
-            getIllegalAmountMessage( locale ).
-            format( this.getFormatArguments( locale ) );
-
+        return this.getIllegalAmountMessage( this.amount );
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>illegalAmount</code>.
+     * <blockquote><pre>Ungültiger Betrag {0,number}.</pre></blockquote>
+     * <blockquote><pre>{0, number} is no legal amount.</pre></blockquote>
+     *
+     * @param amount format argument.
+     *
+     * @return the text of message <code>illegalAmount</code>.
+     */
+    private String getIllegalAmountMessage(
+            java.lang.Number amount )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "illegalAmount",
+                new Object[]
+                {
+                    amount
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

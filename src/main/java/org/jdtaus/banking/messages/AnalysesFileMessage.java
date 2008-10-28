@@ -23,6 +23,7 @@
 package org.jdtaus.banking.messages;
 
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -64,11 +65,30 @@ public final class AnalysesFileMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return AnalysesFileMessageBundle.getInstance().
-            getAnalyzingFileMessage( locale ).
-            format( this.getFormatArguments( locale ) );
-
+        return this.getAnalyzingFileMessage();
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>analyzingFile</code>.
+     * <blockquote><pre>Analysiert Datei.</pre></blockquote>
+     * <blockquote><pre>Analyses file.</pre></blockquote>
+     *
+     * @return the text of message <code>analyzingFile</code>.
+     */
+    private String getAnalyzingFileMessage()
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "analyzingFile", null );
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

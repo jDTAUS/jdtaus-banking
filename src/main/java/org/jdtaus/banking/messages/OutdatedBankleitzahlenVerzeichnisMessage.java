@@ -24,6 +24,7 @@ package org.jdtaus.banking.messages;
 
 import java.util.Date;
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -41,7 +42,7 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
     private static final long serialVersionUID = -196759846361567335L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * Date of expiration of the directory.
@@ -67,9 +68,6 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
         this.dateOfExpiration = dateOfExpiration;
     }
 
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -93,11 +91,37 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return OutdatedBankleitzahlenVerzeichnisMessageBundle.getInstance().
-            getOutdatedDirectoryMessage( locale ).
-            format( this.getFormatArguments( locale ) );
-
+        return this.getOutdatedDirectoryMessage( this.dateOfExpiration );
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>outdatedDirectory</code>.
+     * <blockquote><pre>Das Bankleitzahlenverzeichnis is am {0,date,long} abgelaufen.</pre></blockquote>
+     * <blockquote><pre>The directory of bankcodes expired at {0,date,long}.</pre></blockquote>
+     *
+     * @param dateOfExpiration format argument.
+     *
+     * @return the text of message <code>outdatedDirectory</code>.
+     */
+    private String getOutdatedDirectoryMessage(
+            java.util.Date dateOfExpiration )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "outdatedDirectory",
+                new Object[]
+                {
+                    dateOfExpiration
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

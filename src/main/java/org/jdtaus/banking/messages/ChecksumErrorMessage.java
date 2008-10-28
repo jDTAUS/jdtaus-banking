@@ -24,6 +24,7 @@ package org.jdtaus.banking.messages;
 
 import java.util.Locale;
 import org.jdtaus.banking.dtaus.Checksum;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -40,7 +41,7 @@ public final class ChecksumErrorMessage extends Message
     private static final long serialVersionUID = 2983079946808628079L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * Absolute position of the file with the incorrect checksum.
@@ -100,9 +101,6 @@ public final class ChecksumErrorMessage extends Message
         this.position = position;
     }
 
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -144,11 +142,37 @@ public final class ChecksumErrorMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return ChecksumErrorMessageBundle.getInstance().
-            getChecksumErrorMessage( locale ).
-            format( this.getFormatArguments( locale ) );
-
+        return this.getChecksumErrorMessage( new Long( this.position ) );
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>checksumError</code>.
+     * <blockquote><pre>Die Prüfsumme der an Position {8,number} beginnenden logischen Datei ist ungültig.</pre></blockquote>
+     * <blockquote><pre>The checksum of the logical file beginning at position {8,number} is invalid.</pre></blockquote>
+     *
+     * @param position format argument.
+     *
+     * @return the text of message <code>checksumError</code>.
+     */
+    private String getChecksumErrorMessage(
+            java.lang.Number position )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "checksumError",
+                new Object[]
+                {
+                    position
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

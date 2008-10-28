@@ -24,6 +24,7 @@ package org.jdtaus.banking.messages;
 
 import java.util.Date;
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -40,7 +41,7 @@ public final class IllegalDateMessage extends Message
     private static final long serialVersionUID = 4086935652662010927L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * The illegal date.
@@ -94,9 +95,6 @@ public final class IllegalDateMessage extends Message
         this.dateRangeEnd = dateRangeEnd;
     }
 
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -124,11 +122,45 @@ public final class IllegalDateMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return IllegalDateMessageBundle.getInstance().
-            getIllegalDateMessage( locale ).
-            format( this.getFormatArguments( locale ) );
+        return this.getIllegalDateMessage( this.date, this.dateRangeStart,
+                                           this.dateRangeEnd );
 
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>illegalDate</code>.
+     * <blockquote><pre>Das Datum {0,date,long} liegt entweder vor {1,date,long} oder hinter {2,date,long}.</pre></blockquote>
+     * <blockquote><pre>The date {0,date,long} is either before {1,date,long} or after {2,date,long}.</pre></blockquote>
+     *
+     * @param date format argument.
+     * @param startDate format argument.
+     * @param endDate format argument.
+     *
+     * @return the text of message <code>illegalDate</code>.
+     */
+    private String getIllegalDateMessage(
+            java.util.Date date,
+            java.util.Date startDate,
+            java.util.Date endDate )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "illegalDate",
+                new Object[]
+                {
+                    date,
+                    startDate,
+                    endDate
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

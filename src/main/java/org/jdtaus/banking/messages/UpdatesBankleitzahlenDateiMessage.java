@@ -23,6 +23,7 @@
 package org.jdtaus.banking.messages;
 
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -64,11 +65,30 @@ public final class UpdatesBankleitzahlenDateiMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return UpdatesBankleitzahlenDateiMessageBundle.getInstance().
-            getUpdatingBankleitzahlenDateiMessage( locale ).
-            format( this.getFormatArguments( locale ) );
-
+        return this.getUpdatingBankleitzahlenDateiMessage();
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>updatingBankleitzahlenDatei</code>.
+     * <blockquote><pre>Aktualisiert Bankleitzahlendatei.</pre></blockquote>
+     * <blockquote><pre>Updates bankfile.</pre></blockquote>
+     *
+     * @return the text of message <code>updatingBankleitzahlenDatei</code>.
+     */
+    private String getUpdatingBankleitzahlenDateiMessage()
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "updatingBankleitzahlenDatei", null );
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

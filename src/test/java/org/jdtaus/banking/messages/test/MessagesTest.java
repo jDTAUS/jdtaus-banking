@@ -110,6 +110,7 @@ public class MessagesTest extends TestCase
     private void assertNotNull( final Message message )
     {
         Assert.assertNotNull( message.getText( Locale.getDefault() ) );
+        System.out.println( message.getText( Locale.getDefault() ) );
     }
 
     //-------------------------------------------------------------------Tests--

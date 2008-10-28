@@ -23,6 +23,7 @@
 package org.jdtaus.banking.messages;
 
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -64,11 +65,30 @@ public final class ChecksumsFileMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return ChecksumsFileMessageBundle.getInstance().
-            getChecksummingFileMessage( locale ).
-            format( this.getFormatArguments( locale ) );
-
+        return this.getChecksummingFileMessage();
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>checksummingFile</code>.
+     * <blockquote><pre>Berechnet Prüfsumme.</pre></blockquote>
+     * <blockquote><pre>Computes checksum.</pre></blockquote>
+     *
+     * @return the text of message <code>checksummingFile</code>.
+     */
+    private String getChecksummingFileMessage()
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "checksummingFile", null );
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

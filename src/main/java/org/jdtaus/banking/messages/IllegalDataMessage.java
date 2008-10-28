@@ -23,6 +23,7 @@
 package org.jdtaus.banking.messages;
 
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -92,7 +93,7 @@ public final class IllegalDataMessage extends Message
     private static final long serialVersionUID = 5634623930947949635L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * Constant of the field holding illegal data.
@@ -171,9 +172,6 @@ public final class IllegalDataMessage extends Message
         }
     }
 
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -204,11 +202,47 @@ public final class IllegalDataMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return IllegalDataMessageBundle.getInstance().
-            getIllegalDataMessage( locale ).
-            format( this.getFormatArguments( locale ) );
+        return this.getIllegalDataMessage(
+            Integer.toHexString( this.field ).toUpperCase(),
+            new Long( this.position ),
+            this.invalidData );
 
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>illegalData</code>.
+     * <blockquote><pre>"{2}" ist kein gültiger Wert für Feld {0} (Position {1, number}).</pre></blockquote>
+     * <blockquote><pre>"{2}" is no valid value for field {0} (at {1, number}).</pre></blockquote>
+     *
+     * @param field format argument.
+     * @param position format argument.
+     * @param illegalData format argument.
+     *
+     * @return the text of message <code>illegalData</code>.
+     */
+    private String getIllegalDataMessage(
+            java.lang.String field,
+            java.lang.Number position,
+            java.lang.String illegalData )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "illegalData",
+                new Object[]
+                {
+                    field,
+                    position,
+                    illegalData
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

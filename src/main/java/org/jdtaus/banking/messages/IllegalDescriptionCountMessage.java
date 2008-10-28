@@ -23,6 +23,7 @@
 package org.jdtaus.banking.messages;
 
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -39,7 +40,7 @@ public final class IllegalDescriptionCountMessage extends Message
     private static final long serialVersionUID = 1131942219877499068L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * Maximum number of supported descriptions.
@@ -70,9 +71,6 @@ public final class IllegalDescriptionCountMessage extends Message
         this.requestedDescriptions = requestedDescriptions;
     }
 
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -101,11 +99,43 @@ public final class IllegalDescriptionCountMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return IllegalDescriptionCountMessageBundle.getInstance().
-            getIllegalDescriptionCountMessage( locale ).
-            format( this.getFormatArguments( locale ) );
+        return this.getIllegalDescriptionCountMessage(
+            new Integer( this.requestedDescriptions ),
+            new Integer( this.maxDescriptions ) );
 
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>illegalDescriptionCount</code>.
+     * <blockquote><pre>Die Anzahl der Verwendungszweckzeilen ({1,number}) übersteigt die Anzahl der zulässigen Verwendungszweckzeilen {0,number}.</pre></blockquote>
+     * <blockquote><pre>The number of descriptions ({1,number}) exceeds the possible number {0,number}.</pre></blockquote>
+     *
+     * @param descriptionCount format argument.
+     * @param maxDescriptions format argument.
+     *
+     * @return the text of message <code>illegalDescriptionCount</code>.
+     */
+    private String getIllegalDescriptionCountMessage(
+            java.lang.Number descriptionCount,
+            java.lang.Number maxDescriptions )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "illegalDescriptionCount",
+                new Object[]
+                {
+                    descriptionCount,
+                    maxDescriptions
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

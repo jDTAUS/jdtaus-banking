@@ -25,6 +25,7 @@ package org.jdtaus.banking.messages;
 import java.util.Locale;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.dtaus.LogicalFileType;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -42,7 +43,7 @@ public final class TextschluesselConstraintMessage extends Message
     private static final long serialVersionUID = 998685158483386658L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * The type of the logical file incompatible with {@code textschluessel}.
@@ -85,10 +86,6 @@ public final class TextschluesselConstraintMessage extends Message
         this.textschluessel = textschluessel;
     }
 
-
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -119,11 +116,47 @@ public final class TextschluesselConstraintMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return TextschluesselConstraintMessageBundle.getInstance().
-            getTextschluesselConstraintMessage( locale ).
-            format( this.getFormatArguments( locale ) );
+        return this.getTextschluesselConstraintMessage(
+            this.fileType.getShortDescription( locale ),
+            new Integer( this.textschluessel.getKey() ),
+            new Integer( this.textschluessel.getExtension() ) );
 
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>textschluesselConstraint</code>.
+     * <blockquote><pre>Eine logische Datei vom Typ {0} kann keine {1,number,00}{2,number,000} Textschlüssel speichern.</pre></blockquote>
+     * <blockquote><pre>A logical file with label {0} cannot hold transactions with Textschlüssel {1,number,00}{2,number,000}.</pre></blockquote>
+     *
+     * @param label format argument.
+     * @param key format argument.
+     * @param extension format argument.
+     *
+     * @return the text of message <code>textschluesselConstraint</code>.
+     */
+    private String getTextschluesselConstraintMessage(
+            java.lang.String label,
+            java.lang.Number key,
+            java.lang.Number extension )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "textschluesselConstraint",
+                new Object[]
+                {
+                    label,
+                    key,
+                    extension
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

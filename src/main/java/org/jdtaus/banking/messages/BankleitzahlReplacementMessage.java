@@ -25,6 +25,7 @@ package org.jdtaus.banking.messages;
 import java.util.Locale;
 import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.BankleitzahlInfo;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -42,7 +43,7 @@ public final class BankleitzahlReplacementMessage extends Message
     private static final long serialVersionUID = -4309551284229560988L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * Information regarding the replacement Bankleitzahl.
@@ -67,9 +68,6 @@ public final class BankleitzahlReplacementMessage extends Message
 
         this.info = info;
     }
-
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -96,11 +94,39 @@ public final class BankleitzahlReplacementMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return BankleitzahlReplacementMessageBundle.getInstance().
-            getBankleitzahlReplacementMessage( locale ).
-            format( this.getFormatArguments( locale ) );
+        return this.getBankleitzahlReplacementMessage(
+            this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT ) );
 
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>bankleitzahlReplacement</code>.
+     * <blockquote><pre>Die Bank hat die Bankleitzahl {0} als Nachfolge veröffentlicht.</pre></blockquote>
+     * <blockquote><pre>The bank has published the replacement Bankleitzahl {0}.</pre></blockquote>
+     *
+     * @param bankleitzahl format argument.
+     *
+     * @return the text of message <code>bankleitzahlReplacement</code>.
+     */
+    private String getBankleitzahlReplacementMessage(
+            java.lang.String bankleitzahl )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "bankleitzahlReplacement",
+                new Object[]
+                {
+                    bankleitzahl
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

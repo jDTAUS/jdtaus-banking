@@ -24,6 +24,7 @@ package org.jdtaus.banking.messages;
 
 import java.util.Date;
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -41,7 +42,7 @@ public final class CurrencyConstraintMessage extends Message
     private static final long serialVersionUID = 3569739879822644273L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * The ISO currency code of the currency violating the constraint.
@@ -83,9 +84,6 @@ public final class CurrencyConstraintMessage extends Message
         this.date = date;
     }
 
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -111,11 +109,42 @@ public final class CurrencyConstraintMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return CurrencyConstraintMessageBundle.getInstance().
-            getCurrencyConstraintMessage( locale ).
-            format( this.getFormatArguments( locale ) );
+        return this.getCurrencyConstraintMessage( this.currencyCode,
+                                                  this.date );
 
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>currencyConstraint</code>.
+     * <blockquote><pre>Die {0} Währung befindet sich in Verwendung, ist am {1,date,long} jedoch ungültig.</pre></blockquote>
+     * <blockquote><pre>The {0} currency is in use but not valid at {1,date,long}.</pre></blockquote>
+     *
+     * @param currency format argument.
+     * @param constraintDate format argument.
+     *
+     * @return the text of message <code>currencyConstraint</code>.
+     */
+    private String getCurrencyConstraintMessage(
+            java.lang.String currency,
+            java.util.Date constraintDate )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "currencyConstraint",
+                new Object[]
+                {
+                    currency,
+                    constraintDate
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

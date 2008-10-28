@@ -1,19 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.3</version>
+    <version>1.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-messages</artifactId>
   <name>jDTAUS Banking Messages</name>
-  <version>1.2.4-SNAPSHOT</version>
+  <version>1.3-SNAPSHOT</version>
   <description>jDTAUS banking application messages.</description>
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</connection>
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</url>
+    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-messages/branches/jdtaus-banking-messages-1.x</url>
   </scm>
   <build>
     <resources>
@@ -29,57 +32,13 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-messages/tags</tagBase>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.jdtaus.mojo</groupId>
-        <artifactId>jdtaus-resource-mojo</artifactId>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <goals>
-              <goal>generate-bundles</goal>
-            </goals>
-            <configuration>
-              <bundles>
-                <bundle>org.jdtaus.banking.messages.AnalysesFileMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.ChecksumErrorMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.ChecksumsFileMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.CurrencyConstraintMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.IllegalAmountMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.IllegalCurrencyMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.IllegalDataMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.IllegalDateMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.IllegalDescriptionCountMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.IllegalFileLengthMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.IllegalScheduleMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.TextschluesselConstraintMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.UnknownBankleitzahlMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.BankleitzahlExpirationMessage</bundle>
-                <bundle>org.jdtaus.banking.messages.BankleitzahlReplacementMessage</bundle>
-              </bundles>
-              <encoding>UTF-8</encoding>
-              <locale>en</locale>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <dependencies>
     <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-banking-api</artifactId>
-      <version>RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jdtaus.core.container</groupId>
-      <artifactId>jdtaus-core-client-container</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <version>[1.6,)</version>
     </dependency>
   </dependencies>
   <reporting>
@@ -115,9 +74,6 @@
       </plugin>
       <plugin>
         <artifactId>maven-pmd-plugin</artifactId>
-        <configuration>
-          <sourceEncoding>UTF-8</sourceEncoding>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-report-plugin</artifactId>
@@ -127,15 +83,12 @@
       </plugin>
       <plugin>
         <artifactId>maven-changes-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>jdtaus-container-mojo</artifactId>
+        <groupId>org.jdtaus.mojo</groupId>
         <configuration>
-          <issueLinkTemplate>http://bugzilla.jdtaus.org/cgi-bin/bugzilla/show_bug.cgi?id=%ISSUE%</issueLinkTemplate>
-          <reportSets>
-            <reportSet>
-              <reports>
-                <report>changes-report</report>
-              </reports>
-            </reportSet>
-          </reportSets>
+          <moduleName>${pom.name}</moduleName>
         </configuration>
       </plugin>
     </plugins>

@@ -23,6 +23,7 @@
 package org.jdtaus.banking.messages;
 
 import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
@@ -39,7 +40,7 @@ public final class IllegalFileLengthMessage extends Message
     private static final long serialVersionUID = 961185282869701368L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--Message-----------------------------------------------------------------
 
     /**
      * The length of a file incompatible to {@code blockSize}.
@@ -86,9 +87,6 @@ public final class IllegalFileLengthMessage extends Message
         this.blockSize = blockSize;
     }
 
-    //------------------------------------------------------------Constructors--
-    //--Message-----------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      *
@@ -115,11 +113,42 @@ public final class IllegalFileLengthMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return IllegalFileLengthMessageBundle.getInstance().
-            getIllegalFileLengthMessage( locale ).
-            format( this.getFormatArguments( locale ) );
+        return this.getIllegalFileLengthMessage( new Long( this.fileLength ),
+                                                 new Long( this.blockSize ) );
 
     }
 
     //-----------------------------------------------------------------Message--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>illegalFileLength</code>.
+     * <blockquote><pre>Die Datei-Länge {0,number} ist inkompatible zu einer Block-Größe von {1,number}.</pre></blockquote>
+     * <blockquote><pre>The length of the file ({0, number}) is incompatible to the blocksize {1,number}.</pre></blockquote>
+     *
+     * @param fileLength format argument.
+     * @param blockSize format argument.
+     *
+     * @return the text of message <code>illegalFileLength</code>.
+     */
+    private String getIllegalFileLengthMessage(
+            java.lang.Number fileLength,
+            java.lang.Number blockSize )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "illegalFileLength",
+                new Object[]
+                {
+                    fileLength,
+                    blockSize
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }
