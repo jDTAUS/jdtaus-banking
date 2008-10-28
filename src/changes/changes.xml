@@ -79,12 +79,16 @@
       </action>
     </release>
 
-    <release version="1.1.4" date="2008-07-06"
+    <release version="1.2" date="2008-10-28"
              description="Maintenance release.">
 
-      <action dev="schulte2005" type="fix"><![CDATA[
-      Maven POM updates.]]>
-      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Upgraded to latest core features.<ul>
+      <li>removed any internal properties resources and moved any messages to
+      the META-INF/jdtaus/module.xml module descriptor.</li></ul>]]></action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Made swing text fields of package <code>org.jdtaus.banking.util.swing</code>
+      non-validating by default.]]></action>
     </release>
 
   </body>

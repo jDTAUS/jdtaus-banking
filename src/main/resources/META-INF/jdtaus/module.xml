@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-  jDTAUS Banking Utilities
+  ${pom.name}
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
@@ -27,153 +27,259 @@
   Description: Runtime configuration for the ${pom.name} module.
 
 -->
+<container:module xmlns:container="http://jdtaus.org/core/model/container"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
+                  container:name="${pom.name}"
+                  container:version="${pom.version}"
+                  container:modelVersion="1.3">
 
-<jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
-               xmlns:jdtaus="http://jdtaus.org/runtime/container/xml"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="http://jdtaus.org/runtime/container/xml http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-client-container/jdtaus-module-1.1.xsd"
-               jdtaus:name="${pom.name}"
-               jdtaus:description="${pom.description}"
-               jdtaus:version="1.1">
+  <container:documentation container:defaultLanguage="en">
+    <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>
+  </container:documentation>
 
-  <jdtaus:implementations>
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.BankleitzahlenDatei"
-                           jdtaus:name="BankleitzahlenDatei"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+  <container:implementations>
+    <container:implementation container:identifier="org.jdtaus.banking.util.BankleitzahlenDatei"
+                              container:name="BankleitzahlenDatei"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
-                           jdtaus:name="Logger"
-                           jdtaus:bound="true">
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[German Bankleitzahlendatei for the format as of 2006-06-01.]]></container:text>
+      </container:documentation>
 
-          <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name"
-                             jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.util.BankleitzahlenDatei"
-                             jdtaus:api="true"/>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:name="Logger"
+                              container:bound="true">
 
-          </jdtaus:properties>
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.util.BankleitzahlenDatei"/>
 
-        </jdtaus:dependency>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
-                           jdtaus:name="TaskMonitor"
-                           jdtaus:bound="true">
+          </container:properties>
 
-        </jdtaus:dependency>
-      </jdtaus:dependencies>
+        </container:dependency>
+        <container:dependency container:identifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                              container:name="TaskMonitor"
+                              container:bound="true">
 
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="encoding"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="ISO-8859-1"/>
+        </container:dependency>
+      </container:dependencies>
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
+      <container:properties>
+        <container:property container:name="defaultEncoding"
+                            container:type="java.lang.String"
+                            container:value="ISO-8859-1">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default encoding to use when reading bankfile resources.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+      <container:messages>
+        <container:reference container:name="fileNameInfo"/>
+        <container:reference container:name="addRecordInfo"/>
+        <container:reference container:name="modifyRecordInfo"/>
+        <container:reference container:name="removeRecordInfo"/>
+        <container:reference container:name="cannotAddDuplicateRecord"/>
+        <container:reference container:name="cannotModifyNonexistentRecord"/>
+      </container:messages>
+    </container:implementation>
     <!--                                                                     -->
     <!-- Swing components.                                                   -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.AlphaNumericText27TextField"
-                           jdtaus:name="${pom.name}"
-                           jdtaus:vendor="${organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.util.swing.AlphaNumericText27TextField"
+                              container:name="${pom.name}"
+                              container:vendor="${organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="validating"
-                         jdtaus:type="boolean"
-                         jdtaus:value="true"
-                         jdtaus:api="true"/>
+      <container:properties>
+        <container:property container:name="defaultValidating"
+                            container:type="java.lang.Boolean"
+                            container:value="false">
 
-        <jdtaus:property jdtaus:name="normalizing"
-                         jdtaus:type="boolean"
-                         jdtaus:value="true"
-                         jdtaus:api="true"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="defaultNormalizing"
+                            container:type="java.lang.Boolean"
+                            container:value="true">
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.KontonummerTextField"
-                           jdtaus:name="${pom.name}"
-                           jdtaus:vendor="${organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the flag indicating if a normalizing parser should be used.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.util.swing.KontonummerTextField"
+                              container:name="${pom.name}"
+                              container:vendor="${organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="validating"
-                         jdtaus:type="boolean"
-                         jdtaus:value="true"
-                         jdtaus:api="true"/>
+      <container:properties>
+        <container:property container:name="defaultValidating"
+                            container:type="java.lang.Boolean"
+                            container:value="false">
 
-        <jdtaus:property jdtaus:name="format"
-                         jdtaus:type="int"
-                         jdtaus:value="4001"
-                         jdtaus:api="true"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="defaultFormat"
+                            container:type="java.lang.Integer"
+                            container:value="4001">
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.Referenznummer10TextField"
-                           jdtaus:name="${pom.name}"
-                           jdtaus:vendor="${organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the format to use when formatting Kontonummer instances (4001 = electronic format, 4002 letter format).]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.util.swing.Referenznummer10TextField"
+                              container:name="${pom.name}"
+                              container:vendor="${organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="validating"
-                         jdtaus:type="boolean"
-                         jdtaus:value="true"
-                         jdtaus:api="true"/>
+      <container:properties>
+        <container:property container:name="defaultValidating"
+                            container:type="java.lang.Boolean"
+                            container:value="false">
 
-        <jdtaus:property jdtaus:name="format"
-                         jdtaus:type="int"
-                         jdtaus:value="5001"
-                         jdtaus:api="true"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="defaultFormat"
+                            container:type="java.lang.Integer"
+                            container:value="5001">
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.Referenznummer11TextField"
-                           jdtaus:name="${pom.name}"
-                           jdtaus:vendor="${organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the format to use when formatting Referenznummer10 instances (5001 = electronic format, 5002 letter format).]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.util.swing.Referenznummer11TextField"
+                              container:name="${pom.name}"
+                              container:vendor="${organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="validating"
-                         jdtaus:type="boolean"
-                         jdtaus:value="true"
-                         jdtaus:api="true"/>
+      <container:properties>
+        <container:property container:name="defaultValidating"
+                            container:type="java.lang.Boolean"
+                            container:value="false">
 
-        <jdtaus:property jdtaus:name="format"
-                         jdtaus:type="int"
-                         jdtaus:value="6001"
-                         jdtaus:api="true"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="defaultFormat"
+                            container:type="java.lang.Integer"
+                            container:value="6001">
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.util.swing.BankleitzahlTextField"
-                           jdtaus:name="${pom.name}"
-                           jdtaus:vendor="${organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the format to use when formatting Referenznummer11 instances (6001 = electronic format, 6002 letter format).]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.util.swing.BankleitzahlTextField"
+                              container:name="${pom.name}"
+                              container:vendor="${organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"
-                           jdtaus:name="BankleitzahlenVerzeichnis"
-                           jdtaus:bound="true"/>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"
+                              container:name="BankleitzahlenVerzeichnis"
+                              container:bound="true"/>
 
-      </jdtaus:dependencies>
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="validating"
-                         jdtaus:type="boolean"
-                         jdtaus:value="true"
-                         jdtaus:api="true"/>
+      </container:dependencies>
+      <container:properties>
+        <container:property container:name="defaultValidating"
+                            container:type="java.lang.Boolean"
+                            container:value="false">
 
-        <jdtaus:property jdtaus:name="format"
-                         jdtaus:type="int"
-                         jdtaus:value="3001"
-                         jdtaus:api="true"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="defaultFormat"
+                            container:type="java.lang.Integer"
+                            container:value="3001">
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
-  </jdtaus:implementations>
-</jdtaus:module>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default value of the format to use when formatting Bankleitzahl instances (3001 = electronic format, 3002 letter format).]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
+  </container:implementations>
+  <container:messages>
+    <container:message container:name="fileNameInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Loading Bankleitzahlendatei "{0}".]]></container:text>
+        <container:text container:language="de"><![CDATA[Lädt Bankleitzahlendatei "{0}".]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="fileName" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="addRecordInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[{0}: Added record {1, number}.]]></container:text>
+        <container:text container:language="de"><![CDATA[{0}: Datensatz {1, number} hinzugefügt.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="label" container:type="text"/>
+        <container:argument container:index="1" container:name="serialNumber" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="modifyRecordInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[{0}: Updated record {1, number}.]]></container:text>
+        <container:text container:language="de"><![CDATA[{0}: Datensatz {1, number} aktualisiert.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="label" container:type="text"/>
+        <container:argument container:index="1" container:name="serialNumber" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="removeRecordInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[{0}: Removed record {1, number}.]]></container:text>
+        <container:text container:language="de"><![CDATA[{0}: Datensatz {1, number} entfernt.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="label" container:type="text"/>
+        <container:argument container:index="1" container:name="serialNumber" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="cannotAddDuplicateRecord">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Record with serial number {0,number} already exists and cannot be added.]]></container:text>
+        <container:text container:language="de"><![CDATA[Datensatz mit Seriennummer {0,number} existiert bereits und kann nicht hinzugefügt werden.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="cannotModifyNonexistentRecord">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Record with serial number {0,number} does not exist and cannot be updated.]]></container:text>
+        <container:text container:language="de"><![CDATA[Ein Datensatz mit Seriennummer {0,number} existiert nicht und kann nicht aktualisiert werden.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
+      </container:arguments>
+    </container:message>
+  </container:messages>
+</container:module>

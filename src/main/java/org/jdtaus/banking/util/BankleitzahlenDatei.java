@@ -30,17 +30,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import org.jdtaus.banking.BankleitzahlInfo;
 import org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage;
 import org.jdtaus.core.container.ContainerFactory;
-import org.jdtaus.core.container.ContextFactory;
-import org.jdtaus.core.container.ContextInitializer;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.monitor.spi.Task;
@@ -59,91 +52,10 @@ import org.jdtaus.core.monitor.spi.TaskMonitor;
  */
 public final class BankleitzahlenDatei
 {
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(BankleitzahlenDatei.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
-    //--Constructors------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
-    // This section is managed by jdtaus-container-mojo.
-
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("encoding");
-        this.pEncoding = (java.lang.String) p.getValue();
-
-    }
-// </editor-fold>//GEN-END:jdtausConstructors
-
-    //------------------------------------------------------------Constructors--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
-
-    /** Configured <code>TaskMonitor</code> implementation. */
-    private transient TaskMonitor dTaskMonitor;
-
-    /**
-     * Gets the configured <code>TaskMonitor</code> implementation.
-     *
-     * @return the configured <code>TaskMonitor</code> implementation.
-     */
-    private TaskMonitor getTaskMonitor()
-    {
-        TaskMonitor ret = null;
-        if(this.dTaskMonitor != null)
-        {
-            ret = this.dTaskMonitor;
-        }
-        else
-        {
-            ret = (TaskMonitor) ContainerFactory.getContainer().
-                getDependency(BankleitzahlenDatei.class,
-                "TaskMonitor");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(BankleitzahlenDatei.class.getName()).
-                getDependencies().getDependency("TaskMonitor").
-                isBound())
-            {
-                this.dTaskMonitor = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
-    /** Configured <code>Logger</code> implementation. */
-    private transient Logger dLogger;
 
     /**
      * Gets the configured <code>Logger</code> implementation.
@@ -152,34 +64,23 @@ public final class BankleitzahlenDatei
      */
     private Logger getLogger()
     {
-        Logger ret = null;
-        if(this.dLogger != null)
-        {
-            ret = this.dLogger;
-        }
-        else
-        {
-            ret = (Logger) ContainerFactory.getContainer().
-                getDependency(BankleitzahlenDatei.class,
-                "Logger");
+        return (Logger) ContainerFactory.getContainer().
+            getDependency( this, "Logger" );
 
-            if(ModelFactory.getModel().getModules().
-                getImplementation(BankleitzahlenDatei.class.getName()).
-                getDependencies().getDependency("Logger").
-                isBound())
-            {
-                this.dLogger = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
     }
+
+    /**
+     * Gets the configured <code>TaskMonitor</code> implementation.
+     *
+     * @return the configured <code>TaskMonitor</code> implementation.
+     */
+    private TaskMonitor getTaskMonitor()
+    {
+        return (TaskMonitor) ContainerFactory.getContainer().
+            getDependency( this, "TaskMonitor" );
+
+    }
+
 // </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
@@ -189,19 +90,15 @@ public final class BankleitzahlenDatei
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code encoding}.
-     * @serial
-     */
-    private java.lang.String pEncoding;
-
-    /**
-     * Gets the value of property <code>encoding</code>.
+     * Gets the value of property <code>defaultEncoding</code>.
      *
-     * @return the value of property <code>encoding</code>.
+     * @return Default encoding to use when reading bankfile resources.
      */
-    private java.lang.String getEncoding()
+    private java.lang.String getDefaultEncoding()
     {
-        return this.pEncoding;
+        return (java.lang.String) ContainerFactory.getContainer().
+            getProperty( this, "defaultEncoding" );
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -212,6 +109,9 @@ public final class BankleitzahlenDatei
     /** Records held by the instance. */
     private Map records = new HashMap( 5000 );
     private BankleitzahlInfo[] cachedRecords;
+
+    /** Encoding to use when reading bankfile resources. */
+    private String encoding;
 
     /**
      * Reads a Bankleitzahlendatei form an URL initializing the instance to
@@ -228,7 +128,6 @@ public final class BankleitzahlenDatei
     public BankleitzahlenDatei( final URL resource ) throws IOException
     {
         super();
-        this.initializeProperties( META.getProperties() );
         this.assertValidProperties();
         this.readBankfile( resource );
     }
@@ -251,10 +150,24 @@ public final class BankleitzahlenDatei
         throws IOException
     {
         super();
-        this.initializeProperties( META.getProperties() );
-        this.pEncoding = encoding;
+        this.encoding = encoding;
         this.assertValidProperties();
         this.readBankfile( resource );
+    }
+
+    /**
+     * Gets the encoding used for reading bankfile resources.
+     *
+     * @return the encoding used for reading bankfile resources.
+     */
+    public String getEncoding()
+    {
+        if ( this.encoding == null )
+        {
+            this.encoding = this.getDefaultEncoding();
+        }
+
+        return this.encoding;
     }
 
     /**
@@ -266,7 +179,7 @@ public final class BankleitzahlenDatei
     {
         if ( this.cachedRecords == null )
         {
-            this.cachedRecords = ( BankleitzahlInfo[] ) this.records.values().
+            this.cachedRecords = (BankleitzahlInfo[]) this.records.values().
                 toArray( new BankleitzahlInfo[ this.records.size() ] );
 
         }
@@ -292,7 +205,7 @@ public final class BankleitzahlenDatei
             throw new NullPointerException( "serialNumber" );
         }
 
-        return ( BankleitzahlInfo ) this.records.get( serialNumber );
+        return (BankleitzahlInfo) this.records.get( serialNumber );
     }
 
     /**
@@ -337,20 +250,15 @@ public final class BankleitzahlenDatei
                 newVersion = file.getRecords()[i];
                 if ( 'A' == newVersion.getChangeLabel() )
                 {
-                    oldVersion = ( BankleitzahlInfo ) this.records.get(
+                    oldVersion = (BankleitzahlInfo) this.records.get(
                         newVersion.getSerialNumber() );
 
                     if ( oldVersion != null &&
                         oldVersion.getChangeLabel() != 'D' )
                     {
                         throw new IllegalArgumentException(
-                            BankleitzahlenDateiBundle.getInstance().
-                            getCannotAddDuplicateRecordMessage(
-                            Locale.getDefault() ).format(
-                            new Object[]
-                            {
-                                newVersion.getSerialNumber()
-                            } ) );
+                            this.getCannotAddDuplicateRecordMessage(
+                            newVersion.getSerialNumber() ) );
 
                     }
 
@@ -359,14 +267,9 @@ public final class BankleitzahlenDatei
                     if ( log )
                     {
                         this.getLogger().debug(
-                            BankleitzahlenDateiBundle.getInstance().
-                            getAddRecordInfoMessage( Locale.getDefault() ).
-                            format( new Object[]
-                                    {
-                                        new Character(
-                                        newVersion.getChangeLabel() ),
-                                        newVersion.getSerialNumber()
-                                    } ) );
+                            this.getAddRecordInfoMessage(
+                            String.valueOf( newVersion.getChangeLabel() ),
+                            newVersion.getSerialNumber() ) );
 
                     }
                 }
@@ -377,27 +280,17 @@ public final class BankleitzahlenDatei
                                            newVersion ) == null )
                     {
                         throw new IllegalArgumentException(
-                            BankleitzahlenDateiBundle.getInstance().
-                            getCannotModifyNonexistentRecordMessage(
-                            Locale.getDefault() ).format(
-                            new Object[]
-                            {
-                                newVersion.getSerialNumber()
-                            } ) );
+                            this.getCannotModifyNonexistentRecordMessage(
+                            newVersion.getSerialNumber() ) );
 
                     }
 
                     if ( log )
                     {
                         this.getLogger().debug(
-                            BankleitzahlenDateiBundle.getInstance().
-                            getModifyRecordInfoMessage( Locale.getDefault() ).
-                            format( new Object[]
-                                    {
-                                        new Character(
-                                        newVersion.getChangeLabel() ),
-                                        newVersion.getSerialNumber()
-                                    } ) );
+                            this.getModifyRecordInfoMessage(
+                            String.valueOf( newVersion.getChangeLabel() ),
+                            newVersion.getSerialNumber() ) );
 
                     }
 
@@ -406,13 +299,8 @@ public final class BankleitzahlenDatei
                     !this.records.containsKey( newVersion.getSerialNumber() ) )
                 {
                     throw new IllegalArgumentException(
-                        BankleitzahlenDateiBundle.getInstance().
-                        getCannotModifyNonexistentRecordMessage(
-                        Locale.getDefault() ).format(
-                        new Object[]
-                        {
-                            newVersion.getSerialNumber()
-                        } ) );
+                        this.getCannotModifyNonexistentRecordMessage(
+                        newVersion.getSerialNumber() ) );
 
                 }
             }
@@ -437,7 +325,7 @@ public final class BankleitzahlenDatei
             for ( Iterator it = this.records.values().iterator(); it.hasNext();)
             {
                 task.setProgress( progress++ );
-                oldVersion = ( BankleitzahlInfo ) it.next();
+                oldVersion = (BankleitzahlInfo) it.next();
 
                 if ( 'D' == oldVersion.getChangeLabel() )
                 {
@@ -449,14 +337,9 @@ public final class BankleitzahlenDatei
                         if ( log )
                         {
                             this.getLogger().debug(
-                                BankleitzahlenDateiBundle.getInstance().
-                                getRemoveRecordInfoMessage( Locale.getDefault() ).
-                                format( new Object[]
-                                        {
-                                            new Character(
-                                            oldVersion.getChangeLabel() ),
-                                            oldVersion.getSerialNumber()
-                                        } ) );
+                                this.getRemoveRecordInfoMessage(
+                                String.valueOf( oldVersion.getChangeLabel() ),
+                                oldVersion.getSerialNumber() ) );
 
                         }
                     }
@@ -521,12 +404,7 @@ public final class BankleitzahlenDatei
         if ( this.getLogger().isDebugEnabled() )
         {
             this.getLogger().debug(
-                BankleitzahlenDateiBundle.getInstance().
-                getFileNameInfoMessage( Locale.getDefault() ).
-                format( new Object[]
-                        {
-                            resource.toExternalForm()
-                        } ) );
+                this.getFileNameInfoMessage( resource.toExternalForm() ) );
 
         }
 
@@ -544,13 +422,8 @@ public final class BankleitzahlenDatei
                 if ( this.records.put( rec.getSerialNumber(), rec ) != null )
                 {
                     throw new IllegalArgumentException(
-                        BankleitzahlenDateiBundle.getInstance().
-                        getCannotAddDuplicateRecordMessage(
-                        Locale.getDefault() ).format(
-                        new Object[]
-                        {
-                            rec.getSerialNumber()
-                        } ) );
+                        this.getCannotAddDuplicateRecordMessage(
+                        rec.getSerialNumber() ) );
 
                 }
             }
@@ -567,4 +440,147 @@ public final class BankleitzahlenDatei
     }
 
     //-----------------------------------------------------BankleitzahlenDatei--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>fileNameInfo</code>.
+     * <blockquote><pre>Lädt Bankleitzahlendatei "{0}".</pre></blockquote>
+     * <blockquote><pre>Loading Bankleitzahlendatei "{0}".</pre></blockquote>
+     *
+     * @param fileName format argument.
+     *
+     * @return the text of message <code>fileNameInfo</code>.
+     */
+    private String getFileNameInfoMessage(
+            java.lang.String fileName )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "fileNameInfo",
+                new Object[]
+                {
+                    fileName
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>addRecordInfo</code>.
+     * <blockquote><pre>{0}: Datensatz {1, number} hinzugefügt.</pre></blockquote>
+     * <blockquote><pre>{0}: Added record {1, number}.</pre></blockquote>
+     *
+     * @param label format argument.
+     * @param serialNumber format argument.
+     *
+     * @return the text of message <code>addRecordInfo</code>.
+     */
+    private String getAddRecordInfoMessage(
+            java.lang.String label,
+            java.lang.Number serialNumber )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "addRecordInfo",
+                new Object[]
+                {
+                    label,
+                    serialNumber
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>modifyRecordInfo</code>.
+     * <blockquote><pre>{0}: Datensatz {1, number} aktualisiert.</pre></blockquote>
+     * <blockquote><pre>{0}: Updated record {1, number}.</pre></blockquote>
+     *
+     * @param label format argument.
+     * @param serialNumber format argument.
+     *
+     * @return the text of message <code>modifyRecordInfo</code>.
+     */
+    private String getModifyRecordInfoMessage(
+            java.lang.String label,
+            java.lang.Number serialNumber )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "modifyRecordInfo",
+                new Object[]
+                {
+                    label,
+                    serialNumber
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>removeRecordInfo</code>.
+     * <blockquote><pre>{0}: Datensatz {1, number} entfernt.</pre></blockquote>
+     * <blockquote><pre>{0}: Removed record {1, number}.</pre></blockquote>
+     *
+     * @param label format argument.
+     * @param serialNumber format argument.
+     *
+     * @return the text of message <code>removeRecordInfo</code>.
+     */
+    private String getRemoveRecordInfoMessage(
+            java.lang.String label,
+            java.lang.Number serialNumber )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "removeRecordInfo",
+                new Object[]
+                {
+                    label,
+                    serialNumber
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>cannotAddDuplicateRecord</code>.
+     * <blockquote><pre>Datensatz mit Seriennummer {0,number} existiert bereits und kann nicht hinzugefügt werden.</pre></blockquote>
+     * <blockquote><pre>Record with serial number {0,number} already exists and cannot be added.</pre></blockquote>
+     *
+     * @param serialNumber format argument.
+     *
+     * @return the text of message <code>cannotAddDuplicateRecord</code>.
+     */
+    private String getCannotAddDuplicateRecordMessage(
+            java.lang.Number serialNumber )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "cannotAddDuplicateRecord",
+                new Object[]
+                {
+                    serialNumber
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>cannotModifyNonexistentRecord</code>.
+     * <blockquote><pre>Ein Datensatz mit Seriennummer {0,number} existiert nicht und kann nicht aktualisiert werden.</pre></blockquote>
+     * <blockquote><pre>Record with serial number {0,number} does not exist and cannot be updated.</pre></blockquote>
+     *
+     * @param serialNumber format argument.
+     *
+     * @return the text of message <code>cannotModifyNonexistentRecord</code>.
+     */
+    private String getCannotModifyNonexistentRecordMessage(
+            java.lang.Number serialNumber )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "cannotModifyNonexistentRecord",
+                new Object[]
+                {
+                    serialNumber
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }

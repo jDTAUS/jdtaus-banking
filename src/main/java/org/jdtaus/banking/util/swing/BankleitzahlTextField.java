@@ -43,12 +43,6 @@ import org.jdtaus.banking.messages.BankleitzahlExpirationMessage;
 import org.jdtaus.banking.messages.BankleitzahlReplacementMessage;
 import org.jdtaus.banking.messages.UnknownBankleitzahlMessage;
 import org.jdtaus.core.container.ContainerFactory;
-import org.jdtaus.core.container.ContextFactory;
-import org.jdtaus.core.container.ContextInitializer;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 
 /**
@@ -78,57 +72,10 @@ public final class BankleitzahlTextField extends JFormattedTextField
     private static final long serialVersionUID = -5461742987164339047L;
 
     //---------------------------------------------------------------Constants--
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(BankleitzahlTextField.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
-    //--Constructors------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
-    // This section is managed by jdtaus-container-mojo.
-
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("format");
-        this.pFormat = ((java.lang.Integer) p.getValue()).intValue();
-
-
-        p = meta.getProperty("validating");
-        this.pValidating = ((java.lang.Boolean) p.getValue()).booleanValue();
-
-    }
-// </editor-fold>//GEN-END:jdtausConstructors
-
-    //------------------------------------------------------------Constructors--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
-
-    /** Configured <code>BankleitzahlenVerzeichnis</code> implementation. */
-    private transient BankleitzahlenVerzeichnis dBankleitzahlenVerzeichnis;
 
     /**
      * Gets the configured <code>BankleitzahlenVerzeichnis</code> implementation.
@@ -137,34 +84,11 @@ public final class BankleitzahlTextField extends JFormattedTextField
      */
     private BankleitzahlenVerzeichnis getBankleitzahlenVerzeichnis()
     {
-        BankleitzahlenVerzeichnis ret = null;
-        if(this.dBankleitzahlenVerzeichnis != null)
-        {
-            ret = this.dBankleitzahlenVerzeichnis;
-        }
-        else
-        {
-            ret = (BankleitzahlenVerzeichnis) ContainerFactory.getContainer().
-                getDependency(BankleitzahlTextField.class,
-                "BankleitzahlenVerzeichnis");
+        return (BankleitzahlenVerzeichnis) ContainerFactory.getContainer().
+            getDependency( this, "BankleitzahlenVerzeichnis" );
 
-            if(ModelFactory.getModel().getModules().
-                getImplementation(BankleitzahlTextField.class.getName()).
-                getDependencies().getDependency("BankleitzahlenVerzeichnis").
-                isBound())
-            {
-                this.dBankleitzahlenVerzeichnis = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
     }
+
 // </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
@@ -174,35 +98,27 @@ public final class BankleitzahlTextField extends JFormattedTextField
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code format}.
-     * @serial
-     */
-    private int pFormat;
-
-    /**
-     * Gets the value of property <code>format</code>.
+     * Gets the value of property <code>defaultValidating</code>.
      *
-     * @return the value of property <code>format</code>.
+     * @return Default value of the flag indicating if validation should be performed.
      */
-    public int getFormat()
+    private java.lang.Boolean isDefaultValidating()
     {
-        return this.pFormat;
+        return (java.lang.Boolean) ContainerFactory.getContainer().
+            getProperty( this, "defaultValidating" );
+
     }
 
     /**
-     * Property {@code validating}.
-     * @serial
-     */
-    private boolean pValidating;
-
-    /**
-     * Gets the value of property <code>validating</code>.
+     * Gets the value of property <code>defaultFormat</code>.
      *
-     * @return the value of property <code>validating</code>.
+     * @return Default value of the format to use when formatting Bankleitzahl instances (3001 = electronic format, 3002 letter format).
      */
-    public boolean isValidating()
+    private java.lang.Integer getDefaultFormat()
     {
-        return this.pValidating;
+        return (java.lang.Integer) ContainerFactory.getContainer().
+            getProperty( this, "defaultFormat" );
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -210,12 +126,23 @@ public final class BankleitzahlTextField extends JFormattedTextField
     //--------------------------------------------------------------Properties--
     //--BankleitzahlTextField---------------------------------------------------
 
+    /**
+     * The constant of the format to use when formatting Bankleitzahl
+     * instances.
+     * @serial
+     */
+    private Integer format;
+
+    /**
+     * Flag indicating if validation is performed.
+     * @serial
+     */
+    private Boolean validating;
+
     /** Creates a new default {@code BankleitzahlTextField} instance. */
     public BankleitzahlTextField()
     {
         super();
-
-        this.initializeProperties( META.getProperties() );
         this.assertValidProperties();
         this.setColumns( Bankleitzahl.MAX_CHARACTERS );
         this.setFormatterFactory(
@@ -249,16 +176,14 @@ public final class BankleitzahlTextField extends JFormattedTextField
 
                             if ( value instanceof Bankleitzahl )
                             {
-                                final Bankleitzahl blz = ( Bankleitzahl ) value;
+                                final Bankleitzahl blz = (Bankleitzahl) value;
                                 ret = blz.format( getFormat() );
                             }
 
                             return ret;
                         }
-
                     };
                 }
-
             } );
 
         this.setInputVerifier(
@@ -273,7 +198,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
                         input instanceof JTextComponent )
                     {
                         final String text =
-                            ( ( JTextComponent ) input ).getText();
+                            ( (JTextComponent) input ).getText();
 
                         if ( text != null &&
                             text.trim().length() > 0 )
@@ -291,7 +216,6 @@ public final class BankleitzahlTextField extends JFormattedTextField
 
                     return valid;
                 }
-
             } );
 
         this.addPropertyChangeListener(
@@ -309,12 +233,10 @@ public final class BankleitzahlTextField extends JFormattedTextField
                         {
                             updateTooltip();
                         }
-
-                        }.start();
+                    }.start();
                 }
             }
-
-            } );
+        } );
     }
 
     /**
@@ -324,14 +246,34 @@ public final class BankleitzahlTextField extends JFormattedTextField
      */
     public Bankleitzahl getBankleitzahl()
     {
-        return ( Bankleitzahl ) this.getValue();
+        return (Bankleitzahl) this.getValue();
+    }
+
+    /**
+     * Gets the constant of the format used when formatting Bankleitzahl
+     * instances.
+     *
+     * @return the constant of the format used when formatting Bankleitzahl
+     * instances.
+     *
+     * @see Bankleitzahl#ELECTRONIC_FORMAT
+     * @see Bankleitzahl#LETTER_FORMAT
+     */
+    public int getFormat()
+    {
+        if ( this.format == null )
+        {
+            this.format = this.getDefaultFormat();
+        }
+
+        return this.format.intValue();
     }
 
     /**
      * Sets the constant of the format to use when formatting Bankleitzahl
      * instances.
      *
-     * @param format the constant of the format to use when formatting
+     * @param value the constant of the format to use when formatting
      * Bankleitzahl instances.
      *
      * @throws IllegalArgumentException if {@code format} is neither
@@ -340,26 +282,42 @@ public final class BankleitzahlTextField extends JFormattedTextField
      * @see Bankleitzahl#ELECTRONIC_FORMAT
      * @see Bankleitzahl#LETTER_FORMAT
      */
-    public void setFormat( final int format )
+    public void setFormat( final int value )
     {
-        if ( format != Bankleitzahl.ELECTRONIC_FORMAT &&
-            format != Bankleitzahl.LETTER_FORMAT )
+        if ( value != Bankleitzahl.ELECTRONIC_FORMAT &&
+            value != Bankleitzahl.LETTER_FORMAT )
         {
-            throw new IllegalArgumentException( Integer.toString( format ) );
+            throw new IllegalArgumentException( Integer.toString( value ) );
         }
 
-        this.pFormat = format;
+        this.format = new Integer( value );
+    }
+
+    /**
+     * Gets the flag indicating if validation is performed.
+     *
+     * @return {@code true} if the fields' value is validated; {@code false} if
+     * no validation of the fields' value is performed.
+     */
+    public boolean isValidating()
+    {
+        if ( this.validating == null )
+        {
+            this.validating = this.isDefaultValidating();
+        }
+
+        return this.validating.booleanValue();
     }
 
     /**
      * Sets the flag indicating if validation should be performed.
      *
-     * @param validating {@code true} to validate the fields' values;
-     * {@code false} to not validate the fields' values.
+     * @param value {@code true} to validate the fields' values; {@code false}
+     * to not validate the fields' values.
      */
-    public void setValidating( boolean validating )
+    public void setValidating( boolean value )
     {
-        this.pValidating = validating;
+        this.validating = Boolean.valueOf( value );
     }
 
     /**
@@ -436,7 +394,6 @@ public final class BankleitzahlTextField extends JFormattedTextField
                 {
                     setToolTipText( finalText );
                 }
-
             } );
 
     }

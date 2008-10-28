@@ -29,10 +29,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.text.JTextComponent;
 import org.jdtaus.banking.AlphaNumericText27;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
+import org.jdtaus.core.container.ContainerFactory;
 
 /**
  * {@code JFormattedTextField} supporting the {@code AlphaNumericText27} type.
@@ -62,93 +59,33 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
     private static final long serialVersionUID = -8152767220100367519L;
 
     //---------------------------------------------------------------Constants--
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(AlphaNumericText27TextField.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
-    //--Constructors------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
-    // This section is managed by jdtaus-container-mojo.
-
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("normalizing");
-        this.pNormalizing = ((java.lang.Boolean) p.getValue()).booleanValue();
-
-
-        p = meta.getProperty("validating");
-        this.pValidating = ((java.lang.Boolean) p.getValue()).booleanValue();
-
-    }
-// </editor-fold>//GEN-END:jdtausConstructors
-
-    //------------------------------------------------------------Constructors--
-    //--Dependencies------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
-    // This section is managed by jdtaus-container-mojo.
-
-// </editor-fold>//GEN-END:jdtausDependencies
-
-    //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code normalizing}.
-     * @serial
-     */
-    private boolean pNormalizing;
-
-    /**
-     * Gets the value of property <code>normalizing</code>.
+     * Gets the value of property <code>defaultValidating</code>.
      *
-     * @return the value of property <code>normalizing</code>.
+     * @return Default value of the flag indicating if validation should be performed.
      */
-    public boolean isNormalizing()
+    private java.lang.Boolean isDefaultValidating()
     {
-        return this.pNormalizing;
+        return (java.lang.Boolean) ContainerFactory.getContainer().
+            getProperty( this, "defaultValidating" );
+
     }
 
     /**
-     * Property {@code validating}.
-     * @serial
-     */
-    private boolean pValidating;
-
-    /**
-     * Gets the value of property <code>validating</code>.
+     * Gets the value of property <code>defaultNormalizing</code>.
      *
-     * @return the value of property <code>validating</code>.
+     * @return Default value of the flag indicating if a normalizing parser should be used.
      */
-    public boolean isValidating()
+    private java.lang.Boolean isDefaultNormalizing()
     {
-        return this.pValidating;
+        return (java.lang.Boolean) ContainerFactory.getContainer().
+            getProperty( this, "defaultNormalizing" );
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -156,11 +93,22 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
     //--------------------------------------------------------------Properties--
     //--AlphaNumericText27TextField---------------------------------------------
 
+    /**
+     * Flag indicating if a normalizing parser is used.
+     * @serial
+     */
+    private Boolean normalizing;
+
+    /**
+     * Flag indicating if validation is performed.
+     * @serial
+     */
+    private Boolean validating;
+
     /** Creates a new default {@code AlphaNumericText27TextField} instance. */
     public AlphaNumericText27TextField()
     {
         super();
-        this.initializeProperties( META.getProperties() );
         this.setColumns( AlphaNumericText27.MAX_LENGTH );
         this.setFormatterFactory(
             new AbstractFormatterFactory()
@@ -198,7 +146,7 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
                             if ( value instanceof AlphaNumericText27 )
                             {
                                 final AlphaNumericText27 txt =
-                                    ( AlphaNumericText27 ) value;
+                                    (AlphaNumericText27) value;
 
                                 ret = txt.isEmpty()
                                     ? null
@@ -208,10 +156,8 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
 
                             return ret;
                         }
-
                     };
                 }
-
             } );
 
         this.setInputVerifier(
@@ -226,7 +172,7 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
                         input instanceof JTextComponent )
                     {
                         final String text =
-                            ( ( JTextComponent ) input ).getText();
+                            ( (JTextComponent) input ).getText();
 
                         if ( text != null &&
                             text.trim().length() > 0 )
@@ -248,7 +194,6 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
 
                     return valid;
                 }
-
             } );
     }
 
@@ -259,7 +204,23 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
      */
     public AlphaNumericText27 getAlphaNumericText27()
     {
-        return ( AlphaNumericText27 ) this.getValue();
+        return (AlphaNumericText27) this.getValue();
+    }
+
+    /**
+     * Gets the flag indicating if a normalizing parser is used.
+     *
+     * @return {@code true} if a normalizing parser is used; {@code false} if
+     * a strict parser is used (defaults to {@code true}).
+     */
+    public boolean isNormalizing()
+    {
+        if ( this.normalizing == null )
+        {
+            this.normalizing = this.isDefaultNormalizing();
+        }
+
+        return this.normalizing.booleanValue();
     }
 
     /**
@@ -270,18 +231,34 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
      */
     public void setNormalizing( final boolean value )
     {
-        this.pNormalizing = value;
+        this.normalizing = Boolean.valueOf( value );
+    }
+
+    /**
+     * Gets the flag indicating if validation is performed.
+     *
+     * @return {@code true} if the fields' value is validated; {@code false} if
+     * no validation of the fields' value is performed.
+     */
+    public boolean isValidating()
+    {
+        if ( this.validating == null )
+        {
+            this.validating = this.isDefaultValidating();
+        }
+
+        return this.validating.booleanValue();
     }
 
     /**
      * Sets the flag indicating if validation should be performed.
      *
-     * @param validating {@code true} to validate the fields' values;
+     * @param value {@code true} to validate the fields' values;
      * {@code false} to not validate the fields' values.
      */
-    public void setValidating( boolean validating )
+    public void setValidating( boolean value )
     {
-        this.pValidating = validating;
+        this.validating = Boolean.valueOf( value );
     }
 
     //---------------------------------------------AlphaNumericText27TextField--

@@ -29,10 +29,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.text.JTextComponent;
 import org.jdtaus.banking.Kontonummer;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.PropertyException;
 
 /**
@@ -59,93 +56,33 @@ public final class KontonummerTextField extends JFormattedTextField
     private static final long serialVersionUID = -959284086262750493L;
 
     //---------------------------------------------------------------Constants--
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(KontonummerTextField.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
-    //--Constructors------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
-    // This section is managed by jdtaus-container-mojo.
-
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("format");
-        this.pFormat = ((java.lang.Integer) p.getValue()).intValue();
-
-
-        p = meta.getProperty("validating");
-        this.pValidating = ((java.lang.Boolean) p.getValue()).booleanValue();
-
-    }
-// </editor-fold>//GEN-END:jdtausConstructors
-
-    //------------------------------------------------------------Constructors--
-    //--Dependencies------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
-    // This section is managed by jdtaus-container-mojo.
-
-// </editor-fold>//GEN-END:jdtausDependencies
-
-    //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code format}.
-     * @serial
-     */
-    private int pFormat;
-
-    /**
-     * Gets the value of property <code>format</code>.
+     * Gets the value of property <code>defaultValidating</code>.
      *
-     * @return the value of property <code>format</code>.
+     * @return Default value of the flag indicating if validation should be performed.
      */
-    public int getFormat()
+    private java.lang.Boolean isDefaultValidating()
     {
-        return this.pFormat;
+        return (java.lang.Boolean) ContainerFactory.getContainer().
+            getProperty( this, "defaultValidating" );
+
     }
 
     /**
-     * Property {@code validating}.
-     * @serial
-     */
-    private boolean pValidating;
-
-    /**
-     * Gets the value of property <code>validating</code>.
+     * Gets the value of property <code>defaultFormat</code>.
      *
-     * @return the value of property <code>validating</code>.
+     * @return Default value of the format to use when formatting Kontonummer instances (4001 = electronic format, 4002 letter format).
      */
-    public boolean isValidating()
+    private java.lang.Integer getDefaultFormat()
     {
-        return this.pValidating;
+        return (java.lang.Integer) ContainerFactory.getContainer().
+            getProperty( this, "defaultFormat" );
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -153,12 +90,22 @@ public final class KontonummerTextField extends JFormattedTextField
     //--------------------------------------------------------------Properties--
     //--KontonummerTextField----------------------------------------------------
 
+    /**
+     * Format used to format Kontonummer instances.
+     * @serial
+     */
+    private Integer format;
+
+    /**
+     * Flag indicating if validation is performed.
+     * @serial
+     */
+    private Boolean validating;
+
     /** Creates a new default {@code KontonummerTextField} instance. */
     public KontonummerTextField()
     {
         super();
-
-        this.initializeProperties( META.getProperties() );
         this.assertValidProperties();
         this.setColumns( Kontonummer.MAX_CHARACTERS );
         this.setFormatterFactory(
@@ -193,16 +140,14 @@ public final class KontonummerTextField extends JFormattedTextField
 
                             if ( value instanceof Kontonummer )
                             {
-                                final Kontonummer kto = ( Kontonummer ) value;
+                                final Kontonummer kto = (Kontonummer) value;
                                 ret = kto.format( getFormat() );
                             }
 
                             return ret;
                         }
-
                     };
                 }
-
             } );
 
         this.setInputVerifier(
@@ -217,7 +162,7 @@ public final class KontonummerTextField extends JFormattedTextField
                         input instanceof JTextComponent )
                     {
                         final String text =
-                            ( ( JTextComponent ) input ).getText();
+                            ( (JTextComponent) input ).getText();
 
                         if ( text != null &&
                             text.trim().length() > 0 )
@@ -235,7 +180,6 @@ public final class KontonummerTextField extends JFormattedTextField
 
                     return valid;
                 }
-
             } );
     }
 
@@ -246,14 +190,34 @@ public final class KontonummerTextField extends JFormattedTextField
      */
     public Kontonummer getKontonummer()
     {
-        return ( Kontonummer ) this.getValue();
+        return (Kontonummer) this.getValue();
+    }
+
+    /**
+     * Gets the constant of the format used when formatting Kontonummer
+     * instances.
+     *
+     * @return the constant of the format used when formatting Kontonummer
+     * instances.
+     *
+     * @see Kontonummer#ELECTRONIC_FORMAT
+     * @see Kontonummer#LETTER_FORMAT
+     */
+    public int getFormat()
+    {
+        if ( this.format == null )
+        {
+            this.format = this.getDefaultFormat();
+        }
+
+        return this.format.intValue();
     }
 
     /**
      * Sets the constant of the format to use when formatting Kontonummer
      * instances.
      *
-     * @param format the constant of the format to use when formatting
+     * @param value the constant of the format to use when formatting
      * Kontonummer instances.
      *
      * @throws IllegalArgumentException if {@code format} is neither
@@ -262,26 +226,42 @@ public final class KontonummerTextField extends JFormattedTextField
      * @see Kontonummer#ELECTRONIC_FORMAT
      * @see Kontonummer#LETTER_FORMAT
      */
-    public void setFormat( final int format )
+    public void setFormat( final int value )
     {
-        if ( format != Kontonummer.ELECTRONIC_FORMAT &&
-            format != Kontonummer.LETTER_FORMAT )
+        if ( value != Kontonummer.ELECTRONIC_FORMAT &&
+            value != Kontonummer.LETTER_FORMAT )
         {
-            throw new IllegalArgumentException( Integer.toString( format ) );
+            throw new IllegalArgumentException( Integer.toString( value ) );
         }
 
-        this.pFormat = format;
+        this.format = new Integer( value );
+    }
+
+    /**
+     * Gets the flag indicating if validation is performed.
+     *
+     * @return {@code true} if the fields' value is validated; {@code false} if
+     * no validation of the fields' value is performed.
+     */
+    public boolean isValidating()
+    {
+        if ( this.validating == null )
+        {
+            this.validating = this.isDefaultValidating();
+        }
+
+        return this.validating.booleanValue();
     }
 
     /**
      * Sets the flag indicating if validation should be performed.
      *
-     * @param validating {@code true} to validate the fields' values;
-     * {@code false} to not validate the fields' values.
+     * @param value {@code true} to validate the fields' values; {@code false}
+     * to not validate the fields' values.
      */
-    public void setValidating( boolean validating )
+    public void setValidating( boolean value )
     {
-        this.pValidating = validating;
+        this.validating = Boolean.valueOf( value );
     }
 
     /**
