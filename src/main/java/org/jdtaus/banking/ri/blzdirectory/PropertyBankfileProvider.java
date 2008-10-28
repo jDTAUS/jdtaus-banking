@@ -30,14 +30,9 @@ import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
-import org.jdtaus.core.container.ContainerInitializer;
-import org.jdtaus.core.container.Dependency;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ImplementationException;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.PropertyException;
 
 /**
@@ -52,142 +47,49 @@ import org.jdtaus.core.container.PropertyException;
  *
  * @see BundesbankBankleitzahlenVerzeichnis
  */
-public final class PropertyBankfileProvider
-    implements ContainerInitializer, BankfileProvider
+public final class PropertyBankfileProvider implements BankfileProvider
 {
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(PropertyBankfileProvider.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
-    /**
-     * <code>PropertyBankfileProvider</code> implementation constructor.
-     *
-     * @param meta Implementation meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private PropertyBankfileProvider(final Implementation meta)
+    /** Standard implementation constructor <code>org.jdtaus.banking.ri.blzdirectory.PropertyBankfileProvider</code>. */
+    public PropertyBankfileProvider()
     {
         super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
-    }
-    /**
-     * <code>PropertyBankfileProvider</code> dependency constructor.
-     *
-     * @param meta dependency meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private PropertyBankfileProvider(final Dependency meta)
-    {
-        super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
     }
 
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("configuration");
-        this.pConfiguration = (java.lang.String) p.getValue();
-
-
-        p = meta.getProperty("dataDirectory");
-        this.pDataDirectory = (java.lang.String) p.getValue();
-
-    }
 // </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
-    //--ContainerInitializer----------------------------------------------------
-
-    /**
-     * Initializes the instance.
-     *
-     * @see #assertValidProperties()
-     */
-    public void initialize()
-    {
-        this.assertValidProperties();
-    }
-
-    //----------------------------------------------------ContainerInitializer--
-    //--Dependencies------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
-    // This section is managed by jdtaus-container-mojo.
-
-// </editor-fold>//GEN-END:jdtausDependencies
-
-    //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code configuration}.
-     * @serial
-     */
-    private java.lang.String pConfiguration;
-
-    /**
-     * Gets the value of property <code>configuration</code>.
+     * Gets the value of property <code>defaultPropertiesResource</code>.
      *
-     * @return the value of property <code>configuration</code>.
+     * @return Default name of the properties file resource specifying the bankfiles to load.
      */
-    private java.lang.String getConfiguration()
+    private java.lang.String getDefaultPropertiesResource()
     {
-        return this.pConfiguration;
+        return (java.lang.String) ContainerFactory.getContainer().
+            getProperty( this, "defaultPropertiesResource" );
+
     }
 
     /**
-     * Property {@code dataDirectory}.
-     * @serial
-     */
-    private java.lang.String pDataDirectory;
-
-    /**
-     * Gets the value of property <code>dataDirectory</code>.
+     * Gets the value of property <code>defaultDataDirectory</code>.
      *
-     * @return the value of property <code>dataDirectory</code>.
+     * @return Default name of the directory holding bankfiles.
      */
-    private java.lang.String getDataDirectory()
+    private java.lang.String getDefaultDataDirectory()
     {
-        return this.pDataDirectory;
+        return (java.lang.String) ContainerFactory.getContainer().
+            getProperty( this, "defaultDataDirectory" );
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -197,54 +99,48 @@ public final class PropertyBankfileProvider
 
     public URL[] getResources() throws IOException
     {
-        int i;
-        String rsrc;
-        InputStream stream = null;
-        final URL[] ret;
-        final Iterator it;
+
+        this.assertValidProperties();
+
+        final InputStream stream = this.getClassLoader().getResourceAsStream(
+            this.getPropertiesResource() );
+
+        final Properties properties = new java.util.Properties();
+        properties.load( stream );
+
         final Map sorted = new TreeMap( PROPERTY_SORTER );
-        final java.util.Properties props = new java.util.Properties();
+        sorted.putAll( properties );
 
-        try
+        final URL[] resources = new URL[ sorted.size() ];
+        int i = 0;
+        for ( Iterator it = sorted.values().iterator(); it.hasNext(); i++ )
         {
-            stream = this.getConfigurationResource().openStream();
-            props.load( stream );
-            sorted.putAll( props );
-            ret = new URL[ sorted.size() ];
-            for ( it = sorted.values().iterator(), i = 0; it.hasNext(); i++ )
-            {
-                rsrc = this.getDataDirectory() + '/' + it.next().toString();
-                ret[i] = this.getClassLoader().getResource( rsrc );
-                if ( ret[i] == null )
-                {
-                    throw new ImplementationException( META, rsrc );
-                }
-            }
+            final String location = this.getDataDirectory() + '/' +
+                it.next().toString();
 
-            return ret;
+            resources[i] = this.getClassLoader().getResource( location );
+
+            assert resources[i] != null : "Expected resource " + location +
+                " missing.";
+
         }
-        catch ( IOException e )
-        {
-            throw new ImplementationException( META, e );
-        }
-        finally
-        {
-            if ( stream != null )
-            {
-                try
-                {
-                    stream.close();
-                }
-                catch ( IOException e )
-                {
-                    throw new ImplementationException( META, e );
-                }
-            }
-        }
+
+        return resources;
     }
 
     //--------------------------------------------------------BankfileProvider--
     //--PropertyBankfileProvider------------------------------------------------
+
+    /** Classloader searched for resources. */
+    private ClassLoader classLoader;
+
+    /** Name of the directory holding bankfiles. */
+    private String dataDirectory;
+
+    /**
+     * Name of the properties file resource specifying the bankfiles to load.
+     */
+    private String propertiesResource;
 
     /** Prefix used for property keys in the property file. */
     private static final String PREFIX = "BankleitzahlenDatei.";
@@ -269,10 +165,10 @@ public final class PropertyBankfileProvider
             try
             {
                 final Number o1Int =
-                    fmt.parse( ( ( String ) o1 ).substring( PREFIX.length() ) );
+                    fmt.parse( ( (String) o1 ).substring( PREFIX.length() ) );
 
                 final Number o2Int =
-                    fmt.parse( ( ( String ) o2 ).substring( PREFIX.length() ) );
+                    fmt.parse( ( (String) o2 ).substring( PREFIX.length() ) );
 
                 if ( o1Int.longValue() < o2Int.longValue() )
                 {
@@ -286,7 +182,7 @@ public final class PropertyBankfileProvider
             }
             catch ( ParseException e )
             {
-                throw new ImplementationException( META, e );
+                throw new AssertionError( e );
             }
 
             return ret;
@@ -294,11 +190,106 @@ public final class PropertyBankfileProvider
 
     };
 
-    /** Creates a new {@code PropertyBankfileProvider} instance. */
-    public PropertyBankfileProvider()
+    /**
+     * Creates a new {@code PropertyBankfileProvider} instance taking the name
+     * of the properties file resource specifying bankfiles to load and the name
+     * of the directory holding these banfiles.
+     *
+     * @param propertiesResource Name of the properties file resource specifying
+     * the bankfiles to load.
+     * @param dataDirectory Name of the directory holding bankfiles.
+     */
+    public PropertyBankfileProvider( final String propertiesResource,
+        final String dataDirectory )
     {
-        this( META );
-        this.initialize();
+        this( propertiesResource, dataDirectory, null );
+    }
+
+    /**
+     * Creates a new {@code PropertyBankfileProvider} instance taking the
+     * classloader to search for resources.
+     *
+     * @param classLoader Classloader to search for resources.
+     */
+    public PropertyBankfileProvider( final ClassLoader classLoader )
+    {
+        this( null, null, classLoader );
+    }
+
+    /**
+     * Creates a new {@code PropertyBankfileProvider} instance taking the name
+     * of the properties file resource specifying bankfiles to load, the name
+     * of the directory holding these banfiles and the classloader to search for
+     * resources.
+     *
+     * @param propertiesResource Name of the properties file resource specifying
+     * the bankfiles to load.
+     * @param dataDirectory Name of the directory holding bankfiles.
+     * @param classLoader Classloader to search for resources.
+     */
+    public PropertyBankfileProvider( final String propertiesResource,
+        final String dataDirectory, final ClassLoader classLoader )
+    {
+        this();
+        this.propertiesResource = propertiesResource;
+        this.dataDirectory = dataDirectory;
+        this.classLoader = classLoader;
+    }
+
+    /**
+     * Gets the name of the directory holding bankfiles.
+     *
+     * @return name of the directory holding bankfiles.
+     */
+    public String getDataDirectory()
+    {
+        if ( this.dataDirectory == null )
+        {
+            this.dataDirectory = this.getDefaultDataDirectory();
+        }
+
+        return this.dataDirectory;
+    }
+
+    /**
+     * Gets the name of the properties file resource specifying the bankfiles to
+     * load.
+     *
+     * @return name of the properties file resource specifying the bankfiles to
+     * load.
+     */
+    public String getPropertiesResource()
+    {
+        if ( this.propertiesResource == null )
+        {
+            this.propertiesResource = this.getDefaultPropertiesResource();
+        }
+
+        return this.propertiesResource;
+    }
+
+    /**
+     * Gets the classloader searched for resources.
+     * <p>This method returns either the current thread's context classloader or
+     * this classes classloader, if the current thread has no context classloader
+     * set. A custom classloader can be specified by using one of the
+     * constructors taking a classloader.</p>
+     *
+     * @return the classloader to search for resources.
+     */
+    public ClassLoader getClassLoader()
+    {
+        if ( this.classLoader == null )
+        {
+            this.classLoader = Thread.currentThread().getContextClassLoader();
+
+            if ( this.classLoader == null )
+            {
+                this.classLoader = this.getClass().getClassLoader();
+            }
+        }
+
+        return this.classLoader;
     }
 
     /**
@@ -313,54 +304,16 @@ public final class PropertyBankfileProvider
         {
 
             throw new PropertyException( "dataDirectory",
-                                         this.getDataDirectory() );
+                this.getDataDirectory() );
 
         }
-        if ( this.getConfiguration() == null ||
-            this.getConfiguration().length() == 0 ||
-            this.getConfigurationResource() == null )
+        if ( this.getPropertiesResource() == null ||
+            this.getPropertiesResource().length() == 0 )
         {
-            throw new PropertyException( "configuration",
-                                         this.getConfiguration() );
+            throw new PropertyException( "propertiesResource",
+                this.getPropertiesResource() );
 
         }
-    }
-
-    /**
-     * Gets an URL to the property file configured via property
-     * {@code configuration} holding the files to load.
-     *
-     * @return an URL to a property file holding the files to load or
-     * {@code null} if property {@code configuration} does not point to any
-     * resource.
-     *
-     * @see #getClassLoader()
-     */
-    private URL getConfigurationResource()
-    {
-        return this.getClassLoader().getResource( this.getConfiguration() );
-    }
-
-    /**
-     * Gets the classloader used for loading bankfile resources.
-     * <p>The reference implementation will use the current thread's context
-     * classloader and will fall back to the system classloader if the
-     * current thread has no context classloader set.</p>
-     *
-     * @return the classloader to be used for loading bankfile resources.
-     */
-    private ClassLoader getClassLoader()
-    {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if ( classLoader == null )
-        {
-            classLoader = ClassLoader.getSystemClassLoader();
-        }
-
-        assert classLoader != null :
-            "Expected ClassLoader.getSystemClassLoader() to not return null.";
-
-        return classLoader;
     }
 
     //------------------------------------------------PropertyBankfileProvider--

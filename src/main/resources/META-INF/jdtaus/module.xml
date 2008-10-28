@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-  jDTAUS Banking RI Bankleitzahlenverzeichnis
+  ${pom.name}
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
@@ -27,91 +27,157 @@
   Description: Runtime configuration for the ${pom.name} module.
 
 -->
+<container:module xmlns:container="http://jdtaus.org/core/model/container"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
+                  container:name="${pom.name}"
+                  container:version="${pom.version}"
+                  container:modelVersion="1.3">
 
-<jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
-               xmlns:jdtaus="http://jdtaus.org/runtime/container/xml"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="http://jdtaus.org/runtime/container/xml http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-client-container/jdtaus-module-1.1.xsd"
-               jdtaus:name="${pom.name}"
-               jdtaus:description="${pom.description}"
-               jdtaus:version="1.1">
+  <container:documentation container:defaultLanguage="en">
+    <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>
+  </container:documentation>
 
-  <jdtaus:specifications>
-    <jdtaus:specification jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"
-                          jdtaus:description="${pom.description}"
-                          jdtaus:vendor="${pom.organization.name}"
-                          jdtaus:version="${pom.version}"
-                          jdtaus:singleton="true"
-                          jdtaus:multiplicity="many"/>
+  <container:specifications>
+    <container:specification container:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"
+                             container:vendor="${pom.organization.name}"
+                             container:version="${pom.version}"
+                             container:scope="multiton"
+                             container:multiplicity="many">
 
-  </jdtaus:specifications>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Bankfile resource provider interface.]]></container:text>
+      </container:documentation>
+    </container:specification>
+  </container:specifications>
 
-  <jdtaus:implementations>
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis"
-                           jdtaus:name="jDTAUS Banking SPI"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+  <container:implementations>
+    <container:implementation container:identifier="org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis"
+                              container:name="jDTAUS Banking SPI"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"/>
-      </jdtaus:implementedSpecifications>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[BankleitzahlenVerzeichnis implementation backed by bankfiles.]]></container:text>
+      </container:documentation>
 
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
-                           jdtaus:name="Logger"
-                           jdtaus:bound="true">
+      <container:specifications>
+        <container:reference container:identifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"/>
+      </container:specifications>
 
-          <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name"
-                             jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis"
-                             jdtaus:api="true"/>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:name="Logger"
+                              container:bound="true">
 
-          </jdtaus:properties>
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis"/>
 
-        </jdtaus:dependency>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
-                           jdtaus:name="ApplicationLogger"
-                           jdtaus:bound="true"/>
+          </container:properties>
+        </container:dependency>
+        <container:dependency container:identifier="org.jdtaus.core.text.spi.ApplicationLogger"
+                              container:name="ApplicationLogger"
+                              container:bound="true"/>
 
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
-                           jdtaus:name="TaskMonitor"
-                           jdtaus:bound="true"/>
+        <container:dependency container:identifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                              container:name="TaskMonitor"
+                              container:bound="true"/>
 
-      </jdtaus:dependencies>
+        <container:dependency container:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"
+                              container:name="BankfileProvider"
+                              container:bound="true"/>
 
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="dateOfExpirationText"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="2008-12-07"/>
+      </container:dependencies>
+      <container:properties>
+        <container:property container:name="dateOfExpirationText"
+                            container:type="java.lang.String"
+                            container:value="2008-12-07">
 
-        <jdtaus:property jdtaus:name="dateOfExpirationPattern"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="yyyy-MM-dd"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[The date of expiration of the directory.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="dateOfExpirationPattern"
+                            container:type="java.lang.String"
+                            container:value="yyyy-MM-dd">
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Format pattern of the date of expiration property.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+      <container:messages>
+        <container:reference container:name="outdatedInfo"/>
+        <container:reference container:name="duplicateRecord"/>
+        <container:reference container:name="bankfileInfo"/>
+      </container:messages>
+    </container:implementation>
 
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.PropertyBankfileProvider"
-                           jdtaus:name="jDTAUS Banking SPI"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.ri.blzdirectory.PropertyBankfileProvider"
+                              container:name="jDTAUS Banking SPI"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"/>
-      </jdtaus:implementedSpecifications>
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="dataDirectory"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="META-INF/jdtaus"/>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[BankfileProvider implementation backed by a property file.]]></container:text>
+      </container:documentation>
+      <container:specifications>
+        <container:reference container:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"/>
+      </container:specifications>
+      <container:properties>
+        <container:property container:name="defaultDataDirectory"
+                            container:type="java.lang.String"
+                            container:value="META-INF/jdtaus">
 
-        <jdtaus:property jdtaus:name="configuration"
-                         jdtaus:type="java.lang.String"
-                         jdtaus:value="META-INF/jdtaus/BundesbankBankleitzahlenVerzeichnis.properties"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default name of the directory holding bankfiles.]]></container:text>
+          </container:documentation>
+        </container:property>
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
-  </jdtaus:implementations>
-</jdtaus:module>
+        <container:property container:name="defaultPropertiesResource"
+                            container:type="java.lang.String"
+                            container:value="META-INF/jdtaus/BundesbankBankleitzahlenVerzeichnis.properties">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default name of the properties file resource specifying the bankfiles to load.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
+  </container:implementations>
+  <container:messages>
+    <container:message container:name="outdatedInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Bankleitzahl {0} is outdated.]]></container:text>
+        <container:text container:language="de"><![CDATA[Bankleitzahl {0} ist veraltet.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="bankleitzahl" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="duplicateRecord">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Multiple bankfile records with serial number {0,number} detected during searching the directory for bankcode {1}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Mehrere Bankleitzahlendatei-Datensätze mit Seriennummer {0,number} während der Suche nach Bankleitzahl {1}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
+        <container:argument container:index="1" container:name="bankleitzahl" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="bankfileInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Read {1,choice,0#no bankfile|1#one bankfile|1<{1} bankfiles}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.]]></container:text>
+        <container:text container:language="de"><![CDATA[{1,choice,0#Keine Bankleitzahlendatei|1#Eine Bankleitzahlendatei|1<{1} Bankleitzahlendateien} gelesen. {0,choice,0#Keine Datensätze|1#Einen Datensatz|1<{0} Datensätze} verarbeitet.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="entityCount" container:type="number"/>
+        <container:argument container:index="1" container:name="bankfileCount" container:type="number"/>
+      </container:arguments>
+    </container:message>
+  </container:messages>
+</container:module>
