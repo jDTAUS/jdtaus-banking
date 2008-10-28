@@ -172,6 +172,11 @@
           <artifactId>maven-source-plugin</artifactId>
           <version>2.0.4</version>
         </plugin>
+        <plugin>
+          <groupId>org.jdtaus.mojo</groupId>
+          <artifactId>jdtaus-container-mojo</artifactId>
+          <version>3.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
