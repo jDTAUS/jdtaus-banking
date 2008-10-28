@@ -1,4 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
@@ -13,7 +16,7 @@
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</connection>
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</url>
+    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</url>
   </scm>
   <build>
     <resources>
@@ -31,17 +34,6 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.jdtaus.core</groupId>
-      <artifactId>jdtaus-core-utilities</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-  </dependencies>
   <reporting>
     <plugins>
       <plugin>
@@ -85,16 +77,6 @@
       </plugin>
       <plugin>
         <artifactId>maven-changes-plugin</artifactId>
-        <configuration>
-          <issueLinkTemplate>http://bugzilla.jdtaus.org/cgi-bin/bugzilla/show_bug.cgi?id=%ISSUE%</issueLinkTemplate>
-          <reportSets>
-            <reportSet>
-              <reports>
-                <report>changes-report</report>
-              </reports>
-            </reportSet>
-          </reportSets>
-        </configuration>
       </plugin>
     </plugins>
   </reporting>
