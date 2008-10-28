@@ -83,6 +83,48 @@ public abstract class ThreadLocalMessages
 
     };
 
+    /** {@code ThreadLocal} {@code Boolean}. */
+    private static final ThreadLocal errorsEnabled = new ThreadLocal()
+    {
+
+        protected Object initialValue()
+        {
+            return Boolean.TRUE;
+        }
+
+    };
+
+    /**
+     * Flag indicating that {@code CorruptedException}s are enabled.
+     *
+     * @return {@code true} if a {@code CorruptedException} must be thrown
+     * whenever a file error is detected; {@code false} to not throw any
+     * exception when detecting a file error.
+     */
+    public static boolean isErrorsEnabled()
+    {
+        Boolean fatal = (Boolean) errorsEnabled.get();
+
+        if ( fatal == null )
+        {
+            throw new IllegalStateException();
+        }
+
+        return fatal.booleanValue();
+    }
+
+    /**
+     * Setter for property {@code errorsEnabled}.
+     *
+     * @param value {@code true} if a {@code CorruptedException} should be
+     * thrown whenever a file error is detected; {@code false} to not throw any
+     * exception when detecting a file error.
+     */
+    public static void setErrorsEnabled( final boolean value )
+    {
+        errorsEnabled.set( value ? Boolean.TRUE : Boolean.FALSE );
+    }
+
     /**
      * Gets the collection of messages stored with the current thread of
      * execution.
@@ -92,7 +134,7 @@ public abstract class ThreadLocalMessages
      */
     public static Messages getMessages()
     {
-        return ( Messages ) current.get();
+        return (Messages) current.get();
     }
 
     //-----------------------------------------------------ThreadLocalMessages--

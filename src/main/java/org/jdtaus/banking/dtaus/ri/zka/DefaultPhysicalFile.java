@@ -33,31 +33,23 @@ import org.jdtaus.banking.dtaus.spi.HeaderValidator;
 import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
 import org.jdtaus.banking.messages.AnalysesFileMessage;
 import org.jdtaus.core.container.ContainerFactory;
-import org.jdtaus.core.container.ContextFactory;
-import org.jdtaus.core.container.ContextInitializer;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
-import org.jdtaus.core.container.Specification;
 import org.jdtaus.core.io.StructuredFileListener;
 import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.monitor.spi.Task;
 import org.jdtaus.core.monitor.spi.TaskMonitor;
 
 /**
- * Default {@code PhysicalFile}-Implementierung.
+ * Default {@code PhysicalFile} implementation.
  * <p/>
- * <b>Hinweis:</b><br/>
- * Implementierung darf niemals von mehreren Threads gleichzeitig verwendet
- * werden.
+ * <b>Note:</b><br/>
+ * This implementation is not thread-safe.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
 public final class DefaultPhysicalFile implements PhysicalFile
 {
-    //--Attribute---------------------------------------------------------------
+    //--Konstruktoren-----------------------------------------------------------
 
     /** Index der logischen Dateien. */
     private AbstractLogicalFile[] index;
@@ -70,46 +62,6 @@ public final class DefaultPhysicalFile implements PhysicalFile
 
     /** <code>StructuredFile</code> requirement. **/
     private StructuredFileOperations structuredFile;
-
-    //---------------------------------------------------------------Attribute--
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(DefaultPhysicalFile.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
-    //--Constructors------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
-    // This section is managed by jdtaus-container-mojo.
-
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-    }
-// </editor-fold>//GEN-END:jdtausConstructors
-
-    //------------------------------------------------------------Constructors--
-    //--Konstruktoren-----------------------------------------------------------
 
     /**
      * Creates a new {@code DefaultPhysicalFile} instance.
@@ -129,7 +81,6 @@ public final class DefaultPhysicalFile implements PhysicalFile
         final java.util.Properties properties ) throws IOException
     {
         super();
-        this.initializeProperties( META.getProperties() );
 
         if ( structuredFile == null )
         {
@@ -157,7 +108,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
                         for ( int i = fileIndex + 1; i < dtausCount; i++ )
                         {
                             index[i].setHeaderBlock( index[i].getHeaderBlock() +
-                                                     l0 );
+                                l0 );
                             index[i].setChecksumBlock(
                                 index[i].getChecksumBlock() + l0 );
 
@@ -176,7 +127,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
                         for ( int i = fileIndex + 1; i < dtausCount; i++ )
                         {
                             index[i].setHeaderBlock( index[i].getHeaderBlock() -
-                                                     l0 );
+                                l0 );
                             index[i].setChecksumBlock(
                                 index[i].getChecksumBlock() - l0 );
 
@@ -210,9 +161,6 @@ public final class DefaultPhysicalFile implements PhysicalFile
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
-    /** Configured <code>TaskMonitor</code> implementation. */
-    private transient TaskMonitor dTaskMonitor;
-
     /**
      * Gets the configured <code>TaskMonitor</code> implementation.
      *
@@ -220,34 +168,23 @@ public final class DefaultPhysicalFile implements PhysicalFile
      */
     private TaskMonitor getTaskMonitor()
     {
-        TaskMonitor ret = null;
-        if(this.dTaskMonitor != null)
-        {
-            ret = this.dTaskMonitor;
-        }
-        else
-        {
-            ret = (TaskMonitor) ContainerFactory.getContainer().
-                getDependency(DefaultPhysicalFile.class,
-                "TaskMonitor");
+        return (TaskMonitor) ContainerFactory.getContainer().
+            getDependency( this, "TaskMonitor" );
 
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DefaultPhysicalFile.class.getName()).
-                getDependencies().getDependency("TaskMonitor").
-                isBound())
-            {
-                this.dTaskMonitor = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
     }
+
+    /**
+     * Gets the configured <code>HeaderValidator</code> implementation.
+     *
+     * @return the configured <code>HeaderValidator</code> implementation.
+     */
+    private HeaderValidator[] getHeaderValidator()
+    {
+        return (HeaderValidator[]) ContainerFactory.getContainer().
+            getDependency( this, "HeaderValidator" );
+
+    }
+
 // </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
@@ -265,21 +202,12 @@ public final class DefaultPhysicalFile implements PhysicalFile
             throw new NullPointerException( "header" );
         }
 
-        HeaderValidator validator = null;
         IllegalHeaderException result = null;
-        final Specification validatorSpec = ModelFactory.getModel().
-            getModules().getSpecification( HeaderValidator.class.getName() );
+        final HeaderValidator[] validators = this.getHeaderValidator();
 
-        for ( int i = validatorSpec.getImplementations().
-            getImplementations().length - 1; i >= 0; i-- )
+        for ( int i = validators.length - 1; i >= 0; i-- )
         {
-            validator = ( HeaderValidator ) ContainerFactory.getContainer().
-                getImplementation( HeaderValidator.class,
-                                   validatorSpec.getImplementations().
-                                   getImplementation( i ).
-                                   getName() );
-
-            result = validator.assertValidHeader( header, result );
+            result = validators[i].assertValidHeader( header, result );
         }
 
         if ( result != null && result.getMessages().length > 0 )
@@ -300,10 +228,10 @@ public final class DefaultPhysicalFile implements PhysicalFile
         this.resizeIndex( this.dtausCount );
         this.index[this.dtausCount] = lFile;
         lFile.writeHeader( this.index[this.dtausCount].getHeaderBlock(),
-                           header );
+            header );
 
         lFile.writeChecksum( this.index[this.dtausCount].getHeaderBlock() + 1L,
-                             new Checksum() );
+            new Checksum() );
 
         this.index[this.dtausCount].checksum();
         return this.index[this.dtausCount++];
@@ -330,7 +258,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
             this.index[dtausId].getHeaderBlock() + 1 );
 
         System.arraycopy( this.index, dtausId + 1, this.index, dtausId,
-                          --this.dtausCount - dtausId );
+            --this.dtausCount - dtausId );
 
     }
 
@@ -394,15 +322,15 @@ public final class DefaultPhysicalFile implements PhysicalFile
         task.setDescription( new AnalysesFileMessage() );
         task.setMinimum( 0 );
         task.setProgress( 0 );
-        task.setMaximum( ( int ) maximumProgress );
+        task.setMaximum( (int) maximumProgress );
 
         try
         {
             this.getTaskMonitor().monitor( task );
 
-            for ( long block = 0L; block < blockCount;)
+            for ( long block = 0L; block < blockCount; )
             {
-                task.setProgress( ( int ) ( block / progressDivisor ) );
+                task.setProgress( (int) ( block / progressDivisor ) );
 
                 this.resizeIndex( dtausIndex );
                 this.index[dtausIndex] = this.newLogicalFile( block );
@@ -436,17 +364,18 @@ public final class DefaultPhysicalFile implements PhysicalFile
         }
 
         for ( Iterator it = this.properties.entrySet().iterator();
-            it.hasNext();)
+            it.hasNext(); )
         {
-            final Map.Entry e = ( Map.Entry ) it.next();
-            final String key = ( String ) e.getKey();
+            final Map.Entry e = (Map.Entry) it.next();
+            final String key = (String) e.getKey();
 
             if ( key.startsWith(
                 DefaultPhysicalFileFactory.ATTRIBUTE_SPACE_CHARACTERS_ALLOWED ) )
             {
                 int field =
-                    Integer.parseInt( key.substring( key.lastIndexOf( '.' ) + 1 ),
-                                      16 );
+                    Integer.parseInt(
+                    key.substring( key.lastIndexOf( '.' ) + 1 ),
+                    16 );
 
                 final boolean allowed = e.getValue() != null &&
                     Boolean.valueOf( e.getValue().toString() ).booleanValue();
@@ -475,7 +404,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
                     new AbstractLogicalFile[ newLength ];
 
                 System.arraycopy( this.index, 0, newIndex, 0,
-                                  this.index.length );
+                    this.index.length );
 
                 this.index = newIndex;
             }

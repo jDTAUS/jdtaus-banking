@@ -1,19 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.3</version>
+    <version>1.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
   <groupId>org.jdtaus.banking.dtaus</groupId>
   <name>jDTAUS Banking RI DTAUS</name>
-  <version>1.5.2-SNAPSHOT</version>
+  <version>1.6-SNAPSHOT</version>
   <description>jDTAUS DTAUS reference implementation.</description>
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/branches/jdtaus-banking-ri-dtaus-1.x</connection>
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/branches/jdtaus-banking-ri-dtaus-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewcvs.cgi/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/branches/jdtaus-banking-ri-dtaus-1.x</url>
+    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/branches/jdtaus-banking-ri-dtaus-1.x</url>
   </scm>
   <build>
     <resources>
@@ -29,27 +32,6 @@
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-dtaus/tags</tagBase>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.jdtaus.mojo</groupId>
-        <artifactId>jdtaus-resource-mojo</artifactId>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <goals>
-              <goal>generate-bundles</goal>
-            </goals>
-            <configuration>
-              <bundles>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile</bundle>
-                <bundle>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory</bundle>
-              </bundles>
-              <encoding>UTF-8</encoding>
-              <locale>en</locale>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -63,7 +45,7 @@
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-messages</artifactId>
       <version>RELEASE</version>
-      <scope>provided</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
@@ -90,53 +72,33 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.common</groupId>
-      <artifactId>jdtaus-banking-api</artifactId>
-      <version>RELEASE</version>
-      <scope>test</scope>
-      <classifier>tests</classifier>
-    </dependency>
-    <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-charsets</artifactId>
       <version>RELEASE</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.core</groupId>
-      <artifactId>jdtaus-core-utilities</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jdtaus.core</groupId>
-      <artifactId>jdtaus-core-spi</artifactId>
+      <groupId>org.jdtaus.common</groupId>
+      <artifactId>jdtaus-banking-api</artifactId>
+      <version>RELEASE</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-core-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jdtaus.core.container</groupId>
-      <artifactId>jdtaus-core-client-container</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jdtaus.core.monitor</groupId>
-      <artifactId>jdtaus-core-task-monitor</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jdtaus.core.lang</groupId>
-      <artifactId>jdtaus-core-memory-manager</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jdtaus.core.text</groupId>
-      <artifactId>jdtaus-core-application-logger</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jdtaus.core.logging</groupId>
-      <artifactId>jdtaus-core-jdk-logging</artifactId>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-spi</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core</groupId>
       <artifactId>jdtaus-core-messages</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-utilities</artifactId>
     </dependency>
   </dependencies>
   <reporting>
@@ -174,9 +136,6 @@
       </plugin>
       <plugin>
         <artifactId>maven-pmd-plugin</artifactId>
-        <configuration>
-          <sourceEncoding>UTF-8</sourceEncoding>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-report-plugin</artifactId>
@@ -186,15 +145,12 @@
       </plugin>
       <plugin>
         <artifactId>maven-changes-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>jdtaus-container-mojo</artifactId>
+        <groupId>org.jdtaus.mojo</groupId>
         <configuration>
-          <issueLinkTemplate>http://bugzilla.jdtaus.org/cgi-bin/bugzilla/show_bug.cgi?id=%ISSUE%</issueLinkTemplate>
-          <reportSets>
-            <reportSet>
-              <reports>
-                <report>changes-report</report>
-              </reports>
-            </reportSet>
-          </reportSets>
+          <moduleName>${pom.name}</moduleName>
         </configuration>
       </plugin>
     </plugins>

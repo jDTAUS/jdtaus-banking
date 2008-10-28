@@ -61,9 +61,9 @@ public class LogicalFileTest extends TestCase
 
     protected static PhysicalFileFactory getPhysicalFileFactory()
     {
-        return ( PhysicalFileFactory ) ContainerFactory.getContainer().
-            getImplementation( PhysicalFileFactory.class,
-                               "jDTAUS Banking SPI" );
+        return (PhysicalFileFactory) ContainerFactory.getContainer().
+            getObject( PhysicalFileFactory.class.getName(),
+            "jDTAUS Banking SPI" );
 
     }
 
@@ -73,7 +73,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_valid_header_and_checksum" ) );
+            "dtaus0_valid_header_and_checksum" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -86,7 +86,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_unsupported_data_header" ) );
+            "dtaus0_unsupported_data_header" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -99,7 +99,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_illegal_format_header" ) );
+            "dtaus0_illegal_format_header" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -112,7 +112,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_valid_header_and_checksum" ) );
+            "dtaus0_valid_header_and_checksum" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -125,7 +125,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_valid_header_illegal_format_checksum" ) );
+            "dtaus0_valid_header_illegal_format_checksum" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -138,9 +138,9 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   ( extensions
-                   ? "dtaus0_valid_header_checksum_and_transaction_ext"
-                   : "dtaus0_valid_header_checksum_and_transaction" ) ) );
+            ( extensions
+            ? "dtaus0_valid_header_checksum_and_transaction_ext"
+            : "dtaus0_valid_header_checksum_and_transaction" ) ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -153,7 +153,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_valid_header_checksum_and_transaction_missing_currency" ) );
+            "dtaus0_valid_header_checksum_and_transaction_missing_currency" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -165,8 +165,9 @@ public class LogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_valid_header_checksum_and_transaction_missing_currency_valid" ) );
+        ops.write(
+            LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_valid_header_checksum_and_transaction_missing_currency_valid" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -179,7 +180,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_valid_header_checksum_illegal_format_transaction" ) );
+            "dtaus0_valid_header_checksum_illegal_format_transaction" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -190,7 +191,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "empty_256" ) );
+            "empty_256" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -201,7 +202,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "empty_256_2" ) );
+            "empty_256_2" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -212,7 +213,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "empty_256_3" ) );
+            "empty_256_3" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -223,7 +224,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "illegal_file_length" ) );
+            "illegal_file_length" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -234,7 +235,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "illegal_file_length_2" ) );
+            "illegal_file_length_2" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -245,7 +246,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_legal_header_standalone" ) );
+            "dtaus0_legal_header_standalone" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -257,7 +258,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_legal_header_and_transaction_but_missing_checksum" ) );
+            "dtaus0_legal_header_and_transaction_but_missing_checksum" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -269,7 +270,7 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_missing_header_legal_transaction_and_checksum" ) );
+            "dtaus0_missing_header_legal_transaction_and_checksum" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -280,18 +281,19 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_legal_checksum_standalone" ) );
+            "dtaus0_legal_checksum_standalone" ) );
 
         return factory.getPhysicalFile( ops );
     }
 
-    protected static PhysicalFile getLegalTransactionStandalone() throws Exception
+    protected static PhysicalFile getLegalTransactionStandalone() throws
+        Exception
     {
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_legal_transaction_standalone" ) );
+            "dtaus0_legal_transaction_standalone" ) );
 
         return factory.getPhysicalFile( ops );
     }
@@ -303,12 +305,12 @@ public class LogicalFileTest extends TestCase
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
         ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_valid_header_when_spaces_allowed_for_a10_and_checksum" ) );
+            "dtaus0_valid_header_when_spaces_allowed_for_a10_and_checksum" ) );
 
 
         final java.util.Properties properties = new java.util.Properties();
         properties.setProperty( DefaultPhysicalFileFactory.ATTRIBUTE_SPACE_CHARACTERS_ALLOWED +
-                                "A10", Boolean.toString( true ) );
+            "A10", Boolean.toString( true ) );
 
         return factory.getPhysicalFile( ops, properties );
     }
@@ -319,12 +321,13 @@ public class LogicalFileTest extends TestCase
         final MemoryFileOperations ops = getMemoryFileOperations();
         final PhysicalFileFactory factory = getPhysicalFileFactory();
 
-        ops.write( LogicalFileTest.class.getResourceAsStream(
-                   "dtaus0_invalid_header_also_when_spaces_allowed_for_a10_and_checksum" ) );
+        ops.write(
+            LogicalFileTest.class.getResourceAsStream(
+            "dtaus0_invalid_header_also_when_spaces_allowed_for_a10_and_checksum" ) );
 
         final java.util.Properties properties = new java.util.Properties();
         properties.setProperty( DefaultPhysicalFileFactory.ATTRIBUTE_SPACE_CHARACTERS_ALLOWED +
-                                "A10", Boolean.toString( true ) );
+            "A10", Boolean.toString( true ) );
 
         return factory.getPhysicalFile( ops, properties );
     }
@@ -367,14 +370,15 @@ public class LogicalFileTest extends TestCase
         }
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-        final Header h = file.get( 0 ).getHeader();
+        final Header h = file.getLogicalFile( 0 ).getHeader();
         Assert.assertTrue( h.getCustomer().format().equals(
-                           "ABCDEFGHUJKI.UHZGTÄÖÜß+ ,$&" ) );
+            "ABCDEFGHUJKI.UHZGTÄÖÜß+ ,$&" ) );
 
         Assert.assertTrue( h.getAccount().longValue() == 1111111111L );
         Assert.assertTrue( h.getBank().intValue() == 11111111 );
         Assert.assertTrue( h.getBankData() == null );
-        Assert.assertTrue( h.getCurrency().equals( Currency.getInstance( "EUR" ) ) );
+        Assert.assertTrue(
+            h.getCurrency().equals( Currency.getInstance( "EUR" ) ) );
 
         Assert.assertTrue( h.getType().equals( LogicalFileType.LK ) );
 
@@ -395,7 +399,7 @@ public class LogicalFileTest extends TestCase
         try
         {
             final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-            file.get( 0 ).setHeader( HeaderTest.getIllegalHeader() );
+            file.getLogicalFile( 0 ).setHeader( HeaderTest.getIllegalHeader() );
         }
         catch ( IllegalArgumentException e )
         {
@@ -406,8 +410,10 @@ public class LogicalFileTest extends TestCase
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
         final Header legal = HeaderTest.getLegalHeader();
-        file.get( 0 ).setHeader( legal );
-        Assert.assertTrue( file.get( 0 ).getHeader().equals( legal ) );
+        file.getLogicalFile( 0 ).setHeader( legal );
+        Assert.assertTrue(
+            file.getLogicalFile( 0 ).getHeader().equals( legal ) );
+
     }
 
     /**
@@ -427,7 +433,7 @@ public class LogicalFileTest extends TestCase
         }
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-        LogicalFile dt = file.get( 0 );
+        LogicalFile dt = file.getLogicalFile( 0 );
         Checksum c = dt.getChecksum();
         Assert.assertTrue( c.getSumTargetAccount() == 0L );
         Assert.assertTrue( c.getSumTargetBank() == 0L );
@@ -443,7 +449,7 @@ public class LogicalFileTest extends TestCase
     public void testAddTransaction() throws Exception
     {
         PhysicalFile pFile = getDTAUSValidHeaderAndChecksum();
-        LogicalFile lFile = pFile.get( 0 );
+        LogicalFile lFile = pFile.getLogicalFile( 0 );
 
         try
         {
@@ -459,8 +465,8 @@ public class LogicalFileTest extends TestCase
 
         lFile.addTransaction( TransactionTest.getLegalTransaction() );
         Assert.assertTrue( TransactionTest.getLegalTransaction().equals(
-                           lFile.getTransaction( lFile.getChecksum().
-                                                 getTransactionCount() - 1 ) ) );
+            lFile.getTransaction( lFile.getChecksum().
+            getTransactionCount() - 1 ) ) );
 
     }
 
@@ -475,10 +481,10 @@ public class LogicalFileTest extends TestCase
         try
         {
             PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-            LogicalFile dt = file.get( 0 );
+            LogicalFile dt = file.getLogicalFile( 0 );
             dt.getTransaction( -1 );
             dt.getTransaction( 10000000 );
-            this.fail( "IndexOutOfBoundsException not thrown." );
+            fail( "IndexOutOfBoundsException not thrown." );
         }
         catch ( IndexOutOfBoundsException e )
         {
@@ -487,7 +493,7 @@ public class LogicalFileTest extends TestCase
         try
         {
             getDTAUSValidHeaderChecksumIllegalFormatTransaction();
-            this.fail( "PhysicalFileException not thrown." );
+            fail( "PhysicalFileException not thrown." );
         }
         catch ( PhysicalFileException e )
         {
@@ -495,7 +501,7 @@ public class LogicalFileTest extends TestCase
         }
 
         PhysicalFile file = getDTAUSValidHeaderChecksumAndTransaction( true );
-        Transaction t = file.get( 0 ).getTransaction( 0 );
+        Transaction t = file.getLogicalFile( 0 ).getTransaction( 0 );
         Assert.assertTrue( t.getPrimaryBank().intValue() == 11111111 );
         Assert.assertTrue( t.getTargetBank().intValue() == 22222222 );
         Assert.assertTrue( t.getTargetAccount().longValue() == 3333333333L );
@@ -509,12 +515,13 @@ public class LogicalFileTest extends TestCase
         Assert.assertTrue( t.getExecutiveAccount().longValue() == 6666666666L );
         Assert.assertTrue( t.getAmount().longValue() == 77777777777L ); // TODO longValueExact()
         Assert.assertTrue( t.getTargetName().format().
-                           equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+            equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
 
         Assert.assertTrue( t.getExecutiveName().format().
-                           equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+            equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
 
-        Assert.assertTrue( t.getCurrency().equals( Currency.getInstance( "EUR" ) ) );
+        Assert.assertTrue(
+            t.getCurrency().equals( Currency.getInstance( "EUR" ) ) );
 
         AlphaNumericText27[] d = t.getDescriptions();
         Assert.assertTrue( d[0].format().equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
@@ -527,16 +534,20 @@ public class LogicalFileTest extends TestCase
         Assert.assertTrue( d[7].format().equals( "8BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
         Assert.assertTrue( d[8].format().equals( "9BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
         Assert.assertTrue( d[9].format().equals( "10CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[10].format().equals( "11CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[11].format().equals( "12CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[12].format().equals( "13CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[13].format().equals( "14CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue(
+            d[10].format().equals( "11CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue(
+            d[11].format().equals( "12CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue(
+            d[12].format().equals( "13CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue(
+            d[13].format().equals( "14CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
 
         Assert.assertTrue( t.getTargetExt().format().
-                           equals( "1BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+            equals( "1BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
 
         Assert.assertTrue( t.getExecutiveExt().format().
-                           equals( "15CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+            equals( "15CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
 
     }
 
@@ -552,17 +563,17 @@ public class LogicalFileTest extends TestCase
         try
         {
             PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-            LogicalFile dt = file.get( 0 );
+            LogicalFile dt = file.getLogicalFile( 0 );
             dt.setTransaction( -1, legal );
             dt.setTransaction( 10000000, legal );
-            this.fail( "IndexOutOfBoundsException not thrown." );
+            fail( "IndexOutOfBoundsException not thrown." );
         }
         catch ( IndexOutOfBoundsException e )
         {
         }
 
         PhysicalFile file = getDTAUSValidHeaderChecksumAndTransaction( true );
-        LogicalFile dt = file.get( 0 );
+        LogicalFile dt = file.getLogicalFile( 0 );
         dt.setTransaction( 0, legal );
         Assert.assertTrue( legal.equals( dt.getTransaction( 0 ) ) );
     }
@@ -577,22 +588,22 @@ public class LogicalFileTest extends TestCase
         try
         {
             PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-            LogicalFile dt = file.get( 0 );
+            LogicalFile dt = file.getLogicalFile( 0 );
             dt.removeTransaction( -1 );
             dt.removeTransaction( 10000000 );
-            super.fail( "IndexOutOfBoundsException not thrown." );
+            fail( "IndexOutOfBoundsException not thrown." );
         }
         catch ( IndexOutOfBoundsException e )
         {
         }
 
         PhysicalFile file = getDTAUSValidHeaderChecksumAndTransaction( true );
-        LogicalFile dt = file.get( 0 );
+        LogicalFile dt = file.getLogicalFile( 0 );
         Transaction t = dt.getTransaction( 0 );
         final int oldCount = dt.getChecksum().getTransactionCount();
         Assert.assertTrue( dt.removeTransaction( 0 ).equals( t ) );
         Assert.assertTrue( dt.getChecksum().getTransactionCount() == oldCount -
-                           1 );
+            1 );
     }
 
     /**
@@ -603,10 +614,10 @@ public class LogicalFileTest extends TestCase
     public void testCurrencyConstraints() throws Exception
     {
         final PhysicalFile pFile =
-            this.getDTAUSValidHeaderChecksumAndTransaction( true );
+            getDTAUSValidHeaderChecksumAndTransaction( true );
 
-        final Header eurHeader = pFile.get( 0 ).getHeader();
-        final Header demHeader = pFile.get( 0 ).getHeader();
+        final Header eurHeader = pFile.getLogicalFile( 0 ).getHeader();
+        final Header demHeader = pFile.getLogicalFile( 0 ).getHeader();
 
         final Calendar cal = Calendar.getInstance();
         cal.set( Calendar.DAY_OF_MONTH, 1 );
@@ -626,43 +637,48 @@ public class LogicalFileTest extends TestCase
 
         try
         {
-            pFile.get( 0 ).setHeader( demHeader );
+            pFile.getLogicalFile( 0 ).setHeader( demHeader );
             fail();
         }
         catch ( IllegalHeaderException e )
         {
         }
 
-        final Transaction eurTransaction = pFile.get( 0 ).getTransaction( 0 );
-        final Transaction demTransaction = pFile.get( 0 ).getTransaction( 0 );
+        final Transaction eurTransaction =
+            pFile.getLogicalFile( 0 ).getTransaction( 0 );
+
+        final Transaction demTransaction =
+            pFile.getLogicalFile( 0 ).getTransaction( 0 );
+
         demTransaction.setCurrency( Currency.getInstance( "DEM" ) );
 
         try
         {
-            pFile.get( 0 ).setTransaction( 0, demTransaction );
+            pFile.getLogicalFile( 0 ).setTransaction( 0, demTransaction );
             fail();
         }
         catch ( IllegalTransactionException e )
         {
         }
 
-        pFile.get( 0 ).setHeader( eurHeader );
+        pFile.getLogicalFile( 0 ).setHeader( eurHeader );
 
         for ( int i = 10; i > 0; i-- )
         {
-            pFile.get( 0 ).addTransaction( eurTransaction );
+            pFile.getLogicalFile( 0 ).addTransaction( eurTransaction );
         }
 
-        while ( pFile.get( 0 ).getChecksum().getTransactionCount() > 0 )
+        while ( pFile.getLogicalFile( 0 ).getChecksum().
+            getTransactionCount() > 0 )
         {
-            final int index = pFile.get( 0 ).getChecksum().
+            final int index = pFile.getLogicalFile( 0 ).getChecksum().
                 getTransactionCount() - 1;
 
-            pFile.get( 0 ).setTransaction( index, eurTransaction );
-            pFile.get( 0 ).removeTransaction( index );
+            pFile.getLogicalFile( 0 ).setTransaction( index, eurTransaction );
+            pFile.getLogicalFile( 0 ).removeTransaction( index );
         }
 
-        pFile.get( 0 ).setHeader( eurHeader );
+        pFile.getLogicalFile( 0 ).setHeader( eurHeader );
     }
 
     public void testEmptyFile() throws Exception
@@ -743,7 +759,8 @@ public class LogicalFileTest extends TestCase
         }
     }
 
-    public void testLegalHeaderAndTransactionButMissingChecksum() throws Exception
+    public void testLegalHeaderAndTransactionButMissingChecksum() throws
+        Exception
     {
         try
         {
@@ -756,7 +773,8 @@ public class LogicalFileTest extends TestCase
         }
     }
 
-    public void testMissingHeaderLegalTransactionAndLegalChecksum() throws Exception
+    public void testMissingHeaderLegalTransactionAndLegalChecksum() throws
+        Exception
     {
         try
         {

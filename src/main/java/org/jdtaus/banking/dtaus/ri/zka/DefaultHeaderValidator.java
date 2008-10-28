@@ -45,14 +45,6 @@ import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.ContainerFactory;
-import org.jdtaus.core.container.ContainerInitializer;
-import org.jdtaus.core.container.ContextFactory;
-import org.jdtaus.core.container.ContextInitializer;
-import org.jdtaus.core.container.Dependency;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.messages.MandatoryPropertyMessage;
 import org.jdtaus.core.text.Message;
@@ -63,110 +55,26 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public final class DefaultHeaderValidator
-    implements ContainerInitializer, HeaderValidator
+public final class DefaultHeaderValidator implements HeaderValidator
 {
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(DefaultHeaderValidator.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
-    /**
-     * <code>DefaultHeaderValidator</code> implementation constructor.
-     *
-     * @param meta Implementation meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private DefaultHeaderValidator(final Implementation meta)
+    /** Standard implementation constructor <code>org.jdtaus.banking.dtaus.ri.zka.DefaultHeaderValidator</code>. */
+    public DefaultHeaderValidator()
     {
         super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
-    }
-    /**
-     * <code>DefaultHeaderValidator</code> dependency constructor.
-     *
-     * @param meta dependency meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private DefaultHeaderValidator(final Dependency meta)
-    {
-        super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
     }
 
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("maxDateMillis");
-        this.pMaxDateMillis = ((java.lang.Long) p.getValue()).longValue();
-
-
-        p = meta.getProperty("minDateMillis");
-        this.pMinDateMillis = ((java.lang.Long) p.getValue()).longValue();
-
-
-        p = meta.getProperty("maxScheduleDays");
-        this.pMaxScheduleDays = ((java.lang.Integer) p.getValue()).intValue();
-
-    }
 // </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
-    //--ContainerInitializer----------------------------------------------------
-
-    /**
-     * Initializes the instance.
-     *
-     * @see #assertValidProperties()
-     */
-    public void initialize()
-    {
-        this.assertValidProperties();
-    }
-
-    //----------------------------------------------------ContainerInitializer--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
-
-    /** Configured <code>CurrencyMapper</code> implementation. */
-    private transient CurrencyMapper dCurrencyMapper;
 
     /**
      * Gets the configured <code>CurrencyMapper</code> implementation.
@@ -175,34 +83,11 @@ public final class DefaultHeaderValidator
      */
     private CurrencyMapper getCurrencyMapper()
     {
-        CurrencyMapper ret = null;
-        if(this.dCurrencyMapper != null)
-        {
-            ret = this.dCurrencyMapper;
-        }
-        else
-        {
-            ret = (CurrencyMapper) ContainerFactory.getContainer().
-                getDependency(DefaultHeaderValidator.class,
-                "CurrencyMapper");
+        return (CurrencyMapper) ContainerFactory.getContainer().
+            getDependency( this, "CurrencyMapper" );
 
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DefaultHeaderValidator.class.getName()).
-                getDependencies().getDependency("CurrencyMapper").
-                isBound())
-            {
-                this.dCurrencyMapper = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
     }
+
 // </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
@@ -212,51 +97,39 @@ public final class DefaultHeaderValidator
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code maxDateMillis}.
-     * @serial
-     */
-    private long pMaxDateMillis;
-
-    /**
-     * Gets the value of property <code>maxDateMillis</code>.
-     *
-     * @return the value of property <code>maxDateMillis</code>.
-     */
-    private long getMaxDateMillis()
-    {
-        return this.pMaxDateMillis;
-    }
-
-    /**
-     * Property {@code minDateMillis}.
-     * @serial
-     */
-    private long pMinDateMillis;
-
-    /**
      * Gets the value of property <code>minDateMillis</code>.
      *
-     * @return the value of property <code>minDateMillis</code>.
+     * @return Timestamp any date is not allowed to precede.
      */
     private long getMinDateMillis()
     {
-        return this.pMinDateMillis;
-    }
+        return ( (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "minDateMillis" ) ).longValue();
 
-    /**
-     * Property {@code maxScheduleDays}.
-     * @serial
-     */
-    private int pMaxScheduleDays;
+    }
 
     /**
      * Gets the value of property <code>maxScheduleDays</code>.
      *
-     * @return the value of property <code>maxScheduleDays</code>.
+     * @return Maximum number of days allowed for a schedule.
      */
     private int getMaxScheduleDays()
     {
-        return this.pMaxScheduleDays;
+        return ( (java.lang.Integer) ContainerFactory.getContainer().
+            getProperty( this, "maxScheduleDays" ) ).intValue();
+
+    }
+
+    /**
+     * Gets the value of property <code>maxDateMillis</code>.
+     *
+     * @return Timestamp any date is not allowed to follow.
+     */
+    private long getMaxDateMillis()
+    {
+        return ( (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "maxDateMillis" ) ).longValue();
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -272,21 +145,22 @@ public final class DefaultHeaderValidator
             throw new NullPointerException( "header" );
         }
 
+        this.assertValidProperties();
         final List messages = new LinkedList();
         final Map properties = new HashMap( 20 );
 
         if ( header.getCreateDate() == null )
         {
             properties.put( Header.PROP_CREATEDATE,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         else if ( !this.checkDate( header.getCreateDate() ) )
         {
             properties.put( Header.PROP_CREATEDATE, new IllegalDateMessage(
-                            header.getCreateDate(),
-                            new Date( this.getMinDateMillis() ),
-                            new Date( this.getMaxDateMillis() ) ) );
+                header.getCreateDate(),
+                new Date( this.getMinDateMillis() ),
+                new Date( this.getMaxDateMillis() ) ) );
 
         }
 
@@ -294,9 +168,9 @@ public final class DefaultHeaderValidator
             !this.checkDate( header.getExecutionDate() ) )
         {
             properties.put( Header.PROP_EXECUTIONDATE, new IllegalDateMessage(
-                            header.getExecutionDate(),
-                            new Date( this.getMinDateMillis() ),
-                            new Date( this.getMaxDateMillis() ) ) );
+                header.getExecutionDate(),
+                new Date( this.getMinDateMillis() ),
+                new Date( this.getMaxDateMillis() ) ) );
 
         }
         if ( header.getType() == null )
@@ -307,32 +181,32 @@ public final class DefaultHeaderValidator
             header.getBankData() == null )
         {
             properties.put( Header.PROP_BANKDATA,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
 
         if ( header.getCustomer() == null )
         {
             properties.put( Header.PROP_CUSTOMER,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( header.getBank() == null )
         {
             properties.put( Header.PROP_BANK,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( header.getAccount() == null )
         {
             properties.put( Header.PROP_ACCOUNT,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( header.getCurrency() == null )
         {
             properties.put( Header.PROP_CURRENCY,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
 
@@ -349,19 +223,19 @@ public final class DefaultHeaderValidator
                 catch ( UnsupportedCurrencyException ex )
                 {
                     properties.put( Header.PROP_CURRENCY,
-                                    new IllegalCurrencyMessage(
-                                    header.getCurrency().getCurrencyCode(),
-                                    header.getCreateDate() ) );
+                        new IllegalCurrencyMessage(
+                        header.getCurrency().getCurrencyCode(),
+                        header.getCreateDate() ) );
 
                 }
             }
 
             if ( !this.checkSchedule( header.getCreateDate(),
-                                      header.getExecutionDate() ) )
+                header.getExecutionDate() ) )
             {
                 messages.add( new IllegalScheduleMessage(
-                              header.getCreateDate(), header.getExecutionDate(),
-                              this.getMaxScheduleDays() ) );
+                    header.getCreateDate(), header.getExecutionDate(),
+                    this.getMaxScheduleDays() ) );
 
             }
         }
@@ -373,16 +247,16 @@ public final class DefaultHeaderValidator
                 result = new IllegalHeaderException();
             }
 
-            for ( Iterator it = properties.entrySet().iterator(); it.hasNext();)
+            for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
             {
-                final Map.Entry entry = ( Map.Entry ) it.next();
-                result.addMessage( ( String ) entry.getKey(),
-                                   ( Message ) entry.getValue() );
+                final Map.Entry entry = (Map.Entry) it.next();
+                result.addMessage( (String) entry.getKey(),
+                    (Message) entry.getValue() );
 
             }
-            for ( Iterator it = messages.iterator(); it.hasNext();)
+            for ( Iterator it = messages.iterator(); it.hasNext(); )
             {
-                result.addMessage( ( Message ) it.next() );
+                result.addMessage( (Message) it.next() );
             }
         }
 
@@ -407,13 +281,15 @@ public final class DefaultHeaderValidator
             throw new NullPointerException( "counter" );
         }
 
+        this.assertValidProperties();
+
         IllegalHeaderException e = this.assertValidHeader( header, result );
         final LogicalFileType oldLabel = lFile.getHeader().getType();
         final LogicalFileType newLabel = header.getType();
 
         if ( oldLabel != null && lFile.getChecksum().getTransactionCount() > 0 &&
             ( oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed() ) ||
-            ( oldLabel.isRemittanceAllowed() && !newLabel.isRemittanceAllowed() ) )
+             ( oldLabel.isRemittanceAllowed() && !newLabel.isRemittanceAllowed() ) )
         {
             if ( e == null )
             {
@@ -421,7 +297,7 @@ public final class DefaultHeaderValidator
             }
 
             e.addMessage( Header.PROP_TYPE, new TextschluesselConstraintMessage(
-                          newLabel, lFile.getTransaction( 0 ).getType() ) );
+                newLabel, lFile.getTransaction( 0 ).getType() ) );
 
         }
 
@@ -456,8 +332,8 @@ public final class DefaultHeaderValidator
                     }
 
                     e.addMessage( new CurrencyConstraintMessage(
-                                  current[i].getCurrencyCode(),
-                                  header.getCreateDate() ) );
+                        current[i].getCurrencyCode(),
+                        header.getCreateDate() ) );
 
                 }
             }
@@ -471,13 +347,6 @@ public final class DefaultHeaderValidator
 
     /** Value of property {@code maxScheduleDays} in milliseconds. */
     private long maxScheduleDaysMillis = Long.MIN_VALUE;
-
-    /** Creates a new {@code DefaultHeaderValidator} instance. */
-    public DefaultHeaderValidator()
-    {
-        this( META );
-        this.initialize();
-    }
 
     /**
      * Gets the value of property {@code maxScheduleDays} in milliseconds.
@@ -557,7 +426,7 @@ public final class DefaultHeaderValidator
      * a legal combination; {@code false} if not.
      */
     private boolean checkSchedule( final Date createDate,
-                                    final Date executionDate )
+        final Date executionDate )
     {
         boolean valid = createDate != null;
 

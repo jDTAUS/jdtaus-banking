@@ -36,7 +36,6 @@ import org.jdtaus.banking.Kontonummer;
 import org.jdtaus.banking.Referenznummer10;
 import org.jdtaus.banking.Referenznummer11;
 import org.jdtaus.banking.Textschluessel;
-import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.Header;
@@ -46,27 +45,15 @@ import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.messages.IllegalDataMessage;
 import org.jdtaus.banking.messages.IllegalScheduleMessage;
 import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
-import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.core.container.ContainerFactory;
-import org.jdtaus.core.container.ContextFactory;
-import org.jdtaus.core.container.ContextInitializer;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
 import org.jdtaus.core.io.util.StructuredFileOperations;
-import org.jdtaus.core.lang.spi.MemoryManager;
 import org.jdtaus.core.logging.spi.Logger;
-import org.jdtaus.core.monitor.spi.TaskMonitor;
 import org.jdtaus.core.text.Message;
-import org.jdtaus.core.text.spi.ApplicationLogger;
 
 /**
  * Anlage 3.1.2 DTAUS: Zahlungsverkehrssammelauftrag Magnetbandformat.
- * <p/>
- * <b>Hinweis:</b><br/>
- * Implementierung darf niemals von mehreren Threads gleichzeitig verwendet
- * werden.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -79,7 +66,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = A Datensatz-Feld - 1,
      * Wert = Offset relativ zum Anfang des Satzabschnittes.
      */
-    protected static final int[] ARECORD_OFFSETS = {
+    protected static final int[] ARECORD_OFFSETS =
+    {
         0, 2, 4, 5, 7, 12, 17, 44, 48, 52, 58, 68, 83, 91, 149
     };
 
@@ -87,7 +75,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = A Datensatz-Feld - 1,
      * Wert = Länge des Feldes in Byte.
      */
-    protected static final int[] ARECORD_LENGTH = {
+    protected static final int[] ARECORD_LENGTH =
+    {
         2, 2, 1, 2, 5, 5, 27, 4, 4, 6, 10, 15, 8, 58, 1
     };
 
@@ -95,7 +84,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = E Datensatz-Feld - 1,
      * Wert = Offset relativ zum Anfang des Satzabschnittes.
      */
-    protected static final int[] ERECORD_OFFSETS = {
+    protected static final int[] ERECORD_OFFSETS =
+    {
         0, 2, 4, 5, 10, 14, 21, 30, 39, 46
     };
 
@@ -103,7 +93,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = E Datensatz-Feld -1,
      * Wert = Länge des Feldes in Byte.
      */
-    protected static final int[] ERECORD_LENGTH = {
+    protected static final int[] ERECORD_LENGTH =
+    {
         2, 2, 1, 5, 4, 7, 9, 9, 7, 104
     };
 
@@ -117,7 +108,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = C Datensatz-Feld - 1,
      * Wert = Offset relativ zum ersten Satzabschnitt.
      */
-    protected static final int[] CRECORD_OFFSETS1 = {
+    protected static final int[] CRECORD_OFFSETS1 =
+    {
         0, 2, 4, 5, 10, 15, 21, 27, 34, 35, 37, 38, 44, 49, 55, 61, 64, 91,
         118, 145, 146, 148
     };
@@ -126,7 +118,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = C Datensatz-Feld - 1 (erster Satzabschnitt),
      * Wert = Länge des Feldes in Byte.
      */
-    protected static final int[] CRECORD_LENGTH1 = {
+    protected static final int[] CRECORD_LENGTH1 =
+    {
         2, 2, 1, 5, 5, 6, 6, 7, 1, 2, 1, 6, 5, 6, 6, 3, 27, 27, 27, 1, 2, 2
     };
 
@@ -134,7 +127,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = C Datensatz-Feld des 2., 3. und 4. Satzabschnittes - 1,
      * Wert = Offset relativ zum Anfang des 2., 3. und 4. Satzabschnittes.
      */
-    protected static final int[] CRECORD_OFFSETS_EXT = {
+    protected static final int[] CRECORD_OFFSETS_EXT =
+    {
         0, 2, 29, 31, 58, 60, 87, 89, 116, 118, 145
     };
 
@@ -142,7 +136,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = C Datensatz-Feld des 2., 3. und 4. Satzabschnittes - 1,
      * Wert = Länge des Feldes in Byte.
      */
-    protected static final int[] CRECORD_LENGTH_EXT = {
+    protected static final int[] CRECORD_LENGTH_EXT =
+    {
         2, 27, 2, 27, 2, 27, 2, 27, 2, 27, 5
     };
 
@@ -150,7 +145,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = Anzahl Erweiterungsteile,
      * Wert = Anzahl benötigter Satzabschnitte.
      */
-    protected static final int[] CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT = {
+    protected static final int[] CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT =
+    {
         1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4
     };
 
@@ -158,7 +154,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = Index Erweiterungsteil,
      * Wert = Satzabschnitt-Offset zu Transaktionsbeginn.
      */
-    protected static final int[] CRECORD_EXTINDEX_TO_BLOCKOFFSET = {
+    protected static final int[] CRECORD_EXTINDEX_TO_BLOCKOFFSET =
+    {
         1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3
     };
 
@@ -167,7 +164,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Wert = Anfangsposition des Erweiterungsteils relativ zum Anfang des
      * Satzabschnittes.
      */
-    protected static final int[] CRECORD_EXTINDEX_TO_TYPEOFFSET = {
+    protected static final int[] CRECORD_EXTINDEX_TO_TYPEOFFSET =
+    {
         DTAUSTape.CRECORD_OFFSETS_EXT[0], DTAUSTape.CRECORD_OFFSETS_EXT[2],
         DTAUSTape.CRECORD_OFFSETS_EXT[4], DTAUSTape.CRECORD_OFFSETS_EXT[6],
         DTAUSTape.CRECORD_OFFSETS_EXT[8], DTAUSTape.CRECORD_OFFSETS_EXT[0],
@@ -183,7 +181,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Wert = Anfangsposition des Erweiterungsteils relativ zum Anfang des
      * Satzabschnittes.
      */
-    protected static final int[] CRECORD_EXTINDEX_TO_TYPELENGTH = {
+    protected static final int[] CRECORD_EXTINDEX_TO_TYPELENGTH =
+    {
         DTAUSTape.CRECORD_LENGTH_EXT[0], DTAUSTape.CRECORD_LENGTH_EXT[2],
         DTAUSTape.CRECORD_LENGTH_EXT[4], DTAUSTape.CRECORD_LENGTH_EXT[6],
         DTAUSTape.CRECORD_LENGTH_EXT[8], DTAUSTape.CRECORD_LENGTH_EXT[0],
@@ -199,7 +198,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Wert = Anfangsposition des Erweiterungsteils relativ zum Anfang des
      * Satzabschnittes.
      */
-    protected static final int[] CRECORD_EXTINDEX_TO_VALUEOFFSET = {
+    protected static final int[] CRECORD_EXTINDEX_TO_VALUEOFFSET =
+    {
         DTAUSTape.CRECORD_OFFSETS_EXT[1], DTAUSTape.CRECORD_OFFSETS_EXT[3],
         DTAUSTape.CRECORD_OFFSETS_EXT[5], DTAUSTape.CRECORD_OFFSETS_EXT[7],
         DTAUSTape.CRECORD_OFFSETS_EXT[9], DTAUSTape.CRECORD_OFFSETS_EXT[1],
@@ -215,7 +215,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Wert = Anfangsposition des Erweiterungsteils relativ zum Anfang des
      * Satzabschnittes.
      */
-    protected static final int[] CRECORD_EXTINDEX_TO_VALUELENGTH = {
+    protected static final int[] CRECORD_EXTINDEX_TO_VALUELENGTH =
+    {
         DTAUSTape.CRECORD_LENGTH_EXT[1], DTAUSTape.CRECORD_LENGTH_EXT[3],
         DTAUSTape.CRECORD_LENGTH_EXT[5], DTAUSTape.CRECORD_LENGTH_EXT[7],
         DTAUSTape.CRECORD_LENGTH_EXT[9], DTAUSTape.CRECORD_LENGTH_EXT[1],
@@ -230,7 +231,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = Index Erweiterungsteil,
      * Wert = Anzahl der folgenden Erweiterungsteile im selben Satzabschnitt.
      */
-    protected static final int[] CRECORD_EXTINDEX_TO_FOLLOWINGEXTENSIONS = {
+    protected static final int[] CRECORD_EXTINDEX_TO_FOLLOWINGEXTENSIONS =
+    {
         4, 3, 2, 1, 0, 4, 3, 2, 1, 0, 4, 3, 2, 1, 0
     };
 
@@ -238,7 +240,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = Index Erweiterungsteil,
      * Wert = Feld-Konstante für das Typen-Feld des Erweiterungsteils.
      */
-    protected static final int[] CRECORD_EXTINDEX_TO_TYPEFIELD = {
+    protected static final int[] CRECORD_EXTINDEX_TO_TYPEFIELD =
+    {
         Fields.FIELD_C19, Fields.FIELD_C21, Fields.FIELD_C23,
         Fields.FIELD_C25, Fields.FIELD_C27, Fields.FIELD_C30,
         Fields.FIELD_C32, Fields.FIELD_C34, Fields.FIELD_C36,
@@ -252,7 +255,8 @@ public final class DTAUSTape extends AbstractLogicalFile
      * Index = Index Erweiterungsteil,
      * Wert = Feld-Konstante für das Werte-Feld des Erweiterungsteils.
      */
-    protected static final int[] CRECORD_EXTINDEX_TO_VALUEFIELD = {
+    protected static final int[] CRECORD_EXTINDEX_TO_VALUEFIELD =
+    {
         Fields.FIELD_C20, Fields.FIELD_C22, Fields.FIELD_C24,
         Fields.FIELD_C26, Fields.FIELD_C28, Fields.FIELD_C31,
         Fields.FIELD_C33, Fields.FIELD_C35, Fields.FIELD_C37,
@@ -263,50 +267,12 @@ public final class DTAUSTape extends AbstractLogicalFile
     };
 
     //--------------------------------------------------------------Konstanten--
-    //--Attribute---------------------------------------------------------------
-
-    /** Temporäres Kalendar-Objekt. */
-    private Calendar calendar;
-
-    //---------------------------------------------------------------Attribute--
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(DTAUSTape.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
-    //--Constructors------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
-    // This section is managed by jdtaus-container-mojo.
-
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-    }
-// </editor-fold>//GEN-END:jdtausConstructors
-
-    //------------------------------------------------------------Constructors--
     //--Konstruktoren-----------------------------------------------------------
+
+    /** Implementation meta-data. */
+    private Implementation implementation;
+
+    private final Calendar myCalendar;
 
     /**
      * Erzeugt eine neue {@code DTAUSTape} Instanz.
@@ -323,7 +289,6 @@ public final class DTAUSTape extends AbstractLogicalFile
         throws IOException
     {
         super();
-        this.initializeProperties( META.getProperties() );
 
         if ( persistence == null )
         {
@@ -337,8 +302,8 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         }
 
-        this.calendar = Calendar.getInstance( Locale.GERMANY );
-        this.calendar.setLenient( false );
+        this.myCalendar = Calendar.getInstance( Locale.GERMANY );
+        this.myCalendar.setLenient( false );
         this.setStructuredFile( persistence );
         this.setHeaderBlock( headerBlock );
     }
@@ -349,242 +314,26 @@ public final class DTAUSTape extends AbstractLogicalFile
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
 
-    /** Configured <code>CurrencyMapper</code> implementation. */
-    private transient CurrencyMapper dCurrencyMapper;
-
-    /**
-     * Gets the configured <code>CurrencyMapper</code> implementation.
-     *
-     * @return the configured <code>CurrencyMapper</code> implementation.
-     */
-    private CurrencyMapper getCurrencyMapper()
-    {
-        CurrencyMapper ret = null;
-        if(this.dCurrencyMapper != null)
-        {
-            ret = this.dCurrencyMapper;
-        }
-        else
-        {
-            ret = (CurrencyMapper) ContainerFactory.getContainer().
-                getDependency(DTAUSTape.class,
-                "CurrencyMapper");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DTAUSTape.class.getName()).
-                getDependencies().getDependency("CurrencyMapper").
-                isBound())
-            {
-                this.dCurrencyMapper = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
-    /** Configured <code>TextschluesselVerzeichnis</code> implementation. */
-    private transient TextschluesselVerzeichnis dTextschluesselVerzeichnis;
-
-    /**
-     * Gets the configured <code>TextschluesselVerzeichnis</code> implementation.
-     *
-     * @return the configured <code>TextschluesselVerzeichnis</code> implementation.
-     */
-    private TextschluesselVerzeichnis getTextschluesselVerzeichnis()
-    {
-        TextschluesselVerzeichnis ret = null;
-        if(this.dTextschluesselVerzeichnis != null)
-        {
-            ret = this.dTextschluesselVerzeichnis;
-        }
-        else
-        {
-            ret = (TextschluesselVerzeichnis) ContainerFactory.getContainer().
-                getDependency(DTAUSTape.class,
-                "TextschluesselVerzeichnis");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DTAUSTape.class.getName()).
-                getDependencies().getDependency("TextschluesselVerzeichnis").
-                isBound())
-            {
-                this.dTextschluesselVerzeichnis = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
-    /** Configured <code>TaskMonitor</code> implementation. */
-    private transient TaskMonitor dTaskMonitor;
-
-    /**
-     * Gets the configured <code>TaskMonitor</code> implementation.
-     *
-     * @return the configured <code>TaskMonitor</code> implementation.
-     */
-    private TaskMonitor getTaskMonitor()
-    {
-        TaskMonitor ret = null;
-        if(this.dTaskMonitor != null)
-        {
-            ret = this.dTaskMonitor;
-        }
-        else
-        {
-            ret = (TaskMonitor) ContainerFactory.getContainer().
-                getDependency(DTAUSTape.class,
-                "TaskMonitor");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DTAUSTape.class.getName()).
-                getDependencies().getDependency("TaskMonitor").
-                isBound())
-            {
-                this.dTaskMonitor = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
-    /** Configured <code>ApplicationLogger</code> implementation. */
-    private transient ApplicationLogger dApplicationLogger;
-
-    /**
-     * Gets the configured <code>ApplicationLogger</code> implementation.
-     *
-     * @return the configured <code>ApplicationLogger</code> implementation.
-     */
-    private ApplicationLogger getApplicationLogger()
-    {
-        ApplicationLogger ret = null;
-        if(this.dApplicationLogger != null)
-        {
-            ret = this.dApplicationLogger;
-        }
-        else
-        {
-            ret = (ApplicationLogger) ContainerFactory.getContainer().
-                getDependency(DTAUSTape.class,
-                "ApplicationLogger");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DTAUSTape.class.getName()).
-                getDependencies().getDependency("ApplicationLogger").
-                isBound())
-            {
-                this.dApplicationLogger = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
-    /** Configured <code>MemoryManager</code> implementation. */
-    private transient MemoryManager dMemoryManager;
-
-    /**
-     * Gets the configured <code>MemoryManager</code> implementation.
-     *
-     * @return the configured <code>MemoryManager</code> implementation.
-     */
-    private MemoryManager getMemoryManager()
-    {
-        MemoryManager ret = null;
-        if(this.dMemoryManager != null)
-        {
-            ret = this.dMemoryManager;
-        }
-        else
-        {
-            ret = (MemoryManager) ContainerFactory.getContainer().
-                getDependency(DTAUSTape.class,
-                "MemoryManager");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DTAUSTape.class.getName()).
-                getDependencies().getDependency("MemoryManager").
-                isBound())
-            {
-                this.dMemoryManager = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
-    /** Configured <code>Logger</code> implementation. */
-    private transient Logger dLogger;
-
     /**
      * Gets the configured <code>Logger</code> implementation.
      *
      * @return the configured <code>Logger</code> implementation.
      */
-    private Logger getLogger()
+    protected Logger getLogger()
     {
-        Logger ret = null;
-        if(this.dLogger != null)
-        {
-            ret = this.dLogger;
-        }
-        else
-        {
-            ret = (Logger) ContainerFactory.getContainer().
-                getDependency(DTAUSTape.class,
-                "Logger");
+        return (Logger) ContainerFactory.getContainer().
+            getDependency( this, "Logger" );
 
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DTAUSTape.class.getName()).
-                getDependencies().getDependency("Logger").
-                isBound())
-            {
-                this.dLogger = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
     }
+
 // </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
     //--AbstractLogicalFile-----------------------------------------------------
 
     protected int checksumTransaction( final long block,
-                                        final Transaction transaction,
-                                        final Checksum checksum )
+        final Transaction transaction,
+        final Checksum checksum )
         throws IOException
     {
         int ret = 1;
@@ -603,7 +352,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                 checksum.add( t );
             }
 
-            ret = CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[( int ) extCount];
+            ret = CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[(int) extCount];
         }
 
         return ret;
@@ -614,9 +363,9 @@ public final class DTAUSTape extends AbstractLogicalFile
         // Feld 2
         final AlphaNumericText27 txt =
             this.readAlphaNumeric( Fields.FIELD_A2,
-                                   block, DTAUSTape.ARECORD_OFFSETS[2],
-                                   DTAUSTape.ARECORD_LENGTH[2],
-                                   AbstractLogicalFile.ENCODING_EBCDI );
+            block, DTAUSTape.ARECORD_OFFSETS[2],
+            DTAUSTape.ARECORD_LENGTH[2],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         char ret = '?';
         final Message msg;
@@ -630,10 +379,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     this.persistence.getBlockSize() +
                     DTAUSTape.ARECORD_OFFSETS[2], txt.format() );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[2] );
 
@@ -680,7 +428,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             extCount = 0;
         }
 
-        return DTAUSTape.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[( int ) extCount];
+        return DTAUSTape.CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[(int) extCount];
     }
 
     public Header readHeader( final long headerBlock ) throws IOException
@@ -702,24 +450,23 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 1
         num = this.readNumberBinary( Fields.FIELD_A1, headerBlock,
-                                     DTAUSTape.ARECORD_OFFSETS[0],
-                                     DTAUSTape.ARECORD_LENGTH[0] );
+            DTAUSTape.ARECORD_OFFSETS[0],
+            DTAUSTape.ARECORD_LENGTH[0] );
 
         if ( num != blockSize )
         {
             msg = new IllegalDataMessage( Fields.FIELD_A1,
-                                          IllegalDataMessage.TYPE_CONSTANT,
-                                          headerBlock *
-                                          this.persistence.getBlockSize() +
-                                          DTAUSTape.ARECORD_OFFSETS[0],
-                                          Long.toString( num ) );
+                IllegalDataMessage.TYPE_CONSTANT,
+                headerBlock *
+                this.persistence.getBlockSize() +
+                DTAUSTape.ARECORD_OFFSETS[0],
+                Long.toString( num ) );
 
-            if ( AbstractErrorMessage.isErrorsEnabled() )
+            if ( ThreadLocalMessages.isErrorsEnabled() )
             {
-                throw new CorruptedException( this.getMeta(),
-                                              headerBlock *
-                                              this.persistence.getBlockSize() +
-                                              DTAUSTape.ARECORD_OFFSETS[0] );
+                throw new CorruptedException( this.getImplementation(),
+                    headerBlock * this.persistence.getBlockSize() +
+                    DTAUSTape.ARECORD_OFFSETS[0] );
 
             }
             else
@@ -730,25 +477,24 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 2
         txt = this.readAlphaNumeric( Fields.FIELD_A2, headerBlock,
-                                     DTAUSTape.ARECORD_OFFSETS[2],
-                                     DTAUSTape.ARECORD_LENGTH[2],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[2],
+            DTAUSTape.ARECORD_LENGTH[2],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         if ( txt != null && ( txt.length() != 1 || txt.charAt( 0 ) != 'A' ) )
         {
             msg = new IllegalDataMessage( Fields.FIELD_A1,
-                                          IllegalDataMessage.TYPE_CONSTANT,
-                                          headerBlock *
-                                          this.persistence.getBlockSize() +
-                                          DTAUSTape.ARECORD_OFFSETS[0],
-                                          txt.format() );
+                IllegalDataMessage.TYPE_CONSTANT,
+                headerBlock *
+                this.persistence.getBlockSize() +
+                DTAUSTape.ARECORD_OFFSETS[0],
+                txt.format() );
 
-            if ( AbstractErrorMessage.isErrorsEnabled() )
+            if ( ThreadLocalMessages.isErrorsEnabled() )
             {
-                throw new CorruptedException( this.getMeta(),
-                                              headerBlock *
-                                              this.persistence.getBlockSize() +
-                                              DTAUSTape.ARECORD_OFFSETS[0] );
+                throw new CorruptedException( this.getImplementation(),
+                    headerBlock * this.persistence.getBlockSize() +
+                    DTAUSTape.ARECORD_OFFSETS[0] );
 
             }
             else
@@ -759,9 +505,9 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 3
         txt = this.readAlphaNumeric( Fields.FIELD_A3, headerBlock,
-                                     DTAUSTape.ARECORD_OFFSETS[3],
-                                     DTAUSTape.ARECORD_LENGTH[3],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[3],
+            DTAUSTape.ARECORD_LENGTH[3],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         ret.setType( null );
 
@@ -775,11 +521,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                     headerBlock * this.persistence.getBlockSize() +
                     DTAUSTape.ARECORD_OFFSETS[3], txt.format() );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(), headerBlock *
-                        this.persistence.getBlockSize() +
+                    throw new CorruptedException( this.getImplementation(),
+                        headerBlock * this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[3] );
 
                 }
@@ -797,8 +542,8 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 4
         num = this.readNumberPackedPositive( Fields.FIELD_A4, headerBlock,
-                                             DTAUSTape.ARECORD_OFFSETS[4],
-                                             DTAUSTape.ARECORD_LENGTH[4], true );
+            DTAUSTape.ARECORD_OFFSETS[4],
+            DTAUSTape.ARECORD_LENGTH[4], true );
 
         ret.setBank( null );
         if ( num != AbstractLogicalFile.NO_NUMBER )
@@ -810,11 +555,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                     headerBlock * this.persistence.getBlockSize() +
                     DTAUSTape.ARECORD_OFFSETS[4], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(), headerBlock *
-                        this.persistence.getBlockSize() +
+                    throw new CorruptedException( this.getImplementation(),
+                        headerBlock * this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[4] );
 
                 }
@@ -832,9 +576,9 @@ public final class DTAUSTape extends AbstractLogicalFile
         // Feld 5
         // Nur belegt wenn Absender Kreditinistitut ist, sonst 0.
         num = this.readNumberPackedPositive( Fields.FIELD_A5, headerBlock,
-                                             DTAUSTape.ARECORD_OFFSETS[5],
-                                             DTAUSTape.ARECORD_LENGTH[5],
-                                             true );
+            DTAUSTape.ARECORD_OFFSETS[5],
+            DTAUSTape.ARECORD_LENGTH[5],
+            true );
 
         ret.setBankData( null );
         if ( num != AbstractLogicalFile.NO_NUMBER )
@@ -849,10 +593,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                         this.getHeaderBlock() * this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[5], Long.toString( num ) );
 
-                    if ( AbstractErrorMessage.isErrorsEnabled() )
+                    if ( ThreadLocalMessages.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(
-                            this.getMeta(), this.getHeaderBlock() *
+                        throw new CorruptedException( this.getImplementation(),
+                            this.getHeaderBlock() *
                             this.persistence.getBlockSize() +
                             DTAUSTape.ARECORD_OFFSETS[5] );
 
@@ -871,32 +615,32 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 6
         txt = this.readAlphaNumeric( Fields.FIELD_A6, headerBlock,
-                                     DTAUSTape.ARECORD_OFFSETS[6],
-                                     DTAUSTape.ARECORD_LENGTH[6],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[6],
+            DTAUSTape.ARECORD_LENGTH[6],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         ret.setCustomer( txt );
 
         // Feld 7
         num = this.readNumberPackedPositive( Fields.FIELD_A7, headerBlock,
-                                             DTAUSTape.ARECORD_OFFSETS[7],
-                                             DTAUSTape.ARECORD_LENGTH[7], true );
+            DTAUSTape.ARECORD_OFFSETS[7],
+            DTAUSTape.ARECORD_LENGTH[7], true );
 
         if ( num != AbstractLogicalFile.NO_NUMBER )
         {
-            this.calendar.clear();
-            cal = ( int ) Math.floor( num / AbstractLogicalFile.EXP10[4] );
+            this.myCalendar.clear();
+            cal = (int) Math.floor( num / AbstractLogicalFile.EXP10[4] );
             num -= ( cal * AbstractLogicalFile.EXP10[4] );
-            this.calendar.set( Calendar.DAY_OF_MONTH, cal );
-            cal = ( int ) Math.floor( num / AbstractLogicalFile.EXP10[2] );
+            this.myCalendar.set( Calendar.DAY_OF_MONTH, cal );
+            cal = (int) Math.floor( num / AbstractLogicalFile.EXP10[2] );
             num -= ( cal * AbstractLogicalFile.EXP10[2] );
-            this.calendar.set( Calendar.MONTH, cal - 1 );
+            this.myCalendar.set( Calendar.MONTH, cal - 1 );
             num = num <= 79L
                 ? 2000L + num
                 : 1900L + num;
 
-            this.calendar.set( Calendar.YEAR, ( int ) num );
-            createDate = this.calendar.getTime();
+            this.myCalendar.set( Calendar.YEAR, (int) num );
+            createDate = this.myCalendar.getTime();
             if ( !this.checkDate( createDate ) )
             {
                 msg = new IllegalDataMessage(
@@ -904,10 +648,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                     this.getHeaderBlock() * this.persistence.getBlockSize() +
                     DTAUSTape.ARECORD_OFFSETS[7], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(), this.getHeaderBlock() *
+                    throw new CorruptedException( this.getImplementation(),
+                        this.getHeaderBlock() *
                         this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[7] );
 
@@ -926,14 +670,14 @@ public final class DTAUSTape extends AbstractLogicalFile
         // Feld 8
         // Nur belegt wenn Absender Kreditinistitut ist, sonst leer.
         txt = this.readAlphaNumeric( Fields.FIELD_A8, headerBlock,
-                                     DTAUSTape.ARECORD_OFFSETS[8],
-                                     DTAUSTape.ARECORD_LENGTH[8],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[8],
+            DTAUSTape.ARECORD_LENGTH[8],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 9
         num = this.readNumberPackedPositive( Fields.FIELD_A9, headerBlock,
-                                             DTAUSTape.ARECORD_OFFSETS[9],
-                                             DTAUSTape.ARECORD_LENGTH[9], true );
+            DTAUSTape.ARECORD_OFFSETS[9],
+            DTAUSTape.ARECORD_LENGTH[9], true );
 
         ret.setAccount( null );
         if ( num != AbstractLogicalFile.NO_NUMBER )
@@ -945,10 +689,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                     this.getHeaderBlock() * this.persistence.getBlockSize() +
                     DTAUSTape.ARECORD_OFFSETS[9], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(), this.getHeaderBlock() *
+                    throw new CorruptedException( this.getImplementation(),
+                        this.getHeaderBlock() *
                         this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[9] );
 
@@ -966,9 +710,9 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 10
         Num = this.readNumber( Fields.FIELD_A10, headerBlock,
-                               DTAUSTape.ARECORD_OFFSETS[10],
-                               DTAUSTape.ARECORD_LENGTH[10],
-                               AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[10],
+            DTAUSTape.ARECORD_LENGTH[10],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         num = Num.longValue();
         if ( num != AbstractLogicalFile.NO_NUMBER )
@@ -980,10 +724,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                     this.getHeaderBlock() * this.persistence.getBlockSize() +
                     DTAUSTape.ARECORD_OFFSETS[10], Num.toString() );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(), this.getHeaderBlock() *
+                    throw new CorruptedException( this.getImplementation(),
+                        this.getHeaderBlock() *
                         this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[10] );
 
@@ -1001,20 +745,20 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 11b
         executionDate = this.readLongDate( Fields.FIELD_A11B, headerBlock,
-                                           DTAUSTape.ARECORD_OFFSETS[12],
-                                           AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[12],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         if ( createDate != null )
         {
             if ( !this.checkSchedule( createDate, executionDate ) )
             {
                 msg = new IllegalScheduleMessage( createDate, executionDate,
-                                                  MAX_SCHEDULEDAYS );
+                    MAX_SCHEDULEDAYS );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(), this.getHeaderBlock() *
+                    throw new CorruptedException( this.getImplementation(),
+                        this.getHeaderBlock() *
                         this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[12] );
 
@@ -1033,9 +777,9 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 12
         txt = this.readAlphaNumeric( Fields.FIELD_A12, headerBlock,
-                                     DTAUSTape.ARECORD_OFFSETS[14],
-                                     DTAUSTape.ARECORD_LENGTH[14],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[14],
+            DTAUSTape.ARECORD_LENGTH[14],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         ret.setCurrency( null );
         if ( txt != null )
@@ -1047,11 +791,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                     headerBlock * this.persistence.getBlockSize() +
                     DTAUSTape.ARECORD_OFFSETS[14], txt.format() );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(), headerBlock *
-                        this.persistence.getBlockSize() +
+                    throw new CorruptedException( this.getImplementation(),
+                        headerBlock * this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[14] );
 
                 }
@@ -1073,11 +816,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                         headerBlock * this.persistence.getBlockSize() +
                         DTAUSTape.ARECORD_OFFSETS[14], Character.toString( c ) );
 
-                    if ( AbstractErrorMessage.isErrorsEnabled() )
+                    if ( ThreadLocalMessages.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(
-                            this.getMeta(), headerBlock *
-                            this.persistence.getBlockSize() +
+                        throw new CorruptedException( this.getImplementation(),
+                            headerBlock * this.persistence.getBlockSize() +
                             DTAUSTape.ARECORD_OFFSETS[14] );
 
                     }
@@ -1095,7 +837,7 @@ public final class DTAUSTape extends AbstractLogicalFile
     }
 
     protected void writeHeader( final long headerBlock,
-                                 final Header header ) throws IOException
+        final Header header ) throws IOException
     {
         final LogicalFileType label;
         final boolean isBank;
@@ -1108,117 +850,117 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 1
         this.writeNumberBinary( Fields.FIELD_A1, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[0],
-                                DTAUSTape.ARECORD_LENGTH[0],
-                                this.persistence.getBlockSize() );
+            DTAUSTape.ARECORD_OFFSETS[0],
+            DTAUSTape.ARECORD_LENGTH[0],
+            this.persistence.getBlockSize() );
 
         // Feld 1b
         // TODO -1
         this.writeNumberBinary( -1, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[1],
-                                DTAUSTape.ARECORD_LENGTH[1], 0L );
+            DTAUSTape.ARECORD_OFFSETS[1],
+            DTAUSTape.ARECORD_LENGTH[1], 0L );
 
         // Feld 2
         this.writeAlphaNumeric( Fields.FIELD_A2, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[2],
-                                DTAUSTape.ARECORD_LENGTH[2],
-                                "A", AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[2],
+            DTAUSTape.ARECORD_LENGTH[2],
+            "A", AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 3
         this.writeAlphaNumeric( Fields.FIELD_A3, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[3],
-                                DTAUSTape.ARECORD_LENGTH[3],
-                                label.getCode(),
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[3],
+            DTAUSTape.ARECORD_LENGTH[3],
+            label.getCode(),
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 4
         this.writeNumberPackedPositive( Fields.FIELD_A4, headerBlock,
-                                        DTAUSTape.ARECORD_OFFSETS[4],
-                                        DTAUSTape.ARECORD_LENGTH[4],
-                                        header.getBank().intValue(), true );
+            DTAUSTape.ARECORD_OFFSETS[4],
+            DTAUSTape.ARECORD_LENGTH[4],
+            header.getBank().intValue(), true );
 
         // Feld 5
         this.writeNumberPackedPositive( Fields.FIELD_A5, headerBlock,
-                                        DTAUSTape.ARECORD_OFFSETS[5],
-                                        DTAUSTape.ARECORD_LENGTH[5],
-                                        isBank && header.getBankData() != null
-                                        ? header.getBankData().intValue()
-                                        : 0, true );
+            DTAUSTape.ARECORD_OFFSETS[5],
+            DTAUSTape.ARECORD_LENGTH[5],
+            isBank && header.getBankData() != null
+            ? header.getBankData().intValue()
+            : 0, true );
 
         // Feld 6
         this.writeAlphaNumeric( Fields.FIELD_A6, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[6],
-                                DTAUSTape.ARECORD_LENGTH[6],
-                                header.getCustomer().format(),
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[6],
+            DTAUSTape.ARECORD_LENGTH[6],
+            header.getCustomer().format(),
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 7
-        this.calendar.clear();
-        this.calendar.setTime( header.getCreateDate() );
-        num = this.calendar.get( Calendar.DAY_OF_MONTH ) *
+        this.myCalendar.clear();
+        this.myCalendar.setTime( header.getCreateDate() );
+        num = this.myCalendar.get( Calendar.DAY_OF_MONTH ) *
             AbstractLogicalFile.EXP10[4];
 
-        num += ( this.calendar.get( Calendar.MONTH ) + 1 ) *
+        num += ( this.myCalendar.get( Calendar.MONTH ) + 1 ) *
             AbstractLogicalFile.EXP10[2];
 
-        cal = this.calendar.get( Calendar.YEAR );
-        yy = ( int ) Math.floor( cal / 100.00D );
+        cal = this.myCalendar.get( Calendar.YEAR );
+        yy = (int) Math.floor( cal / 100.00D );
         cal -= yy * 100.00D;
         num += cal;
 
         this.writeNumberPackedPositive( Fields.FIELD_A7, headerBlock,
-                                        DTAUSTape.ARECORD_OFFSETS[7],
-                                        DTAUSTape.ARECORD_LENGTH[7], num,
-                                        true );
+            DTAUSTape.ARECORD_OFFSETS[7],
+            DTAUSTape.ARECORD_LENGTH[7], num,
+            true );
 
         // Feld 8
         this.writeAlphaNumeric( Fields.FIELD_A8, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[8],
-                                DTAUSTape.ARECORD_LENGTH[8],
-                                "", AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[8],
+            DTAUSTape.ARECORD_LENGTH[8],
+            "", AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 9
         this.writeNumberPackedPositive( Fields.FIELD_A9, headerBlock,
-                                        DTAUSTape.ARECORD_OFFSETS[9],
-                                        DTAUSTape.ARECORD_LENGTH[9],
-                                        header.getAccount().longValue(), true );
+            DTAUSTape.ARECORD_OFFSETS[9],
+            DTAUSTape.ARECORD_LENGTH[9],
+            header.getAccount().longValue(), true );
 
         // Feld 10
         this.writeNumber( Fields.FIELD_A10, headerBlock,
-                          DTAUSTape.ARECORD_OFFSETS[10],
-                          DTAUSTape.ARECORD_LENGTH[10],
-                          header.getReference() != null
-                          ? header.getReference().longValue()
-                          : 0L,
-                          AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[10],
+            DTAUSTape.ARECORD_LENGTH[10],
+            header.getReference() != null
+            ? header.getReference().longValue()
+            : 0L,
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 11a
         this.writeAlphaNumeric( Fields.FIELD_A11A, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[11],
-                                DTAUSTape.ARECORD_LENGTH[11], "",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[11],
+            DTAUSTape.ARECORD_LENGTH[11], "",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 11b
         this.writeLongDate( Fields.FIELD_A11B, headerBlock,
-                            DTAUSTape.ARECORD_OFFSETS[12],
-                            header.getExecutionDate(),
-                            AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[12],
+            header.getExecutionDate(),
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 11c
         this.writeAlphaNumeric( Fields.FIELD_A11C, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[13],
-                                DTAUSTape.ARECORD_LENGTH[13], "",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[13],
+            DTAUSTape.ARECORD_LENGTH[13], "",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 12
         this.writeAlphaNumeric( Fields.FIELD_A12, headerBlock,
-                                DTAUSTape.ARECORD_OFFSETS[14],
-                                DTAUSTape.ARECORD_LENGTH[14],
-                                Character.toString( this.getCurrencyMapper().
-                                                    getDtausCode(
-                                                    header.getCurrency(),
-                                                    header.getCreateDate() ) ),
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ARECORD_OFFSETS[14],
+            DTAUSTape.ARECORD_LENGTH[14],
+            Character.toString( this.getCurrencyMapper().
+            getDtausCode(
+            header.getCurrency(),
+            header.getCreateDate() ) ),
+            AbstractLogicalFile.ENCODING_EBCDI );
 
     }
 
@@ -1234,8 +976,8 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 1
         num = this.readNumberBinary( Fields.FIELD_E1, checksumBlock,
-                                     DTAUSTape.ERECORD_OFFSETS[0],
-                                     DTAUSTape.ERECORD_LENGTH[0] );
+            DTAUSTape.ERECORD_OFFSETS[0],
+            DTAUSTape.ERECORD_LENGTH[0] );
 
         if ( num != this.persistence.getBlockSize() )
         {
@@ -1244,11 +986,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                 checksumBlock * this.persistence.getBlockSize() +
                 DTAUSTape.ERECORD_OFFSETS[0], Long.toString( num ) );
 
-            if ( AbstractErrorMessage.isErrorsEnabled() )
+            if ( ThreadLocalMessages.isErrorsEnabled() )
             {
-                throw new CorruptedException(
-                    this.getMeta(), checksumBlock *
-                    this.persistence.getBlockSize() +
+                throw new CorruptedException( this.getImplementation(),
+                    checksumBlock * this.persistence.getBlockSize() +
                     DTAUSTape.ERECORD_OFFSETS[0] );
 
             }
@@ -1260,9 +1001,9 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Feld 2
         txt = this.readAlphaNumeric( Fields.FIELD_E2, checksumBlock,
-                                     DTAUSTape.ERECORD_OFFSETS[2],
-                                     DTAUSTape.ERECORD_LENGTH[2],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ERECORD_OFFSETS[2],
+            DTAUSTape.ERECORD_LENGTH[2],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         if ( txt != null && ( txt.length() != 1 || txt.charAt( 0 ) != 'E' ) )
         {
@@ -1271,11 +1012,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                 checksumBlock * this.persistence.getBlockSize() +
                 DTAUSTape.ERECORD_OFFSETS[2], txt.format() );
 
-            if ( AbstractErrorMessage.isErrorsEnabled() )
+            if ( ThreadLocalMessages.isErrorsEnabled() )
             {
-                throw new CorruptedException(
-                    this.getMeta(), checksumBlock *
-                    this.persistence.getBlockSize() +
+                throw new CorruptedException( this.getImplementation(),
+                    checksumBlock * this.persistence.getBlockSize() +
                     DTAUSTape.ERECORD_OFFSETS[2] );
 
             }
@@ -1290,100 +1030,100 @@ public final class DTAUSTape extends AbstractLogicalFile
             Fields.FIELD_E4, checksumBlock, DTAUSTape.ERECORD_OFFSETS[4],
             DTAUSTape.ERECORD_LENGTH[4], true );
 
-        checksum.setTransactionCount( ( int ) num );
+        checksum.setTransactionCount( (int) num );
 
         // Feld 6
         num = this.readNumberPackedPositive( Fields.FIELD_E6,
-                                             checksumBlock,
-                                             DTAUSTape.ERECORD_OFFSETS[6],
-                                             DTAUSTape.ERECORD_LENGTH[6], true );
+            checksumBlock,
+            DTAUSTape.ERECORD_OFFSETS[6],
+            DTAUSTape.ERECORD_LENGTH[6], true );
 
         checksum.setSumTargetAccount( num );
 
         // Feld 7
         num = this.readNumberPackedPositive( Fields.FIELD_E7,
-                                             checksumBlock,
-                                             DTAUSTape.ERECORD_OFFSETS[7],
-                                             DTAUSTape.ERECORD_LENGTH[7], true );
+            checksumBlock,
+            DTAUSTape.ERECORD_OFFSETS[7],
+            DTAUSTape.ERECORD_LENGTH[7], true );
 
         checksum.setSumTargetBank( num );
 
         // Feld 8
         num = this.readNumberPackedPositive( Fields.FIELD_E8,
-                                             checksumBlock,
-                                             DTAUSTape.ERECORD_OFFSETS[8],
-                                             DTAUSTape.ERECORD_LENGTH[8], true );
+            checksumBlock,
+            DTAUSTape.ERECORD_OFFSETS[8],
+            DTAUSTape.ERECORD_LENGTH[8], true );
 
         checksum.setSumAmount( num );
         return checksum;
     }
 
     protected void writeChecksum( final long checksumBlock,
-                                   final Checksum checksum ) throws IOException
+        final Checksum checksum ) throws IOException
     {
         // Feld 1
         this.writeNumberBinary( Fields.FIELD_E1, checksumBlock,
-                                DTAUSTape.ERECORD_OFFSETS[0],
-                                DTAUSTape.ERECORD_LENGTH[0],
-                                this.persistence.getBlockSize() );
+            DTAUSTape.ERECORD_OFFSETS[0],
+            DTAUSTape.ERECORD_LENGTH[0],
+            this.persistence.getBlockSize() );
 
         // Feld 1b
         // TODO -1
         this.writeNumberBinary( -1, checksumBlock, DTAUSTape.ERECORD_OFFSETS[1],
-                                DTAUSTape.ERECORD_LENGTH[1], 0L );
+            DTAUSTape.ERECORD_LENGTH[1], 0L );
 
         // Feld 2
         this.writeAlphaNumeric( Fields.FIELD_E2, checksumBlock,
-                                DTAUSTape.ERECORD_OFFSETS[2],
-                                DTAUSTape.ERECORD_LENGTH[2], "E",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ERECORD_OFFSETS[2],
+            DTAUSTape.ERECORD_LENGTH[2], "E",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 3
         this.writeAlphaNumeric( Fields.FIELD_E3, checksumBlock,
-                                DTAUSTape.ERECORD_OFFSETS[3],
-                                DTAUSTape.ERECORD_LENGTH[3], "",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ERECORD_OFFSETS[3],
+            DTAUSTape.ERECORD_LENGTH[3], "",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Feld 4
         this.writeNumberPackedPositive( Fields.FIELD_E4, checksumBlock,
-                                        DTAUSTape.ERECORD_OFFSETS[4],
-                                        DTAUSTape.ERECORD_LENGTH[4],
-                                        checksum.getTransactionCount(), true );
+            DTAUSTape.ERECORD_OFFSETS[4],
+            DTAUSTape.ERECORD_LENGTH[4],
+            checksum.getTransactionCount(), true );
 
         // Feld 5
         this.writeNumberPackedPositive( Fields.FIELD_E5, checksumBlock,
-                                        DTAUSTape.ERECORD_OFFSETS[5],
-                                        DTAUSTape.ERECORD_LENGTH[5], 0L,
-                                        false );
+            DTAUSTape.ERECORD_OFFSETS[5],
+            DTAUSTape.ERECORD_LENGTH[5], 0L,
+            false );
 
         // Feld 6
         this.writeNumberPackedPositive( Fields.FIELD_E6, checksumBlock,
-                                        DTAUSTape.ERECORD_OFFSETS[6],
-                                        DTAUSTape.ERECORD_LENGTH[6],
-                                        checksum.getSumTargetAccount(), true );
+            DTAUSTape.ERECORD_OFFSETS[6],
+            DTAUSTape.ERECORD_LENGTH[6],
+            checksum.getSumTargetAccount(), true );
 
         // Feld 7
         this.writeNumberPackedPositive( Fields.FIELD_E7, checksumBlock,
-                                        DTAUSTape.ERECORD_OFFSETS[7],
-                                        DTAUSTape.ERECORD_LENGTH[7],
-                                        checksum.getSumTargetBank(), true );
+            DTAUSTape.ERECORD_OFFSETS[7],
+            DTAUSTape.ERECORD_LENGTH[7],
+            checksum.getSumTargetBank(), true );
 
         // Feld 8
         this.writeNumberPackedPositive( Fields.FIELD_E8, checksumBlock,
-                                        DTAUSTape.ERECORD_OFFSETS[8],
-                                        DTAUSTape.ERECORD_LENGTH[8],
-                                        checksum.getSumAmount(), true );
+            DTAUSTape.ERECORD_OFFSETS[8],
+            DTAUSTape.ERECORD_LENGTH[8],
+            checksum.getSumAmount(), true );
 
         // Feld 9
         this.writeAlphaNumeric( Fields.FIELD_E9, checksumBlock,
-                                DTAUSTape.ERECORD_OFFSETS[9],
-                                DTAUSTape.ERECORD_LENGTH[9], "",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.ERECORD_OFFSETS[9],
+            DTAUSTape.ERECORD_LENGTH[9], "",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
     }
 
     protected Transaction readTransaction( final long block,
-                                            final Transaction transaction )
+        final Transaction transaction )
         throws IOException
     {
         long num;
@@ -1407,26 +1147,25 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 1
         num = this.readNumberBinary( Fields.FIELD_C1, block,
-                                     DTAUSTape.CRECORD_OFFSETS1[0],
-                                     DTAUSTape.CRECORD_LENGTH1[0] );
+            DTAUSTape.CRECORD_OFFSETS1[0],
+            DTAUSTape.CRECORD_LENGTH1[0] );
 
         if ( extCount != AbstractLogicalFile.NO_NUMBER &&
             num != DTAUSTape.CRECORD_CONST_LENGTH +
             extCount * DTAUSTape.CRECORD_EXT_LENGTH )
         {
             msg = new IllegalDataMessage( Fields.FIELD_C1,
-                                          IllegalDataMessage.TYPE_NUMERIC,
-                                          block *
-                                          this.persistence.getBlockSize() +
-                                          DTAUSTape.CRECORD_OFFSETS1[0],
-                                          Long.toString( num ) );
+                IllegalDataMessage.TYPE_NUMERIC,
+                block *
+                this.persistence.getBlockSize() +
+                DTAUSTape.CRECORD_OFFSETS1[0],
+                Long.toString( num ) );
 
-            if ( AbstractErrorMessage.isErrorsEnabled() )
+            if ( ThreadLocalMessages.isErrorsEnabled() )
             {
-                throw new CorruptedException( this.getMeta(),
-                                              block *
-                                              this.persistence.getBlockSize() +
-                                              DTAUSTape.CRECORD_OFFSETS1[0] );
+                throw new CorruptedException( this.getImplementation(),
+                    block * this.persistence.getBlockSize() +
+                    DTAUSTape.CRECORD_OFFSETS1[0] );
 
             }
             else
@@ -1437,25 +1176,24 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 2
         txt = this.readAlphaNumeric( Fields.FIELD_C2, block,
-                                     DTAUSTape.CRECORD_OFFSETS1[2],
-                                     DTAUSTape.CRECORD_LENGTH1[2],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[2],
+            DTAUSTape.CRECORD_LENGTH1[2],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         if ( txt != null && ( txt.length() != 1 || txt.charAt( 0 ) != 'C' ) )
         {
             msg = new IllegalDataMessage( Fields.FIELD_C2,
-                                          IllegalDataMessage.TYPE_CONSTANT,
-                                          block *
-                                          this.persistence.getBlockSize() +
-                                          DTAUSTape.CRECORD_OFFSETS1[2],
-                                          txt.format() );
+                IllegalDataMessage.TYPE_CONSTANT,
+                block *
+                this.persistence.getBlockSize() +
+                DTAUSTape.CRECORD_OFFSETS1[2],
+                txt.format() );
 
-            if ( AbstractErrorMessage.isErrorsEnabled() )
+            if ( ThreadLocalMessages.isErrorsEnabled() )
             {
-                throw new CorruptedException( this.getMeta(),
-                                              block *
-                                              this.persistence.getBlockSize() +
-                                              DTAUSTape.CRECORD_OFFSETS1[2] );
+                throw new CorruptedException( this.getImplementation(),
+                    block * this.persistence.getBlockSize() +
+                    DTAUSTape.CRECORD_OFFSETS1[2] );
 
             }
             else
@@ -1467,8 +1205,8 @@ public final class DTAUSTape extends AbstractLogicalFile
         // Konstanter Teil - Satzaschnitt 1 - Feld 3
         num =
             this.readNumberPackedPositive( Fields.FIELD_C3, block,
-                                           DTAUSTape.CRECORD_OFFSETS1[3],
-                                           DTAUSTape.CRECORD_LENGTH1[3], true );
+            DTAUSTape.CRECORD_OFFSETS1[3],
+            DTAUSTape.CRECORD_LENGTH1[3], true );
 
         transaction.setPrimaryBank( null );
         if ( num != AbstractLogicalFile.NO_NUMBER && num != 0L )
@@ -1480,10 +1218,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     block * this.persistence.getBlockSize() +
                     DTAUSTape.CRECORD_OFFSETS1[3], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[3] );
 
@@ -1504,8 +1241,8 @@ public final class DTAUSTape extends AbstractLogicalFile
         // Konstanter Teil - Satzaschnitt 1 - Feld 4
         num =
             this.readNumberPackedPositive( Fields.FIELD_C4, block,
-                                           DTAUSTape.CRECORD_OFFSETS1[4],
-                                           DTAUSTape.CRECORD_LENGTH1[4], true );
+            DTAUSTape.CRECORD_OFFSETS1[4],
+            DTAUSTape.CRECORD_LENGTH1[4], true );
 
         transaction.setTargetBank( null );
         if ( num != AbstractLogicalFile.NO_NUMBER )
@@ -1517,10 +1254,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     block * this.persistence.getBlockSize() +
                     DTAUSTape.CRECORD_OFFSETS1[4], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[4] );
 
@@ -1541,8 +1277,8 @@ public final class DTAUSTape extends AbstractLogicalFile
         // Konstanter Teil - Satzaschnitt 1 - Feld 5
         num =
             this.readNumberPackedPositive( Fields.FIELD_C5, block,
-                                           DTAUSTape.CRECORD_OFFSETS1[5],
-                                           DTAUSTape.CRECORD_LENGTH1[5], true );
+            DTAUSTape.CRECORD_OFFSETS1[5],
+            DTAUSTape.CRECORD_LENGTH1[5], true );
 
         transaction.setTargetAccount( null );
         if ( num != AbstractLogicalFile.NO_NUMBER )
@@ -1554,10 +1290,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     block * this.persistence.getBlockSize() +
                     DTAUSTape.CRECORD_OFFSETS1[5], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[5] );
 
@@ -1590,10 +1325,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     block * this.persistence.getBlockSize() +
                     DTAUSTape.CRECORD_OFFSETS1[6], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[6] );
 
@@ -1617,22 +1351,22 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 7a
         keyType = this.readNumberPackedPositive( Fields.FIELD_C7A, block,
-                                                 DTAUSTape.CRECORD_OFFSETS1[8],
-                                                 DTAUSTape.CRECORD_LENGTH1[8],
-                                                 false );
+            DTAUSTape.CRECORD_OFFSETS1[8],
+            DTAUSTape.CRECORD_LENGTH1[8],
+            false );
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 7b
         num =
             this.readNumberPackedPositive( Fields.FIELD_C7B, block,
-                                           DTAUSTape.CRECORD_OFFSETS1[9],
-                                           DTAUSTape.CRECORD_LENGTH1[9], true );
+            DTAUSTape.CRECORD_OFFSETS1[9],
+            DTAUSTape.CRECORD_LENGTH1[9], true );
 
         transaction.setType( null );
         if ( num != AbstractLogicalFile.NO_NUMBER &&
             keyType != AbstractLogicalFile.NO_NUMBER )
         {
             type = this.getTextschluesselVerzeichnis().
-                getTextschluessel( ( int ) keyType, ( int ) num );
+                getTextschluessel( (int) keyType, (int) num );
 
             if ( type == null )
             {
@@ -1642,10 +1376,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     DTAUSTape.CRECORD_OFFSETS1[8], Long.toString( keyType ) +
                     Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[8] );
 
@@ -1662,10 +1395,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                 msg = new TextschluesselConstraintMessage(
                     this.getHeader().getType(), type );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[8] );
 
@@ -1683,9 +1415,9 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 10
         num = this.readNumberPackedPositive( Fields.FIELD_C10, block,
-                                             DTAUSTape.CRECORD_OFFSETS1[12],
-                                             DTAUSTape.CRECORD_LENGTH1[12],
-                                             true );
+            DTAUSTape.CRECORD_OFFSETS1[12],
+            DTAUSTape.CRECORD_LENGTH1[12],
+            true );
 
         transaction.setExecutiveBank( null );
         if ( num != AbstractLogicalFile.NO_NUMBER )
@@ -1697,10 +1429,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     block * this.persistence.getBlockSize() +
                     DTAUSTape.CRECORD_OFFSETS1[12], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[12] );
 
@@ -1720,9 +1451,9 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 11
         num = this.readNumberPackedPositive( Fields.FIELD_C11, block,
-                                             DTAUSTape.CRECORD_OFFSETS1[13],
-                                             DTAUSTape.CRECORD_LENGTH1[13],
-                                             true );
+            DTAUSTape.CRECORD_OFFSETS1[13],
+            DTAUSTape.CRECORD_LENGTH1[13],
+            true );
 
         transaction.setExecutiveAccount( null );
         if ( num != AbstractLogicalFile.NO_NUMBER )
@@ -1734,10 +1465,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     block * this.persistence.getBlockSize() +
                     DTAUSTape.CRECORD_OFFSETS1[13], Long.toString( num ) );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[13] );
 
@@ -1757,35 +1487,35 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 12
         num = this.readNumberPackedPositive( Fields.FIELD_C12, block,
-                                             DTAUSTape.CRECORD_OFFSETS1[14],
-                                             DTAUSTape.CRECORD_LENGTH1[14],
-                                             true );
+            DTAUSTape.CRECORD_OFFSETS1[14],
+            DTAUSTape.CRECORD_LENGTH1[14],
+            true );
 
         transaction.setAmount( num != AbstractLogicalFile.NO_NUMBER
-                               ? BigInteger.valueOf( num )
-                               : null );
+            ? BigInteger.valueOf( num )
+            : null );
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 14
         txt = this.readAlphaNumeric( Fields.FIELD_C14, block,
-                                     DTAUSTape.CRECORD_OFFSETS1[16],
-                                     DTAUSTape.CRECORD_LENGTH1[16],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[16],
+            DTAUSTape.CRECORD_LENGTH1[16],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         transaction.setTargetName( txt );
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 15
         txt = this.readAlphaNumeric( Fields.FIELD_C15, block,
-                                     DTAUSTape.CRECORD_OFFSETS1[17],
-                                     DTAUSTape.CRECORD_LENGTH1[17],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[17],
+            DTAUSTape.CRECORD_LENGTH1[17],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         transaction.setExecutiveName( txt );
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 16
         txt = this.readAlphaNumeric( Fields.FIELD_C16, block,
-                                     DTAUSTape.CRECORD_OFFSETS1[18],
-                                     DTAUSTape.CRECORD_LENGTH1[18],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[18],
+            DTAUSTape.CRECORD_LENGTH1[18],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         if ( txt != null )
         {
@@ -1794,9 +1524,9 @@ public final class DTAUSTape extends AbstractLogicalFile
 
         // Konstanter Teil - Satzaschnitt 1 - Feld 17a
         txt = this.readAlphaNumeric( Fields.FIELD_C17A, block,
-                                     DTAUSTape.CRECORD_OFFSETS1[19],
-                                     DTAUSTape.CRECORD_LENGTH1[19],
-                                     AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[19],
+            DTAUSTape.CRECORD_LENGTH1[19],
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         if ( txt != null )
         {
@@ -1807,10 +1537,9 @@ public final class DTAUSTape extends AbstractLogicalFile
                     this.persistence.getBlockSize() +
                     DTAUSTape.CRECORD_OFFSETS1[19], txt.format() );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(),
+                    throw new CorruptedException( this.getImplementation(),
                         block * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_OFFSETS1[19] );
 
@@ -1835,11 +1564,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                         DTAUSTape.CRECORD_OFFSETS1[19],
                         Character.toString( c ) );
 
-                    if ( AbstractErrorMessage.isErrorsEnabled() )
+                    if ( ThreadLocalMessages.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(
-                            this.getMeta(), block *
-                            this.persistence.getBlockSize() +
+                        throw new CorruptedException( this.getImplementation(),
+                            block * this.persistence.getBlockSize() +
                             DTAUSTape.CRECORD_OFFSETS1[19] );
 
                     }
@@ -1893,11 +1621,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                         DTAUSTape.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
                         Num.toString() );
 
-                    if ( AbstractErrorMessage.isErrorsEnabled() )
+                    if ( ThreadLocalMessages.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(
-                            this.getMeta(), blockOffset *
-                            this.persistence.getBlockSize() +
+                        throw new CorruptedException( this.getImplementation(),
+                            blockOffset * this.persistence.getBlockSize() +
                             DTAUSTape.CRECORD_EXTINDEX_TO_TYPEOFFSET[search] );
 
                     }
@@ -1926,11 +1653,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                         DTAUSTape.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
                         Num.toString() );
 
-                    if ( AbstractErrorMessage.isErrorsEnabled() )
+                    if ( ThreadLocalMessages.isErrorsEnabled() )
                     {
-                        throw new CorruptedException(
-                            this.getMeta(), blockOffset *
-                            this.persistence.getBlockSize() +
+                        throw new CorruptedException( this.getImplementation(),
+                            blockOffset * this.persistence.getBlockSize() +
                             DTAUSTape.CRECORD_EXTINDEX_TO_TYPEOFFSET[search] );
 
                     }
@@ -1954,11 +1680,10 @@ public final class DTAUSTape extends AbstractLogicalFile
                     DTAUSTape.CRECORD_EXTINDEX_TO_TYPEOFFSET[search],
                     Num.toString() );
 
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException(
-                        this.getMeta(), blockOffset *
-                        this.persistence.getBlockSize() +
+                    throw new CorruptedException( this.getImplementation(),
+                        blockOffset * this.persistence.getBlockSize() +
                         DTAUSTape.CRECORD_EXTINDEX_TO_TYPEOFFSET[search] );
 
                 }
@@ -1969,8 +1694,8 @@ public final class DTAUSTape extends AbstractLogicalFile
             }
         }
 
-        transaction.setDescriptions( ( AlphaNumericText27[] ) desc.toArray(
-                                     new AlphaNumericText27[ desc.size() ] ) );
+        transaction.setDescriptions( (AlphaNumericText27[]) desc.toArray(
+            new AlphaNumericText27[ desc.size() ] ) );
 
         return transaction;
     }
@@ -2000,154 +1725,154 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
         // Konstanter Teil - 1. Satzabschnitt - Feld 1a
         this.writeNumberBinary( Fields.FIELD_C1, block,
-                                DTAUSTape.CRECORD_OFFSETS1[0],
-                                DTAUSTape.CRECORD_LENGTH1[0],
-                                DTAUSTape.CRECORD_CONST_LENGTH + extCount *
-                                DTAUSTape.CRECORD_EXT_LENGTH );
+            DTAUSTape.CRECORD_OFFSETS1[0],
+            DTAUSTape.CRECORD_LENGTH1[0],
+            DTAUSTape.CRECORD_CONST_LENGTH + extCount *
+            DTAUSTape.CRECORD_EXT_LENGTH );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 1b
         this.writeNumberBinary( Fields.FIELD_C1, block,
-                                DTAUSTape.CRECORD_OFFSETS1[1],
-                                DTAUSTape.CRECORD_LENGTH1[1], 0L );
+            DTAUSTape.CRECORD_OFFSETS1[1],
+            DTAUSTape.CRECORD_LENGTH1[1], 0L );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 2
         this.writeAlphaNumeric( Fields.FIELD_C2, block,
-                                DTAUSTape.CRECORD_OFFSETS1[2],
-                                DTAUSTape.CRECORD_LENGTH1[2], "C",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[2],
+            DTAUSTape.CRECORD_LENGTH1[2], "C",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 3
         this.writeNumberPackedPositive( Fields.FIELD_C3, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[3],
-                                        DTAUSTape.CRECORD_LENGTH1[3],
-                                        transaction.getPrimaryBank() != null
-                                        ? transaction.getPrimaryBank().intValue()
-                                        : 0, true );
+            DTAUSTape.CRECORD_OFFSETS1[3],
+            DTAUSTape.CRECORD_LENGTH1[3],
+            transaction.getPrimaryBank() != null
+            ? transaction.getPrimaryBank().intValue()
+            : 0, true );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 4
         this.writeNumberPackedPositive( Fields.FIELD_C4, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[4],
-                                        DTAUSTape.CRECORD_LENGTH1[4],
-                                        transaction.getTargetBank().intValue(),
-                                        true );
+            DTAUSTape.CRECORD_OFFSETS1[4],
+            DTAUSTape.CRECORD_LENGTH1[4],
+            transaction.getTargetBank().intValue(),
+            true );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 5
         this.writeNumberPackedPositive( Fields.FIELD_C5, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[5],
-                                        DTAUSTape.CRECORD_LENGTH1[5],
-                                        transaction.getTargetAccount().longValue(),
-                                        true );
+            DTAUSTape.CRECORD_OFFSETS1[5],
+            DTAUSTape.CRECORD_LENGTH1[5],
+            transaction.getTargetAccount().longValue(),
+            true );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 6a
         this.writeNumberPackedPositive( Fields.FIELD_C6A, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[6],
-                                        DTAUSTape.CRECORD_LENGTH1[6],
-                                        transaction.getReference() != null
-                                        ? transaction.getReference().longValue()
-                                        : 0L, false );
+            DTAUSTape.CRECORD_OFFSETS1[6],
+            DTAUSTape.CRECORD_LENGTH1[6],
+            transaction.getReference() != null
+            ? transaction.getReference().longValue()
+            : 0L, false );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 6b
         this.writeNumberPackedPositive( Fields.FIELD_C6B, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[7],
-                                        DTAUSTape.CRECORD_LENGTH1[7], 0L,
-                                        true );
+            DTAUSTape.CRECORD_OFFSETS1[7],
+            DTAUSTape.CRECORD_LENGTH1[7], 0L,
+            true );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 7a
         this.writeNumberPackedPositive( Fields.FIELD_C7A, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[8],
-                                        DTAUSTape.CRECORD_LENGTH1[8],
-                                        type.getKey(), false );
+            DTAUSTape.CRECORD_OFFSETS1[8],
+            DTAUSTape.CRECORD_LENGTH1[8],
+            type.getKey(), false );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 7b
         this.writeNumberPackedPositive( Fields.FIELD_C7B, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[9],
-                                        DTAUSTape.CRECORD_LENGTH1[9],
-                                        type.getExtension(), true );
+            DTAUSTape.CRECORD_OFFSETS1[9],
+            DTAUSTape.CRECORD_LENGTH1[9],
+            type.getExtension(), true );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 8
         this.writeAlphaNumeric( Fields.FIELD_C8, block,
-                                DTAUSTape.CRECORD_OFFSETS1[10],
-                                DTAUSTape.CRECORD_LENGTH1[10], "",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[10],
+            DTAUSTape.CRECORD_LENGTH1[10], "",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 9
         this.writeNumberPackedPositive( Fields.FIELD_C9, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[11],
-                                        DTAUSTape.CRECORD_LENGTH1[11], 0L,
-                                        true );
+            DTAUSTape.CRECORD_OFFSETS1[11],
+            DTAUSTape.CRECORD_LENGTH1[11], 0L,
+            true );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 10
         this.writeNumberPackedPositive( Fields.FIELD_C10, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[12],
-                                        DTAUSTape.CRECORD_LENGTH1[12],
-                                        transaction.getExecutiveBank().intValue(),
-                                        true );
+            DTAUSTape.CRECORD_OFFSETS1[12],
+            DTAUSTape.CRECORD_LENGTH1[12],
+            transaction.getExecutiveBank().intValue(),
+            true );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 11
         this.writeNumberPackedPositive( Fields.FIELD_C11, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[13],
-                                        DTAUSTape.CRECORD_LENGTH1[13],
-                                        transaction.getExecutiveAccount().
-                                        longValue(), true );
+            DTAUSTape.CRECORD_OFFSETS1[13],
+            DTAUSTape.CRECORD_LENGTH1[13],
+            transaction.getExecutiveAccount().
+            longValue(), true );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 12
         this.writeNumberPackedPositive( Fields.FIELD_C12, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[14],
-                                        DTAUSTape.CRECORD_LENGTH1[14],
-                                        transaction.getAmount().longValue(),
-                                        true ); // TODO longValueExact()
+            DTAUSTape.CRECORD_OFFSETS1[14],
+            DTAUSTape.CRECORD_LENGTH1[14],
+            transaction.getAmount().longValue(),
+            true ); // TODO longValueExact()
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 13
         this.writeAlphaNumeric( Fields.FIELD_C13, block,
-                                DTAUSTape.CRECORD_OFFSETS1[15],
-                                DTAUSTape.CRECORD_LENGTH1[15], "",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[15],
+            DTAUSTape.CRECORD_LENGTH1[15], "",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 14
         this.writeAlphaNumeric( Fields.FIELD_C14, block,
-                                DTAUSTape.CRECORD_OFFSETS1[16],
-                                DTAUSTape.CRECORD_LENGTH1[16],
-                                transaction.getTargetName().format(),
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[16],
+            DTAUSTape.CRECORD_LENGTH1[16],
+            transaction.getTargetName().format(),
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 15
         this.writeAlphaNumeric( Fields.FIELD_C15, block,
-                                DTAUSTape.CRECORD_OFFSETS1[17],
-                                DTAUSTape.CRECORD_LENGTH1[17],
-                                transaction.getExecutiveName().format(),
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[17],
+            DTAUSTape.CRECORD_LENGTH1[17],
+            transaction.getExecutiveName().format(),
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 16
         this.writeAlphaNumeric( Fields.FIELD_C16, block,
-                                DTAUSTape.CRECORD_OFFSETS1[18],
-                                DTAUSTape.CRECORD_LENGTH1[18],
-                                desc.length > 0
-                                ? desc[0].format()
-                                : "",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[18],
+            DTAUSTape.CRECORD_LENGTH1[18],
+            desc.length > 0
+            ? desc[0].format()
+            : "",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 17a
         this.writeAlphaNumeric( Fields.FIELD_C17A, block,
-                                DTAUSTape.CRECORD_OFFSETS1[19],
-                                DTAUSTape.CRECORD_LENGTH1[19],
-                                Character.toString( this.getCurrencyMapper().
-                                                    getDtausCode(
-                                                    transaction.getCurrency(),
-                                                    this.getHeader().
-                                                    getCreateDate() ) ),
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[19],
+            DTAUSTape.CRECORD_LENGTH1[19],
+            Character.toString( this.getCurrencyMapper().
+            getDtausCode(
+            transaction.getCurrency(),
+            this.getHeader().
+            getCreateDate() ) ),
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 17b
         this.writeAlphaNumeric( Fields.FIELD_C17B, block,
-                                DTAUSTape.CRECORD_OFFSETS1[20],
-                                DTAUSTape.CRECORD_LENGTH1[20], "",
-                                AbstractLogicalFile.ENCODING_EBCDI );
+            DTAUSTape.CRECORD_OFFSETS1[20],
+            DTAUSTape.CRECORD_LENGTH1[20], "",
+            AbstractLogicalFile.ENCODING_EBCDI );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 18
         this.writeNumberPackedPositive( Fields.FIELD_C18, block,
-                                        DTAUSTape.CRECORD_OFFSETS1[21],
-                                        DTAUSTape.CRECORD_LENGTH1[21],
-                                        extCount, true );
+            DTAUSTape.CRECORD_OFFSETS1[21],
+            DTAUSTape.CRECORD_LENGTH1[21],
+            extCount, true );
 
         // Erweiterungsteile des 2., 3., und 4. Satzabschnittes.
         descCount = desc.length;
@@ -2301,48 +2026,26 @@ public final class DTAUSTape extends AbstractLogicalFile
             }
 
             // Reservefeld des 2., 3. oder 4. Satzabschnitts leeren.
-            this.writeAlphaNumeric( DTAUSTape.CRECORD_EXTINDEX_TO_VALUEFIELD[DTAUSTape.CRECORD_EXTINDEX_TO_FOLLOWINGEXTENSIONS[extIndex] +
-                                    extIndex] + 7, blockOffset,
-                                    DTAUSTape.CRECORD_OFFSETS_EXT[10],
-                                    DTAUSTape.CRECORD_LENGTH_EXT[10], "",
-                                    AbstractLogicalFile.ENCODING_EBCDI );
+            this.writeAlphaNumeric(
+                DTAUSTape.CRECORD_EXTINDEX_TO_VALUEFIELD[DTAUSTape.CRECORD_EXTINDEX_TO_FOLLOWINGEXTENSIONS[extIndex] +
+                extIndex] + 7, blockOffset,
+                DTAUSTape.CRECORD_OFFSETS_EXT[10],
+                DTAUSTape.CRECORD_LENGTH_EXT[10], "",
+                AbstractLogicalFile.ENCODING_EBCDI );
 
         }
     }
 
-    protected MemoryManager getMemoryManagerImpl()
+    protected Implementation getImplementation()
     {
-        return this.getMemoryManager();
-    }
+        if ( this.implementation == null )
+        {
+            this.implementation = ModelFactory.getModel().getModules().
+                getImplementation( DTAUSDisk.class.getName() );
 
-    protected Logger getLoggerImpl()
-    {
-        return this.getLogger();
-    }
+        }
 
-    protected ApplicationLogger getApplicationLoggerImpl()
-    {
-        return this.getApplicationLogger();
-    }
-
-    protected TaskMonitor getTaskMonitorImpl()
-    {
-        return this.getTaskMonitor();
-    }
-
-    protected TextschluesselVerzeichnis getTextschluesselVerzeichnisImpl()
-    {
-        return this.getTextschluesselVerzeichnis();
-    }
-
-    protected Implementation getMeta()
-    {
-        return DTAUSTape.META;
-    }
-
-    protected CurrencyMapper getCurrencyMapperImpl()
-    {
-        return this.getCurrencyMapper();
+        return this.implementation;
     }
 
     //-----------------------------------------------------AbstractLogicalFile--

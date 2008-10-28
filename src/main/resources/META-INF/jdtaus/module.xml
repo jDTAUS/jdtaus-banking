@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-  jDTAUS Banking RI DTAUS
+  ${pom.name}
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
@@ -27,233 +27,343 @@
   Description: Runtime configuration for the ${pom.name} module.
 
 -->
+<container:module xmlns:container="http://jdtaus.org/core/model/container"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
+                  container:name="${pom.name}"
+                  container:version="${pom.version}"
+                  container:modelVersion="1.3">
 
-<jdtaus:module xmlns="http://jdtaus.org/runtime/container/xml"
-               xmlns:jdtaus="http://jdtaus.org/runtime/container/xml"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="http://jdtaus.org/runtime/container/xml http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-client-container/jdtaus-module-1.1.xsd"
-               jdtaus:name="${pom.name}"
-               jdtaus:description="${pom.description}"
-               jdtaus:version="1.1">
+  <container:documentation container:defaultLanguage="en">
+    <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>
+  </container:documentation>
+  <container:implementations>
+    <!--                                                                     -->
+    <!-- AbstractLogicalFile                                                 -->
+    <!--                                                                     -->
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}">
 
-  <jdtaus:implementations>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Abstract base class for LogicalFile implementations.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:name="Logger"
+                              container:bound="true">
+
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile"/>
+
+          </container:properties>
+        </container:dependency>
+
+        <container:dependency container:identifier="org.jdtaus.core.lang.spi.MemoryManager"
+                              container:name="MemoryManager"
+                              container:bound="true"/>
+
+        <container:dependency container:identifier="org.jdtaus.core.text.spi.ApplicationLogger"
+                              container:name="ApplicationLogger"
+                              container:bound="true"/>
+
+        <container:dependency container:identifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                              container:name="TaskMonitor"
+                              container:bound="true"/>
+
+        <container:dependency container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
+                              container:name="TextschluesselVerzeichnis"
+                              container:bound="true"/>
+
+        <container:dependency container:identifier="org.jdtaus.banking.spi.CurrencyMapper"
+                              container:name="CurrencyMapper"
+                              container:bound="true"/>
+
+        <container:dependency container:identifier="org.jdtaus.banking.dtaus.spi.HeaderValidator"
+                              container:name="HeaderValidator"
+                              container:bound="true"/>
+
+        <container:dependency container:identifier="org.jdtaus.banking.dtaus.spi.TransactionValidator"
+                              container:name="TransactionValidator"
+                              container:bound="true"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="readNumberIllegalFileInfo"/>
+        <container:reference container:name="logResizeIndex"/>
+      </container:messages>
+    </container:implementation>
     <!--                                                                     -->
     <!-- DefaultPhysicalFileFactory                                          -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory"
-                           jdtaus:name="jDTAUS Banking SPI"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory"
+                              container:name="jDTAUS Banking SPI"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"/>
-      </jdtaus:implementedSpecifications>
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="defaultFormat"
-                         jdtaus:type="int"
-                         jdtaus:value="128"/>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Default PhysicalFileFactory implementation.]]></container:text>
+      </container:documentation>
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
+      <container:specifications>
+        <container:reference container:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"/>
+      </container:specifications>
+      <container:properties>
+        <container:property container:name="defaultFormat"
+                            container:type="int"
+                            container:value="128">
 
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[The format to use for empty files.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+      <container:messages>
+        <container:reference container:name="illegalAttributeType"/>
+      </container:messages>
+    </container:implementation>
     <!--                                                                     -->
     <!-- DefaultPhysicalFile                                                 -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile"
-                           jdtaus:name="${pom.name}"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
-                           jdtaus:name="TaskMonitor"
-                           jdtaus:bound="true"/>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Default PhysicalFile implementation.]]></container:text>
+      </container:documentation>
 
-      </jdtaus:dependencies>
-    </jdtaus:implementation>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                              container:name="TaskMonitor"
+                              container:bound="true"/>
 
+        <container:dependency container:identifier="org.jdtaus.banking.dtaus.spi.HeaderValidator"
+                              container:name="HeaderValidator"
+                              container:bound="true"/>
+
+      </container:dependencies>
+    </container:implementation>
     <!--                                                                     -->
     <!-- DTAUSDisk                                                           -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"
-                           jdtaus:name="${pom.name} - Disk"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"
+                              container:name="${pom.name} - Disk"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:parent="org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile"
+                              container:final="true">
 
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
-                           jdtaus:name="Logger"
-                           jdtaus:bound="true">
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Anlage 3 - 1.1 DTAUS0: Zahlungsverkehrssammelauftrag Diskettenformat.]]></container:text>
+      </container:documentation>
 
-          <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name"
-                             jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"
-                             jdtaus:api="true"/>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:name="Logger"
+                              container:bound="true">
 
-          </jdtaus:properties>
-        </jdtaus:dependency>
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"/>
 
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.lang.spi.MemoryManager"
-                           jdtaus:name="MemoryManager"
-                           jdtaus:bound="true"/>
-
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
-                           jdtaus:name="ApplicationLogger"
-                           jdtaus:bound="true"/>
-
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
-                           jdtaus:name="TaskMonitor"
-                           jdtaus:bound="true"/>
-
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.TextschluesselVerzeichnis"
-                           jdtaus:name="TextschluesselVerzeichnis"
-                           jdtaus:bound="true"/>
-
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
-                           jdtaus:name="CurrencyMapper"
-                           jdtaus:bound="true"/>
-
-      </jdtaus:dependencies>
-    </jdtaus:implementation>
-
+          </container:properties>
+        </container:dependency>
+      </container:dependencies>
+    </container:implementation>
     <!--                                                                     -->
     <!-- DTAUSTape                                                           -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"
-                           jdtaus:name="${pom.name} - Tape"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"
+                              container:name="${pom.name} - Tape"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:parent="org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile"
+                              container:final="true">
 
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.logging.spi.Logger"
-                           jdtaus:name="Logger"
-                           jdtaus:bound="true">
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Anlage 3.1.2 DTAUS: Zahlungsverkehrssammelauftrag Magnetbandformat.]]></container:text>
+      </container:documentation>
 
-          <jdtaus:properties>
-            <jdtaus:property jdtaus:name="name"
-                             jdtaus:type="java.lang.String"
-                             jdtaus:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"
-                             jdtaus:api="true"/>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:name="Logger"
+                              container:bound="true">
 
-          </jdtaus:properties>
-        </jdtaus:dependency>
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"/>
 
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.lang.spi.MemoryManager"
-                           jdtaus:name="MemoryManager"
-                           jdtaus:bound="true"/>
-
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.text.spi.ApplicationLogger"
-                           jdtaus:name="ApplicationLogger"
-                           jdtaus:bound="true"/>
-
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.core.monitor.spi.TaskMonitor"
-                           jdtaus:name="TaskMonitor"
-                           jdtaus:bound="true"/>
-
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.TextschluesselVerzeichnis"
-                           jdtaus:name="TextschluesselVerzeichnis"
-                           jdtaus:bound="true"/>
-
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
-                           jdtaus:name="CurrencyMapper"
-                           jdtaus:bound="true"/>
-
-      </jdtaus:dependencies>
-    </jdtaus:implementation>
-
+          </container:properties>
+        </container:dependency>
+      </container:dependencies>
+    </container:implementation>
     <!--                                                                     -->
     <!-- DefaultHeaderValidator                                              -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultHeaderValidator"
-                           jdtaus:name="jDTAUS Banking SPI"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultHeaderValidator"
+                              container:name="jDTAUS Banking SPI"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.spi.HeaderValidator"/>
-      </jdtaus:implementedSpecifications>
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
-                           jdtaus:name="CurrencyMapper"
-                           jdtaus:bound="true"/>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[jDTAUS Banking SPI HeaderValidator implementation.]]></container:text>
+      </container:documentation>
 
-      </jdtaus:dependencies>
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="maxScheduleDays"
-                         jdtaus:type="int"
-                         jdtaus:value="15"/>
+      <container:specifications>
+        <container:reference container:identifier="org.jdtaus.banking.dtaus.spi.HeaderValidator"/>
+      </container:specifications>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.banking.spi.CurrencyMapper"
+                              container:name="CurrencyMapper"
+                              container:bound="true"/>
 
-        <jdtaus:property jdtaus:name="minDateMillis"
-                         jdtaus:type="long"
-                         jdtaus:value="315529200000"/>
+      </container:dependencies>
+      <container:properties>
+        <container:property container:name="maxScheduleDays"
+                            container:type="int"
+                            container:value="15">
 
-        <jdtaus:property jdtaus:name="maxDateMillis"
-                         jdtaus:type="long"
-                         jdtaus:value="3471289199999"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Maximum number of days allowed for a schedule.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="minDateMillis"
+                            container:type="long"
+                            container:value="315529200000">
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Timestamp any date is not allowed to precede.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="maxDateMillis"
+                            container:type="long"
+                            container:value="3471289199999">
 
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Timestamp any date is not allowed to follow.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
     <!--                                                                     -->
     <!-- DefaultTransactionValidator                                         -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultTransactionValidator"
-                           jdtaus:name="jDTAUS Banking SPI"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultTransactionValidator"
+                              container:name="jDTAUS Banking SPI"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.banking.dtaus.spi.TransactionValidator"/>
-      </jdtaus:implementedSpecifications>
-      <jdtaus:dependencies>
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.TextschluesselVerzeichnis"
-                           jdtaus:name="TextschluesselVerzeichnis"
-                           jdtaus:bound="true"/>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[jDTAUS Banking SPI TransactionValidator implementation.]]></container:text>
+      </container:documentation>
 
-        <jdtaus:dependency jdtaus:specificationIdentifier="org.jdtaus.banking.spi.CurrencyMapper"
-                           jdtaus:name="CurrencyMapper"
-                           jdtaus:bound="true"/>
+      <container:specifications>
+        <container:reference container:identifier="org.jdtaus.banking.dtaus.spi.TransactionValidator"/>
+      </container:specifications>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
+                              container:name="TextschluesselVerzeichnis"
+                              container:bound="true"/>
 
-      </jdtaus:dependencies>
-      <jdtaus:properties>
-        <jdtaus:property jdtaus:name="minAmount"
-                         jdtaus:type="long"
-                         jdtaus:value="1"/>
+        <container:dependency container:identifier="org.jdtaus.banking.spi.CurrencyMapper"
+                              container:name="CurrencyMapper"
+                              container:bound="true"/>
 
-        <jdtaus:property jdtaus:name="maxAmount"
-                         jdtaus:type="long"
-                         jdtaus:value="99999999999"/>
+      </container:dependencies>
+      <container:properties>
+        <container:property container:name="minAmount"
+                            container:type="long"
+                            container:value="1">
 
-        <jdtaus:property jdtaus:name="minDescriptions"
-                         jdtaus:type="int"
-                         jdtaus:value="0"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Minimum amount any transaction has to specify.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="maxAmount"
+                            container:type="long"
+                            container:value="99999999999">
 
-        <jdtaus:property jdtaus:name="maxDescriptions"
-                         jdtaus:type="int"
-                         jdtaus:value="14"/>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Maximum amount any transaction is allowed to specify.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="minDescriptions"
+                            container:type="int"
+                            container:value="0">
 
-      </jdtaus:properties>
-    </jdtaus:implementation>
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Minimum number of descriptions any transaction has to specify.]]></container:text>
+          </container:documentation>
+        </container:property>
+        <container:property container:name="maxDescriptions"
+                            container:type="int"
+                            container:value="14">
 
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Maximum number of descriptions any transaction is allowed to specify.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
     <!--                                                                     -->
     <!-- PhysicalFileExceptionMessageResolver                                -->
     <!--                                                                     -->
-    <jdtaus:implementation jdtaus:identifier="org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver"
-                           jdtaus:name="${pom.name}"
-                           jdtaus:vendor="${pom.organization.name}"
-                           jdtaus:version="${pom.version}"
-                           jdtaus:final="true">
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
 
-      <jdtaus:implementedSpecifications>
-        <jdtaus:implementedSpecification jdtaus:identifier="org.jdtaus.core.lang.util.ExceptionMessageResolver"/>
-      </jdtaus:implementedSpecifications>
-    </jdtaus:implementation>
-  </jdtaus:implementations>
-</jdtaus:module>
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[ExceptionMessageResolver producing messages for PhysicalFileException instances.]]></container:text>
+      </container:documentation>
+
+      <container:specifications>
+        <container:reference container:identifier="org.jdtaus.core.lang.util.ExceptionMessageResolver"/>
+      </container:specifications>
+    </container:implementation>
+  </container:implementations>
+  <container:messages>
+    <container:message container:name="readNumberIllegalFileInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[An illegal space character in a numeric field has been converted to zero. Converted string "{0}" to number "{1,number}".]]></container:text>
+        <container:text container:language="de"><![CDATA[Ein ungültiges Leerzeichen in einem numerischen Feld wurde zu einer Null konvertiert. Gelesene Zeichenkette "{0}" wurde zur Zahl "{1,number}" konvertiert.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="readString" container:type="text"/>
+        <container:argument container:index="1" container:name="convertedNumber" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="logResizeIndex">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Resized index to "{0,number}" records.]]></container:text>
+        <container:text container:language="de"><![CDATA[Größe des Index auf "{0,number}" Einträge erweitert.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="indexSize" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalAttributeType">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The type {1} for attribute {0} is invalid. Expected {2}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Ungültiger Attribut-Typ {1} für Attribut {0}. Erwartet Typ {2}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="attributeName" container:type="text"/>
+        <container:argument container:index="1" container:name="typeName" container:type="text"/>
+        <container:argument container:index="2" container:name="expectedTypeName" container:type="text"/>
+      </container:arguments>
+    </container:message>
+  </container:messages>
+</container:module>

@@ -40,14 +40,6 @@ import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.ContainerFactory;
-import org.jdtaus.core.container.ContainerInitializer;
-import org.jdtaus.core.container.ContextFactory;
-import org.jdtaus.core.container.ContextInitializer;
-import org.jdtaus.core.container.Dependency;
-import org.jdtaus.core.container.Implementation;
-import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.messages.MandatoryPropertyMessage;
 import org.jdtaus.core.text.Message;
@@ -58,152 +50,26 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public final class DefaultTransactionValidator
-    implements ContainerInitializer, TransactionValidator
+public final class DefaultTransactionValidator implements TransactionValidator
 {
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(DefaultTransactionValidator.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
     //--Constructors------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
-    /**
-     * <code>DefaultTransactionValidator</code> implementation constructor.
-     *
-     * @param meta Implementation meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private DefaultTransactionValidator(final Implementation meta)
+    /** Standard implementation constructor <code>org.jdtaus.banking.dtaus.ri.zka.DefaultTransactionValidator</code>. */
+    public DefaultTransactionValidator()
     {
         super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
-    }
-    /**
-     * <code>DefaultTransactionValidator</code> dependency constructor.
-     *
-     * @param meta dependency meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private DefaultTransactionValidator(final Dependency meta)
-    {
-        super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
     }
 
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("maxDescriptions");
-        this.pMaxDescriptions = ((java.lang.Integer) p.getValue()).intValue();
-
-
-        p = meta.getProperty("minDescriptions");
-        this.pMinDescriptions = ((java.lang.Integer) p.getValue()).intValue();
-
-
-        p = meta.getProperty("maxAmount");
-        this.pMaxAmount = ((java.lang.Long) p.getValue()).longValue();
-
-
-        p = meta.getProperty("minAmount");
-        this.pMinAmount = ((java.lang.Long) p.getValue()).longValue();
-
-    }
 // </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
-    //--ContainerInitializer----------------------------------------------------
-
-    /**
-     * Initializes the instance.
-     *
-     * @see #assertValidProperties()
-     */
-    public void initialize()
-    {
-        this.assertValidProperties();
-    }
-
-    //----------------------------------------------------ContainerInitializer--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
-
-    /** Configured <code>CurrencyMapper</code> implementation. */
-    private transient CurrencyMapper dCurrencyMapper;
-
-    /**
-     * Gets the configured <code>CurrencyMapper</code> implementation.
-     *
-     * @return the configured <code>CurrencyMapper</code> implementation.
-     */
-    private CurrencyMapper getCurrencyMapper()
-    {
-        CurrencyMapper ret = null;
-        if(this.dCurrencyMapper != null)
-        {
-            ret = this.dCurrencyMapper;
-        }
-        else
-        {
-            ret = (CurrencyMapper) ContainerFactory.getContainer().
-                getDependency(DefaultTransactionValidator.class,
-                "CurrencyMapper");
-
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DefaultTransactionValidator.class.getName()).
-                getDependencies().getDependency("CurrencyMapper").
-                isBound())
-            {
-                this.dCurrencyMapper = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
-    }
-    /** Configured <code>TextschluesselVerzeichnis</code> implementation. */
-    private transient TextschluesselVerzeichnis dTextschluesselVerzeichnis;
 
     /**
      * Gets the configured <code>TextschluesselVerzeichnis</code> implementation.
@@ -212,34 +78,23 @@ public final class DefaultTransactionValidator
      */
     private TextschluesselVerzeichnis getTextschluesselVerzeichnis()
     {
-        TextschluesselVerzeichnis ret = null;
-        if(this.dTextschluesselVerzeichnis != null)
-        {
-            ret = this.dTextschluesselVerzeichnis;
-        }
-        else
-        {
-            ret = (TextschluesselVerzeichnis) ContainerFactory.getContainer().
-                getDependency(DefaultTransactionValidator.class,
-                "TextschluesselVerzeichnis");
+        return (TextschluesselVerzeichnis) ContainerFactory.getContainer().
+            getDependency( this, "TextschluesselVerzeichnis" );
 
-            if(ModelFactory.getModel().getModules().
-                getImplementation(DefaultTransactionValidator.class.getName()).
-                getDependencies().getDependency("TextschluesselVerzeichnis").
-                isBound())
-            {
-                this.dTextschluesselVerzeichnis = ret;
-            }
-        }
-
-        if(ret instanceof ContextInitializer && !((ContextInitializer) ret).
-            isInitialized(ContextFactory.getContext()))
-        {
-            ((ContextInitializer) ret).initialize(ContextFactory.getContext());
-        }
-
-        return ret;
     }
+
+    /**
+     * Gets the configured <code>CurrencyMapper</code> implementation.
+     *
+     * @return the configured <code>CurrencyMapper</code> implementation.
+     */
+    private CurrencyMapper getCurrencyMapper()
+    {
+        return (CurrencyMapper) ContainerFactory.getContainer().
+            getDependency( this, "CurrencyMapper" );
+
+    }
+
 // </editor-fold>//GEN-END:jdtausDependencies
 
     //------------------------------------------------------------Dependencies--
@@ -249,67 +104,51 @@ public final class DefaultTransactionValidator
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code maxDescriptions}.
-     * @serial
-     */
-    private int pMaxDescriptions;
-
-    /**
-     * Gets the value of property <code>maxDescriptions</code>.
-     *
-     * @return the value of property <code>maxDescriptions</code>.
-     */
-    private int getMaxDescriptions()
-    {
-        return this.pMaxDescriptions;
-    }
-
-    /**
-     * Property {@code minDescriptions}.
-     * @serial
-     */
-    private int pMinDescriptions;
-
-    /**
      * Gets the value of property <code>minDescriptions</code>.
      *
-     * @return the value of property <code>minDescriptions</code>.
+     * @return Minimum number of descriptions any transaction has to specify.
      */
     private int getMinDescriptions()
     {
-        return this.pMinDescriptions;
+        return ( (java.lang.Integer) ContainerFactory.getContainer().
+            getProperty( this, "minDescriptions" ) ).intValue();
+
     }
-
-    /**
-     * Property {@code maxAmount}.
-     * @serial
-     */
-    private long pMaxAmount;
-
-    /**
-     * Gets the value of property <code>maxAmount</code>.
-     *
-     * @return the value of property <code>maxAmount</code>.
-     */
-    private long getMaxAmount()
-    {
-        return this.pMaxAmount;
-    }
-
-    /**
-     * Property {@code minAmount}.
-     * @serial
-     */
-    private long pMinAmount;
 
     /**
      * Gets the value of property <code>minAmount</code>.
      *
-     * @return the value of property <code>minAmount</code>.
+     * @return Minimum amount any transaction has to specify.
      */
     private long getMinAmount()
     {
-        return this.pMinAmount;
+        return ( (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "minAmount" ) ).longValue();
+
+    }
+
+    /**
+     * Gets the value of property <code>maxDescriptions</code>.
+     *
+     * @return Maximum number of descriptions any transaction is allowed to specify.
+     */
+    private int getMaxDescriptions()
+    {
+        return ( (java.lang.Integer) ContainerFactory.getContainer().
+            getProperty( this, "maxDescriptions" ) ).intValue();
+
+    }
+
+    /**
+     * Gets the value of property <code>maxAmount</code>.
+     *
+     * @return Maximum amount any transaction is allowed to specify.
+     */
+    private long getMaxAmount()
+    {
+        return ( (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "maxAmount" ) ).longValue();
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -330,6 +169,7 @@ public final class DefaultTransactionValidator
             throw new NullPointerException( "transaction" );
         }
 
+        this.assertValidProperties();
         final Map properties = new HashMap( 20 );
         final LogicalFileType lFileType = lFile.getHeader().getType();
         final Textschluessel[] allowedTypes =
@@ -340,55 +180,55 @@ public final class DefaultTransactionValidator
         if ( transaction.getExecutiveAccount() == null )
         {
             properties.put( Transaction.PROP_EXECUTIVEACCOUNT,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( transaction.getExecutiveBank() == null )
         {
             properties.put( Transaction.PROP_EXECUTIVEBANK,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( transaction.getExecutiveName() == null )
         {
             properties.put( Transaction.PROP_EXECUTIVENAME,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( transaction.getTargetAccount() == null )
         {
             properties.put( Transaction.PROP_TARGETACCOUNT,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( transaction.getTargetBank() == null )
         {
             properties.put( Transaction.PROP_TARGETBANK,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( transaction.getTargetName() == null )
         {
             properties.put( Transaction.PROP_TARGETNAME,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( transaction.getType() == null )
         {
             properties.put( Transaction.PROP_TYPE,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( transaction.getCurrency() == null )
         {
             properties.put( Transaction.PROP_CURRENCY,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( transaction.getAmount() == null )
         {
             properties.put( Transaction.PROP_AMOUNT,
-                            new MandatoryPropertyMessage() );
+                new MandatoryPropertyMessage() );
 
         }
         if ( allowedTypes != null && transaction.getType() != null )
@@ -404,16 +244,16 @@ public final class DefaultTransactionValidator
             if ( i < 0 )
             {
                 properties.put( Transaction.PROP_TYPE,
-                                new TextschluesselConstraintMessage(
-                                lFileType, transaction.getType() ) );
+                    new TextschluesselConstraintMessage(
+                    lFileType, transaction.getType() ) );
 
             }
         }
         else if ( transaction.getType() != null )
         {
             properties.put( Transaction.PROP_TYPE,
-                            new TextschluesselConstraintMessage(
-                            lFileType, transaction.getType() ) );
+                new TextschluesselConstraintMessage(
+                lFileType, transaction.getType() ) );
 
         }
 
@@ -422,7 +262,7 @@ public final class DefaultTransactionValidator
             transaction.getAmount().longValue() <= this.getMaxAmount() ) )
         {
             properties.put( Transaction.PROP_AMOUNT, new IllegalAmountMessage(
-                            transaction.getAmount() ) );
+                transaction.getAmount() ) );
 
         }
         if ( !( transaction.getDescriptions().length >=
@@ -430,9 +270,9 @@ public final class DefaultTransactionValidator
             transaction.getDescriptions().length <= this.getMaxDescriptions() ) )
         {
             properties.put( Transaction.PROP_DESCRIPTIONS,
-                            new IllegalDescriptionCountMessage(
-                            AbstractLogicalFile.MAX_DESCRIPTIONS,
-                            transaction.getDescriptions().length ) );
+                new IllegalDescriptionCountMessage(
+                AbstractLogicalFile.MAX_DESCRIPTIONS,
+                transaction.getDescriptions().length ) );
 
         }
 
@@ -448,9 +288,9 @@ public final class DefaultTransactionValidator
             catch ( UnsupportedCurrencyException ex )
             {
                 properties.put( Transaction.PROP_CURRENCY,
-                                new IllegalCurrencyMessage(
-                                transaction.getCurrency().getCurrencyCode(),
-                                lFile.getHeader().getCreateDate() ) );
+                    new IllegalCurrencyMessage(
+                    transaction.getCurrency().getCurrencyCode(),
+                    lFile.getHeader().getCreateDate() ) );
 
             }
         }
@@ -462,11 +302,11 @@ public final class DefaultTransactionValidator
                 result = new IllegalTransactionException();
             }
 
-            for ( Iterator it = properties.entrySet().iterator(); it.hasNext();)
+            for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
             {
-                final Map.Entry entry = ( Map.Entry ) it.next();
-                result.addMessage( ( String ) entry.getKey(),
-                                   ( Message ) entry.getValue() );
+                final Map.Entry entry = (Map.Entry) it.next();
+                result.addMessage( (String) entry.getKey(),
+                    (Message) entry.getValue() );
 
             }
         }
@@ -476,13 +316,6 @@ public final class DefaultTransactionValidator
 
     //----------------------------------------------------TransactionValidator--
     //--DefaultTransactionValidator---------------------------------------------
-
-    /** Created a new {@code DefaultTransactionValidator} instance. */
-    public DefaultTransactionValidator()
-    {
-        this( META );
-        this.initialize();
-    }
 
     /**
      * Checks configured properties.

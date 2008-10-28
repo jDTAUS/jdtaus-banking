@@ -26,9 +26,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.PhysicalFile;
@@ -37,12 +35,9 @@ import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.messages.IllegalDataMessage;
 import org.jdtaus.banking.messages.IllegalFileLengthMessage;
-import org.jdtaus.core.container.ContainerInitializer;
-import org.jdtaus.core.container.Dependency;
+import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ModelFactory;
-import org.jdtaus.core.container.Properties;
-import org.jdtaus.core.container.Property;
 import org.jdtaus.core.container.PropertyException;
 import org.jdtaus.core.io.FileOperations;
 import org.jdtaus.core.io.util.CoalescingFileOperations;
@@ -53,28 +48,13 @@ import org.jdtaus.core.nio.util.Charsets;
 import org.jdtaus.core.text.Message;
 
 /**
- * Default {@code PhysicalFileFactory}-Implementierung.
+ * Default {@code PhysicalFileFactory} implementation.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
- *
- * @see #initialize()
  */
-public final class DefaultPhysicalFileFactory
-    implements PhysicalFileFactory, ContainerInitializer
+public final class DefaultPhysicalFileFactory implements PhysicalFileFactory
 {
-    //--Implementation----------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausImplementation
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Meta-data describing the implementation. */
-    private static final Implementation META =
-        ModelFactory.getModel().getModules().
-        getImplementation(DefaultPhysicalFileFactory.class.getName());
-// </editor-fold>//GEN-END:jdtausImplementation
-
-    //----------------------------------------------------------Implementation--
     //--Constants---------------------------------------------------------------
 
     /**
@@ -140,102 +120,30 @@ public final class DefaultPhysicalFileFactory
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
     // This section is managed by jdtaus-container-mojo.
 
-    /**
-     * <code>DefaultPhysicalFileFactory</code> implementation constructor.
-     *
-     * @param meta Implementation meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private DefaultPhysicalFileFactory(final Implementation meta)
+    /** Standard implementation constructor <code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory</code>. */
+    public DefaultPhysicalFileFactory()
     {
         super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
-    }
-    /**
-     * <code>DefaultPhysicalFileFactory</code> dependency constructor.
-     *
-     * @param meta dependency meta-data.
-     *
-     * @throws NullPointerException if <code>meta</code> is <code>null</code>.
-     */
-    private DefaultPhysicalFileFactory(final Dependency meta)
-    {
-        super();
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-        this.initializeProperties(meta.getProperties());
     }
 
-    /**
-     * Initializes the properties of the instance.
-     *
-     * @param meta the property values to initialize the instance with.
-     *
-     * @throws NullPointerException if {@code meta} is {@code null}.
-     */
-    private void initializeProperties(final Properties meta)
-    {
-        Property p;
-
-        if(meta == null)
-        {
-            throw new NullPointerException("meta");
-        }
-
-        p = meta.getProperty("defaultFormat");
-        this.pDefaultFormat = ((java.lang.Integer) p.getValue()).intValue();
-
-    }
 // </editor-fold>//GEN-END:jdtausConstructors
 
     //------------------------------------------------------------Constructors--
-    //--ContainerInitializer----------------------------------------------------
-
-    /**
-     * Checks configured properties.
-     *
-     * @see #assertValidProperties()
-     */
-    public void initialize()
-    {
-        this.assertValidProperties();
-    }
-
-    //----------------------------------------------------ContainerInitializer--
-    //--Dependencies------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
-    // This section is managed by jdtaus-container-mojo.
-
-// </editor-fold>//GEN-END:jdtausDependencies
-
-    //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Property {@code defaultFormat}.
-     * @serial
-     */
-    private int pDefaultFormat;
-
-    /**
      * Gets the value of property <code>defaultFormat</code>.
      *
-     * @return the value of property <code>defaultFormat</code>.
+     * @return The format to use for empty files.
      */
     private int getDefaultFormat()
     {
-        return this.pDefaultFormat;
+        return ( (java.lang.Integer) ContainerFactory.getContainer().
+            getProperty( this, "defaultFormat" ) ).intValue();
+
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
@@ -251,6 +159,7 @@ public final class DefaultPhysicalFileFactory
             throw new NullPointerException( "file" );
         }
 
+        this.assertValidProperties();
         final FileOperations ops = new RandomAccessFileOperations(
             new RandomAccessFile( file, "r" ) );
 
@@ -282,11 +191,12 @@ public final class DefaultPhysicalFileFactory
             throw new NullPointerException( "fileOperations" );
         }
 
+        this.assertValidProperties();
         length = fileOperations.getLength();
         try
         {
             ThreadLocalMessages.getMessages().clear();
-            AbstractErrorMessage.setErrorsEnabled( false );
+            ThreadLocalMessages.setErrorsEnabled( false );
 
             if ( length >= 128 )
             { // mindestens ein Disketten-Satzabschnitt.
@@ -295,7 +205,7 @@ public final class DefaultPhysicalFileFactory
                 do
                 {
                     read = fileOperations.read( buf, total,
-                                                buf.length - total );
+                        buf.length - total );
 
                     if ( read == FileOperations.EOF )
                     {
@@ -334,9 +244,11 @@ public final class DefaultPhysicalFileFactory
                             Fields.FIELD_A1, IllegalDataMessage.TYPE_CONSTANT,
                             0L, str );
 
-                        if ( AbstractErrorMessage.isErrorsEnabled() )
+                        if ( ThreadLocalMessages.isErrorsEnabled() )
                         {
-                            throw new CorruptedException( META, 0L );
+                            throw new CorruptedException(
+                                this.getImplementation(), 0L );
+
                         }
                         else
                         {
@@ -348,9 +260,11 @@ public final class DefaultPhysicalFileFactory
             else
             {
                 msg = new IllegalFileLengthMessage( length, blockSize );
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException( META, length );
+                    throw new CorruptedException( this.getImplementation(),
+                        length );
+
                 }
                 else
                 {
@@ -361,9 +275,11 @@ public final class DefaultPhysicalFileFactory
             if ( remainder > 0 )
             {
                 msg = new IllegalFileLengthMessage( length, blockSize );
-                if ( AbstractErrorMessage.isErrorsEnabled() )
+                if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
-                    throw new CorruptedException( META, length );
+                    throw new CorruptedException( this.getImplementation(),
+                        length );
+
                 }
                 else
                 {
@@ -381,7 +297,7 @@ public final class DefaultPhysicalFileFactory
         }
         finally
         {
-            AbstractErrorMessage.setErrorsEnabled( true );
+            ThreadLocalMessages.setErrorsEnabled( true );
         }
     }
 
@@ -389,7 +305,7 @@ public final class DefaultPhysicalFileFactory
         throws IOException
     {
         return this.createPhysicalFile( file, format,
-                                        this.getDefaultProperties() );
+            this.getDefaultProperties() );
 
     }
 
@@ -402,6 +318,7 @@ public final class DefaultPhysicalFileFactory
             throw new NullPointerException( "file" );
         }
 
+        this.assertValidProperties();
         this.assertValidProperties( properties );
 
         FileOperations ops = new RandomAccessFileOperations(
@@ -416,7 +333,7 @@ public final class DefaultPhysicalFileFactory
         final FileOperations ops, final int format ) throws IOException
     {
         return this.createPhysicalFile( ops, format,
-                                        this.getDefaultProperties() );
+            this.getDefaultProperties() );
 
     }
 
@@ -433,6 +350,7 @@ public final class DefaultPhysicalFileFactory
             throw new IllegalArgumentException( Integer.toString( format ) );
         }
 
+        this.assertValidProperties();
         this.assertValidProperties( properties );
 
         try
@@ -467,6 +385,7 @@ public final class DefaultPhysicalFileFactory
             throw new NullPointerException( "ops" );
         }
 
+        this.assertValidProperties();
         this.assertValidProperties( properties );
 
         return this.getPhysicalFile( ops, this.getDefaultFormat(), properties );
@@ -481,6 +400,7 @@ public final class DefaultPhysicalFileFactory
             throw new NullPointerException( "file" );
         }
 
+        this.assertValidProperties();
         this.assertValidProperties( properties );
 
         FileOperations ops = new RandomAccessFileOperations(
@@ -494,12 +414,8 @@ public final class DefaultPhysicalFileFactory
     //-----------------------------------------------------PhysicalFileFactory--
     //--DefaultPhysicalFileFactory----------------------------------------------
 
-    /** Creates a new {@code DefaultPhysicalFileFactory} instance. */
-    public DefaultPhysicalFileFactory()
-    {
-        this( META );
-        this.initialize();
-    }
+    /** Implementation meta-data. */
+    private Implementation implementation;
 
     /**
      * Checks configured properties.
@@ -513,7 +429,7 @@ public final class DefaultPhysicalFileFactory
             defaultFormat != FORMAT_TAPE )
         {
             throw new PropertyException( "defaultFormat",
-                                         new Integer( defaultFormat ) );
+                new Integer( defaultFormat ) );
 
         }
     }
@@ -534,24 +450,24 @@ public final class DefaultPhysicalFileFactory
             throw new NullPointerException( "properties" );
         }
 
-        for ( Iterator it = properties.entrySet().iterator(); it.hasNext();)
+        for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
         {
-            final Map.Entry entry = ( Map.Entry ) it.next();
-            final String name = ( String ) entry.getKey();
-            final String value = ( String ) entry.getValue();
+            final Map.Entry entry = (Map.Entry) it.next();
+            final String name = (String) entry.getKey();
+            final String value = (String) entry.getValue();
 
             if ( name.startsWith( ATTRIBUTE_SPACE_CHARACTERS_ALLOWED ) )
             {
                 try
                 {
                     Integer.parseInt( name.substring(
-                                      name.lastIndexOf( '.' ) + 1 ), 16 );
+                        name.lastIndexOf( '.' ) + 1 ), 16 );
 
                 }
                 catch ( NumberFormatException e )
                 {
                     throw new IllegalArgumentException( name + ": " +
-                                                        e.getMessage() );
+                        e.getMessage() );
 
                 }
             }
@@ -567,12 +483,10 @@ public final class DefaultPhysicalFileFactory
                 catch ( NumberFormatException e )
                 {
                     throw new IllegalArgumentException(
-                        DefaultPhysicalFileFactoryBundle.getInstance().
-                        getIllegalAttributeTypeMessage( Locale.getDefault() ).
-                        format( new Object[] { name, value != null
-                                               ? value.getClass().getName()
-                                               : null, Integer.class.getName()
-                            } ) );
+                        this.getIllegalAttributeTypeMessage( name, value != null
+                        ? value.getClass().getName() : null, Integer.class.
+                        getName() ) );
+
                 }
             }
         }
@@ -582,10 +496,10 @@ public final class DefaultPhysicalFileFactory
     {
         final java.util.Properties properties = new java.util.Properties();
         properties.setProperty( ATTRIBUTE_READAHEAD_CACHING,
-                                Boolean.toString( true ) );
+            Boolean.toString( true ) );
 
         properties.setProperty( ATTRIBUTE_COALESCING_CACHING,
-                                Boolean.toString( true ) );
+            Boolean.toString( true ) );
 
         return properties;
     }
@@ -691,7 +605,7 @@ public final class DefaultPhysicalFileFactory
         try
         {
             ThreadLocalMessages.getMessages().clear();
-            AbstractErrorMessage.setErrorsEnabled( false );
+            ThreadLocalMessages.setErrorsEnabled( false );
 
             ret = new DefaultPhysicalFile( sops, properties );
 
@@ -705,9 +619,56 @@ public final class DefaultPhysicalFileFactory
         }
         finally
         {
-            AbstractErrorMessage.setErrorsEnabled( true );
+            ThreadLocalMessages.setErrorsEnabled( true );
         }
     }
 
+    protected Implementation getImplementation()
+    {
+        if ( this.implementation == null )
+        {
+            this.implementation = ModelFactory.getModel().getModules().
+                getImplementation( DefaultPhysicalFileFactory.class.getName() );
+
+        }
+
+        return this.implementation;
+    }
+
     //----------------------------------------------DefaultPhysicalFileFactory--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>illegalAttributeType</code>.
+     * <blockquote><pre>Ungültiger Attribut-Typ {1} für Attribut {0}. Erwartet Typ {2}.</pre></blockquote>
+     * <blockquote><pre>The type {1} for attribute {0} is invalid. Expected {2}.</pre></blockquote>
+     *
+     * @param attributeName format argument.
+     * @param typeName format argument.
+     * @param expectedTypeName format argument.
+     *
+     * @return the text of message <code>illegalAttributeType</code>.
+     */
+    private String getIllegalAttributeTypeMessage(
+            java.lang.String attributeName,
+            java.lang.String typeName,
+            java.lang.String expectedTypeName )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "illegalAttributeType",
+                new Object[]
+                {
+                    attributeName,
+                    typeName,
+                    expectedTypeName
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }
