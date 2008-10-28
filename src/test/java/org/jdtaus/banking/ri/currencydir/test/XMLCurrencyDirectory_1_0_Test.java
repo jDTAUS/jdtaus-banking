@@ -22,34 +22,34 @@
  */
 package org.jdtaus.banking.ri.currencydir.test;
 
+import java.net.URL;
 import org.jdtaus.banking.ri.currencydir.XMLCurrencyDirectory;
-import org.jdtaus.banking.spi.CurrencyMapper;
-import org.jdtaus.banking.spi.it.CurrencyMapperTest;
 
 /**
- * Tests the {@link CurrencyMapper} implementation.
+ * Tests the {@link  XMLCurrencyDirectory} implementation to support resources
+ * of the {@code http://jdtaus.org/banking/xml/currencies} namespace.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class XMLCurrencyDirectoryTest
-    extends CurrencyMapperTest
+public class XMLCurrencyDirectory_1_0_Test
+    extends AbstractXMLCurrencyDirectoryTest
 {
-    //--CurrencyMapperTest------------------------------------------------------
+    //--AbstractXMLCurrencyDirectoryTest----------------------------------------
 
-    /** The implementation to test. */
-    private CurrencyMapper mapper;
-
-    public CurrencyMapper getCurrencyMapper()
+    protected ClassLoader getClassLoader()
     {
-        if ( this.mapper == null )
-        {
-            this.mapper = new XMLCurrencyDirectory();
-            this.setCurrencyMapper( this.mapper );
-        }
+        final ResourceLoader cl =
+            new ResourceLoader( this.getClass().getClassLoader() );
 
-        return super.getCurrencyMapper();
+        cl.addResources( "META-INF/jdtaus/currencies.xml",
+            new URL[]
+            {
+                this.getClass().getResource( "currencies-1.0.xml" )
+            } );
+
+        return cl;
     }
 
-    //------------------------------------------------------CurrencyMapperTest--
+    //----------------------------------------AbstractXMLCurrencyDirectoryTest--
 }

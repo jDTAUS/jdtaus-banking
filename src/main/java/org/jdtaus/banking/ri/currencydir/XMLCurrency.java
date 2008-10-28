@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * XML representation of a currency.
+ * Currency.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -187,12 +187,12 @@ public class XMLCurrency implements Serializable, Cloneable
      */
     private String internalString()
     {
-        return new StringBuffer( 200 ).
-            append( "\n\tisoCode=" ).append( this.isoCode ).
-            append( "\n\tdtausCode=" ).append( this.dtausCode ).
-            append( "\n\tstartDate=" ).append( this.startDate ).
-            append( "\n\tendDate=" ).append( this.endDate ).
-            toString();
+        return new StringBuffer( 200 ).append( '{' ).
+            append( "isoCode=" ).append( this.isoCode ).
+            append( ", dtausCode=" ).append( this.dtausCode ).
+            append( ", startDate=" ).append( this.startDate ).
+            append( ", endDate=" ).append( this.endDate ).
+            append( '}' ).toString();
 
     }
 
@@ -208,14 +208,14 @@ public class XMLCurrency implements Serializable, Cloneable
     {
         try
         {
-            final XMLCurrency ret = ( XMLCurrency ) super.clone();
+            final XMLCurrency ret = (XMLCurrency) super.clone();
             if ( this.startDate != null )
             {
-                ret.startDate = ( Date ) this.startDate.clone();
+                ret.startDate = (Date) this.startDate.clone();
             }
             if ( this.endDate != null )
             {
-                ret.endDate = ( Date ) this.endDate.clone();
+                ret.endDate = (Date) this.endDate.clone();
             }
 
             return ret;
@@ -241,18 +241,18 @@ public class XMLCurrency implements Serializable, Cloneable
 
         if ( !ret && o instanceof XMLCurrency )
         {
-            final XMLCurrency that = ( XMLCurrency ) o;
+            final XMLCurrency that = (XMLCurrency) o;
             ret =
-                ( this.isoCode == null
-                ? that.isoCode == null
-                : this.isoCode.equals( that.isoCode ) ) &&
-                ( this.dtausCode == that.dtausCode ) &&
-                ( this.startDate == null
-                ? that.startDate == null
-                : this.startDate.equals( that.startDate ) ) &&
-                ( this.endDate == null
-                ? that.endDate == null
-                : this.endDate.equals( that.endDate ) );
+                ( this.getIsoCode() == null
+                ? that.getIsoCode() == null
+                : this.getIsoCode().equals( that.getIsoCode() ) ) &&
+                ( this.getDtausCode() == that.getDtausCode() ) &&
+                ( this.getStartDate() == null
+                ? that.getStartDate() == null
+                : this.getStartDate().equals( that.getStartDate() ) ) &&
+                ( this.getEndDate() == null
+                ? that.getEndDate() == null
+                : this.getEndDate().equals( that.getEndDate() ) );
 
         }
 
@@ -272,7 +272,7 @@ public class XMLCurrency implements Serializable, Cloneable
 
             hc = 37 * hc + ( this.dtausCode == null
                 ? 0
-                : ( int ) this.dtausCode.charValue() );
+                : (int) this.dtausCode.charValue() );
 
             hc = 37 * hc + ( this.isoCode == null
                 ? 0

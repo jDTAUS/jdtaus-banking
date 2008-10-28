@@ -23,7 +23,7 @@
 package org.jdtaus.banking.ri.currencydir;
 
 import java.util.Currency;
-import java.util.Locale;
+import org.jdtaus.core.container.ContainerFactory;
 
 /**
  * Gets thrown for duplicate {@code Currency} instances.
@@ -39,7 +39,13 @@ public class DuplicateCurrencyException extends RuntimeException
     private static final long serialVersionUID = 8084715524328704554L;
 
     //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
+    //--DuplicateCurrencyException----------------------------------------------
+
+    /***
+     * The duplicate {@code Currency}.
+     * @serial
+     */
+    private Currency currency;
 
     /**
      * Creates a new instance of {@code DuplicateCurrencyException} taking
@@ -49,25 +55,9 @@ public class DuplicateCurrencyException extends RuntimeException
      */
     public DuplicateCurrencyException( final Currency currency )
     {
-        super( DuplicateCurrencyExceptionBundle.getInstance().
-               getDuplicateCurrencyMessage( Locale.getDefault() ).
-               format( currency == null
-                       ? null
-                       : new Object[] { currency.getCurrencyCode(),
-                                        currency.getSymbol()
-                   } ) );
-
+        super();
         this.currency = currency;
     }
-
-    //------------------------------------------------------------Constructors--
-    //--DuplicateCurrencyException----------------------------------------------
-
-    /***
-     * The duplicate {@code Currency}.
-     * @serial
-     */
-    private Currency currency;
 
     /**
      * Gets the the duplicate {@code Currency} instance.
@@ -79,5 +69,49 @@ public class DuplicateCurrencyException extends RuntimeException
         return this.currency;
     }
 
+    /**
+     * Returns the message of the exception.
+     *
+     * @return the message of the exception.
+     */
+    public String getMessage()
+    {
+        return this.getDuplicateCurrencyMessage(
+            this.currency.getCurrencyCode(), this.currency.getSymbol() );
+
+    }
+
     //----------------------------------------------DuplicateCurrencyException--
+    //--Messages----------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the text of message <code>duplicateCurrency</code>.
+     * <blockquote><pre>Währung {1} ({0}) ist mehrfach vorhanden.</pre></blockquote>
+     * <blockquote><pre>Non-unique currency {1} ({0}).</pre></blockquote>
+     *
+     * @param currencyCode format argument.
+     * @param currencySymbol format argument.
+     *
+     * @return the text of message <code>duplicateCurrency</code>.
+     */
+    private String getDuplicateCurrencyMessage(
+            java.lang.String currencyCode,
+            java.lang.String currencySymbol )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "duplicateCurrency",
+                new Object[]
+                {
+                    currencyCode,
+                    currencySymbol
+                });
+
+    }
+
+// </editor-fold>//GEN-END:jdtausMessages
+
+    //----------------------------------------------------------------Messages--
 }
