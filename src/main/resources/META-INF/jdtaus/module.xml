@@ -60,10 +60,12 @@
         <container:text container:language="en"><![CDATA[Textschlüssel directory implementation backed by XML files.]]></container:text>
       </container:documentation>
       <container:specifications>
-        <container:reference container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"/>
+        <container:reference container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
+                             container:version="1.1"/>
       </container:specifications>
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
                               container:name="Logger"
                               container:bound="true">
 
@@ -75,6 +77,7 @@
           </container:properties>
         </container:dependency>
         <container:dependency container:identifier="org.jdtaus.banking.ri.txtdirectory.TextschluesselProvider"
+                              container:version="${pom.version}"
                               container:name="TextschluesselProvider"
                               container:bound="true" />
 
