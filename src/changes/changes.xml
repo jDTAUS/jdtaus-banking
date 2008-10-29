@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
   <properties>
     <title>Changelog</title>
@@ -59,7 +60,7 @@
 
       <action dev="schulte2005" type="update"><![CDATA[
       Upgraded to latest core features.<ul>
-      <li>removed any internal properties resources and moved any messages to
+      <li>Removed any internal properties resources and moved any messages to
       the META-INF/jdtaus/module.xml module descriptor.</li></ul>]]></action>
     </release>
 
