@@ -27,7 +27,7 @@
           <tr>
             <td>http://jdtaus.org/banking/xml/textschluessel</td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.0.xsd">jdtaus-textschluessel-1.0.xsd</a>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-textschluessel-1.0.xsd">jdtaus-textschluessel-1.0.xsd</a>
             </td>
             <td>
               <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.0.xml">textschluessel-1.0.xml</a>
@@ -38,7 +38,7 @@
           <tr>
             <td>http://jdtaus.org/banking/xml/textschluessel</td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.1.xsd">jdtaus-textschluessel-1.1.xsd</a>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-textschluessel-1.1.xsd">jdtaus-textschluessel-1.1.xsd</a>
             </td>
             <td>
               <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.1.xml">textschluessel-1.1.xml</a>
@@ -47,9 +47,9 @@
             <td>2.0</td>
           </tr>
           <tr>
-            <td>http://jdtaus.org/banking/model/textschluessel</td>
+            <td>http://jdtaus.org/banking/model</td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/xsd/jdtaus-textschluessel-1.2.xsd">jdtaus-textschluessel-1.2.xsd</a>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd">jdtaus-banking-1.0.xsd</a>
             </td>
             <td>
               <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.2.xml">textschluessel-1.2.xml</a>
@@ -65,6 +65,23 @@
         <a href="apidocs/org/jdtaus/banking/ri/txtdirectory/ClasspathTextschluesselProvider.html">the classpath <code>TextschluesselProvider</code> implementation</a>
         which searches for classpath resources in a configurable location
         (defaulting to <code>META-INF/jdtaus/textschluessel.xml</code>).
+      </p>
+    </section>
+    <section name="Upgrading from 1.0">
+      <p>
+        All released 1.0 artifacts come with a default
+        <code>textschluessel.xml</code> document located at
+        <code>META-INF/jdtaus/textschluessel.xml</code> holding Textschlüssel
+        instances as specified by <a href="http://www.zka.de">ZKA</a>. Starting
+        with version 1.1 this default XML document is no longer part of the
+        artifact's jar file. When upgrading your application to 1.1 you need to
+        provide the Textschlüssel configuration yourself by either placing at
+        least one XML document in the application's classpath for use by class
+        <code>ClasspathTextschluesselProvider</code> or by supplying a custom
+        <code>TextschluesselProvider</code> implementation providing the
+        Textschlüssel resources. The former default document is available for
+        download as a starting point from
+        <a href="./textschluessel-1.2.xml">here</a>.
       </p>
     </section>
   </body>
