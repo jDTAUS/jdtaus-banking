@@ -60,11 +60,13 @@
         <container:text container:language="en"><![CDATA[Currency directory implementation backed by XML resources.]]></container:text>
       </container:documentation>
       <container:specifications>
-        <container:reference container:identifier="org.jdtaus.banking.CurrencyDirectory"/>
+        <container:reference container:identifier="org.jdtaus.banking.CurrencyDirectory"
+                             container:version="1.0"/>
         <container:reference container:identifier="org.jdtaus.banking.spi.CurrencyMapper"/>
       </container:specifications>
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
                               container:name="Logger"
                               container:bound="true">
 
@@ -76,6 +78,7 @@
           </container:properties>
         </container:dependency>
         <container:dependency container:identifier="org.jdtaus.banking.ri.currencydir.CurrenciesProvider"
+                              container:version="${pom.version}"
                               container:name="CurrenciesProvider"
                               container:bound="true"/>
 
