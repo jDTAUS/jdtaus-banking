@@ -8,12 +8,12 @@
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-charsets</artifactId>
   <name>jDTAUS Banking Charset Providers</name>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <description>jDTAUS banking charset provider implementations.</description>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.1</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.1</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-charsets/tags/jdtaus-banking-charsets-1.1</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</developerConnection>
+    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</url>
   </scm>
   <dependencies>
     <dependency>
