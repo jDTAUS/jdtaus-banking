@@ -8,16 +8,50 @@
     <section name="Introduction">
       <p>
         This artifact provides a <code>CurrencyDirectory</code> implementation
-        backed by XML files. See the XML schema
-        <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/jdtaus-currencies-1.0.xsd">jdtaus-currencies-1.0.xsd</a>
-        for further information regarding these XML documents.
-        XML resources are read using any available
-        <a href="apidocs/org/jdtaus/banking/ri/currencydir/CurrenciesProvider.html">CurrenciesProvider</a>
-        implementation. The <a href="apidocs/org/jdtaus/banking/ri/currencydir/ClasspathCurrenciesProvider.html">ClasspathCurrenciesProvider</a>
-        default implementation expects the XML documents to be located in
-        directory <code>META-INF/jdtaus</code> named <code>currencies.xml</code>.
-        This location can be changed by updating the configuration file
-        located at <code>META-INF/jdtaus/module.xml</code>.
+        backed by XML documents.
+      </p>
+      <p>
+        The implementation supports documents conforming to schemas as listed in
+        the following table. Support for deprecated schemas may be removed in
+        next major releases so that it is recommended to upgrade any documents
+        to conform to the latest schema before upgrading to such releases.
+        <table>
+          <tr>
+            <th>Namespace URI</th>
+            <th>Schema location</th>
+            <th>Default document</th>
+            <th>Introduced in</th>
+            <th>End of support</th>
+          </tr>
+          <tr>
+            <td>http://jdtaus.org/banking/xml/currencies</td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd">jdtaus-currencies-1.0.xsd</a>
+            </td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/currencies-1.0.xml">currencies-1.0.xml</a>
+            </td>
+            <td>1.0</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>http://jdtaus.org/banking/model</td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd">jdtaus-banking-1.0.xsd</a>
+            </td>
+            <td>
+              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/currencies-1.1.xml">currencies-1.1.xml</a>
+            </td>
+            <td>1.4</td>
+          </tr>
+        </table>
+      </p>
+      <p>
+        To provide any documents to the implementation, an application's
+        classpath needs to be setup to contain documents for use by
+        <a href="apidocs/org/jdtaus/banking/ri/currencydir/ClasspathCurrenciesProvider.html">the classpath <code>CurrenciesProvider</code> implementation</a>
+        which searches for classpath resources in a configurable location
+        (defaulting to <code>META-INF/jdtaus/currencies.xml</code>).
       </p>
     </section>
     <section name="Upgrading from 1.0">
@@ -33,7 +67,8 @@
         <code>ClasspathCurrenciesProvider</code> or by supplying a custom
         <code>CurrenciesProvider</code> implementation providing the
         currency resources. The former default document is available for
-        download as a starting point from <a href="currencies.xml">here</a>.
+        download as a starting point from
+        <a href="./currencies-1.1.xml">here</a>.
       </p>
     </section>
   </body>
