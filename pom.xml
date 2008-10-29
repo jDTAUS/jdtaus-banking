@@ -18,6 +18,13 @@
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</developerConnection>
     <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-charsets/branches/jdtaus-banking-charsets-1.x</url>
   </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.jdtaus.core</groupId>
+      <artifactId>jdtaus-core-utilities</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <resources>
       <resource>
