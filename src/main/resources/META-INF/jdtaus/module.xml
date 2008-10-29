@@ -51,6 +51,7 @@
       </container:documentation>
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
                               container:name="Logger"
                               container:bound="true">
 
@@ -63,30 +64,37 @@
         </container:dependency>
 
         <container:dependency container:identifier="org.jdtaus.core.lang.spi.MemoryManager"
+                              container:version="1.0"
                               container:name="MemoryManager"
                               container:bound="true"/>
 
         <container:dependency container:identifier="org.jdtaus.core.text.spi.ApplicationLogger"
+                              container:version="1.3"
                               container:name="ApplicationLogger"
                               container:bound="true"/>
 
         <container:dependency container:identifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                              container:version="1.3"
                               container:name="TaskMonitor"
                               container:bound="true"/>
 
         <container:dependency container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
+                              container:version="1.1"
                               container:name="TextschluesselVerzeichnis"
                               container:bound="true"/>
 
         <container:dependency container:identifier="org.jdtaus.banking.spi.CurrencyMapper"
+                              container:version="1.0"
                               container:name="CurrencyMapper"
                               container:bound="true"/>
 
         <container:dependency container:identifier="org.jdtaus.banking.dtaus.spi.HeaderValidator"
+                              container:version="1.0"
                               container:name="HeaderValidator"
                               container:bound="true"/>
 
         <container:dependency container:identifier="org.jdtaus.banking.dtaus.spi.TransactionValidator"
+                              container:version="1.0"
                               container:name="TransactionValidator"
                               container:bound="true"/>
 
@@ -110,7 +118,8 @@
       </container:documentation>
 
       <container:specifications>
-        <container:reference container:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"/>
+        <container:reference container:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"
+                             container:version="1.4"/>
       </container:specifications>
       <container:properties>
         <container:property container:name="defaultFormat"
@@ -141,10 +150,12 @@
 
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                              container:version="1.3"
                               container:name="TaskMonitor"
                               container:bound="true"/>
 
         <container:dependency container:identifier="org.jdtaus.banking.dtaus.spi.HeaderValidator"
+                              container:version="1.0"
                               container:name="HeaderValidator"
                               container:bound="true"/>
 
@@ -166,6 +177,7 @@
 
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
                               container:name="Logger"
                               container:bound="true">
 
@@ -194,6 +206,7 @@
 
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
                               container:name="Logger"
                               container:bound="true">
 
@@ -224,6 +237,7 @@
       </container:specifications>
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.banking.spi.CurrencyMapper"
+                              container:version="1.0"
                               container:name="CurrencyMapper"
                               container:bound="true"/>
 
@@ -273,10 +287,12 @@
       </container:specifications>
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
+                              container:version="1.1"
                               container:name="TextschluesselVerzeichnis"
                               container:bound="true"/>
 
         <container:dependency container:identifier="org.jdtaus.banking.spi.CurrencyMapper"
+                              container:version="1.0"
                               container:name="CurrencyMapper"
                               container:bound="true"/>
 
