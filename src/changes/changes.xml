@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
   <properties>
     <title>Changelog</title>
@@ -114,10 +115,11 @@
     <release version="1.6" date="2008-10-27"
              description="Maintenance release.">
 
-      <action dev="schulte2005" type="update"><![CDATA[
+       <action dev="schulte2005" type="update"><![CDATA[
       Upgraded to latest core features.<ul>
-      <li>removed any internal properties resources and moved any messages to
-      the META-INF/jdtaus/module.xml module descriptor.</li></ul>]]></action>
+      <li>Removed any internal properties resources and moved any messages to
+      the META-INF/jdtaus/module.xml module descriptor.</li>
+      <li>Added support for compatibility checking.</li></ul>]]></action>
     </release>
 
   </body>

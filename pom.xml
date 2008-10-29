@@ -38,49 +38,49 @@
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
-      <version>RELEASE</version>
+      <version>[1.3,)</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-messages</artifactId>
-      <version>RELEASE</version>
+      <version>[1.3,)</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-it</artifactId>
-      <version>RELEASE</version>
+      <version>[1.2,)</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
-      <version>RELEASE</version>
+      <version>[1.3,)</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
-      <version>RELEASE</version>
+      <version>[1.3,)</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
-      <version>RELEASE</version>
+      <version>[1.4,)</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-charsets</artifactId>
-      <version>RELEASE</version>
+      <version>[1.1,)</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.common</groupId>
       <artifactId>jdtaus-banking-api</artifactId>
-      <version>RELEASE</version>
+      <version>[1.6,)</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -91,10 +91,6 @@
     <dependency>
       <groupId>org.jdtaus.core</groupId>
       <artifactId>jdtaus-core-spi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jdtaus.core</groupId>
-      <artifactId>jdtaus-core-messages</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jdtaus.core</groupId>
