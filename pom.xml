@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
@@ -11,7 +8,7 @@
   <artifactId>jdtaus-banking-utilities</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking Utilities</name>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <description>jDTAUS banking utility components.</description>
   <dependencies>
     <dependency>
@@ -36,9 +33,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/branches/jdtaus-banking-utilities-1.x</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/branches/jdtaus-banking-utilities-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-utilities/branches/jdtaus-banking-utilities-1.x</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/jdtaus-banking-utilities-1.2</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/jdtaus-banking-utilities-1.2</developerConnection>
+    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-utilities/tags/jdtaus-banking-utilities-1.2</url>
   </scm>
   <build>
     <resources>
