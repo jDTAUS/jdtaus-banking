@@ -99,7 +99,7 @@
       <container:properties>
         <container:property container:name="dateOfExpirationText"
                             container:type="java.lang.String"
-                            container:value="2008-12-07">
+                            container:value="2009-03-08">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[The date of expiration of the directory.]]></container:text>
