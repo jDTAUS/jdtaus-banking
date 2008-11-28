@@ -61,7 +61,7 @@
       </container:documentation>
       <container:specifications>
         <container:reference container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
-                             container:version="1.1"/>
+                             container:version="1.2"/>
       </container:specifications>
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
