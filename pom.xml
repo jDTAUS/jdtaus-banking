@@ -67,6 +67,12 @@
   </build>
   <dependencies>
     <dependency>
+      <groupId>org.jdtaus.common</groupId>
+      <artifactId>jdtaus-banking-api</artifactId>
+      <version>[1.7,)</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-spi</artifactId>
       <version>[1.3,)</version>
