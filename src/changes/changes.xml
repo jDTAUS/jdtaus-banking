@@ -122,5 +122,13 @@
       <li>Added support for compatibility checking.</li></ul>]]></action>
     </release>
 
+    <release version="1.6-1" date="2008-11-28"
+             description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added support for Textschlüssel validity dates introduced in API
+      version 1.7.]]>
+      </action>
+    </release>
+
   </body>
 </document>

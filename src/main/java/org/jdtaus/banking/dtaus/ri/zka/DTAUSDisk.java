@@ -1287,7 +1287,8 @@ public final class DTAUSDisk extends AbstractLogicalFile
             num.longValue() != AbstractLogicalFile.NO_NUMBER )
         {
             type = this.getTextschluesselVerzeichnis().
-                getTextschluessel( keyType.intValue(), num.intValue() );
+                getTextschluessel( keyType.intValue(), num.intValue(),
+                this.getHeader().getCreateDate() );
 
             if ( type == null )
             {

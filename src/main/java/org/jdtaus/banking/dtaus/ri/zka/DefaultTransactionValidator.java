@@ -175,7 +175,8 @@ public final class DefaultTransactionValidator implements TransactionValidator
         final Textschluessel[] allowedTypes =
             this.getTextschluesselVerzeichnis().search(
             lFileType.isDebitAllowed(),
-            lFileType.isRemittanceAllowed() );
+            lFileType.isRemittanceAllowed(),
+            lFile.getHeader().getCreateDate() );
 
         if ( transaction.getExecutiveAccount() == null )
         {

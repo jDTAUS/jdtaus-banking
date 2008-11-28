@@ -1366,7 +1366,8 @@ public final class DTAUSTape extends AbstractLogicalFile
             keyType != AbstractLogicalFile.NO_NUMBER )
         {
             type = this.getTextschluesselVerzeichnis().
-                getTextschluessel( (int) keyType, (int) num );
+                getTextschluessel( (int) keyType, (int) num,
+                this.getHeader().getCreateDate() );
 
             if ( type == null )
             {
