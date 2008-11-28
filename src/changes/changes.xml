@@ -95,5 +95,21 @@
       </action>
     </release>
 
+    <release version="1.4" date="2008-11-28"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Implemented 1.7 API methods.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added new Textschlüssel to the attached XML document valid from
+      2008-11-15.<ul>
+      <li>05011</li>
+      <li>05019</li>
+      <li>05021</li>
+      <li>51511</li>
+      <li>51521</li></ul>]]>
+      </action>
+    </release>
   </body>
 </document>

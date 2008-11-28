@@ -28,9 +28,14 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -172,6 +177,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
 
             final Textschluessel[] ret =
                 new Textschluessel[ this.instances.length ];
+
             for ( int i = ret.length - 1; i >= 0; i-- )
             {
                 ret[i] = (Textschluessel) this.instances[i].clone();
@@ -191,9 +197,19 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         {
             throw new RuntimeException( e );
         }
+        catch ( ParseException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 
-    public Textschluessel getTextschluessel( int key, int extension )
+    public Textschluessel getTextschluessel( final int key, final int extension )
+    {
+        return this.getTextschluessel( key, extension, new Date() );
+    }
+
+    public Textschluessel getTextschluessel( final int key, final int extension,
+        final Date date )
     {
         if ( key < 0 || key > 99 )
         {
@@ -202,6 +218,10 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         if ( extension < 0 || extension > 999 )
         {
             throw new IllegalArgumentException( Integer.toString( extension ) );
+        }
+        if ( date == null )
+        {
+            throw new NullPointerException( "date" );
         }
 
         try
@@ -214,7 +234,8 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
 
             for ( int i = this.instances.length - 1; i >= 0; i-- )
             {
-                if ( this.instances[i].getKey() == key )
+                if ( this.instances[i].isValidAt( date ) &&
+                    this.instances[i].getKey() == key )
                 {
                     if ( this.instances[i].isVariable() )
                     {
@@ -246,10 +267,26 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         {
             throw new RuntimeException( e );
         }
+        catch ( ParseException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 
-    public Textschluessel[] search( boolean debit, boolean remittance )
+    public Textschluessel[] search( final boolean debit,
+        final boolean remittance )
     {
+        return this.search( debit, remittance, new Date() );
+    }
+
+    public Textschluessel[] search( final boolean debit,
+        final boolean remittance, final Date date )
+    {
+        if ( date == null )
+        {
+            throw new NullPointerException( "date" );
+        }
+
         try
         {
             this.assertValidProperties();
@@ -261,7 +298,8 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
             for ( int i = this.instances.length - 1; i >= 0; i-- )
             {
                 if ( this.instances[i].isDebit() == debit &&
-                    this.instances[i].isRemittance() == remittance )
+                    this.instances[i].isRemittance() == remittance &&
+                    this.instances[i].isValidAt( date ) )
                 {
                     col.add( this.instances[i].clone() );
                 }
@@ -280,6 +318,10 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
             throw new RuntimeException( e );
         }
         catch ( SAXException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( ParseException e )
         {
             throw new RuntimeException( e );
         }
@@ -347,13 +389,14 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * @throws IOException if retrieving resources fails.
      * @throws ParserConfigurationException if configuring the XML parser fails.
      * @throws SAXException if parsing resources fails.
+     * @throws ParseException if parsing fails.
      *
      * @see #assertValidProperties()
      * @see #parseResources()
      * @see #transformDocument(Document)
      */
     private void assertInitialized() throws IOException,
-        ParserConfigurationException, SAXException
+        ParserConfigurationException, SAXException, ParseException
     {
         if ( !this.initialized )
         {
@@ -587,11 +630,13 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * @return an array of Textschluessel instances from the given document.
      *
      * @throws IllegalArgumentException if {@code doc} cannot be transformed.
+     * @throws ParseException if parsing fails.
      *
      * @see #transformTextschluessel(Textschluessel, Element)
      * @see #transformTexts(Textschluessel, Element)
      */
     private List/*<Textschluessel>*/ transformDocument( final Document doc )
+        throws ParseException
     {
         String modelVersion = null;
         final String namespace = doc.getDocumentElement().getNamespaceURI();
@@ -761,11 +806,14 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * @return an list of Textschluessel instances from the given document.
      *
      * @throws IllegalArgumentException if {@code doc} contains invalid content.
+     * @throws ParseException if parsing fails.
      */
     private List/*<Textschluessel>*/ transformBankingDocument(
-        final Document doc )
+        final Document doc ) throws ParseException
     {
         final List list = new LinkedList();
+        final Calendar cal = Calendar.getInstance();
+        final DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
         final String systemLanguage = Locale.getDefault().getLanguage().
             toLowerCase();
 
@@ -802,6 +850,32 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
 
                 final NodeList texts = e.getElementsByTagNameNS(
                     BANKING_NS, "texts" );
+
+                if ( e.hasAttributeNS( BANKING_NS, "validFrom" ) )
+                {
+                    cal.setTime( dateFormat.parse( e.getAttributeNS(
+                        BANKING_NS, "validFrom" ) ) );
+
+                    cal.set( Calendar.HOUR_OF_DAY, 0 );
+                    cal.set( Calendar.MINUTE, 0 );
+                    cal.set( Calendar.SECOND, 0 );
+                    cal.set( Calendar.MILLISECOND, 0 );
+
+                    textschluessel.setValidFrom( cal.getTime() );
+                }
+
+                if ( e.hasAttributeNS( BANKING_NS, "validTo" ) )
+                {
+                    cal.setTime( dateFormat.parse( e.getAttributeNS(
+                        BANKING_NS, "validTo" ) ) );
+
+                    cal.set( Calendar.HOUR_OF_DAY, 0 );
+                    cal.set( Calendar.MINUTE, 0 );
+                    cal.set( Calendar.SECOND, 0 );
+                    cal.set( Calendar.MILLISECOND, 0 );
+
+                    textschluessel.setValidTo( cal.getTime() );
+                }
 
                 for ( int t = texts.getLength() - 1; t >= 0; t-- )
                 {
