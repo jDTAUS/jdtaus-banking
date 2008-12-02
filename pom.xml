@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>jdtaus-site</artifactId>
@@ -172,7 +173,7 @@
         <plugin>
           <groupId>org.jdtaus.mojo</groupId>
           <artifactId>jdtaus-container-mojo</artifactId>
-          <version>3.0</version>
+          <version>3.1</version>
           <dependencies>
             <dependency>
               <groupId>org.jdtaus.core.container</groupId>
@@ -182,9 +183,32 @@
             </dependency>
           </dependencies>
         </plugin>
+        <plugin>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <groupId>org.codehaus.mojo</groupId>
+          <version>1.0-beta-1</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <format>{0,date,yyyy-MM-dd'T'HH:mm:ssZ}</format>
+          <items>
+            <item>timestamp</item>
+          </items>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
@@ -217,6 +241,9 @@
             <index>true</index>
             <addMavenDescriptor>false</addMavenDescriptor>
             <compress>true</compress>
+            <manifestEntries>
+              <Build-Date>${buildNumber}</Build-Date>
+            </manifestEntries>
           </archive>
         </configuration>
       </plugin>
@@ -246,8 +273,11 @@
             </goals>
             <configuration>
               <resourceBundles>
-                <resourceBundle>org.jdtaus:jdtaus-lgpl-resource-bundle:1.0</resourceBundle>
+                <resourceBundle>org.jdtaus:jdtaus-lgpl-resource-bundle:1.1</resourceBundle>
               </resourceBundles>
+              <properties>
+                <buildNumber>${buildNumber}</buildNumber>
+              </properties>
             </configuration>
           </execution>
         </executions>
@@ -267,12 +297,24 @@
             </configuration>
           </execution>
           <execution>
-            <id>generate</id>
+            <id>generate-main</id>
             <goals>
               <goal>java-container</goal>
             </goals>
+            <phase>process-resources</phase>
             <configuration>
               <moduleName>${pom.name}</moduleName>
+              <encoding>UTF-8</encoding>
+              <locale>en</locale>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-test</id>
+            <goals>
+              <goal>java-container</goal>
+            </goals>
+            <phase>process-test-resources</phase>
+            <configuration>
               <testModuleName>${pom.name} Tests</testModuleName>
               <encoding>UTF-8</encoding>
               <locale>en</locale>
