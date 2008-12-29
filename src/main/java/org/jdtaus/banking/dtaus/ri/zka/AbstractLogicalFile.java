@@ -278,7 +278,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /**
      * Gets the configured <code>Logger</code> implementation.
      *
-     * @return the configured <code>Logger</code> implementation.
+     * @return The configured <code>Logger</code> implementation.
      */
     protected Logger getLogger()
     {
@@ -290,7 +290,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /**
      * Gets the configured <code>MemoryManager</code> implementation.
      *
-     * @return the configured <code>MemoryManager</code> implementation.
+     * @return The configured <code>MemoryManager</code> implementation.
      */
     protected MemoryManager getMemoryManager()
     {
@@ -302,7 +302,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /**
      * Gets the configured <code>ApplicationLogger</code> implementation.
      *
-     * @return the configured <code>ApplicationLogger</code> implementation.
+     * @return The configured <code>ApplicationLogger</code> implementation.
      */
     protected ApplicationLogger getApplicationLogger()
     {
@@ -314,7 +314,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /**
      * Gets the configured <code>TaskMonitor</code> implementation.
      *
-     * @return the configured <code>TaskMonitor</code> implementation.
+     * @return The configured <code>TaskMonitor</code> implementation.
      */
     protected TaskMonitor getTaskMonitor()
     {
@@ -326,7 +326,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /**
      * Gets the configured <code>TextschluesselVerzeichnis</code> implementation.
      *
-     * @return the configured <code>TextschluesselVerzeichnis</code> implementation.
+     * @return The configured <code>TextschluesselVerzeichnis</code> implementation.
      */
     protected TextschluesselVerzeichnis getTextschluesselVerzeichnis()
     {
@@ -338,7 +338,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /**
      * Gets the configured <code>CurrencyMapper</code> implementation.
      *
-     * @return the configured <code>CurrencyMapper</code> implementation.
+     * @return The configured <code>CurrencyMapper</code> implementation.
      */
     protected CurrencyMapper getCurrencyMapper()
     {
@@ -350,7 +350,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /**
      * Gets the configured <code>HeaderValidator</code> implementation.
      *
-     * @return the configured <code>HeaderValidator</code> implementation.
+     * @return The configured <code>HeaderValidator</code> implementation.
      */
     protected HeaderValidator[] getHeaderValidator()
     {
@@ -362,12 +362,24 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /**
      * Gets the configured <code>TransactionValidator</code> implementation.
      *
-     * @return the configured <code>TransactionValidator</code> implementation.
+     * @return The configured <code>TransactionValidator</code> implementation.
      */
     protected TransactionValidator[] getTransactionValidator()
     {
         return (TransactionValidator[]) ContainerFactory.getContainer().
             getDependency( this, "TransactionValidator" );
+
+    }
+
+    /**
+     * Gets the configured <code>Locale</code> implementation.
+     *
+     * @return The configured <code>Locale</code> implementation.
+     */
+    protected Locale getLocale()
+    {
+        return (Locale) ContainerFactory.getContainer().
+            getDependency( this, "Locale" );
 
     }
 
@@ -540,7 +552,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             if ( this.getLogger().isInfoEnabled() )
             {
                 this.getLogger().info( this.getReadNumberIllegalFileInfoMessage(
-                    logViolation, new Long( ret ) ) );
+                    this.getLocale(), logViolation, new Long( ret ) ) );
 
             }
         }
@@ -1726,7 +1738,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             this.index.length != oldLength )
         {
             this.getLogger().debug( this.getLogResizeIndexMessage(
-                new Long( this.index.length ) ) );
+                this.getLocale(), new Long( this.index.length ) ) );
 
         }
     }
@@ -2350,17 +2362,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * <blockquote><pre>Ein ungültiges Leerzeichen in einem numerischen Feld wurde zu einer Null konvertiert. Gelesene Zeichenkette "{0}" wurde zur Zahl "{1,number}" konvertiert.</pre></blockquote>
      * <blockquote><pre>An illegal space character in a numeric field has been converted to zero. Converted string "{0}" to number "{1,number}".</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param readString format argument.
      * @param convertedNumber format argument.
      *
      * @return the text of message <code>readNumberIllegalFileInfo</code>.
      */
-    protected String getReadNumberIllegalFileInfoMessage(
-            java.lang.String readString,
-            java.lang.Number convertedNumber )
+    protected String getReadNumberIllegalFileInfoMessage( final Locale locale,
+            final java.lang.String readString,
+            final java.lang.Number convertedNumber )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "readNumberIllegalFileInfo",
+            getMessage( this, "readNumberIllegalFileInfo", locale,
                 new Object[]
                 {
                     readString,
@@ -2374,15 +2387,16 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * <blockquote><pre>Größe des Index auf "{0,number}" Einträge erweitert.</pre></blockquote>
      * <blockquote><pre>Resized index to "{0,number}" records.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param indexSize format argument.
      *
      * @return the text of message <code>logResizeIndex</code>.
      */
-    protected String getLogResizeIndexMessage(
-            java.lang.Number indexSize )
+    protected String getLogResizeIndexMessage( final Locale locale,
+            final java.lang.Number indexSize )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "logResizeIndex",
+            getMessage( this, "logResizeIndex", locale,
                 new Object[]
                 {
                     indexSize

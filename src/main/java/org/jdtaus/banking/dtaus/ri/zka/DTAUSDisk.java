@@ -332,7 +332,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
     /**
      * Gets the configured <code>Logger</code> implementation.
      *
-     * @return the configured <code>Logger</code> implementation.
+     * @return The configured <code>Logger</code> implementation.
      */
     protected Logger getLogger()
     {

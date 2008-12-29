@@ -79,7 +79,7 @@ public final class DefaultHeaderValidator implements HeaderValidator
     /**
      * Gets the configured <code>CurrencyMapper</code> implementation.
      *
-     * @return the configured <code>CurrencyMapper</code> implementation.
+     * @return The configured <code>CurrencyMapper</code> implementation.
      */
     private CurrencyMapper getCurrencyMapper()
     {

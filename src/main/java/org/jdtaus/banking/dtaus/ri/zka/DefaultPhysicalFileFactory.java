@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.PhysicalFile;
@@ -483,9 +484,11 @@ public final class DefaultPhysicalFileFactory implements PhysicalFileFactory
                 catch ( NumberFormatException e )
                 {
                     throw new IllegalArgumentException(
-                        this.getIllegalAttributeTypeMessage( name, value != null
-                        ? value.getClass().getName() : null, Integer.class.
-                        getName() ) );
+                        this.getIllegalAttributeTypeMessage(
+                        this.getLocale(), name, value != null
+                                                ? value.getClass().getName()
+                                                : null,
+                        Integer.class.getName() ) );
 
                 }
             }
@@ -636,6 +639,26 @@ public final class DefaultPhysicalFileFactory implements PhysicalFileFactory
     }
 
     //----------------------------------------------DefaultPhysicalFileFactory--
+    //--Dependencies------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the configured <code>Locale</code> implementation.
+     *
+     * @return The configured <code>Locale</code> implementation.
+     */
+    private Locale getLocale()
+    {
+        return (Locale) ContainerFactory.getContainer().
+            getDependency( this, "Locale" );
+
+    }
+
+// </editor-fold>//GEN-END:jdtausDependencies
+
+    //------------------------------------------------------------Dependencies--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -646,19 +669,20 @@ public final class DefaultPhysicalFileFactory implements PhysicalFileFactory
      * <blockquote><pre>Ungültiger Attribut-Typ {1} für Attribut {0}. Erwartet Typ {2}.</pre></blockquote>
      * <blockquote><pre>The type {1} for attribute {0} is invalid. Expected {2}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param attributeName format argument.
      * @param typeName format argument.
      * @param expectedTypeName format argument.
      *
      * @return the text of message <code>illegalAttributeType</code>.
      */
-    private String getIllegalAttributeTypeMessage(
-            java.lang.String attributeName,
-            java.lang.String typeName,
-            java.lang.String expectedTypeName )
+    private String getIllegalAttributeTypeMessage( final Locale locale,
+            final java.lang.String attributeName,
+            final java.lang.String typeName,
+            final java.lang.String expectedTypeName )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "illegalAttributeType",
+            getMessage( this, "illegalAttributeType", locale,
                 new Object[]
                 {
                     attributeName,

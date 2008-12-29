@@ -164,7 +164,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
     /**
      * Gets the configured <code>TaskMonitor</code> implementation.
      *
-     * @return the configured <code>TaskMonitor</code> implementation.
+     * @return The configured <code>TaskMonitor</code> implementation.
      */
     private TaskMonitor getTaskMonitor()
     {
@@ -176,7 +176,7 @@ public final class DefaultPhysicalFile implements PhysicalFile
     /**
      * Gets the configured <code>HeaderValidator</code> implementation.
      *
-     * @return the configured <code>HeaderValidator</code> implementation.
+     * @return The configured <code>HeaderValidator</code> implementation.
      */
     private HeaderValidator[] getHeaderValidator()
     {

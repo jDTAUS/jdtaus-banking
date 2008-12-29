@@ -74,7 +74,7 @@ public final class DefaultTransactionValidator implements TransactionValidator
     /**
      * Gets the configured <code>TextschluesselVerzeichnis</code> implementation.
      *
-     * @return the configured <code>TextschluesselVerzeichnis</code> implementation.
+     * @return The configured <code>TextschluesselVerzeichnis</code> implementation.
      */
     private TextschluesselVerzeichnis getTextschluesselVerzeichnis()
     {
@@ -86,7 +86,7 @@ public final class DefaultTransactionValidator implements TransactionValidator
     /**
      * Gets the configured <code>CurrencyMapper</code> implementation.
      *
-     * @return the configured <code>CurrencyMapper</code> implementation.
+     * @return The configured <code>CurrencyMapper</code> implementation.
      */
     private CurrencyMapper getCurrencyMapper()
     {
