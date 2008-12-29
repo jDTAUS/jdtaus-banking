@@ -121,7 +121,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     /**
      * Gets the configured <code>Logger</code> implementation.
      *
-     * @return the configured <code>Logger</code> implementation.
+     * @return The configured <code>Logger</code> implementation.
      */
     private Logger getLogger()
     {
@@ -133,12 +133,24 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     /**
      * Gets the configured <code>TextschluesselProvider</code> implementation.
      *
-     * @return the configured <code>TextschluesselProvider</code> implementation.
+     * @return The configured <code>TextschluesselProvider</code> implementation.
      */
     private TextschluesselProvider[] getTextschluesselProvider()
     {
         return (TextschluesselProvider[]) ContainerFactory.getContainer().
             getDependency( this, "TextschluesselProvider" );
+
+    }
+
+    /**
+     * Gets the configured <code>Locale</code> implementation.
+     *
+     * @return The configured <code>Locale</code> implementation.
+     */
+    private Locale getLocale()
+    {
+        return (Locale) ContainerFactory.getContainer().
+            getDependency( this, "Locale" );
 
     }
 
@@ -443,7 +455,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                 new Textschluessel[ checked.size() ] );
 
             this.getLogger().info( this.getTextschluesselInfoMessage(
-                new Integer( this.instances.length ),
+                this.getLocale(), new Integer( this.instances.length ),
                 new Integer( documents.size() ) ) );
 
             this.initialized = true;
@@ -510,19 +522,20 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
             final File file = new File( new URI( url.toString() ) );
             this.monitorMap.put( file, new Long( file.lastModified() ) );
             this.getLogger().info(
-                this.getMonitoringInfoMessage( file.getAbsolutePath() ) );
+                this.getMonitoringInfoMessage( this.getLocale(),
+                                               file.getAbsolutePath() ) );
 
         }
         catch ( IllegalArgumentException e )
         {
             this.getLogger().info( this.getNotMonitoringWarningMessage(
-                url.toExternalForm(), e.getMessage() ) );
+                this.getLocale(), url.toExternalForm(), e.getMessage() ) );
 
         }
         catch ( URISyntaxException e )
         {
             this.getLogger().info( this.getNotMonitoringWarningMessage(
-                url.toExternalForm(), e.getMessage() ) );
+                this.getLocale(), url.toExternalForm(), e.getMessage() ) );
 
         }
     }
@@ -545,7 +558,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                 if ( file.lastModified() != lastModified.longValue() )
                 {
                     this.getLogger().info( this.getChangeInfoMessage(
-                        file.getAbsolutePath() ) );
+                        this.getLocale(), file.getAbsolutePath() ) );
 
                     this.initialized = false;
                     break;
@@ -585,7 +598,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                     throws SAXException
                 {
                     getLogger().warn( getParseExceptionMessage(
-                        resource.toExternalForm(),
+                        getLocale(), resource.toExternalForm(),
                         e.getMessage(), new Integer( e.getLineNumber() ),
                         new Integer( e.getColumnNumber() ) ) );
 
@@ -595,7 +608,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                     throws SAXException
                 {
                     throw new SAXException( getParseExceptionMessage(
-                        resource.toExternalForm(),
+                        getLocale(), resource.toExternalForm(),
                         e.getMessage(), new Integer( e.getLineNumber() ),
                         new Integer( e.getColumnNumber() ) ), e );
 
@@ -605,7 +618,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                     throws SAXException
                 {
                     throw new SAXException( getParseExceptionMessage(
-                        resource.toExternalForm(),
+                        getLocale(), resource.toExternalForm(),
                         e.getMessage(), new Integer( e.getLineNumber() ),
                         new Integer( e.getColumnNumber() ) ), e );
 
@@ -644,7 +657,8 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         if ( namespace == null )
         {
             throw new RuntimeException(
-                this.getUnsupportedNamespaceMessage( namespace ) );
+                this.getUnsupportedNamespaceMessage( this.getLocale(),
+                                                     namespace ) );
 
         }
         else if ( TEXTSCHLUESSEL_NS.equals( namespace ) )
@@ -662,7 +676,8 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         else
         {
             throw new RuntimeException(
-                this.getUnsupportedNamespaceMessage( namespace ) );
+                this.getUnsupportedNamespaceMessage( this.getLocale(),
+                                                     namespace ) );
 
         }
 
@@ -679,7 +694,8 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         if ( !supportedModelVersion )
         {
             throw new RuntimeException(
-                this.getUnsupportedModelVersionMessage( modelVersion ) );
+                this.getUnsupportedModelVersionMessage( this.getLocale(),
+                                                        modelVersion ) );
 
         }
 
@@ -967,7 +983,8 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         catch ( IllegalArgumentException e )
         {
             this.getLogger().info(
-                this.getNoJAXPValidationWarningMessage( e.getMessage() ) );
+                this.getNoJAXPValidationWarningMessage( this.getLocale(),
+                                                        e.getMessage() ) );
 
             xmlFactory.setValidating( false );
         }
@@ -988,15 +1005,16 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Keine JAXP Validierung verfügbar. {0}</pre></blockquote>
      * <blockquote><pre>No JAXP validation available. {0}</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param detailMessage format argument.
      *
      * @return the text of message <code>noJAXPValidationWarning</code>.
      */
-    private String getNoJAXPValidationWarningMessage(
-            java.lang.String detailMessage )
+    private String getNoJAXPValidationWarningMessage( final Locale locale,
+            final java.lang.String detailMessage )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "noJAXPValidationWarning",
+            getMessage( this, "noJAXPValidationWarning", locale,
                 new Object[]
                 {
                     detailMessage
@@ -1009,17 +1027,18 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>{0} kann bei Änderung nicht automatisch neu geladen werden. {1}</pre></blockquote>
      * <blockquote><pre>{0} cannot be monitored. {1}</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param resourceName format argument.
      * @param detailMessage format argument.
      *
      * @return the text of message <code>notMonitoringWarning</code>.
      */
-    private String getNotMonitoringWarningMessage(
-            java.lang.String resourceName,
-            java.lang.String detailMessage )
+    private String getNotMonitoringWarningMessage( final Locale locale,
+            final java.lang.String resourceName,
+            final java.lang.String detailMessage )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "notMonitoringWarning",
+            getMessage( this, "notMonitoringWarning", locale,
                 new Object[]
                 {
                     resourceName,
@@ -1033,15 +1052,16 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>{0} aktualisiert.</pre></blockquote>
      * <blockquote><pre>{0} changed.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param resourceName format argument.
      *
      * @return the text of message <code>changeInfo</code>.
      */
-    private String getChangeInfoMessage(
-            java.lang.String resourceName )
+    private String getChangeInfoMessage( final Locale locale,
+            final java.lang.String resourceName )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "changeInfo",
+            getMessage( this, "changeInfo", locale,
                 new Object[]
                 {
                     resourceName
@@ -1054,15 +1074,16 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>{0} wird bei Änderung automatisch neu geladen.</pre></blockquote>
      * <blockquote><pre>Monitoring {0} for changes.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param resourceName format argument.
      *
      * @return the text of message <code>monitoringInfo</code>.
      */
-    private String getMonitoringInfoMessage(
-            java.lang.String resourceName )
+    private String getMonitoringInfoMessage( final Locale locale,
+            final java.lang.String resourceName )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "monitoringInfo",
+            getMessage( this, "monitoringInfo", locale,
                 new Object[]
                 {
                     resourceName
@@ -1075,17 +1096,18 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>{1,choice,0#Kein Dokument|1#Ein Dokument|1<{1} Dokumente} gelesen. {0,choice,0#Keine|1#Einen|1<{0}} Textschlüssel verarbeitet.</pre></blockquote>
      * <blockquote><pre>Read {1,choice,0#no document|1#one document|1<{1} documents}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param entityCount format argument.
      * @param documentCount format argument.
      *
      * @return the text of message <code>textschluesselInfo</code>.
      */
-    private String getTextschluesselInfoMessage(
-            java.lang.Number entityCount,
-            java.lang.Number documentCount )
+    private String getTextschluesselInfoMessage( final Locale locale,
+            final java.lang.Number entityCount,
+            final java.lang.Number documentCount )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "textschluesselInfo",
+            getMessage( this, "textschluesselInfo", locale,
                 new Object[]
                 {
                     entityCount,
@@ -1099,15 +1121,16 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Ungültiger XML-Namensraum {0}.</pre></blockquote>
      * <blockquote><pre>Unsupported XML namespace {0}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param namespace format argument.
      *
      * @return the text of message <code>unsupportedNamespace</code>.
      */
-    private String getUnsupportedNamespaceMessage(
-            java.lang.String namespace )
+    private String getUnsupportedNamespaceMessage( final Locale locale,
+            final java.lang.String namespace )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "unsupportedNamespace",
+            getMessage( this, "unsupportedNamespace", locale,
                 new Object[]
                 {
                     namespace
@@ -1120,15 +1143,16 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Keine Unterstützung für Modellversion {0}.</pre></blockquote>
      * <blockquote><pre>Unsupported model version {0}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param modelVersion format argument.
      *
      * @return the text of message <code>unsupportedModelVersion</code>.
      */
-    private String getUnsupportedModelVersionMessage(
-            java.lang.String modelVersion )
+    private String getUnsupportedModelVersionMessage( final Locale locale,
+            final java.lang.String modelVersion )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "unsupportedModelVersion",
+            getMessage( this, "unsupportedModelVersion", locale,
                 new Object[]
                 {
                     modelVersion
@@ -1141,6 +1165,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Fehler bei der Verarbeitung der Resource "{0}" in Zeile {2}, Spalte {3}. {1}</pre></blockquote>
      * <blockquote><pre>Error parsing resource "{0}" at line {2}, column {3}. {1}</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param resourceName format argument.
      * @param cause format argument.
      * @param line format argument.
@@ -1148,14 +1173,14 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      *
      * @return the text of message <code>parseException</code>.
      */
-    private String getParseExceptionMessage(
-            java.lang.String resourceName,
-            java.lang.String cause,
-            java.lang.Number line,
-            java.lang.Number column )
+    private String getParseExceptionMessage( final Locale locale,
+            final java.lang.String resourceName,
+            final java.lang.String cause,
+            final java.lang.Number line,
+            final java.lang.Number column )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "parseException",
+            getMessage( this, "parseException", locale,
                 new Object[]
                 {
                     resourceName,

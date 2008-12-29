@@ -22,6 +22,7 @@
  */
 package org.jdtaus.banking.ri.txtdirectory;
 
+import java.util.Locale;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.core.container.ContainerFactory;
 
@@ -82,6 +83,7 @@ public class DuplicateTextschluesselException extends RuntimeException
         if ( this.getTextschluessel() != null )
         {
             message = this.getDuplicateTextschluesselMessage(
+                this.getLocale(),
                 new Integer( this.getTextschluessel().getKey() ),
                 new Integer( this.getTextschluessel().getExtension() ) );
 
@@ -91,6 +93,26 @@ public class DuplicateTextschluesselException extends RuntimeException
     }
 
     //----------------------------------------DuplicateTextschluesselException--
+    //--Dependencies------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the configured <code>Locale</code> implementation.
+     *
+     * @return The configured <code>Locale</code> implementation.
+     */
+    private Locale getLocale()
+    {
+        return (Locale) ContainerFactory.getContainer().
+            getDependency( this, "Locale" );
+
+    }
+
+// </editor-fold>//GEN-END:jdtausDependencies
+
+    //------------------------------------------------------------Dependencies--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -101,17 +123,18 @@ public class DuplicateTextschluesselException extends RuntimeException
      * <blockquote><pre>Textschlüssel {0,number,00}{1,number,000}  ist mehrfach vorhanden.</pre></blockquote>
      * <blockquote><pre>Non-unique Textschluessel {0,number,00}{1,number,000}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param key format argument.
      * @param extension format argument.
      *
      * @return the text of message <code>duplicateTextschluessel</code>.
      */
-    private String getDuplicateTextschluesselMessage(
-            java.lang.Number key,
-            java.lang.Number extension )
+    private String getDuplicateTextschluesselMessage( final Locale locale,
+            final java.lang.Number key,
+            final java.lang.Number extension )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "duplicateTextschluessel",
+            getMessage( this, "duplicateTextschluessel", locale,
                 new Object[]
                 {
                     key,
