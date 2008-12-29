@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -89,7 +90,7 @@ public class BundesbankBankleitzahlenVerzeichnis
     /**
      * Gets the configured <code>Logger</code> implementation.
      *
-     * @return the configured <code>Logger</code> implementation.
+     * @return The configured <code>Logger</code> implementation.
      */
     private Logger getLogger()
     {
@@ -101,7 +102,7 @@ public class BundesbankBankleitzahlenVerzeichnis
     /**
      * Gets the configured <code>ApplicationLogger</code> implementation.
      *
-     * @return the configured <code>ApplicationLogger</code> implementation.
+     * @return The configured <code>ApplicationLogger</code> implementation.
      */
     private ApplicationLogger getApplicationLogger()
     {
@@ -113,7 +114,7 @@ public class BundesbankBankleitzahlenVerzeichnis
     /**
      * Gets the configured <code>TaskMonitor</code> implementation.
      *
-     * @return the configured <code>TaskMonitor</code> implementation.
+     * @return The configured <code>TaskMonitor</code> implementation.
      */
     private TaskMonitor getTaskMonitor()
     {
@@ -125,12 +126,24 @@ public class BundesbankBankleitzahlenVerzeichnis
     /**
      * Gets the configured <code>BankfileProvider</code> implementation.
      *
-     * @return the configured <code>BankfileProvider</code> implementation.
+     * @return The configured <code>BankfileProvider</code> implementation.
      */
     private BankfileProvider[] getBankfileProvider()
     {
         return (BankfileProvider[]) ContainerFactory.getContainer().
             getDependency( this, "BankfileProvider" );
+
+    }
+
+    /**
+     * Gets the configured <code>Locale</code> implementation.
+     *
+     * @return The configured <code>Locale</code> implementation.
+     */
+    private Locale getLocale()
+    {
+        return (Locale) ContainerFactory.getContainer().
+            getDependency( this, "Locale" );
 
     }
 
@@ -405,6 +418,7 @@ public class BundesbankBankleitzahlenVerzeichnis
                             final Bankleitzahl blz = (Bankleitzahl) it.next();
                             this.getLogger().debug(
                                 this.getOutdatedInfoMessage(
+                                this.getLocale(),
                                 blz.format( Bankleitzahl.LETTER_FORMAT ) ) );
 
                         }
@@ -414,7 +428,7 @@ public class BundesbankBankleitzahlenVerzeichnis
                 this.initialized = true;
 
                 this.getLogger().info( this.getBankfileInfoMessage(
-                    new Long( processedRecords ),
+                    this.getLocale(), new Long( processedRecords ),
                     new Integer( rsrc.length ) ) );
 
                 // Log an application message if the directory is outdated.
@@ -586,7 +600,7 @@ public class BundesbankBankleitzahlenVerzeichnis
             {
                 throw new IllegalStateException(
                     this.getDuplicateRecordMessage(
-                    records[i].getSerialNumber(),
+                    this.getLocale(), records[i].getSerialNumber(),
                     bankCode.format( Bankleitzahl.LETTER_FORMAT ) ) );
 
             }
@@ -608,15 +622,16 @@ public class BundesbankBankleitzahlenVerzeichnis
      * <blockquote><pre>Bankleitzahl {0} ist veraltet.</pre></blockquote>
      * <blockquote><pre>Bankleitzahl {0} is outdated.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param bankleitzahl format argument.
      *
      * @return the text of message <code>outdatedInfo</code>.
      */
-    private String getOutdatedInfoMessage(
-            java.lang.String bankleitzahl )
+    private String getOutdatedInfoMessage( final Locale locale,
+            final java.lang.String bankleitzahl )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "outdatedInfo",
+            getMessage( this, "outdatedInfo", locale,
                 new Object[]
                 {
                     bankleitzahl
@@ -629,17 +644,18 @@ public class BundesbankBankleitzahlenVerzeichnis
      * <blockquote><pre>Mehrere Bankleitzahlendatei-Datensätze mit Seriennummer {0,number} während der Suche nach Bankleitzahl {1}.</pre></blockquote>
      * <blockquote><pre>Multiple bankfile records with serial number {0,number} detected during searching the directory for bankcode {1}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param serialNumber format argument.
      * @param bankleitzahl format argument.
      *
      * @return the text of message <code>duplicateRecord</code>.
      */
-    private String getDuplicateRecordMessage(
-            java.lang.Number serialNumber,
-            java.lang.String bankleitzahl )
+    private String getDuplicateRecordMessage( final Locale locale,
+            final java.lang.Number serialNumber,
+            final java.lang.String bankleitzahl )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "duplicateRecord",
+            getMessage( this, "duplicateRecord", locale,
                 new Object[]
                 {
                     serialNumber,
@@ -653,17 +669,18 @@ public class BundesbankBankleitzahlenVerzeichnis
      * <blockquote><pre>{1,choice,0#Keine Bankleitzahlendatei|1#Eine Bankleitzahlendatei|1<{1} Bankleitzahlendateien} gelesen. {0,choice,0#Keine Datensätze|1#Einen Datensatz|1<{0} Datensätze} verarbeitet.</pre></blockquote>
      * <blockquote><pre>Read {1,choice,0#no bankfile|1#one bankfile|1<{1} bankfiles}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param entityCount format argument.
      * @param bankfileCount format argument.
      *
      * @return the text of message <code>bankfileInfo</code>.
      */
-    private String getBankfileInfoMessage(
-            java.lang.Number entityCount,
-            java.lang.Number bankfileCount )
+    private String getBankfileInfoMessage( final Locale locale,
+            final java.lang.Number entityCount,
+            final java.lang.Number bankfileCount )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "bankfileInfo",
+            getMessage( this, "bankfileInfo", locale,
                 new Object[]
                 {
                     entityCount,
