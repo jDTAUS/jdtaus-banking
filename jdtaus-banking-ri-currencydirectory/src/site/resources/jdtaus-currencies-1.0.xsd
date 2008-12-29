@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  jDTAUS - DTAUS fileformat.
+  Copyright (c) 2005 Christian Schulte <cs@schulte.it>
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document    : jdtaus-currencies-1.0.xsd
+  Autor       : Christian Schulte <cs@jdtaus.org>
+  Beschreibung: Schema for the XML model of the CurrencyDirectory.
+
+  Beispiel:
+
+  <?xml version="1.0" encoding="UTF-8"?>
+  <jdtaus:currencies xmlns="http://jdtaus.org/banking/xml/currencies"
+      xmlns:jdtaus="http://jdtaus.org/banking/xml/currencies"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jdtaus.org/banking/xml/currencies http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/jdtaus-currencies-1.0.xsd"
+      jdtaus:version="1.0">
+
+  </jdtaus:currencies>
+
+  $Id$
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:jdtaus="http://jdtaus.org/banking/xml/currencies"
+            targetNamespace="http://jdtaus.org/banking/xml/currencies"
+            xmlns="http://jdtaus.org/banking/xml/currencies"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+
+  <xsd:include schemaLocation="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd"/>
+</xsd:schema>

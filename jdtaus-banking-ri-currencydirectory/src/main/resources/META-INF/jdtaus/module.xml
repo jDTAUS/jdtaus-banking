@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  ${pom.name}
+  Copyright (c) 2005 Christian Schulte
+
+  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+  <cs@jdtaus.org> (+49 2331 3543887)
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document   : module.xml
+  Author     : Christian Schulte <cs@jdtaus.org>
+  Version    : $Id$
+  Description: Runtime configuration for the ${pom.name} module.
+
+-->
+<container:module xmlns:container="http://jdtaus.org/core/model/container"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
+                  container:name="${pom.name}"
+                  container:version="${pom.version}"
+                  container:modelVersion="1.4">
+
+  <container:documentation container:defaultLanguage="en">
+    <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>
+  </container:documentation>
+  <container:specifications>
+    <container:specification container:identifier="org.jdtaus.banking.ri.currencydir.CurrenciesProvider"
+                             container:vendor="${pom.organization.name}"
+                             container:version="${pom.version}"
+                             container:scope="multiton"
+                             container:multiplicity="many">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Currency resource provider interface.]]></container:text>
+      </container:documentation>
+    </container:specification>
+  </container:specifications>
+  <container:implementations>
+    <container:implementation container:identifier="org.jdtaus.banking.ri.currencydir.XMLCurrencyDirectory"
+                              container:name="jDTAUS Banking SPI"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Currency directory implementation backed by XML resources.]]></container:text>
+      </container:documentation>
+      <container:specifications>
+        <container:reference container:identifier="org.jdtaus.banking.CurrencyDirectory"
+                             container:version="1.0"/>
+        <container:reference container:identifier="org.jdtaus.banking.spi.CurrencyMapper"/>
+      </container:specifications>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
+                              container:name="Logger"
+                              container:bound="true">
+
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.ri.currencydir.XMLCurrencyDirectory"/>
+
+          </container:properties>
+        </container:dependency>
+        <container:dependency container:identifier="org.jdtaus.banking.ri.currencydir.CurrenciesProvider"
+                              container:version="${pom.version}"
+                              container:name="CurrenciesProvider"
+                              container:bound="true"/>
+
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:properties>
+        <container:property container:name="defaultReloadIntervalMillis"
+                            container:type="java.lang.Long"
+                            container:value="500">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default number of milliseconds to pass before resources are checked for modifications.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+      <container:messages>
+        <container:reference container:name="noJAXPValidationWarning"/>
+        <container:reference container:name="notMonitoringWarning"/>
+        <container:reference container:name="changeInfo"/>
+        <container:reference container:name="monitoringInfo"/>
+        <container:reference container:name="parseException"/>
+        <container:reference container:name="unsupportedNamespace"/>
+        <container:reference container:name="unsupportedModelVersion"/>
+        <container:reference container:name="currencyInfo"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.ri.currencydir.ClasspathCurrenciesProvider"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Classpath CurrenciesProvider implementation.]]></container:text>
+      </container:documentation>
+      <container:specifications>
+        <container:reference container:identifier="org.jdtaus.banking.ri.currencydir.CurrenciesProvider"/>
+      </container:specifications>
+      <container:properties>
+        <container:property container:name="defaultResourceName"
+                            container:type="java.lang.String"
+                            container:value="META-INF/jdtaus/currencies.xml">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default name of the resources to provide.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.ri.currencydir.DuplicateCurrencyException"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Gets thrown for duplicate currency instances.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="duplicateCurrency"/>
+      </container:messages>
+    </container:implementation>
+  </container:implementations>
+  <container:messages>
+    <container:message container:name="noJAXPValidationWarning">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[No JAXP validation available. {0}]]></container:text>
+        <container:text container:language="de"><![CDATA[Keine JAXP Validierung verfügbar. {0}]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="detailMessage" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="notMonitoringWarning">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[{0} cannot be monitored. {1}]]></container:text>
+        <container:text container:language="de"><![CDATA[{0} kann bei Änderung nicht automatisch neu geladen werden. {1}]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="resourceName" container:type="text"/>
+        <container:argument container:index="1" container:name="detailMessage" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="changeInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[{0} changed.]]></container:text>
+        <container:text container:language="de"><![CDATA[{0} aktualisiert.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="resourceName" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="monitoringInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Monitoring {0} for changes.]]></container:text>
+        <container:text container:language="de"><![CDATA[{0} wird bei Änderung automatisch neu geladen.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="resourceName" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="duplicateCurrency">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Non-unique currency {1} ({0}).]]></container:text>
+        <container:text container:language="de"><![CDATA[Währung {1} ({0}) ist mehrfach vorhanden.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="currencyCode" container:type="text"/>
+        <container:argument container:index="1" container:name="currencySymbol" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="parseException">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Error parsing resource "{0}" at line {2}, column {3}. {1}]]></container:text>
+        <container:text container:language="de"><![CDATA[Fehler bei der Verarbeitung der Resource "{0}" in Zeile {2}, Spalte {3}. {1}]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="resourceName" container:type="text"/>
+        <container:argument container:index="1" container:name="cause" container:type="text"/>
+        <container:argument container:index="2" container:name="line" container:type="number"/>
+        <container:argument container:index="3" container:name="column" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="unsupportedNamespace">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Unsupported XML namespace {0}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Ungültiger XML-Namensraum {0}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="namespace" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="unsupportedModelVersion">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Unsupported model version {0}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Keine Unterstützung für Modellversion {0}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="modelVersion" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="currencyInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Read {1,choice,0#no document|1#one document|1<{1} documents}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.]]></container:text>
+        <container:text container:language="de"><![CDATA[{1,choice,0#Kein Dokument|1#Ein Dokument|1<{1} Dokumente} gelesen. {0,choice,0#Keine Währung|1#Eine Währung|1<{0} Währungen} verarbeitet.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="entityCount" container:type="number"/>
+        <container:argument container:index="1" container:name="documentCount" container:type="number"/>
+      </container:arguments>
+    </container:message>
+  </container:messages>
+</container:module>
