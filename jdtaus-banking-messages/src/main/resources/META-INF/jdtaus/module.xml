@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  ${pom.name}
+  Copyright (c) 2005 Christian Schulte
+
+  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+  <cs@jdtaus.org> (+49 2331 3543887)
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document   : module.xml
+  Author     : Christian Schulte <cs@jdtaus.org>
+  Version    : $Id$
+  Description: Runtime configuration for the ${pom.name} module.
+
+  $Id$
+-->
+<container:module xmlns:container="http://jdtaus.org/core/model/container"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
+                  container:name="${pom.name}"
+                  container:version="${pom.version}"
+                  container:modelVersion="1.4">
+
+  <container:documentation container:defaultLanguage="en">
+    <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>
+  </container:documentation>
+  <container:implementations>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.AnalysesFileMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a file is being analyzed.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="analyzingFile"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.BankleitzahlExpirationMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a Bankleitzahl has expired.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="bankleitzahlExpiration"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.BankleitzahlReplacementMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a Bankleitzahl has been published as a replacement for an expired Bankleitzahl.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="bankleitzahlReplacement"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.ChecksumErrorMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a checksum is incorrect.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="checksumError"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.ChecksumsFileMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a file is being checksummed.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="checksummingFile"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.CurrencyConstraintMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a currency is in use in combination with a date at which its use is invalid.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="currencyConstraint"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalAmountMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that an amount is invalid.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="illegalAmount"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalCurrencyMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a currency is invalid at a given date.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="illegalCurrency"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalDataMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a field holds invalid data.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="illegalData"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalDateMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a date is invalid.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="illegalDate"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalDescriptionCountMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that in illegal amount of descriptions is used.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="illegalDescriptionCount"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalFileLengthMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a file has an invalid length.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="illegalFileLength"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalScheduleMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a given schedule is invalid.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="illegalSchedule"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that the {@code BundesbankBankleitzahlenVerzeichnis} is outdated.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="outdatedDirectory"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that bankfiles are being read.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="readingBankfiles"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.TextschluesselConstraintMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a {@code Textschluessel} cannot be used in combination with a logical file type.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="textschluesselConstraint"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.UnknownBankleitzahlMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that Bankleitzahl is unknown.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="unknownBankleitzahl"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Message stating that a bankfile is being updated.]]></container:text>
+      </container:documentation>
+      <container:messages>
+        <container:reference container:name="updatingBankleitzahlenDatei"/>
+      </container:messages>
+    </container:implementation>
+  </container:implementations>
+  <container:messages>
+    <container:message container:name="analyzingFile">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Analyses file.]]></container:text>
+        <container:text container:language="de"><![CDATA[Analysiert Datei.]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="bankleitzahlExpiration">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The Bankleitzahl {0} has expired.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die Bankleitzahl {0} ist nicht mehr gültig.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="bankleitzahl" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="bankleitzahlReplacement">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The bank has published the replacement Bankleitzahl {0}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die Bank hat die Bankleitzahl {0} als Nachfolge veröffentlicht.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="bankleitzahl" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="checksumError">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The checksum of the logical file beginning at position {8,number} is invalid.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die Prüfsumme der an Position {8,number} beginnenden logischen Datei ist ungültig.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="position" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="checksummingFile">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Computes checksum.]]></container:text>
+        <container:text container:language="de"><![CDATA[Berechnet Prüfsumme.]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="currencyConstraint">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The {0} currency is in use but not valid at {1,date,long}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die {0} Währung befindet sich in Verwendung, ist am {1,date,long} jedoch ungültig.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="currency" container:type="text"/>
+        <container:argument container:index="1" container:name="constraintDate" container:type="date"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalAmount">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[{0, number} is no legal amount.]]></container:text>
+        <container:text container:language="de"><![CDATA[Ungültiger Betrag {0,number}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="amount" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalCurrency">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The currency {0} is illegal at {1,date,long}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die {0} Währung ist am {1,date,long} ungültig.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="currency" container:type="text"/>
+        <container:argument container:index="1" container:name="date" container:type="date"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalData">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA["{2}" is no valid value for field {0} (at {1, number}).]]></container:text>
+        <container:text container:language="de"><![CDATA["{2}" ist kein gültiger Wert für Feld {0} (Position {1, number}).]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="field" container:type="text"/>
+        <container:argument container:index="1" container:name="position" container:type="number"/>
+        <container:argument container:index="2" container:name="illegalData" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalDate">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The date {0,date,long} is either before {1,date,long} or after {2,date,long}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Das Datum {0,date,long} liegt entweder vor {1,date,long} oder hinter {2,date,long}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="date" container:type="date"/>
+        <container:argument container:index="1" container:name="startDate" container:type="date"/>
+        <container:argument container:index="2" container:name="endDate" container:type="date"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalDescriptionCount">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The number of descriptions ({1,number}) exceeds the possible number {0,number}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die Anzahl der Verwendungszweckzeilen ({1,number}) übersteigt die Anzahl der zulässigen Verwendungszweckzeilen {0,number}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="descriptionCount" container:type="number"/>
+        <container:argument container:index="1" container:name="maxDescriptions" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalFileLength">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The length of the file ({0, number}) is incompatible to the blocksize {1,number}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die Datei-Länge {0,number} ist inkompatible zu einer Block-Größe von {1,number}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="fileLength" container:type="number"/>
+        <container:argument container:index="1" container:name="blockSize" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalSchedule">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The executiondate {1,date,long} is before create date {0,date,long} or more than {2,number} days thereafter.]]></container:text>
+        <container:text container:language="de"><![CDATA[Das Ausführungsdatum {1,date,long} liegt vor dem Dateierstellungsdatum {0,date,long} oder mehr als {2,number} Kalendertage dahinter.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="createDate" container:type="date"/>
+        <container:argument container:index="1" container:name="executionDate" container:type="date"/>
+        <container:argument container:index="2" container:name="maxScheduleDays" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="outdatedDirectory">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The directory of bankcodes expired at {0,date,long}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Das Bankleitzahlenverzeichnis is am {0,date,long} abgelaufen.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="dateOfExpiration" container:type="date"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="readingBankfiles">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Reading bankfiles.]]></container:text>
+        <container:text container:language="de"><![CDATA[Liest Bankleitzahlendateien.]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="textschluesselConstraint">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[A logical file with label {0} cannot hold transactions with Textschlüssel {1,number,00}{2,number,000}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Eine logische Datei vom Typ {0} kann keine {1,number,00}{2,number,000} Textschlüssel speichern.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="label" container:type="text"/>
+        <container:argument container:index="1" container:name="key" container:type="number"/>
+        <container:argument container:index="2" container:name="extension" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="unknownBankleitzahl">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Unknown Bankleitzahl {0}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Unbekannte Bankleitzahl {0}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="unknownBankleitzahl" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="updatingBankleitzahlenDatei">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Updates bankfile.]]></container:text>
+        <container:text container:language="de"><![CDATA[Aktualisiert Bankleitzahlendatei.]]></container:text>
+      </container:template>
+    </container:message>
+  </container:messages>
+</container:module>
