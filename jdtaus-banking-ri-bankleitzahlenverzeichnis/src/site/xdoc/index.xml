@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>jDTAUS Banking RI Bankleitzahlenverzeichnis</title>
+    <author email="cs@jdtaus.org">Christian Schulte</author>
+  </properties>
+  <body>
+    <section name="Introduction">
+      <p>
+        This artifact provides a <code>BankleitzahlenVerzeichnis</code>
+        implementation backed by bankfiles. Bankfile resources are read using
+        any available <a href="apidocs/org/jdtaus/banking/ri/blzdirectory/BankfileProvider.html">BankfileProvider</a>
+        implementation. The <a href="apidocs/org/jdtaus/banking/ri/blzdirectory/PropertyBankfileProvider.html">PropertyBankfileProvider</a>
+        default implementation expects the bankfiles to be kept in
+        directory <code>META-INF/jdtaus</code>. This location can be changed by
+        updating the configuration file located at <code>META-INF/jdtaus/module.xml</code>.
+      </p>
+    </section>
+  </body>
+</document>
