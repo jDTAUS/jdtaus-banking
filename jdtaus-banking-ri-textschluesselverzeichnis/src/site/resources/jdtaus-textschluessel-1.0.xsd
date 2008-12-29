@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  jDTAUS Banking RI Textschluesselverzeichnis
+  Copyright (c) 2005 Christian Schulte
+
+  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+  <cs@jdtaus.org> (+49 2331 3543887)
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document    : jdtaus-textschluessel-1.0.xsd
+  Autor       : Christian Schulte <cs@jdtaus.org>
+  Beschreibung: Schema for the XML model of the TextschluesselVerzeichnis.
+
+  Example usage:
+
+  <?xml version="1.0" encoding="UTF-8"?>
+  <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml/textschluessel"
+      xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jdtaus.org/banking/xml/textschluessel http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-textschluesselverzeichnis/jdtaus-textschluessel-1.0.xsd"
+      jdtaus:version="1.0">
+
+  </jdtaus:textschluessel>
+
+  $Id$
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
+            targetNamespace="http://jdtaus.org/banking/xml/textschluessel"
+            xmlns="http://jdtaus.org/banking/xml/textschluessel"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+
+  <xsd:include schemaLocation="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-textschluessel-1.0.xsd"/>
+</xsd:schema>
