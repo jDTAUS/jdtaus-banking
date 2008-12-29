@@ -85,5 +85,12 @@
       </action>
     </release>
 
+    <release version="1.8" date="2008-12-29"
+             description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Upgraded to jDTAUS Core version 1.8 to support exchanging references to
+      the <code>java.util.Locale</code> implementation to use.]]></action>
+    </release>
+
   </body>
 </document>

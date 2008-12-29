@@ -23,6 +23,7 @@
 package org.jdtaus.banking.ri.currencydir;
 
 import java.util.Currency;
+import java.util.Locale;
 import org.jdtaus.core.container.ContainerFactory;
 
 /**
@@ -77,11 +78,32 @@ public class DuplicateCurrencyException extends RuntimeException
     public String getMessage()
     {
         return this.getDuplicateCurrencyMessage(
-            this.currency.getCurrencyCode(), this.currency.getSymbol() );
+            this.getLocale(), this.currency.getCurrencyCode(),
+            this.currency.getSymbol() );
 
     }
 
     //----------------------------------------------DuplicateCurrencyException--
+    //--Dependencies------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the configured <code>Locale</code> implementation.
+     *
+     * @return The configured <code>Locale</code> implementation.
+     */
+    private Locale getLocale()
+    {
+        return (Locale) ContainerFactory.getContainer().
+            getDependency( this, "Locale" );
+
+    }
+
+// </editor-fold>//GEN-END:jdtausDependencies
+
+    //------------------------------------------------------------Dependencies--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -92,17 +114,18 @@ public class DuplicateCurrencyException extends RuntimeException
      * <blockquote><pre>Währung {1} ({0}) ist mehrfach vorhanden.</pre></blockquote>
      * <blockquote><pre>Non-unique currency {1} ({0}).</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param currencyCode format argument.
      * @param currencySymbol format argument.
      *
      * @return the text of message <code>duplicateCurrency</code>.
      */
-    private String getDuplicateCurrencyMessage(
-            java.lang.String currencyCode,
-            java.lang.String currencySymbol )
+    private String getDuplicateCurrencyMessage( final Locale locale,
+            final java.lang.String currencyCode,
+            final java.lang.String currencySymbol )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "duplicateCurrency",
+            getMessage( this, "duplicateCurrency", locale,
                 new Object[]
                 {
                     currencyCode,
