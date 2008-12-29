@@ -109,7 +109,7 @@ public final class CurrencyConstraintMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getCurrencyConstraintMessage( this.currencyCode,
+        return this.getCurrencyConstraintMessage( locale, this.currencyCode,
                                                   this.date );
 
     }
@@ -125,17 +125,18 @@ public final class CurrencyConstraintMessage extends Message
      * <blockquote><pre>Die {0} Währung befindet sich in Verwendung, ist am {1,date,long} jedoch ungültig.</pre></blockquote>
      * <blockquote><pre>The {0} currency is in use but not valid at {1,date,long}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param currency format argument.
      * @param constraintDate format argument.
      *
      * @return the text of message <code>currencyConstraint</code>.
      */
-    private String getCurrencyConstraintMessage(
-            java.lang.String currency,
-            java.util.Date constraintDate )
+    private String getCurrencyConstraintMessage( final Locale locale,
+            final java.lang.String currency,
+            final java.util.Date constraintDate )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "currencyConstraint",
+            getMessage( this, "currencyConstraint", locale,
                 new Object[]
                 {
                     currency,

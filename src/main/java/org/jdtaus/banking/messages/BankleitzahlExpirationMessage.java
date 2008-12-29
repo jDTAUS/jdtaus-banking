@@ -94,7 +94,8 @@ public final class BankleitzahlExpirationMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getBankleitzahlExpirationMessage(
-            this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT ) );
+            locale, this.info.getBankCode().format(
+            Bankleitzahl.LETTER_FORMAT ) );
 
     }
 
@@ -109,15 +110,16 @@ public final class BankleitzahlExpirationMessage extends Message
      * <blockquote><pre>Die Bankleitzahl {0} ist nicht mehr gültig.</pre></blockquote>
      * <blockquote><pre>The Bankleitzahl {0} has expired.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param bankleitzahl format argument.
      *
      * @return the text of message <code>bankleitzahlExpiration</code>.
      */
-    private String getBankleitzahlExpirationMessage(
-            java.lang.String bankleitzahl )
+    private String getBankleitzahlExpirationMessage( final Locale locale,
+            final java.lang.String bankleitzahl )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "bankleitzahlExpiration",
+            getMessage( this, "bankleitzahlExpiration", locale,
                 new Object[]
                 {
                     bankleitzahl

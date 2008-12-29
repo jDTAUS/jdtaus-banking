@@ -65,7 +65,7 @@ public final class AnalysesFileMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getAnalyzingFileMessage();
+        return this.getAnalyzingFileMessage( locale );
     }
 
     //-----------------------------------------------------------------Message--
@@ -79,12 +79,14 @@ public final class AnalysesFileMessage extends Message
      * <blockquote><pre>Analysiert Datei.</pre></blockquote>
      * <blockquote><pre>Analyses file.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
+     *
      * @return the text of message <code>analyzingFile</code>.
      */
-    private String getAnalyzingFileMessage()
+    private String getAnalyzingFileMessage( final Locale locale )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "analyzingFile", null );
+            getMessage( this, "analyzingFile", locale, null );
 
     }
 

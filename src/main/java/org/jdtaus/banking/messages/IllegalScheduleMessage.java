@@ -123,7 +123,7 @@ public final class IllegalScheduleMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getIllegalScheduleMessage( this.createDate,
+        return this.getIllegalScheduleMessage( locale, this.createDate,
                                                this.executionDate,
                                                new Integer( this.maxDays ) );
 
@@ -140,19 +140,20 @@ public final class IllegalScheduleMessage extends Message
      * <blockquote><pre>Das Ausführungsdatum {1,date,long} liegt vor dem Dateierstellungsdatum {0,date,long} oder mehr als {2,number} Kalendertage dahinter.</pre></blockquote>
      * <blockquote><pre>The executiondate {1,date,long} is before create date {0,date,long} or more than {2,number} days thereafter.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param createDate format argument.
      * @param executionDate format argument.
      * @param maxScheduleDays format argument.
      *
      * @return the text of message <code>illegalSchedule</code>.
      */
-    private String getIllegalScheduleMessage(
-            java.util.Date createDate,
-            java.util.Date executionDate,
-            java.lang.Number maxScheduleDays )
+    private String getIllegalScheduleMessage( final Locale locale,
+            final java.util.Date createDate,
+            final java.util.Date executionDate,
+            final java.lang.Number maxScheduleDays )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "illegalSchedule",
+            getMessage( this, "illegalSchedule", locale,
                 new Object[]
                 {
                     createDate,

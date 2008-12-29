@@ -113,7 +113,8 @@ public final class IllegalFileLengthMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getIllegalFileLengthMessage( new Long( this.fileLength ),
+        return this.getIllegalFileLengthMessage( locale,
+                                                 new Long( this.fileLength ),
                                                  new Long( this.blockSize ) );
 
     }
@@ -129,17 +130,18 @@ public final class IllegalFileLengthMessage extends Message
      * <blockquote><pre>Die Datei-Länge {0,number} ist inkompatible zu einer Block-Größe von {1,number}.</pre></blockquote>
      * <blockquote><pre>The length of the file ({0, number}) is incompatible to the blocksize {1,number}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param fileLength format argument.
      * @param blockSize format argument.
      *
      * @return the text of message <code>illegalFileLength</code>.
      */
-    private String getIllegalFileLengthMessage(
-            java.lang.Number fileLength,
-            java.lang.Number blockSize )
+    private String getIllegalFileLengthMessage( final Locale locale,
+            final java.lang.Number fileLength,
+            final java.lang.Number blockSize )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "illegalFileLength",
+            getMessage( this, "illegalFileLength", locale,
                 new Object[]
                 {
                     fileLength,

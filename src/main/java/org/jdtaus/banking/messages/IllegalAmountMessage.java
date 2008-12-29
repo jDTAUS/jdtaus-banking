@@ -91,7 +91,7 @@ public final class IllegalAmountMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getIllegalAmountMessage( this.amount );
+        return this.getIllegalAmountMessage( locale, this.amount );
     }
 
     //-----------------------------------------------------------------Message--
@@ -105,15 +105,16 @@ public final class IllegalAmountMessage extends Message
      * <blockquote><pre>Ungültiger Betrag {0,number}.</pre></blockquote>
      * <blockquote><pre>{0, number} is no legal amount.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param amount format argument.
      *
      * @return the text of message <code>illegalAmount</code>.
      */
-    private String getIllegalAmountMessage(
-            java.lang.Number amount )
+    private String getIllegalAmountMessage( final Locale locale,
+            final java.lang.Number amount )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "illegalAmount",
+            getMessage( this, "illegalAmount", locale,
                 new Object[]
                 {
                     amount

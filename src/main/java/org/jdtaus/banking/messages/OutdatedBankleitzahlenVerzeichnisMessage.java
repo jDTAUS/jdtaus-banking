@@ -91,7 +91,9 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getOutdatedDirectoryMessage( this.dateOfExpiration );
+        return this.getOutdatedDirectoryMessage( locale,
+                                                 this.dateOfExpiration );
+
     }
 
     //-----------------------------------------------------------------Message--
@@ -105,15 +107,16 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
      * <blockquote><pre>Das Bankleitzahlenverzeichnis is am {0,date,long} abgelaufen.</pre></blockquote>
      * <blockquote><pre>The directory of bankcodes expired at {0,date,long}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param dateOfExpiration format argument.
      *
      * @return the text of message <code>outdatedDirectory</code>.
      */
-    private String getOutdatedDirectoryMessage(
-            java.util.Date dateOfExpiration )
+    private String getOutdatedDirectoryMessage( final Locale locale,
+            final java.util.Date dateOfExpiration )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "outdatedDirectory",
+            getMessage( this, "outdatedDirectory", locale,
                 new Object[]
                 {
                     dateOfExpiration

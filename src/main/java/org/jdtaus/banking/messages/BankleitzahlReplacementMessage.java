@@ -95,7 +95,8 @@ public final class BankleitzahlReplacementMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getBankleitzahlReplacementMessage(
-            this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT ) );
+            locale, this.info.getBankCode().format(
+            Bankleitzahl.LETTER_FORMAT ) );
 
     }
 
@@ -110,15 +111,16 @@ public final class BankleitzahlReplacementMessage extends Message
      * <blockquote><pre>Die Bank hat die Bankleitzahl {0} als Nachfolge veröffentlicht.</pre></blockquote>
      * <blockquote><pre>The bank has published the replacement Bankleitzahl {0}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param bankleitzahl format argument.
      *
      * @return the text of message <code>bankleitzahlReplacement</code>.
      */
-    private String getBankleitzahlReplacementMessage(
-            java.lang.String bankleitzahl )
+    private String getBankleitzahlReplacementMessage( final Locale locale,
+            final java.lang.String bankleitzahl )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "bankleitzahlReplacement",
+            getMessage( this, "bankleitzahlReplacement", locale,
                 new Object[]
                 {
                     bankleitzahl

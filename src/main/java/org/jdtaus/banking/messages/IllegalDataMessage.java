@@ -203,9 +203,8 @@ public final class IllegalDataMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getIllegalDataMessage(
-            Integer.toHexString( this.field ).toUpperCase(),
-            new Long( this.position ),
-            this.invalidData );
+            locale, Integer.toHexString( this.field ).toUpperCase(),
+            new Long( this.position ), this.invalidData );
 
     }
 
@@ -220,19 +219,20 @@ public final class IllegalDataMessage extends Message
      * <blockquote><pre>"{2}" ist kein gültiger Wert für Feld {0} (Position {1, number}).</pre></blockquote>
      * <blockquote><pre>"{2}" is no valid value for field {0} (at {1, number}).</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param field format argument.
      * @param position format argument.
      * @param illegalData format argument.
      *
      * @return the text of message <code>illegalData</code>.
      */
-    private String getIllegalDataMessage(
-            java.lang.String field,
-            java.lang.Number position,
-            java.lang.String illegalData )
+    private String getIllegalDataMessage( final Locale locale,
+            final java.lang.String field,
+            final java.lang.Number position,
+            final java.lang.String illegalData )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "illegalData",
+            getMessage( this, "illegalData", locale,
                 new Object[]
                 {
                     field,

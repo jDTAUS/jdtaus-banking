@@ -65,7 +65,7 @@ public final class ChecksumsFileMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getChecksummingFileMessage();
+        return this.getChecksummingFileMessage( locale );
     }
 
     //-----------------------------------------------------------------Message--
@@ -79,12 +79,14 @@ public final class ChecksumsFileMessage extends Message
      * <blockquote><pre>Berechnet Prüfsumme.</pre></blockquote>
      * <blockquote><pre>Computes checksum.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
+     *
      * @return the text of message <code>checksummingFile</code>.
      */
-    private String getChecksummingFileMessage()
+    private String getChecksummingFileMessage( final Locale locale )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "checksummingFile", null );
+            getMessage( this, "checksummingFile", locale, null );
 
     }
 

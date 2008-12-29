@@ -100,7 +100,7 @@ public final class IllegalDescriptionCountMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getIllegalDescriptionCountMessage(
-            new Integer( this.requestedDescriptions ),
+            locale, new Integer( this.requestedDescriptions ),
             new Integer( this.maxDescriptions ) );
 
     }
@@ -116,17 +116,18 @@ public final class IllegalDescriptionCountMessage extends Message
      * <blockquote><pre>Die Anzahl der Verwendungszweckzeilen ({1,number}) übersteigt die Anzahl der zulässigen Verwendungszweckzeilen {0,number}.</pre></blockquote>
      * <blockquote><pre>The number of descriptions ({1,number}) exceeds the possible number {0,number}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param descriptionCount format argument.
      * @param maxDescriptions format argument.
      *
      * @return the text of message <code>illegalDescriptionCount</code>.
      */
-    private String getIllegalDescriptionCountMessage(
-            java.lang.Number descriptionCount,
-            java.lang.Number maxDescriptions )
+    private String getIllegalDescriptionCountMessage( final Locale locale,
+            final java.lang.Number descriptionCount,
+            final java.lang.Number maxDescriptions )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "illegalDescriptionCount",
+            getMessage( this, "illegalDescriptionCount", locale,
                 new Object[]
                 {
                     descriptionCount,

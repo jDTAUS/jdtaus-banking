@@ -33,7 +33,7 @@
                   xsi:schemaLocation="http://jdtaus.org/core/model/container http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
                   container:name="${pom.name}"
                   container:version="${pom.version}"
-                  container:modelVersion="1.3">
+                  container:modelVersion="1.4">
 
   <container:documentation container:defaultLanguage="en">
     <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>

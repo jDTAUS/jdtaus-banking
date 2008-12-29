@@ -93,7 +93,7 @@ public final class UnknownBankleitzahlMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getUnknownBankleitzahlMessage(
-            this.bankCode.format( Bankleitzahl.LETTER_FORMAT ) );
+            locale, this.bankCode.format( Bankleitzahl.LETTER_FORMAT ) );
 
     }
 
@@ -108,15 +108,16 @@ public final class UnknownBankleitzahlMessage extends Message
      * <blockquote><pre>Unbekannte Bankleitzahl {0}.</pre></blockquote>
      * <blockquote><pre>Unknown Bankleitzahl {0}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param unknownBankleitzahl format argument.
      *
      * @return the text of message <code>unknownBankleitzahl</code>.
      */
-    private String getUnknownBankleitzahlMessage(
-            java.lang.String unknownBankleitzahl )
+    private String getUnknownBankleitzahlMessage( final Locale locale,
+            final java.lang.String unknownBankleitzahl )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "unknownBankleitzahl",
+            getMessage( this, "unknownBankleitzahl", locale,
                 new Object[]
                 {
                     unknownBankleitzahl

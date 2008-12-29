@@ -107,7 +107,9 @@ public final class IllegalCurrencyMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getIllegalCurrencyMessage( this.currencyCode, this.date );
+        return this.getIllegalCurrencyMessage( locale, this.currencyCode,
+                                               this.date );
+
     }
 
     //-----------------------------------------------------------------Message--
@@ -121,17 +123,18 @@ public final class IllegalCurrencyMessage extends Message
      * <blockquote><pre>Die {0} Währung ist am {1,date,long} ungültig.</pre></blockquote>
      * <blockquote><pre>The currency {0} is illegal at {1,date,long}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param currency format argument.
      * @param date format argument.
      *
      * @return the text of message <code>illegalCurrency</code>.
      */
-    private String getIllegalCurrencyMessage(
-            java.lang.String currency,
-            java.util.Date date )
+    private String getIllegalCurrencyMessage( final Locale locale,
+            final java.lang.String currency,
+            final java.util.Date date )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "illegalCurrency",
+            getMessage( this, "illegalCurrency", locale,
                 new Object[]
                 {
                     currency,

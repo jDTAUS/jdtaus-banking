@@ -142,7 +142,9 @@ public final class ChecksumErrorMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getChecksumErrorMessage( new Long( this.position ) );
+        return this.getChecksumErrorMessage( locale,
+                                             new Long( this.position ) );
+
     }
 
     //-----------------------------------------------------------------Message--
@@ -156,15 +158,16 @@ public final class ChecksumErrorMessage extends Message
      * <blockquote><pre>Die Prüfsumme der an Position {8,number} beginnenden logischen Datei ist ungültig.</pre></blockquote>
      * <blockquote><pre>The checksum of the logical file beginning at position {8,number} is invalid.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param position format argument.
      *
      * @return the text of message <code>checksumError</code>.
      */
-    private String getChecksumErrorMessage(
-            java.lang.Number position )
+    private String getChecksumErrorMessage( final Locale locale,
+            final java.lang.Number position )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "checksumError",
+            getMessage( this, "checksumError", locale,
                 new Object[]
                 {
                     position

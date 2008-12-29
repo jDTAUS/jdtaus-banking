@@ -117,7 +117,7 @@ public final class TextschluesselConstraintMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getTextschluesselConstraintMessage(
-            this.fileType.getShortDescription( locale ),
+            locale, this.fileType.getShortDescription( locale ),
             new Integer( this.textschluessel.getKey() ),
             new Integer( this.textschluessel.getExtension() ) );
 
@@ -134,19 +134,20 @@ public final class TextschluesselConstraintMessage extends Message
      * <blockquote><pre>Eine logische Datei vom Typ {0} kann keine {1,number,00}{2,number,000} Textschlüssel speichern.</pre></blockquote>
      * <blockquote><pre>A logical file with label {0} cannot hold transactions with Textschlüssel {1,number,00}{2,number,000}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param label format argument.
      * @param key format argument.
      * @param extension format argument.
      *
      * @return the text of message <code>textschluesselConstraint</code>.
      */
-    private String getTextschluesselConstraintMessage(
-            java.lang.String label,
-            java.lang.Number key,
-            java.lang.Number extension )
+    private String getTextschluesselConstraintMessage( final Locale locale,
+            final java.lang.String label,
+            final java.lang.Number key,
+            final java.lang.Number extension )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "textschluesselConstraint",
+            getMessage( this, "textschluesselConstraint", locale,
                 new Object[]
                 {
                     label,

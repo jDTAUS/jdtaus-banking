@@ -65,7 +65,7 @@ public final class ReadsBankleitzahlenDateiMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getReadingBankfilesMessage();
+        return this.getReadingBankfilesMessage( locale );
     }
 
     //-----------------------------------------------------------------Message--
@@ -79,12 +79,14 @@ public final class ReadsBankleitzahlenDateiMessage extends Message
      * <blockquote><pre>Liest Bankleitzahlendateien.</pre></blockquote>
      * <blockquote><pre>Reading bankfiles.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
+     *
      * @return the text of message <code>readingBankfiles</code>.
      */
-    private String getReadingBankfilesMessage()
+    private String getReadingBankfilesMessage( final Locale locale )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "readingBankfiles", null );
+            getMessage( this, "readingBankfiles", locale, null );
 
     }
 
