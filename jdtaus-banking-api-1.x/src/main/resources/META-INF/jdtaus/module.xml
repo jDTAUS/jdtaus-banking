@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  ${pom.name}
+  Copyright (c) 2005 Christian Schulte
+
+  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+  <cs@jdtaus.org> (+49 2331 3543887)
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document   : module.xml
+  Author     : Christian Schulte <cs@jdtaus.org>
+  Version    : $Id$
+  Description: Runtime configuration for the ${pom.name} module.
+
+-->
+<container:module xmlns:container="http://jdtaus.org/core/model/container"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
+                  container:name="${pom.name}"
+                  container:version="${pom.version}"
+                  container:modelVersion="1.4">
+
+  <container:documentation container:defaultLanguage="en">
+    <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>
+  </container:documentation>
+
+  <container:specifications>
+    <container:specification container:identifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"
+                             container:vendor="${pom.organization.name}"
+                             container:version="1.1"
+                             container:scope="singleton"
+                             container:multiplicity="one">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Public directory of german bank codes.]]></container:text>
+      </container:documentation>
+    </container:specification>
+    <container:specification container:identifier="org.jdtaus.banking.CurrencyDirectory"
+                             container:vendor="${pom.organization.name}"
+                             container:version="1.0"
+                             container:scope="singleton"
+                             container:multiplicity="one">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Directory holding currency information.]]></container:text>
+      </container:documentation>
+    </container:specification>
+    <container:specification container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
+                             container:vendor="${pom.organization.name}"
+                             container:version="1.2"
+                             container:scope="singleton"
+                             container:multiplicity="one">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Directory of german transaction types.]]></container:text>
+      </container:documentation>
+    </container:specification>
+    <container:specification container:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"
+                             container:vendor="${pom.organization.name}"
+                             container:version="1.4"
+                             container:scope="singleton"
+                             container:multiplicity="one">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Factory for {@code PhysicalFile} instances.]]></container:text>
+      </container:documentation>
+    </container:specification>
+  </container:specifications>
+
+  <container:implementations>
+    <container:implementation container:identifier="org.jdtaus.banking.Textschluessel"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Type of a transaction in germany.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:properties>
+        <container:property container:name="defaultLanguage"
+                            container:type="java.lang.String"
+                            container:value="en">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default language of descriptions when there is no description available for a requested language.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
+      <container:messages>
+        <container:reference container:name="textschluesselDescription"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.BankleitzahlExpirationException"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Gets thrown whenever the {@code BankleitzahlenVerzeichnis} is queried for a Bankleitzahl which got deleted in the past.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="bankleitzahlExpiration"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.IllegalTextschluesselException"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Gets thrown whenever an illegal Textschlüssel is passed to a method expecting a legal Textschlüssel.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="illegalTextschluessel"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.CorruptedException"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Gets thrown for any unexpected defects detected at runtime.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="corruptedException"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.IllegalHeaderException"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Gets thrown whenever an illegal header is passed to a method expecting a legal header.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="illegalHeader"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.IllegalTransactionException"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Gets thrown whenever an illegal transaction is passed to a method expecting a legal transaction.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="illegalTransaction"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.PhysicalFileException"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Gets thrown by methods prepared to handle invalid files.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="physicalFileException"/>
+      </container:messages>
+    </container:implementation>
+    <container:implementation container:identifier="org.jdtaus.banking.dtaus.LogicalFileType"
+                              container:name="${pom.name}"
+                              container:vendor="${pom.organization.name}"
+                              container:version="${pom.version}"
+                              container:final="true">
+
+      <container:documentation container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Type of a logical file.]]></container:text>
+      </container:documentation>
+      <container:dependencies>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
+      <container:messages>
+        <container:reference container:name="logicalFileType_GB"/>
+        <container:reference container:name="logicalFileType_LB"/>
+        <container:reference container:name="logicalFileType_GK"/>
+        <container:reference container:name="logicalFileType_LK"/>
+      </container:messages>
+    </container:implementation>
+  </container:implementations>
+  <container:messages>
+    <container:message container:name="textschluesselDescription">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[{0,number,00}{1,number,000}]]></container:text>
+        <container:text container:language="de"><![CDATA[{0,number,00}{1,number,000}]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="key" container:type="number"/>
+        <container:argument container:index="1" container:name="extension" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="bankleitzahlExpiration">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The Bankleitzahl {0} has expired. The bank published the replacement Bankleitzahl {1}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die Bankleitzahl {0} ist nicht mehr gültig. Die Bank hat die Bankleitzahl {1} als Ersatz veröffentlicht.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="bankleitzahl" container:type="text"/>
+        <container:argument container:index="1" container:name="replacement" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalTextschluessel">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Illegal Textschlüssel.]]></container:text>
+        <container:text container:language="de"><![CDATA[Ungültiger Textschlüssel.]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="corruptedException">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[The physical file got corrupted at position {0,number}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die physikalische Datei ist ab Position {0,number} defekt.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="position" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="illegalHeader">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Illegal "A" record.]]></container:text>
+        <container:text container:language="de"><![CDATA[Ungültiger "A" Datensatz.]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="illegalTransaction">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Illegal "C" record.]]></container:text>
+        <container:text container:language="de"><![CDATA[Ungültiger "C" Datensatz.]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="physicalFileException">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[File error.]]></container:text>
+        <container:text container:language="de"><![CDATA[Datei-Fehler.]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="logicalFileType_GB">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Bank file - remittances]]></container:text>
+        <container:text container:language="de"><![CDATA[Bankdatei - Gutschriften]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="logicalFileType_LB">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Bank file - debits]]></container:text>
+        <container:text container:language="de"><![CDATA[Bankdatei - Lastschriften]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="logicalFileType_GK">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Customer file - remittances]]></container:text>
+        <container:text container:language="de"><![CDATA[Kundendatei - Gutschriften]]></container:text>
+      </container:template>
+    </container:message>
+    <container:message container:name="logicalFileType_LK">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Customer file - debits]]></container:text>
+        <container:text container:language="de"><![CDATA[Kundendatei - Lastschriften]]></container:text>
+      </container:template>
+    </container:message>
+  </container:messages>
+</container:module>

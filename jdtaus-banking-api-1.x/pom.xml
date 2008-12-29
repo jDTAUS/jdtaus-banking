@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>jdtaus-banking</artifactId>
+    <groupId>org.jdtaus</groupId>
+    <version>1.8-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jdtaus.common</groupId>
+  <artifactId>jdtaus-banking-api</artifactId>
+  <name>jDTAUS Banking API</name>
+  <description>jDTAUS banking application programming interface.</description>
+  <build>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>test</id>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.jdtaus.common</groupId>
+      <artifactId>jdtaus-core-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-schemas</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>
