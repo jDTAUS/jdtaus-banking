@@ -80,7 +80,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
     /**
      * Gets the configured <code>BankleitzahlenVerzeichnis</code> implementation.
      *
-     * @return the configured <code>BankleitzahlenVerzeichnis</code> implementation.
+     * @return The configured <code>BankleitzahlenVerzeichnis</code> implementation.
      */
     private BankleitzahlenVerzeichnis getBankleitzahlenVerzeichnis()
     {

@@ -30,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import org.jdtaus.banking.BankleitzahlInfo;
 import org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage;
@@ -42,7 +43,7 @@ import org.jdtaus.core.monitor.spi.TaskMonitor;
 /**
  * German Bankleitzahlendatei for the format as of 2006-06-01.
  * <p>For further information see the
- * <a href="../../../../doc-files/Bankleitzahlen%20Richtlinie%20-%20Stand%208.%20Januar%202007.pdf">
+ * <a href="../../../../doc-files/Bankleitzahlen%20Richtlinie%20-%20Stand%208.%20September%202008.pdf">
  * Bankleitzahlen Richtlinie</a>. An updated version of the document may be
  * found at <a href="http://www.bundesbank.de/index.en.php">Deutsche Bundesbank</a>.
  * </p>
@@ -60,7 +61,7 @@ public final class BankleitzahlenDatei
     /**
      * Gets the configured <code>Logger</code> implementation.
      *
-     * @return the configured <code>Logger</code> implementation.
+     * @return The configured <code>Logger</code> implementation.
      */
     private Logger getLogger()
     {
@@ -72,12 +73,24 @@ public final class BankleitzahlenDatei
     /**
      * Gets the configured <code>TaskMonitor</code> implementation.
      *
-     * @return the configured <code>TaskMonitor</code> implementation.
+     * @return The configured <code>TaskMonitor</code> implementation.
      */
     private TaskMonitor getTaskMonitor()
     {
         return (TaskMonitor) ContainerFactory.getContainer().
             getDependency( this, "TaskMonitor" );
+
+    }
+
+    /**
+     * Gets the configured <code>Locale</code> implementation.
+     *
+     * @return The configured <code>Locale</code> implementation.
+     */
+    private Locale getLocale()
+    {
+        return (Locale) ContainerFactory.getContainer().
+            getDependency( this, "Locale" );
 
     }
 
@@ -258,6 +271,7 @@ public final class BankleitzahlenDatei
                     {
                         throw new IllegalArgumentException(
                             this.getCannotAddDuplicateRecordMessage(
+                            this.getLocale(),
                             newVersion.getSerialNumber() ) );
 
                     }
@@ -268,6 +282,7 @@ public final class BankleitzahlenDatei
                     {
                         this.getLogger().debug(
                             this.getAddRecordInfoMessage(
+                            this.getLocale(),
                             String.valueOf( newVersion.getChangeLabel() ),
                             newVersion.getSerialNumber() ) );
 
@@ -281,7 +296,7 @@ public final class BankleitzahlenDatei
                     {
                         throw new IllegalArgumentException(
                             this.getCannotModifyNonexistentRecordMessage(
-                            newVersion.getSerialNumber() ) );
+                            this.getLocale(), newVersion.getSerialNumber() ) );
 
                     }
 
@@ -289,6 +304,7 @@ public final class BankleitzahlenDatei
                     {
                         this.getLogger().debug(
                             this.getModifyRecordInfoMessage(
+                            this.getLocale(),
                             String.valueOf( newVersion.getChangeLabel() ),
                             newVersion.getSerialNumber() ) );
 
@@ -300,7 +316,7 @@ public final class BankleitzahlenDatei
                 {
                     throw new IllegalArgumentException(
                         this.getCannotModifyNonexistentRecordMessage(
-                        newVersion.getSerialNumber() ) );
+                        this.getLocale(), newVersion.getSerialNumber() ) );
 
                 }
             }
@@ -338,6 +354,7 @@ public final class BankleitzahlenDatei
                         {
                             this.getLogger().debug(
                                 this.getRemoveRecordInfoMessage(
+                                this.getLocale(),
                                 String.valueOf( oldVersion.getChangeLabel() ),
                                 oldVersion.getSerialNumber() ) );
 
@@ -404,7 +421,8 @@ public final class BankleitzahlenDatei
         if ( this.getLogger().isDebugEnabled() )
         {
             this.getLogger().debug(
-                this.getFileNameInfoMessage( resource.toExternalForm() ) );
+                this.getFileNameInfoMessage( this.getLocale(),
+                                             resource.toExternalForm() ) );
 
         }
 
@@ -423,7 +441,7 @@ public final class BankleitzahlenDatei
                 {
                     throw new IllegalArgumentException(
                         this.getCannotAddDuplicateRecordMessage(
-                        rec.getSerialNumber() ) );
+                        this.getLocale(), rec.getSerialNumber() ) );
 
                 }
             }
@@ -450,15 +468,16 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>Lädt Bankleitzahlendatei "{0}".</pre></blockquote>
      * <blockquote><pre>Loading Bankleitzahlendatei "{0}".</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param fileName format argument.
      *
      * @return the text of message <code>fileNameInfo</code>.
      */
-    private String getFileNameInfoMessage(
-            java.lang.String fileName )
+    private String getFileNameInfoMessage( final Locale locale,
+            final java.lang.String fileName )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "fileNameInfo",
+            getMessage( this, "fileNameInfo", locale,
                 new Object[]
                 {
                     fileName
@@ -471,17 +490,18 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>{0}: Datensatz {1, number} hinzugefügt.</pre></blockquote>
      * <blockquote><pre>{0}: Added record {1, number}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param label format argument.
      * @param serialNumber format argument.
      *
      * @return the text of message <code>addRecordInfo</code>.
      */
-    private String getAddRecordInfoMessage(
-            java.lang.String label,
-            java.lang.Number serialNumber )
+    private String getAddRecordInfoMessage( final Locale locale,
+            final java.lang.String label,
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "addRecordInfo",
+            getMessage( this, "addRecordInfo", locale,
                 new Object[]
                 {
                     label,
@@ -495,17 +515,18 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>{0}: Datensatz {1, number} aktualisiert.</pre></blockquote>
      * <blockquote><pre>{0}: Updated record {1, number}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param label format argument.
      * @param serialNumber format argument.
      *
      * @return the text of message <code>modifyRecordInfo</code>.
      */
-    private String getModifyRecordInfoMessage(
-            java.lang.String label,
-            java.lang.Number serialNumber )
+    private String getModifyRecordInfoMessage( final Locale locale,
+            final java.lang.String label,
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "modifyRecordInfo",
+            getMessage( this, "modifyRecordInfo", locale,
                 new Object[]
                 {
                     label,
@@ -519,17 +540,18 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>{0}: Datensatz {1, number} entfernt.</pre></blockquote>
      * <blockquote><pre>{0}: Removed record {1, number}.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param label format argument.
      * @param serialNumber format argument.
      *
      * @return the text of message <code>removeRecordInfo</code>.
      */
-    private String getRemoveRecordInfoMessage(
-            java.lang.String label,
-            java.lang.Number serialNumber )
+    private String getRemoveRecordInfoMessage( final Locale locale,
+            final java.lang.String label,
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "removeRecordInfo",
+            getMessage( this, "removeRecordInfo", locale,
                 new Object[]
                 {
                     label,
@@ -543,15 +565,16 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>Datensatz mit Seriennummer {0,number} existiert bereits und kann nicht hinzugefügt werden.</pre></blockquote>
      * <blockquote><pre>Record with serial number {0,number} already exists and cannot be added.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param serialNumber format argument.
      *
      * @return the text of message <code>cannotAddDuplicateRecord</code>.
      */
-    private String getCannotAddDuplicateRecordMessage(
-            java.lang.Number serialNumber )
+    private String getCannotAddDuplicateRecordMessage( final Locale locale,
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "cannotAddDuplicateRecord",
+            getMessage( this, "cannotAddDuplicateRecord", locale,
                 new Object[]
                 {
                     serialNumber
@@ -564,15 +587,16 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>Ein Datensatz mit Seriennummer {0,number} existiert nicht und kann nicht aktualisiert werden.</pre></blockquote>
      * <blockquote><pre>Record with serial number {0,number} does not exist and cannot be updated.</pre></blockquote>
      *
+     * @param locale The locale of the message instance to return.
      * @param serialNumber format argument.
      *
      * @return the text of message <code>cannotModifyNonexistentRecord</code>.
      */
-    private String getCannotModifyNonexistentRecordMessage(
-            java.lang.Number serialNumber )
+    private String getCannotModifyNonexistentRecordMessage( final Locale locale,
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "cannotModifyNonexistentRecord",
+            getMessage( this, "cannotModifyNonexistentRecord", locale,
                 new Object[]
                 {
                     serialNumber
