@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+  <properties>
+    <title>Changelog</title>
+    <author email="cs@jdtaus.org">Christian Schulte</author>
+  </properties>
+  <body>
+    <release version="1.0" date="2007-06-01"
+             description="First stable release."/>
+
+    <release version="1.1" date="2007-07-02"
+             description="Feature enhancements.">
+
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Fixed the implementation name from <code>jDTAUS Banking RI DTAUS</code>
+      to <code>jDTAUS Banking SPI</code>.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated implementation to the 1.1 implementation programming interfaces.
+      The implementation now honours the two new interfaces
+      <code>HeaderValidator</code> and <code>TransactionValidator</code>
+      introduced in the 1.1 SPI.]]>
+      </action>
+    </release>
+
+    <release version="1.2" date="2007-08-01"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated the XML module descriptor to the 1.1 model version.
+      Removed any <code>Message</code>s in favour of the new
+      <code>jdtaus-banking-messages</code> artifact. Added implementations
+      of methods introduced in the 1.2 API.]]>
+      </action>
+    </release>
+
+    <release version="1.3" date="2007-08-24"
+             description="Feature enhancements.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added implementations of methods introduced in the 1.3 API.]]>
+      </action>
+    </release>
+
+    <release version="1.3.1" date="2007-11-04"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="fix"><![CDATA[
+      When an extension record's value is invalid, its type is
+      reported as invalid, although it is valid.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      The size of the internal error message collection may get very large so
+      that collecting all errors during scanning becomes a performance
+      bottleneck when scanning files containing a lot of errors. The
+      implementation got updated to stop collecting error message after having
+      collected 250 messages.]]>
+      </action>
+    </release>
+
+    <release version="1.4" date="2007-12-26"
+             description="Feature enhancements.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added classes<ul>
+      <li><code>org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver</code></li>
+      <blockquote>to resolve <code>Message</code>s for <code>PhysicalFileException</code>s
+      introduced in the <code>jdtaus-core-utilities</code> artifact as of
+      version 1.3</blockquote></ul>]]>
+      </action>
+    </release>
+
+    <release version="1.4.1" date="2007-12-27"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Added missing metadata.]]>
+      </action>
+    </release>
+
+    <release version="1.4.2" date="2007-12-28"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Added a missing <code>final</code> modifier to class
+      <code>org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver</code>.]]>
+      </action>
+    </release>
+
+    <release version="1.4.3" date="2008-03-13"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Updated to latest mojo releases.]]>
+      </action>
+    </release>
+
+    <release version="1.5" date="2008-04-13"
+             description="Feature enhancements.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added support for configuration properties introduced in the 1.4 API
+      version.]]>
+      </action>
+    </release>
+
+    <release version="1.5.1" date="2008-07-06"
+             description="Maintenance release.">
+
+      <action dev="schulte2005" type="update"><![CDATA[
+      Maven POM updates.]]>
+      </action>
+    </release>
+
+    <release version="1.6" date="2008-10-27"
+             description="Maintenance release.">
+
+       <action dev="schulte2005" type="update"><![CDATA[
+      Upgraded to latest core features.<ul>
+      <li>Removed any internal properties resources and moved any messages to
+      the META-INF/jdtaus/module.xml module descriptor.</li>
+      <li>Added support for compatibility checking.</li></ul>]]></action>
+    </release>
+
+    <release version="1.6-1" date="2008-11-28"
+             description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added support for Textschlüssel validity dates introduced in API
+      version 1.7.]]>
+      </action>
+    </release>
+
+    <release version="1.8" date="2008-12-29"
+             description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Upgraded to jDTAUS Core version 1.8 to support exchanging references to
+      the <code>java.util.Locale</code> implementation to use.]]></action>
+    </release>
+
+  </body>
+</document>
