@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+    <properties>
+        <title>Changelog</title>
+        <author email="cs@jdtaus.org">Christian Schulte</author>
+    </properties>
+    <body>
+        <release version="1.0" date="2008-10-28" description="Initial release."/>
+        <release version="1.1" date="2008-11-28" description="Maintenance release.">
+            <action dev="schulte2005" type="update"><![CDATA[
+            Added <code>jdtaus-banking-1.1.xsd</code> schema adding attribute
+            <code>validFrom</code> and <code>validTo</code> to
+            <code>textschluessel</code> complex type.]]>
+            </action>
+        </release>
+    </body>
+</document>

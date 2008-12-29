@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  jDTAUS Banking Model
+  Copyright (c) 2005 Christian Schulte
+
+  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+  <cs@jdtaus.org> (+49 2331 3543887)
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document    : jdtaus-banking-1.0.xsd
+  Author      : Christian Schulte <cs@jdtaus.org>
+  Description : jDTAUS Banking Model.
+
+  Example usage:
+
+  <xsd:import namespace="http://jdtaus.org/banking/model"
+              schemaLocation="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
+
+  The recommended namespace prefix is "banking".
+
+  $Id$
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:banking="http://jdtaus.org/banking/model"
+            targetNamespace="http://jdtaus.org/banking/model"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en"><![CDATA[
+  jDTAUS Banking Model
+  Copyright (c) 2005 Christian Schulte
+
+  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+  <cs@jdtaus.org> (+49 2331 3543887)
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document    : jdtaus-banking-1.0.xsd
+  Author      : Christian Schulte <cs@jdtaus.org>
+  Description : jDTAUS Banking Model.
+
+  Example usage:
+
+  <xsd:import namespace="http://jdtaus.org/banking/model"
+              schemaLocation="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
+
+  The recommended namespace prefix is "banking".
+
+  $Id$]]>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!--                                                                       -->
+  <!-- Text                                                                  -->
+  <!--                                                                       -->
+  <xsd:element name="text" type="banking:Text" />
+  <xsd:complexType name="Text">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      Text paired with corresponding language.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="language" type="xsd:language" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- Texts                                                                 -->
+  <!--                                                                       -->
+  <xsd:element name="texts" type="banking:Texts">
+    <xsd:key name="text-key">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en"><![CDATA[
+        Checks uniqueness of languages.]]>
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath=".//banking:text"/>
+      <xsd:field xpath="@banking:language"/>
+    </xsd:key>
+    <xsd:keyref name="text-default-language-reference"
+                refer="banking:text-key">
+      <xsd:selector xpath="."/>
+      <xsd:field xpath="@banking:defaultLanguage"/>
+    </xsd:keyref>
+  </xsd:element>
+  <xsd:complexType name="Texts">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      List of text language pairs.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="banking:text" minOccurs="1"
+                   maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="defaultLanguage" type="xsd:language"
+                   use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en"><![CDATA[
+        Default text of the list.]]>
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- Documentation                                                         -->
+  <!--                                                                       -->
+  <xsd:element name="documentation" type="banking:Texts">
+    <xsd:key name="documentation-key">
+      <xsd:selector xpath=".//banking:text"/>
+      <xsd:field xpath="@banking:language"/>
+    </xsd:key>
+    <xsd:keyref name="default-documentation-reference"
+                refer="banking:documentation-key">
+      <xsd:selector xpath="."/>
+      <xsd:field xpath="@banking:defaultLanguage"/>
+    </xsd:keyref>
+  </xsd:element>
+  <!--                                                                       -->
+  <!-- ModelObject                                                           -->
+  <!--                                                                       -->
+  <xsd:complexType name="ModelObject">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      Base complex type for model objects.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="banking:documentation" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+            Documentation of the object.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="modelVersion" type="banking:Version" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en"><![CDATA[
+        Version of the model in use.]]>
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- BankleitzahlInfoList                                                  -->
+  <!--                                                                       -->
+  <xsd:element name="bankleitzahlInfoList" type="banking:BankleitzahlInfoList">
+    <xsd:key name="bankleitzahl-info-key">
+      <xsd:selector xpath=".//banking:bankleitzahlInfo"/>
+      <xsd:field xpath="@banking:serialNumber"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="BankleitzahlInfoList">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        List of BankleitzahlInfo instances.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:sequence>
+          <xsd:element ref="banking:bankleitzahlInfo" minOccurs="0"
+                       maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- BankleitzahlInfo                                                      -->
+  <!--                                                                       -->
+  <xsd:element name="bankleitzahlInfo" type="banking:BankleitzahlInfo"/>
+  <xsd:complexType name="BankleitzahlInfo">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      Record of the public directory of german bank codes.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:attribute name="serialNumber" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Serial number of the record.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0"/>
+              <xsd:maxInclusive value="999999"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="bankCode" type="banking:Bankleitzahl" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Bankleitzahl (german bank code).]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="headOffice" type="xsd:boolean" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Specifies if this record identifies a bank which is to be used for
+            transactions.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="name" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Name of the bank.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:maxLength value="58"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="postalCode" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Postal code of the city the bank is resident.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0"/>
+              <xsd:maxInclusive value="99999"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="city" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            City the bank resides at.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:maxLength value="35"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="description" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Description of the bank including information regarding the city the
+            bank resides to be used for displaying on e.g. invoices.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:maxLength value="27"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="pan" use="optional" type="banking:Kontonummer">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Primary account number.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="bic" use="optional" type="banking:BIC">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            SWIFT Bank Identifier Code.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="replacingBankCode" use="optional"
+                       type="banking:Bankleitzahl">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Bank code of the bank replacing this bank if this record is marked
+            for deletion.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="markedForDeletion" use="required"
+                       type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            <code>true</code> if this record will be deleted from upcoming
+            files.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="validationLabel" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Label of the algorithm to be used for validating account numbers.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:maxLength value="2"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="changeLabel"
+                       type="banking:BankleitzahlInfoChangeLabel"
+                       use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Label used to indicate changes of the record since previous
+            files.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- TextschluesselList                                                    -->
+  <!--                                                                       -->
+  <xsd:element name="textschluesselList" type="banking:TextschluesselList">
+    <xsd:key name="textschluessel-key">
+      <xsd:selector xpath=".//banking:textschluessel"/>
+      <xsd:field xpath="@banking:key"/>
+      <xsd:field xpath="@banking:extension"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="TextschluesselList">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        List of Textschluessel instances.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:sequence>
+          <xsd:element ref="banking:textschluessel" minOccurs="0"
+                       maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- Textschluessel                                                        -->
+  <!--                                                                       -->
+  <xsd:element name="textschluessel" type="banking:Textschluessel"/>
+  <xsd:complexType name="Textschluessel">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      Type of a transaction in germany.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:sequence>
+          <xsd:element ref="banking:texts" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="key" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Key of the Textschlüssel.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0"/>
+              <xsd:maxInclusive value="99"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="extension" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Extension of the Textschlüssel.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0"/>
+              <xsd:maxInclusive value="999"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="debit" type="xsd:boolean" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            <code>true</code> if a transaction of this type is a debit;
+            <code>false</code> if not.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="remittance" type="xsd:boolean" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            <code>true</code> if a transaction of this type is a remittance;
+            <code>false</code> if not.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="variableExtension" type="xsd:boolean" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            <code>true</code> if the extension holds non-identifying, variable
+            data; <code>false</code> if the extension is part of the identifying
+            key.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- CurrencyList                                                          -->
+  <!--                                                                       -->
+  <xsd:element name="currencyList" type="banking:CurrencyList">
+    <xsd:key name="currency-key">
+      <xsd:selector xpath=".//banking:currency"/>
+      <xsd:field xpath="@banking:isoCode"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="CurrencyList">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        List of Currency instances.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:sequence>
+          <xsd:element ref="banking:currency" minOccurs="0"
+                       maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- Currency                                                              -->
+  <!--                                                                       -->
+  <xsd:element name="currency" type="banking:Currency"/>
+  <xsd:complexType name="Currency">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        Currency.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:attribute name="isoCode" type="banking:IsoCurrencyCode"
+                       use="required">
+
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            ISO code of the currency.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+        <xsd:attribute name="dtausCode" type="banking:DtausCurrencyCode"
+                       use="optional">
+
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            DTAUS code of the currency.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+        <xsd:attribute name="startDate" type="xsd:date" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Date the currency got introduced.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+        <xsd:attribute name="endDate" type="xsd:date" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Date the currency got deprecated.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- E-Record                                                              -->
+  <!--                                                                       -->
+  <xsd:element name="e-record" type="banking:E-Record"/>
+  <xsd:complexType name="E-Record">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      "E" record.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:attribute name="transactionCount" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Number of transactions stored in a logical file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0"/>
+              <xsd:maxInclusive value="9999999" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="sumTargetAccount" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Sum of all target account codes of all transactions stored in a
+            logical file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0"/>
+              <xsd:maxInclusive value="99999999999999999" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="sumTargetBank" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Sum of all target bank codes of all transactions stored in a logical
+            file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0"/>
+              <xsd:maxInclusive value="99999999999999999" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="sumAmount" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Sum of all amounts of all transactions stored in a logical file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0"/>
+              <xsd:maxInclusive value="9999999999999" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- A-Record                                                              -->
+  <!--                                                                       -->
+  <xsd:element name="a-record" type="banking:A-Record"/>
+  <xsd:complexType name="A-Record">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      "A" record.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:attribute name="customer" type="banking:AlphaNumericText27"
+                   use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Name of the customer a logical file belongs to.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="account" type="banking:Kontonummer"
+                   use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Code of the account a logical file belongs to.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="bank" type="banking:Bankleitzahl"
+                   use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Code of the bank a logical file belongs to.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="type" type="banking:LogicalFileType"
+                   use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Type of a logical file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="currency" type="banking:DtausCurrencyCode"
+                   use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Currency of a logical file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="reference" type="banking:Referenznummer10"
+                   use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Reference code of a logical file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="bankData" type="banking:Bankleitzahl"
+                   use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Bank internal data.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="createDate" type="xsd:date" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Create date of a logical file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="executionDate" type="xsd:date" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Execution date of a logical file.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- C-Record                                                              -->
+  <!--                                                                       -->
+  <xsd:element name="c-record" type="banking:C-Record"/>
+  <xsd:complexType name="C-Record">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      "C" record.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:sequence>
+          <xsd:element ref="banking:textschluessel" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en"><![CDATA[
+              Payment type.]]>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="description" minOccurs="0" maxOccurs="14">
+            <xsd:complexType>
+              <xsd:attribute name="text" type="banking:AlphaNumericText27"
+                             use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="amount" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Amount of money to transfer.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="1"/>
+              <xsd:maxInclusive value="99999999999"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="currency" type="banking:DtausCurrencyCode"
+                       use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            The currency of the transaction.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="reference" type="banking:Referenznummer11"
+                       use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Reference number of the transaction.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="primaryBank" type="banking:Bankleitzahl"
+                       use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Code of the primary participating bank.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="executiveAccount" type="banking:Kontonummer"
+                       use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Ordering bank account.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="executiveBank" type="banking:Bankleitzahl"
+                       use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Ordering bank.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="executiveName" type="banking:AlphaNumericText27"
+                       use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Ordering customer.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="executiveNameExt" type="banking:AlphaNumericText27"
+                       use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Ordering customer - continued.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="targetAccount" type="banking:Kontonummer"
+                       use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Bank account of the debitor/creditor depending on the transaction's
+            type.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="targetBank" type="banking:Bankleitzahl"
+                       use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Bank of the debitor/creditor depending on the transaction's type.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="targetName" type="banking:AlphaNumericText27"
+                       use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Debitor/creditor name depending on the transaction's type.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="targetNameExt" type="banking:AlphaNumericText27"
+                       use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en"><![CDATA[
+            Debitor/creditor name - continued.]]>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- LogicalDtausFile                                                      -->
+  <!--                                                                       -->
+  <xsd:element name="logicalDtausFile" type="banking:LogicalDtausFile"/>
+  <xsd:complexType name="LogicalDtausFile">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      Logical DTAUS file (Inlandszahlungsverkehr)..]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:sequence>
+          <xsd:element ref="banking:a-record" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en"><![CDATA[
+              "A" record of the logical file.]]>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element ref="banking:c-record" minOccurs="0"
+                       maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en"><![CDATA[
+              "C" records of the logical file.]]>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element ref="banking:e-record" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en"><![CDATA[
+              "E" record of the logical file.]]>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- PhysicalDtausFile                                                     -->
+  <!--                                                                       -->
+  <xsd:element name="physicalDtausFile" type="banking:PhysicalDtausFile"/>
+  <xsd:complexType name="PhysicalDtausFile">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+      Physical DTAUS file (Inlandszahlungsverkehr)..]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="banking:ModelObject">
+        <xsd:sequence>
+          <xsd:element ref="banking:logicalDtausFile" minOccurs="0"
+                       maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en"><![CDATA[
+              Logical files of the physical file.]]>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--                                                                       -->
+  <!-- Simple types.                                                         -->
+  <!--                                                                       -->
+  <xsd:simpleType name="Version">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        Restricts "xsd:string" to a maximum length of 100 characters.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="100"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Referenznummer10">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        XML type for the Referenznummer10 Java type.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0"/>
+      <xsd:maxInclusive value="9999999999"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Referenznummer11">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        XML type for the Referenznummer11 Java type.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0"/>
+      <xsd:maxInclusive value="99999999999"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Kontonummer">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        XML type for the Kontonummer Java type.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0"/>
+      <xsd:maxInclusive value="9999999999"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Bankleitzahl">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        XML type for the Bankleitzahl Java type.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0"/>
+      <xsd:maxInclusive value="99999999"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BIC">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        XML type for the BIC Java type.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="IBAN">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        XML type for the IBAN Java type.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AlphaNumericText27">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        XML type for AlphaNumericText27 Java type.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:whiteSpace value="preserve"/>
+      <xsd:pattern value="([A-Z]|\d|[\.\+\*$ ,&amp;-/%ÄÖÜß]){0,27}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BankleitzahlInfoChangeLabel">
+    <xsd:restriction base="xsd:NCName">
+      <xsd:enumeration value="A">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+          Addition.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="D">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+          Deletion.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="U">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+          Unchanged.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="M">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+          Modified.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="IsoCurrencyCode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en"><![CDATA[
+        3 letter ISO currency code.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:whiteSpace value="collapse"/>
+      <xsd:pattern value="[A-Z]{3}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="DtausCurrencyCode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de"><![CDATA[
+        DTAUS currency code.]]>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:whiteSpace value="preserve"/>
+      <xsd:pattern value="([A-Z]|\d|[\.\+\*$ ,&amp;-/%ÄÖÜß]){1}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="LogicalFileType">
+    <xsd:restriction base="xsd:NCName">
+      <xsd:enumeration value="LK">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+          Logical file holding debit orders sent by a customer.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GK">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+          Logical file holding remittance orders sent by a customer.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LB">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+          Logical file holding debit orders sent by a bank.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GB">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en"><![CDATA[
+          Logical file holding remittance orders sent by a bank.]]>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>
