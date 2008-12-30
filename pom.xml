@@ -10,7 +10,7 @@
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
   <description><![CDATA[
   jDTAUS Banking provides a library for electronic banking facilities with
   corresponding reference implementations. This is the parent module for the
@@ -685,7 +685,7 @@
   <properties>
     <jdtaus-core.version>1.8</jdtaus-core.version>
     <jdtaus-container-mojo.version>3.2</jdtaus-container-mojo.version>
-    <jdtaus-banking.version>1.8-SNAPSHOT</jdtaus-banking.version>
+    <jdtaus-banking.version>1.8</jdtaus-banking.version>
     <maven-javadoc-plugin.version>2.5</maven-javadoc-plugin.version>
     <maven-jxr-plugin.version>2.1</maven-jxr-plugin.version>
     <maven-pmd-plugin.version>2.4</maven-pmd-plugin.version>
