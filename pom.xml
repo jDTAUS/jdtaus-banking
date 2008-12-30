@@ -24,6 +24,7 @@
         <includes>
           <include>currencies-1.0.xml</include>
           <include>currencies-1.1.xml</include>
+          <include>currencies-1.2.xml</include>
         </includes>
       </testResource>
     </testResources>
@@ -47,7 +48,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>src/site/resources/currencies-1.1.xml</file>
+                  <file>src/site/resources/currencies-1.2.xml</file>
                   <type>xml</type>
                 </artifact>
               </artifacts>
