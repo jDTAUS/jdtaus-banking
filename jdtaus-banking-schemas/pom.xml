@@ -2,19 +2,13 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.4</version>
+    <version>1.8-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-schemas</artifactId>
   <name>jDTAUS Banking XML Schemas</name>
-  <version>1.2-SNAPSHOT</version>
   <description>jDTAUS banking XML schemas.</description>
-  <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-schemas/branches/jdtaus-banking-schemas-1.x</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-schemas/branches/jdtaus-banking-schemas-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-schemas/branches/jdtaus-banking-schemas-1.x</url>
-  </scm>
   <build>
     <resources>
       <resource>
@@ -44,23 +38,5 @@
         </includes>
       </resource>
     </resources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-schemas/tags</tagBase>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
-  <reporting>
-    <plugins>
-      <plugin>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-changes-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>

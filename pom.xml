@@ -282,6 +282,7 @@
           <executions>
             <execution>
               <id>remove-trailing-spaces</id>
+              <phase>validate</phase>
               <goals>
                 <goal>clean-sources</goal>
               </goals>
@@ -411,8 +412,8 @@
               <linksource>true</linksource>
               <serialwarn>true</serialwarn>
               <show>private</show>
-              <doctitle>${pom.name} Specification ${pom.version}</doctitle>
-              <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
+              <doctitle>${pom.name} ${pom.version} Documentation</doctitle>
+              <windowtitle>${pom.name} ${pom.version} Documentation</windowtitle>
               <groups>
                 <group>
                   <title>Application Programming Interface</title>
@@ -428,7 +429,7 @@
                 </group>
                 <group>
                   <title>Reference Implementation</title>
-                  <packages>org.jdtaus.banking.ri*:org.jdtaus.banking.dtaus.ri*</packages>
+                  <packages>org.jdtaus.banking.ri*:org.jdtaus.banking.dtaus.ri*:org.jdtaus.banking.messages</packages>
                 </group>
                 <group>
                   <title>Tests</title>
