@@ -19,9 +19,9 @@
   <url>http://sites.jdtaus.org/jdtaus-banking/1.0.x</url>
   <inceptionYear>2005</inceptionYear>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-1.8</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-1.8</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/tags/jdtaus-banking-1.8</url>
   </scm>
   <build>
     <pluginManagement>
