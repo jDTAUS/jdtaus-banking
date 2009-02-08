@@ -6,37 +6,30 @@ Christian Schulte
 July 2005
   -----
 
-Introduction
+jDTAUS Banking
 
   The {{{jdtaus-banking-api/project-summary.html}Banking API artifact}} provides
-  jDTAUS Banking's {{{jdtaus-banking-api/apidocs/index.html}programming interface}}
-  to payment system specifications. Whenever that artifact is used at compile
-  time, an application assembler needs to provide additional runtime artifacts
-  for proper operation as shown below.
+  an {{{jdtaus-banking-api/apidocs/index.html}application programming interface}}
+  to payment system specifications. Whenever that API is used at compile time,
+  an application assembler needs to provide corresponding implementations at
+  runtime as shown below.
 
-*-------------------+----------------------------------------------------------+
-|| <<Artifact>>     || <<Description>>                                        ||
-*-------------------+----------------------------------------------------------+
-| {{{jdtaus-banking-ri-bankleitzahlenverzeichnis/index.html} jDTAUS Banking RI Bankleitzahlenverzeichnis}} | BankleitzahlenVerzeichnis reference implementation. {{{jdtaus-banking-ri-bankleitzahlenverzeichnis/apidocs/}See Javadoc}}|
-*-------------------+----------------------------------------------------------+
-| {{{jdtaus-banking-ri-currencydirectory/index.html} jDTAUS Banking RI CurrencyDirectory}} | CurrencyDirectory reference implementation. {{{jdtaus-banking-ri-currencydirectory/apidocs/}See Javadoc}}|
-*-------------------+----------------------------------------------------------+
-| {{{jdtaus-banking-ri-textschluesselverzeichnis/index.html} jDTAUS Banking RI Textschluesselverzeichnis}} | TextschluesselVerzeichnis reference implementation. {{{jdtaus-banking-ri-textschluesselverzeichnis/apidocs/}See Javadoc}}|
-*-------------------+----------------------------------------------------------+
-| {{{jdtaus-banking-ri-dtaus/index.html} jDTAUS Banking RI DTAUS}} | DTAUS reference implementation. {{{jdtaus-banking-ri-dtaus/apidocs/}See Javadoc}}|
-*-------------------+----------------------------------------------------------+
-| {{{jdtaus-banking-utilities/project-summary.html} jDTAUS Banking Utilities}} | Banking utility components. {{{jdtaus-banking-utilities/apidocs/}See Javadoc}}|
-*-------------------+----------------------------------------------------------+
-| {{{jdtaus-banking-spi/project-summary.html} jDTAUS Banking SPI}} | Banking implementation programming interface. {{{jdtaus-banking-spi/apidocs/}See Javadoc}}|
-*-------------------+----------------------------------------------------------+
-| {{{jdtaus-banking-messages/project-summary.html} jDTAUS Banking Messages}} | Banking application messages. {{{jdtaus-banking-messages/apidocs/}See Javadoc}}|
-*-------------------+----------------------------------------------------------+
-| {{{jdtaus-banking-charsets/project-summary.html} jDTAUS Banking Charset Provider}} | Banking charset provider implementations. {{{jdtaus-banking-charsets/apidocs/}See Javadoc}}|
-*-------------------+----------------------------------------------------------+
-
-News
-
-* April, 2007
-
-  As of April, 2007 all jDTAUS artifacts are provided via the central Maven 2
-  repository in group {{{http://repo1.maven.org/maven2/org/jdtaus}org.jdtaus}}.
+*-------------------+--------------+-------------------------------------------+
+|| <<Artifact>>     || <<License>> || <<Description>>                         ||
+*-------------------+--------------+-------------------------------------------+
+| {{{jdtaus-banking-ri-bankleitzahlenverzeichnis/index.html} jDTAUS Banking RI Bankleitzahlenverzeichnis}} | LGPL | BankleitzahlenVerzeichnis reference implementation. {{{jdtaus-banking-ri-bankleitzahlenverzeichnis/apidocs/}See Javadoc}}|
+*-------------------+--------------+-------------------------------------------+
+| {{{jdtaus-banking-ri-currencydirectory/index.html} jDTAUS Banking RI CurrencyDirectory}} | LGPL | CurrencyDirectory reference implementation. {{{jdtaus-banking-ri-currencydirectory/apidocs/}See Javadoc}}|
+*-------------------+--------------+-------------------------------------------+
+| {{{jdtaus-banking-ri-textschluesselverzeichnis/index.html} jDTAUS Banking RI Textschluesselverzeichnis}} | LGPL | TextschluesselVerzeichnis reference implementation. {{{jdtaus-banking-ri-textschluesselverzeichnis/apidocs/}See Javadoc}}|
+*-------------------+--------------+-------------------------------------------+
+| {{{jdtaus-banking-ri-dtaus/index.html} jDTAUS Banking RI DTAUS}} | LGPL | DTAUS reference implementation. {{{jdtaus-banking-ri-dtaus/apidocs/}See Javadoc}}|
+*-------------------+--------------+-------------------------------------------+
+| {{{jdtaus-banking-utilities/project-summary.html} jDTAUS Banking Utilities}} | LGPL | Banking utility components. {{{jdtaus-banking-utilities/apidocs/}See Javadoc}}|
+*-------------------+--------------+-------------------------------------------+
+| {{{jdtaus-banking-spi/project-summary.html} jDTAUS Banking SPI}} | LGPL | Banking implementation programming interface. {{{jdtaus-banking-spi/apidocs/}See Javadoc}}|
+*-------------------+--------------+-------------------------------------------+
+| {{{jdtaus-banking-messages/project-summary.html} jDTAUS Banking Messages}} | LGPL | Banking application messages. {{{jdtaus-banking-messages/apidocs/}See Javadoc}}|
+*-------------------+--------------+-------------------------------------------+
+| {{{jdtaus-banking-charsets/project-summary.html} jDTAUS Banking Charset Provider}} | LGPL | Banking charset provider implementations. {{{jdtaus-banking-charsets/apidocs/}See Javadoc}}|
+*-------------------+--------------+-------------------------------------------+
