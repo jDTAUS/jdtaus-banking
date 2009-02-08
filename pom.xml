@@ -48,7 +48,7 @@
             <dependency>
               <groupId>org.jdtaus.core.container</groupId>
               <artifactId>jdtaus-core-client-container</artifactId>
-              <version>${jdtaus-core.version}</version>
+              <version>${jdtausCoreVersion}</version>
               <scope>runtime</scope>
             </dependency>
           </dependencies>
@@ -156,7 +156,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven-javadoc-plugin.version}</version>
+          <version>${mavenJavadocPluginVersion}</version>
           <configuration>
             <author>true</author>
             <charset>UTF-8</charset>
@@ -184,12 +184,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jxr-plugin</artifactId>
-          <version>${maven-jxr-plugin.version}</version>
+          <version>${mavenJxrPluginVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>${maven-pmd-plugin.version}</version>
+          <version>${mavenPmdPluginVersion}</version>
           <configuration>
             <sourceEncoding>UTF-8</sourceEncoding>
           </configuration>
@@ -197,12 +197,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>${maven-surefire-report-plugin.version}</version>
+          <version>${mavenSurefireReportPluginVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>${maven-checkstyle-plugin.version}</version>
+          <version>${mavenCheckstylePluginVersion}</version>
           <configuration>
             <encoding>UTF-8</encoding>
           </configuration>
@@ -210,7 +210,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-changes-plugin</artifactId>
-          <version>${maven-changes-plugin.version}</version>
+          <version>${mavenChangesPluginVersion}</version>
           <configuration>
             <issueLinkTemplate>http://bugzilla.jdtaus.org/cgi-bin/bugzilla/show_bug.cgi?id=%ISSUE%</issueLinkTemplate>
             <reportSets>
@@ -269,13 +269,13 @@
         <plugin>
           <groupId>org.jdtaus.mojo</groupId>
           <artifactId>jdtaus-container-mojo</artifactId>
-          <version>${jdtaus-container-mojo.version}</version>
+          <version>${jdtausContainerMojoVersion}</version>
           <inherited>true</inherited>
           <dependencies>
             <dependency>
               <groupId>org.jdtaus.core.container</groupId>
               <artifactId>jdtaus-core-client-container</artifactId>
-              <version>${jdtaus-core.version}</version>
+              <version>${jdtausCoreVersion}</version>
               <scope>runtime</scope>
             </dependency>
           </dependencies>
@@ -364,7 +364,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc-plugin.version}</version>
+        <version>${mavenJavadocPluginVersion}</version>
         <reportSets>
           <reportSet>
             <id>javadoc</id>
@@ -447,12 +447,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>${maven-jxr-plugin.version}</version>
+        <version>${mavenJxrPluginVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${maven-pmd-plugin.version}</version>
+        <version>${mavenPmdPluginVersion}</version>
         <configuration>
           <sourceEncoding>UTF-8</sourceEncoding>
         </configuration>
@@ -460,12 +460,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>${maven-surefire-report-plugin.version}</version>
+        <version>${mavenSurefireReportPluginVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${maven-checkstyle-plugin.version}</version>
+        <version>${mavenCheckstylePluginVersion}</version>
         <configuration>
           <encoding>UTF-8</encoding>
         </configuration>
@@ -473,7 +473,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>${maven-changes-plugin.version}</version>
+        <version>${mavenChangesPluginVersion}</version>
         <reportSets>
           <reportSet>
             <id>changes</id>
@@ -492,7 +492,7 @@
       <plugin>
         <artifactId>jdtaus-container-mojo</artifactId>
         <groupId>org.jdtaus.mojo</groupId>
-        <version>${jdtaus-container-mojo.version}</version>
+        <version>${jdtausContainerMojoVersion}</version>
         <configuration>
           <moduleName>${pom.name}</moduleName>
         </configuration>
@@ -504,118 +504,118 @@
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-core-api</artifactId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core</groupId>
         <artifactId>jdtaus-core-spi</artifactId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core</groupId>
         <artifactId>jdtaus-core-utilities</artifactId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core</groupId>
         <artifactId>jdtaus-core-messages</artifactId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-client-container</artifactId>
         <groupId>org.jdtaus.core.container</groupId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-memory-manager</artifactId>
         <groupId>org.jdtaus.core.lang</groupId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-jdk-logging</artifactId>
         <groupId>org.jdtaus.core.logging</groupId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-application-logger</artifactId>
         <groupId>org.jdtaus.core.text</groupId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-task-monitor</artifactId>
         <groupId>org.jdtaus.core.monitor</groupId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-jdk14-executor</artifactId>
         <groupId>org.jdtaus.core.lang</groupId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-entity-resolver</artifactId>
         <groupId>org.jdtaus.core.sax</groupId>
-        <version>${jdtaus-core.version}</version>
+        <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-banking-api</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-banking-api</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
         <classifier>tests</classifier>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-charsets</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-it</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-messages</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-schemas</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-spi</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-utilities</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking.dtaus</groupId>
         <artifactId>jdtaus-banking-ri-dtaus</artifactId>
-        <version>${jdtaus-banking.version}</version>
+        <version>${jdtausBankingVersion}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -682,15 +682,45 @@
       <url>scp://web.rent-a-mailserver.de/var/httpd/D0001/sites.jdtaus.org/jdtaus-banking/1.0.x</url>
     </site>
   </distributionManagement>
+  <repositories>
+    <repository>
+      <id>jdtaus-snapshots</id>
+      <url>http://repository.jdtaus.org/snapshots</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>interval:60</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jdtaus-snapshots</id>
+      <url>http://repository.jdtaus.org/snapshots</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>interval:60</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <properties>
-    <jdtaus-core.version>1.8</jdtaus-core.version>
-    <jdtaus-container-mojo.version>3.2</jdtaus-container-mojo.version>
-    <jdtaus-banking.version>1.9-SNAPSHOT</jdtaus-banking.version>
-    <maven-javadoc-plugin.version>2.5</maven-javadoc-plugin.version>
-    <maven-jxr-plugin.version>2.1</maven-jxr-plugin.version>
-    <maven-pmd-plugin.version>2.4</maven-pmd-plugin.version>
-    <maven-surefire-report-plugin.version>2.4.3</maven-surefire-report-plugin.version>
-    <maven-checkstyle-plugin.version>2.2</maven-checkstyle-plugin.version>
-    <maven-changes-plugin.version>2.1</maven-changes-plugin.version>
+    <jdtausCoreVersion>1.8</jdtausCoreVersion>
+    <jdtausContainerMojoVersion>3.2</jdtausContainerMojoVersion>
+    <jdtausBankingVersion>1.9-SNAPSHOT</jdtausBankingVersion>
+    <mavenJavadocPluginVersion>2.5</mavenJavadocPluginVersion>
+    <mavenJxrPluginVersion>2.1</mavenJxrPluginVersion>
+    <mavenPmdPluginVersion>2.4</mavenPmdPluginVersion>
+    <mavenSurefireReportPluginVersion>2.4.3</mavenSurefireReportPluginVersion>
+    <mavenCheckstylePluginVersion>2.2</mavenCheckstylePluginVersion>
+    <mavenChangesPluginVersion>2.1</mavenChangesPluginVersion>
   </properties>
 </project>
