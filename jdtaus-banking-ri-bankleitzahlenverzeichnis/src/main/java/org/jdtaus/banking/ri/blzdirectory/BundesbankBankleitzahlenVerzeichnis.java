@@ -373,7 +373,6 @@ public class BundesbankBankleitzahlenVerzeichnis
                         final BankleitzahlInfo[] records =
                             this.bankFile.getRecords();
 
-                        processedRecords += records.length;
                         for ( int j = records.length - 1; j >= 0; j-- )
                         {
                             if ( records[j].getChangeLabel() == 'D' &&
@@ -395,6 +394,7 @@ public class BundesbankBankleitzahlenVerzeichnis
                         }
 
                         this.bankFile.update( update );
+                        processedRecords += update.getRecords().length;
                     }
 
                     // Remove all outdated records for which another record
