@@ -709,8 +709,8 @@
     </pluginRepository>
   </pluginRepositories>
   <properties>
-    <jdtausCoreVersion>1.8</jdtausCoreVersion>
-    <jdtausContainerMojoVersion>3.2</jdtausContainerMojoVersion>
+    <jdtausCoreVersion>1.9-SNAPSHOT</jdtausCoreVersion>
+    <jdtausContainerMojoVersion>3.3-SNAPSHOT</jdtausContainerMojoVersion>
     <jdtausBankingVersion>1.9-SNAPSHOT</jdtausBankingVersion>
     <mavenJavadocPluginVersion>2.5</mavenJavadocPluginVersion>
     <mavenJxrPluginVersion>2.1</mavenJxrPluginVersion>

@@ -160,6 +160,8 @@ public class CurrencyDirectoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
     }
 

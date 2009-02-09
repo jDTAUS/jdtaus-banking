@@ -87,6 +87,8 @@ public class PhysicalFileFactoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -97,6 +99,8 @@ public class PhysicalFileFactoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -107,6 +111,8 @@ public class PhysicalFileFactoryTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
 
@@ -153,6 +159,8 @@ public class PhysicalFileFactoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -161,6 +169,8 @@ public class PhysicalFileFactoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
     }
 
@@ -194,6 +204,8 @@ public class PhysicalFileFactoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -202,6 +214,8 @@ public class PhysicalFileFactoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
     }
 
@@ -221,6 +235,8 @@ public class PhysicalFileFactoryTest
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
     }

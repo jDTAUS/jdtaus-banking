@@ -85,6 +85,8 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -96,6 +98,8 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -107,6 +111,8 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
         }
         catch ( UnsupportedCurrencyException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         Assert.assertTrue( this.getCurrencyMapper().
@@ -131,6 +137,8 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
 

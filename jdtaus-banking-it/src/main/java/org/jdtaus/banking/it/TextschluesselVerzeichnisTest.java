@@ -84,6 +84,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -95,6 +97,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -106,6 +110,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
 
@@ -118,6 +124,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -129,6 +137,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -140,6 +150,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -151,6 +163,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
 
@@ -163,6 +177,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -174,6 +190,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
     }
 
@@ -208,6 +226,8 @@ public class TextschluesselVerzeichnisTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
     }
 

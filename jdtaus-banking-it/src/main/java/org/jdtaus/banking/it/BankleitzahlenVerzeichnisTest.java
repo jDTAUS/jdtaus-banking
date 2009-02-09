@@ -84,6 +84,8 @@ public class BankleitzahlenVerzeichnisTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
     }
@@ -105,6 +107,8 @@ public class BankleitzahlenVerzeichnisTest
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
     }
@@ -144,6 +148,8 @@ public class BankleitzahlenVerzeichnisTest
         }
         catch ( BankleitzahlExpirationException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -155,6 +161,8 @@ public class BankleitzahlenVerzeichnisTest
         }
         catch ( BankleitzahlExpirationException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -166,6 +174,8 @@ public class BankleitzahlenVerzeichnisTest
         }
         catch ( BankleitzahlExpirationException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -177,6 +187,8 @@ public class BankleitzahlenVerzeichnisTest
         }
         catch ( BankleitzahlExpirationException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
     }
