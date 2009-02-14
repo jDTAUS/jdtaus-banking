@@ -286,6 +286,11 @@ public final class PropertyBankfileProvider implements BankfileProvider
             if ( this.classLoader == null )
             {
                 this.classLoader = this.getClass().getClassLoader();
+
+                if ( this.classLoader == null )
+                {
+                    this.classLoader = ClassLoader.getSystemClassLoader();
+                }
             }
         }
 
