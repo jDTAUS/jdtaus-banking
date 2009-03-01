@@ -70,9 +70,9 @@
     </dependency>
   </dependencies>
 
-  <scm xmlns="">
-    <connection xmlns="http://maven.apache.org/POM/4.0.0">scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</connection>
-    <developerConnection xmlns="http://maven.apache.org/POM/4.0.0">scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</developerConnection>
-    <url xmlns="http://maven.apache.org/POM/4.0.0">https://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</url>
+  <scm>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</url>
   </scm>
 </project>
