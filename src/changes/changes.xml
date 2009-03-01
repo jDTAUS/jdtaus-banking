@@ -121,5 +121,11 @@
       the <code>java.util.Locale</code> implementation to use.]]></action>
     </release>
 
+    <release version="1.8.1" date="2009-03-01"
+             description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added a recent bankfile valid to 2009-06-07.]]></action>
+    </release>
+
   </body>
 </document>
