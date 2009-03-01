@@ -10,7 +10,7 @@
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI Bankleitzahlenverzeichnis</name>
   <description>jDTAUS BankleitzahlenVerzeichnis reference implementation.</description>
-  <version>1.8.1</version>
+  <version>1.9-SNAPSHOT</version>
   <build>
     <resources>
       <resource>
