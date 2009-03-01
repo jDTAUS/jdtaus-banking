@@ -3,14 +3,13 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.8</version>
+    <version>1.9-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI Bankleitzahlenverzeichnis</name>
   <description>jDTAUS BankleitzahlenVerzeichnis reference implementation.</description>
-  <version>1.9-SNAPSHOT</version>
   <build>
     <resources>
       <resource>
@@ -69,10 +68,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <scm xmlns="">
-    <connection xmlns="http://maven.apache.org/POM/4.0.0">scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</connection>
-    <developerConnection xmlns="http://maven.apache.org/POM/4.0.0">scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</developerConnection>
-    <url xmlns="http://maven.apache.org/POM/4.0.0">https://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.8.1</url>
-  </scm>
 </project>
