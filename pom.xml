@@ -718,5 +718,6 @@
     <mavenSurefireReportPluginVersion>2.4.3</mavenSurefireReportPluginVersion>
     <mavenCheckstylePluginVersion>2.2</mavenCheckstylePluginVersion>
     <mavenChangesPluginVersion>2.1</mavenChangesPluginVersion>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>
