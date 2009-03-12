@@ -155,8 +155,8 @@ public final class ChecksumErrorMessage extends Message
 
     /**
      * Gets the text of message <code>checksumError</code>.
-     * <blockquote><pre>Die Prüfsumme der an Position {8,number} beginnenden logischen Datei ist ungültig.</pre></blockquote>
-     * <blockquote><pre>The checksum of the logical file beginning at position {8,number} is invalid.</pre></blockquote>
+     * <blockquote><pre>Die Prüfsumme der an Position {0,number} beginnenden logischen Datei ist ungültig.</pre></blockquote>
+     * <blockquote><pre>The checksum of the logical file beginning at position {0,number} is invalid.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      * @param position format argument.
