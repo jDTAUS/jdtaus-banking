@@ -301,8 +301,8 @@
     </container:message>
     <container:message container:name="checksumError">
       <container:template container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[The checksum of the logical file beginning at position {8,number} is invalid.]]></container:text>
-        <container:text container:language="de"><![CDATA[Die Prüfsumme der an Position {8,number} beginnenden logischen Datei ist ungültig.]]></container:text>
+        <container:text container:language="en"><![CDATA[The checksum of the logical file beginning at position {0,number} is invalid.]]></container:text>
+        <container:text container:language="de"><![CDATA[Die Prüfsumme der an Position {0,number} beginnenden logischen Datei ist ungültig.]]></container:text>
       </container:template>
       <container:arguments>
         <container:argument container:index="0" container:name="position" container:type="number"/>
