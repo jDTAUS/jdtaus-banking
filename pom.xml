@@ -19,6 +19,10 @@
     <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</developerConnection>
     <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</url>
   </scm>
+  <issueManagement>
+    <system>MantisBT</system>
+    <url>https://apps.sourceforge.net/mantisbt/jdtaus/</url>
+  </issueManagement>
   <build>
     <pluginManagement>
       <plugins>
@@ -479,7 +483,7 @@
             </reports>
             <configuration>
               <issueLinkTemplatePerSystem>
-                <Bugzilla>http://bugzilla.jdtaus.org/cgi-bin/bugzilla/show_bug.cgi?id=%ISSUE%</Bugzilla>
+                <MantisBT>https://apps.sourceforge.net/mantisbt/jdtaus/view.php?id=%ISSUE%</MantisBT>
               </issueLinkTemplatePerSystem>
             </configuration>
           </reportSet>
