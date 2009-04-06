@@ -212,7 +212,9 @@
           <artifactId>maven-changes-plugin</artifactId>
           <version>${mavenChangesPluginVersion}</version>
           <configuration>
-            <issueLinkTemplate>http://bugzilla.jdtaus.org/cgi-bin/bugzilla/show_bug.cgi?id=%ISSUE%</issueLinkTemplate>
+            <issueLinkTemplatePerSystem>
+              <MantisBT>https://apps.sourceforge.net/mantisbt/jdtaus/view.php?id=%ISSUE%</MantisBT>
+            </issueLinkTemplatePerSystem>
             <reportSets>
               <reportSet>
                 <reports>
@@ -321,6 +323,17 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>1.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-scm-plugin</artifactId>
+          <version>1.2</version>
+          <configuration>
+            <message>[maven-scm-plugin] Build ${buildNumber}</message>
+            <username>${jdtaus.scm.username}</username>
+            <password>${jdtaus.scm.password}</password>
+            <tag>${pom.artifactId}-${pom.version}-${buildNumber}</tag>
+            <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/builds</tagBase>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -712,6 +725,51 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
+  <profiles>
+    <profile>
+      <id>ci</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-scm-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>update-workdir</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>update</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>checkin-main</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>checkin</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>checkin-test</id>
+                <phase>process-test-resources</phase>
+                <goals>
+                  <goal>checkin</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>tag-deployment</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>tag</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <properties>
     <jdtausCoreVersion>1.9-SNAPSHOT</jdtausCoreVersion>
     <jdtausContainerMojoVersion>3.3-SNAPSHOT</jdtausContainerMojoVersion>
