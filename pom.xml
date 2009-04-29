@@ -202,6 +202,14 @@
               <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-api/apidocs</link>
               <link>http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-spi/apidocs</link>
             </links>
+            <archive>
+              <index>true</index>
+              <addMavenDescriptor>false</addMavenDescriptor>
+              <compress>true</compress>
+              <manifestEntries>
+                <Build-Date>${buildNumber}</Build-Date>
+              </manifestEntries>
+            </archive>
           </configuration>
         </plugin>
         <plugin>
@@ -265,7 +273,17 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>2.0.4</version>
+          <version>2.1</version>
+          <configuration>
+            <archive>
+              <index>true</index>
+              <addMavenDescriptor>false</addMavenDescriptor>
+              <compress>true</compress>
+              <manifestEntries>
+                <Build-Date>${buildNumber}</Build-Date>
+              </manifestEntries>
+            </archive>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>buildnumber-maven-plugin</artifactId>
