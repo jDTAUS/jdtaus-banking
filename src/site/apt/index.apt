@@ -34,6 +34,5 @@ jDTAUS Banking
 | {{{jdtaus-banking-charsets/project-summary.html} jDTAUS Banking Charset Provider}} | LGPL | Banking charset provider implementations. {{{jdtaus-banking-charsets/apidocs/}See Javadoc}}|
 *-------------------+--------------+-------------------------------------------+
 
-  An example Maven 2 project demonstrating how these artifacts are used for
-  writing a DTAUS file is available from
-  {{{jdtaus-filewriter-example.zip} here}}.
+  An example Maven project demonstrating how these artifacts are used for
+  writing a DTAUS file is available from {{{./jdtaus-filewriter-example.zip} here}}.
