@@ -62,8 +62,7 @@ public class LogicalFileTest extends TestCase
     protected static PhysicalFileFactory getPhysicalFileFactory()
     {
         return (PhysicalFileFactory) ContainerFactory.getContainer().
-            getObject( PhysicalFileFactory.class.getName(),
-            "jDTAUS Banking SPI" );
+            getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
 
     }
 
@@ -356,6 +355,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
 
@@ -366,6 +366,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
 
@@ -400,12 +401,17 @@ public class LogicalFileTest extends TestCase
         {
             final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
             file.getLogicalFile( 0 ).setHeader( HeaderTest.getIllegalHeader() );
+            throw new AssertionError();
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
@@ -429,6 +435,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
 
@@ -458,9 +465,13 @@ public class LogicalFileTest extends TestCase
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         lFile.addTransaction( TransactionTest.getLegalTransaction() );
@@ -488,6 +499,8 @@ public class LogicalFileTest extends TestCase
         }
         catch ( IndexOutOfBoundsException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
@@ -497,6 +510,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
 
@@ -570,6 +584,8 @@ public class LogicalFileTest extends TestCase
         }
         catch ( IndexOutOfBoundsException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         PhysicalFile file = getDTAUSValidHeaderChecksumAndTransaction( true );
@@ -595,6 +611,8 @@ public class LogicalFileTest extends TestCase
         }
         catch ( IndexOutOfBoundsException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         PhysicalFile file = getDTAUSValidHeaderChecksumAndTransaction( true );
@@ -642,6 +660,8 @@ public class LogicalFileTest extends TestCase
         }
         catch ( IllegalHeaderException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         final Transaction eurTransaction =
@@ -659,6 +679,8 @@ public class LogicalFileTest extends TestCase
         }
         catch ( IllegalTransactionException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         pFile.getLogicalFile( 0 ).setHeader( eurHeader );
@@ -690,6 +712,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -703,6 +726,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -716,6 +740,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -729,6 +754,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -742,6 +768,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -755,6 +782,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -769,6 +797,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -783,6 +812,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -796,6 +826,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -809,6 +840,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -823,6 +855,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
@@ -849,6 +882,7 @@ public class LogicalFileTest extends TestCase
         }
         catch ( PhysicalFileException e )
         {
+            Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
     }
