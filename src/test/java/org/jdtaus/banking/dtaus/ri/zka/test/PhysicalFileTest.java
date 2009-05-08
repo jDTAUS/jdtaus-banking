@@ -57,28 +57,68 @@ public class PhysicalFileTest extends TestCase
         Assert.assertTrue( file.getLogicalFileCount() == 1 );
     }
 
-    public void testAddDeleteSimple() throws Exception
+    public void testCreateReadDisk() throws Exception
     {
-        final File tmp = File.createTempFile( "jdtaus", "tmp" );
+        final File tmp = File.createTempFile( "jdtaus", ".dta" );
         final FileOperations ops = new RandomAccessFileOperations(
             new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
 
         final PhysicalFileFactory factory =
             (PhysicalFileFactory) ContainerFactory.getContainer().
-            getObject( PhysicalFileFactory.class.getName(),
-            "jDTAUS Banking SPI" );
+            getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
 
-        final PhysicalFile pFile = factory.getPhysicalFile( ops );
-        Assert.assertTrue( pFile.getLogicalFileCount() == 0 );
+        PhysicalFile pFile =
+            factory.createPhysicalFile( ops, PhysicalFileFactory.FORMAT_DISK );
 
-        final Header header = HeaderTest.getLegalHeader();
-        final LogicalFile lFile = pFile.addLogicalFile( header );
-        final Transaction transaction = TransactionTest.getLegalTransaction();
-        lFile.addTransaction( transaction );
-        System.out.println( lFile.getTransaction( 0 ) );
-        lFile.removeTransaction( 0 );
-        pFile.removeLogicalFile( 0 );
+        this.createLegalFile( pFile );
+
+        pFile = factory.getPhysicalFile( tmp );
+        pFile.commit();
+        if ( !tmp.delete() )
+        {
+            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
+        }
+    }
+
+    public void testCreateReadTape() throws Exception
+    {
+        final File tmp = File.createTempFile( "jdtaus", ".dta" );
+        final FileOperations ops = new RandomAccessFileOperations(
+            new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
+
+        final PhysicalFileFactory factory =
+            (PhysicalFileFactory) ContainerFactory.getContainer().
+            getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
+
+        PhysicalFile pFile =
+            factory.createPhysicalFile( ops, PhysicalFileFactory.FORMAT_TAPE );
+
+        this.createLegalFile( pFile );
+        pFile = factory.getPhysicalFile( tmp );
+        pFile.commit();
+        if ( !tmp.delete() )
+        {
+            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
+        }
+    }
+
+    public void testAddDeleteSimpleDisk() throws Exception
+    {
+        final File tmp = File.createTempFile( "jdtaus", ".dta" );
+        final FileOperations ops = new RandomAccessFileOperations(
+            new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
+
+        final PhysicalFileFactory factory =
+            (PhysicalFileFactory) ContainerFactory.getContainer().
+            getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
+
+        final PhysicalFile pFile =
+            factory.createPhysicalFile( ops, PhysicalFileFactory.FORMAT_DISK );
+
+        this.testAddDeleteSimple( pFile );
+
         Assert.assertTrue( ops.getLength() == 0L );
+        pFile.commit();
 
         if ( !tmp.delete() )
         {
@@ -86,10 +126,112 @@ public class PhysicalFileTest extends TestCase
         }
     }
 
-    public void testAddDelete() throws Exception
+    public void testAddDeleteSimpleTape() throws Exception
+    {
+        final File tmp = File.createTempFile( "jdtaus", ".dta" );
+        final FileOperations ops = new RandomAccessFileOperations(
+            new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
+
+        final PhysicalFileFactory factory =
+            (PhysicalFileFactory) ContainerFactory.getContainer().
+            getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
+
+        final PhysicalFile pFile =
+            factory.createPhysicalFile( ops, PhysicalFileFactory.FORMAT_TAPE );
+
+        this.testAddDeleteSimple( pFile );
+
+        Assert.assertTrue( ops.getLength() == 0L );
+        pFile.commit();
+
+        if ( !tmp.delete() )
+        {
+            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
+        }
+    }
+
+    public void testAddDeleteDisk() throws Exception
+    {
+        final File tmp = File.createTempFile( "jdtaus", ".dta" );
+        FileOperations ops = new RandomAccessFileOperations(
+            new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
+
+        final PhysicalFileFactory factory =
+            (PhysicalFileFactory) ContainerFactory.getContainer().
+            getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
+
+        final PhysicalFile pFile =
+            factory.createPhysicalFile( ops, PhysicalFileFactory.FORMAT_DISK );
+
+        this.testAddDelete( pFile );
+
+        Assert.assertTrue( ops.getLength() == 0L );
+        pFile.commit();
+
+        if ( !tmp.delete() )
+        {
+            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
+        }
+    }
+
+    public void testAddDeleteTape() throws Exception
+    {
+        final File tmp = File.createTempFile( "jdtaus", ".dta" );
+        FileOperations ops = new RandomAccessFileOperations(
+            new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
+
+        final PhysicalFileFactory factory =
+            (PhysicalFileFactory) ContainerFactory.getContainer().
+            getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
+
+        final PhysicalFile pFile =
+            factory.createPhysicalFile( ops, PhysicalFileFactory.FORMAT_TAPE );
+
+        this.testAddDelete( pFile );
+
+        Assert.assertTrue( ops.getLength() == 0L );
+        pFile.commit();
+
+        if ( !tmp.delete() )
+        {
+            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
+        }
+    }
+
+    private void createLegalFile( final PhysicalFile pFile ) throws Exception
+    {
+        Assert.assertTrue( pFile.getLogicalFileCount() == 0 );
+
+        for ( int i = 10; i >= 0; i-- )
+        {
+            final LogicalFile lFile =
+                pFile.addLogicalFile( HeaderTest.getLegalHeader() );
+
+            for ( int j = 10; j >= 0; j-- )
+            {
+                lFile.addTransaction( TransactionTest.getLegalTransaction() );
+            }
+        }
+
+        pFile.commit();
+    }
+
+    private void testAddDeleteSimple( final PhysicalFile pFile )
+        throws Exception
+    {
+        Assert.assertTrue( pFile.getLogicalFileCount() == 0 );
+        final Header header = HeaderTest.getLegalHeader();
+        final LogicalFile lFile = pFile.addLogicalFile( header );
+        final Transaction transaction = TransactionTest.getLegalTransaction();
+        lFile.addTransaction( transaction );
+        System.out.println( lFile.getTransaction( 0 ) );
+        lFile.removeTransaction( 0 );
+        pFile.removeLogicalFile( 0 );
+    }
+
+    private void testAddDelete( final PhysicalFile pFile ) throws Exception
     {
         // Test-Datei mit 10 logischen Dateien a 10 Transaktionen erstellen.
-        PhysicalFile file;
         Header h;
         Transaction tr;
         int files;
@@ -98,54 +240,49 @@ public class PhysicalFileTest extends TestCase
         final int fileCount = 10;
         final int transactionCount = 10;
 
-        final File tmp = File.createTempFile( "jdtaus", "tmp" );
-        FileOperations ops = new RandomAccessFileOperations(
-            new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
-
-        PhysicalFileFactory factory =
-            (PhysicalFileFactory) ContainerFactory.getContainer().
-            getObject( PhysicalFileFactory.class.getName(),
-            "jDTAUS Banking SPI" );
-
-        file = factory.getPhysicalFile( ops );
-
         try
         {
-            file.addLogicalFile( null );
+            pFile.addLogicalFile( null );
             fail( "NullPointerException not thrown" );
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
         {
-            file.addLogicalFile( HeaderTest.getIllegalHeader() );
+            pFile.addLogicalFile( HeaderTest.getIllegalHeader() );
             fail( "IllegalArgumentException not thrown" );
         }
         catch ( IllegalArgumentException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         for ( files = 0; files < fileCount; files++ )
         {
             h = HeaderTest.getLegalHeader();
             h.setReference( Referenznummer10.valueOf( new Long( files ) ) );
-            file.addLogicalFile( h );
+            pFile.addLogicalFile( h );
         }
 
-        Assert.assertTrue( file.getLogicalFileCount() == fileCount );
-        for ( files = file.getLogicalFileCount() - 1; files >= 0; files-- )
+        Assert.assertTrue( pFile.getLogicalFileCount() == fileCount );
+        for ( files = pFile.getLogicalFileCount() - 1; files >= 0; files-- )
         {
-            final LogicalFile dtaus = file.getLogicalFile( files );
+            final LogicalFile dtaus = pFile.getLogicalFile( files );
             Assert.assertTrue( dtaus.getHeader().getReference().
                 longValue() == files );
 
             for ( transactions = 0; transactions < transactionCount;
-                transactions++ )
+                  transactions++ )
             {
 
                 tr = TransactionTest.getLegalTransaction();
@@ -156,14 +293,14 @@ public class PhysicalFileTest extends TestCase
             }
         }
 
-        for ( files = file.getLogicalFileCount() - 1; files >= 0; files-- )
+        for ( files = pFile.getLogicalFileCount() - 1; files >= 0; files-- )
         {
-            final LogicalFile dtaus = file.getLogicalFile( files );
+            final LogicalFile dtaus = pFile.getLogicalFile( files );
             Assert.assertTrue( dtaus.getHeader().getReference().
                 longValue() == files );
 
             for ( transactions = dtaus.getChecksum().getTransactionCount() - 1;
-                transactions >= 0; transactions-- )
+                  transactions >= 0; transactions-- )
             {
 
                 tr = dtaus.getTransaction( transactions );
@@ -174,9 +311,9 @@ public class PhysicalFileTest extends TestCase
         }
 
         // In jeder logischen Datei die erste Transaktion entfernen.
-        for ( files = file.getLogicalFileCount() - 1; files >= 0; files-- )
+        for ( files = pFile.getLogicalFileCount() - 1; files >= 0; files-- )
         {
-            final LogicalFile dtaus = file.getLogicalFile( files );
+            final LogicalFile dtaus = pFile.getLogicalFile( files );
             Assert.assertTrue( dtaus.getHeader().getReference().
                 longValue() == files );
 
@@ -186,21 +323,21 @@ public class PhysicalFileTest extends TestCase
         // Erste logische Datei entfernen und Inhalte der anderen Dateien
         // prüfen.
         removed = 0;
-        while ( ( files = file.getLogicalFileCount() ) > 0 )
+        while ( ( files = pFile.getLogicalFileCount() ) > 0 )
         {
-            file.removeLogicalFile( 0 );
+            pFile.removeLogicalFile( 0 );
             removed++;
-            Assert.assertTrue( files - 1 == file.getLogicalFileCount() );
-            for ( files = file.getLogicalFileCount() - 1; files >= 0; files-- )
+            Assert.assertTrue( files - 1 == pFile.getLogicalFileCount() );
+            for ( files = pFile.getLogicalFileCount() - 1; files >= 0; files-- )
             {
 
-                final LogicalFile dtaus = file.getLogicalFile( files );
+                final LogicalFile dtaus = pFile.getLogicalFile( files );
                 Assert.assertTrue( dtaus.getHeader().getReference().
                     longValue() == files + removed );
 
                 for ( transactions =
                         dtaus.getChecksum().getTransactionCount() - 1;
-                    transactions >= 0; transactions-- )
+                      transactions >= 0; transactions-- )
                 {
 
                     tr = dtaus.getTransaction( transactions );
@@ -209,13 +346,6 @@ public class PhysicalFileTest extends TestCase
 
                 }
             }
-        }
-
-        Assert.assertTrue( ops.getLength() == 0L );
-
-        if ( !tmp.delete() )
-        {
-            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
         }
     }
 
