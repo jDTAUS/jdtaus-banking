@@ -178,7 +178,6 @@ public final class DefaultPhysicalFileFactory implements PhysicalFileFactory
         long remainder = 0;
         int read = 0;
         int ret = FORMAT_DISK;
-        int size = 0x000000FF;
         int total = 0;
         Message msg;
 
@@ -227,10 +226,8 @@ public final class DefaultPhysicalFileFactory implements PhysicalFileFactory
                 }
                 else
                 {
-                    size &= buf[0];
-                    size <<= 8;
-                    size |= 0xFF;
-                    size &= buf[1];
+                    final int size =
+                        ( ( buf[0] & 0xFF ) << 8 ) | ( buf[1] & 0xFF );
 
                     if ( size == 150 )
                     {
