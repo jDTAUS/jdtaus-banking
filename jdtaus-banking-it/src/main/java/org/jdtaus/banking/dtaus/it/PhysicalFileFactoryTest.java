@@ -84,6 +84,7 @@ public class PhysicalFileFactoryTest
             this.getPhysicalFileFactory().createPhysicalFile(
                 (FileOperations) null, PhysicalFileFactory.FORMAT_DISK );
 
+            throw new AssertionError();
         }
         catch ( NullPointerException e )
         {
@@ -96,6 +97,7 @@ public class PhysicalFileFactoryTest
             this.getPhysicalFileFactory().createPhysicalFile(
                 (File) null, PhysicalFileFactory.FORMAT_DISK );
 
+            throw new AssertionError();
         }
         catch ( NullPointerException e )
         {
@@ -108,6 +110,7 @@ public class PhysicalFileFactoryTest
             this.getPhysicalFileFactory().createPhysicalFile(
                 new MemoryFileOperations(), Integer.MIN_VALUE );
 
+            throw new AssertionError();
         }
         catch ( IllegalArgumentException e )
         {
@@ -156,6 +159,7 @@ public class PhysicalFileFactoryTest
             this.getPhysicalFileFactory().
                 getPhysicalFile( (FileOperations) null );
 
+            throw new AssertionError();
         }
         catch ( NullPointerException e )
         {
@@ -166,6 +170,7 @@ public class PhysicalFileFactoryTest
         try
         {
             this.getPhysicalFileFactory().getPhysicalFile( (File) null );
+            throw new AssertionError();
         }
         catch ( NullPointerException e )
         {
@@ -201,6 +206,7 @@ public class PhysicalFileFactoryTest
         try
         {
             this.getPhysicalFileFactory().analyse( (FileOperations) null );
+            throw new AssertionError();
         }
         catch ( NullPointerException e )
         {
@@ -211,6 +217,7 @@ public class PhysicalFileFactoryTest
         try
         {
             this.getPhysicalFileFactory().analyse( (File) null );
+            throw new AssertionError();
         }
         catch ( NullPointerException e )
         {
