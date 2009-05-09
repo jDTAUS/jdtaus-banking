@@ -1269,36 +1269,19 @@ public abstract class AbstractLogicalFile implements LogicalFile
     {
         long ret = 0L;
         final int nibbles = 2 * len;
-        int exp = nibbles - ( sign
-            ? 2
-            : 1 );
+        int exp = nibbles - ( sign ? 2 : 1 );
         boolean highNibble = true;
-        int nibble = 0;
         int read = 0;
-        int digit;
         Message msg;
 
         this.persistence.readBlock( block, off, this.buffer, 0, len );
-        for ( ; nibble < nibbles; nibble++, exp-- )
+        for ( int nibble = 0; nibble < nibbles; nibble++, exp-- )
         {
-            if ( highNibble )
-            {
-                if ( this.buffer[read] < 0 )
-                {
-                    digit = ( this.buffer[read] + 256 ) >> 4;
-                }
-                else
-                {
-                    digit = this.buffer[read] >> 4;
-                }
+            final int digit = highNibble
+                              ? ( ( this.buffer[read] & 0xF0 ) >> 4 )
+                              : ( this.buffer[read++] & 0xF );
 
-                highNibble = false;
-            }
-            else
-            {
-                digit = ( this.buffer[read++] & 0xF );
-                highNibble = true;
-            }
+            highNibble = !highNibble;
 
             // Vorzeichen des letzten Nibbles.
             if ( sign && exp < 0 )
@@ -1306,8 +1289,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 if ( digit != 0xC )
                 {
                     msg = new IllegalDataMessage(
-                        field, IllegalDataMessage.TYPE_PACKET_POSITIVE, block *
-                        this.persistence.getBlockSize() + off,
+                        field, IllegalDataMessage.TYPE_PACKET_POSITIVE,
+                        block * this.persistence.getBlockSize() + off,
                         Integer.toString( digit ) );
 
                     if ( ThreadLocalMessages.isErrorsEnabled() )
@@ -1348,7 +1331,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
                     ret = AbstractLogicalFile.NO_NUMBER;
                     break;
                 }
-                ret += ( digit & 0xF ) * AbstractLogicalFile.EXP10[exp];
+
+                ret += ( digit * AbstractLogicalFile.EXP10[exp] );
             }
         }
 
@@ -1385,13 +1369,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
         int i;
         int pos = 0;
         final int nibbles = len * 2;
-        final int digits = nibbles - ( sign
-            ? 1
-            : 0 );
+        final int digits = nibbles - ( sign ? 1 : 0 );
         int exp = digits - 1;
         final long maxValue = AbstractLogicalFile.EXP10[digits] - 1L;
         byte b = 0;
-        byte digit;
         boolean highNibble = true;
 
         if ( number < 0L || number > maxValue )
@@ -1401,29 +1382,29 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         for ( i = 0; i < nibbles; i++, exp-- )
         {
-            // Vorzeichen des letzten Nibbles.
+            final int digit;
+
             if ( sign && exp < 0 )
             {
                 digit = 0xC;
             }
             else
             {
-                digit = (byte) Math.floor(
+                digit = (int) Math.floor(
                     number / AbstractLogicalFile.EXP10[exp] );
 
                 number -= ( digit * AbstractLogicalFile.EXP10[exp] );
             }
             if ( highNibble )
             {
-                b = (byte) ( ( (byte) ( digit << 4 ) ) & 0xF0 );
-                highNibble = false;
+                b = (byte) ( ( digit << 4 ) & 0xF0 );
             }
             else
             {
-                b |= digit;
-                highNibble = true;
-                this.buffer[pos++] = b;
+                this.buffer[pos++] = (byte) ( b | digit );
             }
+
+            highNibble = !highNibble;
         }
 
         this.persistence.writeBlock( block, off, this.buffer, 0, len );
@@ -1460,19 +1441,11 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         long ret = 0L;
         int shift = ( len - 1 ) * 8;
-        int i;
-        long read;
 
         this.persistence.readBlock( block, off, this.buffer, 0, len );
-        for ( i = 0; i < len; i++, shift -= 8 )
+        for ( int i = 0; i < len; i++, shift -= 8 )
         {
-            read = this.buffer[i] << shift;
-            if ( read < 0 )
-            {
-                read += 256;
-            }
-
-            ret |= read;
+            ret |= ( ( this.buffer[i] & 0xFF ) << shift );
         }
 
         return ret;
