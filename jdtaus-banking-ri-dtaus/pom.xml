@@ -40,6 +40,22 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+    <testResources>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>src/test/resources</directory>
+        <excludes>
+          <exclude>logging.properties</exclude>
+        </excludes>
+      </testResource>
+      <testResource>
+        <filtering>true</filtering>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>logging.properties</include>
+        </includes>
+      </testResource>
+    </testResources>
   </build>
   <dependencies>
     <dependency>

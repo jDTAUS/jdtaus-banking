@@ -51,6 +51,10 @@
           <include>currencies-1.2.xml</include>
         </includes>
       </testResource>
+      <testResource>
+        <filtering>true</filtering>
+        <directory>src/test/resources</directory>
+      </testResource>
     </testResources>
     <plugins>
       <plugin>
