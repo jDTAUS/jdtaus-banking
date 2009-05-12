@@ -120,7 +120,7 @@ public final class BankleitzahlenDatei
     //--BankleitzahlenDatei-----------------------------------------------------
 
     /** Records held by the instance. */
-    private Map records = new HashMap( 5000 );
+    private Map records = new HashMap( 20000 );
     private BankleitzahlInfo[] cachedRecords;
 
     /** Encoding to use when reading bankfile resources. */
