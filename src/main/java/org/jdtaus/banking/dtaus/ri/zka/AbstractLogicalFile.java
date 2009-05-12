@@ -528,22 +528,14 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 }
 
                 ret = AbstractLogicalFile.NO_NUMBER;
+                logViolation = null;
                 break;
             }
             else
             {
-                if ( this.buffer[read] < 0 )
-                {
-                    ret += revTable[this.buffer[read] + 256] *
-                        AbstractLogicalFile.EXP10[len - read - 1];
+                ret += revTable[this.buffer[read] & 0xFF] *
+                       AbstractLogicalFile.EXP10[len - read - 1];
 
-                }
-                else
-                {
-                    ret += revTable[this.buffer[read]] *
-                        AbstractLogicalFile.EXP10[len - read - 1];
-
-                }
             }
         }
 
@@ -591,7 +583,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         int i;
         int pos;
         final long maxValue = AbstractLogicalFile.EXP10[len] - 1L;
-        byte digit;
+        int digit;
         final byte[] table;
 
         if ( number < 0L || number > maxValue )
@@ -614,7 +606,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         for ( i = len - 1, pos = 0; i >= 0; i--, pos++ )
         {
-            digit = (byte) Math.floor( number / AbstractLogicalFile.EXP10[i] );
+            digit = (int) Math.floor( number / AbstractLogicalFile.EXP10[i] );
             number -= ( digit * AbstractLogicalFile.EXP10[i] );
             this.buffer[pos] = table[digit];
         }
@@ -1150,7 +1142,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
     //-------------------------------------------------Date readShortDate(...)--
-    //--void writeShortDate(...)------------------------------------------------
+    //--void writeLongDate(...)-------------------------------------------------
 
     /** Hilfs-Puffer. */
     private final StringBuffer longDateBuffer = new StringBuffer( 8 );
