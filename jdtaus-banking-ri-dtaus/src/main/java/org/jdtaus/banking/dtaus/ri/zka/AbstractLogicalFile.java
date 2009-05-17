@@ -2226,8 +2226,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
     //--Dependencies------------------------------------------------------------
+
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
     // This section is managed by jdtaus-container-mojo.
+
     /**
      * Gets the configured <code>Logger</code> implementation.
      *
@@ -2337,10 +2339,13 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
 // </editor-fold>//GEN-END:jdtausDependencies
+
     //------------------------------------------------------------Dependencies--
     //--Properties--------------------------------------------------------------
+
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
     // This section is managed by jdtaus-container-mojo.
+
     /**
      * Gets the value of property <code>defaultMonitoringThreshold</code>.
      *
@@ -2366,10 +2371,13 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
 // </editor-fold>//GEN-END:jdtausProperties
+
     //--------------------------------------------------------------Properties--
     //--Messages----------------------------------------------------------------
+
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
     // This section is managed by jdtaus-container-mojo.
+
     /**
      * Gets the text of message <code>readNumberIllegalFileInfo</code>.
      * <blockquote><pre>Ein ungültiges Leerzeichen in einem numerischen Feld wurde zu einer Null konvertiert. Gelesene Zeichenkette "{0}" wurde zur Zahl "{1,number}" konvertiert.</pre></blockquote>
@@ -2382,16 +2390,16 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @return the text of message <code>readNumberIllegalFileInfo</code>.
      */
     protected String getReadNumberIllegalFileInfoMessage( final Locale locale,
-                                                          final java.lang.String readString,
-                                                          final java.lang.Number convertedNumber )
+            final java.lang.String readString,
+            final java.lang.Number convertedNumber )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "readNumberIllegalFileInfo", locale,
-                        new Object[]
-            {
-                readString,
-                convertedNumber
-            } );
+                new Object[]
+                {
+                    readString,
+                    convertedNumber
+                });
 
     }
 
@@ -2406,17 +2414,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @return the text of message <code>logResizeIndex</code>.
      */
     protected String getLogResizeIndexMessage( final Locale locale,
-                                               final java.lang.Number indexSize )
+            final java.lang.Number indexSize )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "logResizeIndex", locale,
-                        new Object[]
-            {
-                indexSize
-            } );
+                new Object[]
+                {
+                    indexSize
+                });
 
     }
 
 // </editor-fold>//GEN-END:jdtausMessages
+
     //----------------------------------------------------------------Messages--
 }
