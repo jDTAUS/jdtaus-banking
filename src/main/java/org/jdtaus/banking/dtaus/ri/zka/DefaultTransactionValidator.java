@@ -41,6 +41,7 @@ import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.PropertyException;
+import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.messages.MandatoryPropertyMessage;
 import org.jdtaus.core.text.Message;
 
@@ -52,6 +53,161 @@ import org.jdtaus.core.text.Message;
  */
 public final class DefaultTransactionValidator implements TransactionValidator
 {
+
+    public IllegalTransactionException assertValidTransaction(
+        final LogicalFile lFile, final Transaction transaction, IllegalTransactionException result )
+        throws IOException
+    {
+        if ( lFile == null )
+        {
+            throw new NullPointerException( "lFile" );
+        }
+        if ( transaction == null )
+        {
+            throw new NullPointerException( "transaction" );
+        }
+
+        this.assertValidProperties();
+        final Map properties = new HashMap( 20 );
+        final LogicalFileType lFileType = lFile.getHeader().getType();
+        final Textschluessel[] allowedTypes = this.getTextschluesselVerzeichnis().search(
+            lFileType.isDebitAllowed(), lFileType.isRemittanceAllowed(), lFile.getHeader().getCreateDate() );
+
+        if ( transaction.getExecutiveAccount() == null )
+        {
+            properties.put( Transaction.PROP_EXECUTIVEACCOUNT, new MandatoryPropertyMessage() );
+        }
+        if ( transaction.getExecutiveBank() == null )
+        {
+            properties.put( Transaction.PROP_EXECUTIVEBANK, new MandatoryPropertyMessage() );
+        }
+        if ( transaction.getExecutiveName() == null )
+        {
+            properties.put( Transaction.PROP_EXECUTIVENAME, new MandatoryPropertyMessage() );
+        }
+        if ( transaction.getTargetAccount() == null )
+        {
+            properties.put( Transaction.PROP_TARGETACCOUNT, new MandatoryPropertyMessage() );
+        }
+        if ( transaction.getTargetBank() == null )
+        {
+            properties.put( Transaction.PROP_TARGETBANK, new MandatoryPropertyMessage() );
+        }
+        if ( transaction.getTargetName() == null )
+        {
+            properties.put( Transaction.PROP_TARGETNAME, new MandatoryPropertyMessage() );
+        }
+        if ( transaction.getType() == null )
+        {
+            properties.put( Transaction.PROP_TYPE, new MandatoryPropertyMessage() );
+        }
+        if ( transaction.getCurrency() == null )
+        {
+            properties.put( Transaction.PROP_CURRENCY, new MandatoryPropertyMessage() );
+        }
+        if ( transaction.getAmount() == null )
+        {
+            properties.put( Transaction.PROP_AMOUNT, new MandatoryPropertyMessage() );
+        }
+        if ( allowedTypes != null && transaction.getType() != null )
+        {
+            int i;
+            for ( i = allowedTypes.length - 1; i >= 0; i-- )
+            {
+                if ( allowedTypes[i].equals( transaction.getType() ) )
+                {
+                    break;
+                }
+            }
+            if ( i < 0 )
+            {
+                properties.put( Transaction.PROP_TYPE, new TextschluesselConstraintMessage(
+                    lFileType, transaction.getType() ) );
+
+            }
+        }
+        else if ( transaction.getType() != null )
+        {
+            properties.put( Transaction.PROP_TYPE, new TextschluesselConstraintMessage(
+                lFileType, transaction.getType() ) );
+
+        }
+
+        if ( transaction.getAmount() != null &&
+             !( transaction.getAmount().longValue() >= this.getMinAmount() &&
+                transaction.getAmount().longValue() <= this.getMaxAmount() ) )
+        {
+            properties.put( Transaction.PROP_AMOUNT, new IllegalAmountMessage( transaction.getAmount() ) );
+        }
+        if ( !( transaction.getDescriptions().length >= this.getMinDescriptions() &&
+                transaction.getDescriptions().length <= this.getMaxDescriptions() ) )
+        {
+            properties.put( Transaction.PROP_DESCRIPTIONS, new IllegalDescriptionCountMessage(
+                this.getMaxDescriptions(), transaction.getDescriptions().length ) );
+
+        }
+
+        if ( transaction.getCurrency() != null )
+        {
+            try
+            {
+                this.getCurrencyMapper().getDtausCode( transaction.getCurrency(), lFile.getHeader().getCreateDate() );
+            }
+            catch ( UnsupportedCurrencyException ex )
+            {
+                if ( this.getLogger().isDebugEnabled() )
+                {
+                    this.getLogger().debug( ex.toString() );
+                }
+
+                properties.put( Transaction.PROP_CURRENCY, new IllegalCurrencyMessage(
+                    transaction.getCurrency().getCurrencyCode(), lFile.getHeader().getCreateDate() ) );
+
+            }
+        }
+
+        if ( properties.size() > 0 )
+        {
+            if ( result == null )
+            {
+                result = new IllegalTransactionException();
+            }
+
+            for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
+            {
+                final Map.Entry entry = (Map.Entry) it.next();
+                result.addMessage( (String) entry.getKey(), (Message) entry.getValue() );
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Checks configured properties.
+     *
+     * @throws PropertyException for illegal property values.
+     */
+    private void assertValidProperties()
+    {
+        if ( this.getMinAmount() < 0L )
+        {
+            throw new PropertyException( "minAmount", Long.toString( this.getMinAmount() ) );
+        }
+        if ( this.getMaxAmount() < 0L || this.getMinAmount() > this.getMaxAmount() )
+        {
+            throw new PropertyException( "maxAmount", Long.toString( this.getMaxAmount() ) );
+        }
+        if ( this.getMinDescriptions() < 0 )
+        {
+            throw new PropertyException( "minDescriptions", Integer.toString( this.getMinDescriptions() ) );
+        }
+        if ( this.getMaxDescriptions() < 0 || this.getMinDescriptions() > this.getMaxDescriptions() )
+        {
+            throw new PropertyException( "maxDescriptions", Integer.toString( this.getMaxDescriptions() ) );
+        }
+    }
+
     //--Constructors------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
@@ -92,6 +248,18 @@ public final class DefaultTransactionValidator implements TransactionValidator
     {
         return (CurrencyMapper) ContainerFactory.getContainer().
             getDependency( this, "CurrencyMapper" );
+
+    }
+
+    /**
+     * Gets the configured <code>Logger</code> implementation.
+     *
+     * @return The configured <code>Logger</code> implementation.
+     */
+    private Logger getLogger()
+    {
+        return (Logger) ContainerFactory.getContainer().
+            getDependency( this, "Logger" );
 
     }
 
@@ -154,208 +322,4 @@ public final class DefaultTransactionValidator implements TransactionValidator
 // </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
-    //--TransactionValidator----------------------------------------------------
-
-    public IllegalTransactionException assertValidTransaction(
-        final LogicalFile lFile, final Transaction transaction,
-        IllegalTransactionException result ) throws IOException
-    {
-        if ( lFile == null )
-        {
-            throw new NullPointerException( "lFile" );
-        }
-        if ( transaction == null )
-        {
-            throw new NullPointerException( "transaction" );
-        }
-
-        this.assertValidProperties();
-        final Map properties = new HashMap( 20 );
-        final LogicalFileType lFileType = lFile.getHeader().getType();
-        final Textschluessel[] allowedTypes =
-            this.getTextschluesselVerzeichnis().search(
-            lFileType.isDebitAllowed(),
-            lFileType.isRemittanceAllowed(),
-            lFile.getHeader().getCreateDate() );
-
-        if ( transaction.getExecutiveAccount() == null )
-        {
-            properties.put( Transaction.PROP_EXECUTIVEACCOUNT,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( transaction.getExecutiveBank() == null )
-        {
-            properties.put( Transaction.PROP_EXECUTIVEBANK,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( transaction.getExecutiveName() == null )
-        {
-            properties.put( Transaction.PROP_EXECUTIVENAME,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( transaction.getTargetAccount() == null )
-        {
-            properties.put( Transaction.PROP_TARGETACCOUNT,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( transaction.getTargetBank() == null )
-        {
-            properties.put( Transaction.PROP_TARGETBANK,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( transaction.getTargetName() == null )
-        {
-            properties.put( Transaction.PROP_TARGETNAME,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( transaction.getType() == null )
-        {
-            properties.put( Transaction.PROP_TYPE,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( transaction.getCurrency() == null )
-        {
-            properties.put( Transaction.PROP_CURRENCY,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( transaction.getAmount() == null )
-        {
-            properties.put( Transaction.PROP_AMOUNT,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( allowedTypes != null && transaction.getType() != null )
-        {
-            int i;
-            for ( i = allowedTypes.length - 1; i >= 0; i-- )
-            {
-                if ( allowedTypes[i].equals( transaction.getType() ) )
-                {
-                    break;
-                }
-            }
-            if ( i < 0 )
-            {
-                properties.put( Transaction.PROP_TYPE,
-                    new TextschluesselConstraintMessage(
-                    lFileType, transaction.getType() ) );
-
-            }
-        }
-        else if ( transaction.getType() != null )
-        {
-            properties.put( Transaction.PROP_TYPE,
-                new TextschluesselConstraintMessage(
-                lFileType, transaction.getType() ) );
-
-        }
-
-        if ( transaction.getAmount() != null &&
-            !( transaction.getAmount().longValue() >= this.getMinAmount() &&
-            transaction.getAmount().longValue() <= this.getMaxAmount() ) )
-        {
-            properties.put( Transaction.PROP_AMOUNT, new IllegalAmountMessage(
-                transaction.getAmount() ) );
-
-        }
-        if ( !( transaction.getDescriptions().length >=
-            this.getMinDescriptions() &&
-            transaction.getDescriptions().length <= this.getMaxDescriptions() ) )
-        {
-            properties.put( Transaction.PROP_DESCRIPTIONS,
-                new IllegalDescriptionCountMessage(
-                AbstractLogicalFile.MAX_DESCRIPTIONS,
-                transaction.getDescriptions().length ) );
-
-        }
-
-        if ( transaction.getCurrency() != null )
-        {
-            try
-            {
-                this.getCurrencyMapper().getDtausCode(
-                    transaction.getCurrency(),
-                    lFile.getHeader().getCreateDate() );
-
-            }
-            catch ( UnsupportedCurrencyException ex )
-            {
-                properties.put( Transaction.PROP_CURRENCY,
-                    new IllegalCurrencyMessage(
-                    transaction.getCurrency().getCurrencyCode(),
-                    lFile.getHeader().getCreateDate() ) );
-
-            }
-        }
-
-        if ( properties.size() > 0 )
-        {
-            if ( result == null )
-            {
-                result = new IllegalTransactionException();
-            }
-
-            for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
-            {
-                final Map.Entry entry = (Map.Entry) it.next();
-                result.addMessage( (String) entry.getKey(),
-                    (Message) entry.getValue() );
-
-            }
-        }
-
-        return result;
-    }
-
-    //----------------------------------------------------TransactionValidator--
-    //--DefaultTransactionValidator---------------------------------------------
-
-    /**
-     * Checks configured properties.
-     *
-     * @throws PropertyException for illegal property values.
-     */
-    private void assertValidProperties()
-    {
-        if ( this.getMinAmount() < 0L )
-        {
-            throw new PropertyException(
-                "minAmount",
-                Long.toString( this.getMinAmount() ) );
-
-        }
-        if ( this.getMaxAmount() < 0L ||
-            this.getMinAmount() > this.getMaxAmount() )
-        {
-            throw new PropertyException(
-                "maxAmount",
-                Long.toString( this.getMaxAmount() ) );
-
-        }
-        if ( this.getMinDescriptions() < 0 )
-        {
-            throw new PropertyException(
-                "minDescriptions",
-                Integer.toString( this.getMinDescriptions() ) );
-
-        }
-        if ( this.getMaxDescriptions() < 0 ||
-            this.getMinDescriptions() > this.getMaxDescriptions() )
-        {
-            throw new PropertyException(
-                "maxDescriptions",
-                Integer.toString( this.getMaxDescriptions() ) );
-
-        }
-    }
-
-    //---------------------------------------------DefaultTransactionValidator--
 }

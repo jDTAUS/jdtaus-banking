@@ -105,6 +105,25 @@
                               container:implementationName="default"/>
 
       </container:dependencies>
+      <container:properties>
+        <container:property container:name="defaultBufferSize"
+                            container:type="int"
+                            container:value="65536">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Size of the pre-alocated default buffer in byte.]]></container:text>
+          </container:documentation>
+        </container:property>
+
+        <container:property container:name="defaultMonitoringThreshold"
+                            container:type="java.lang.Integer"
+                            container:value="5242880">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Number of bytes which need to minimally be copied to enable any task monitoring during copy operations.]]></container:text>
+          </container:documentation>
+        </container:property>
+      </container:properties>
       <container:messages>
         <container:reference container:name="readNumberIllegalFileInfo"/>
         <container:reference container:name="logResizeIndex"/>
@@ -255,6 +274,18 @@
                               container:name="CurrencyMapper"
                               container:bound="true"/>
 
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
+                              container:name="Logger"
+                              container:bound="true">
+
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.dtaus.ri.zka.DefaultHeaderValidator"/>
+
+          </container:properties>
+        </container:dependency>
       </container:dependencies>
       <container:properties>
         <container:property container:name="maxScheduleDays"
@@ -310,6 +341,18 @@
                               container:name="CurrencyMapper"
                               container:bound="true"/>
 
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
+                              container:name="Logger"
+                              container:bound="true">
+
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.dtaus.ri.zka.DefaultTransactionValidator"/>
+
+          </container:properties>
+        </container:dependency>
       </container:dependencies>
       <container:properties>
         <container:property container:name="minAmount"

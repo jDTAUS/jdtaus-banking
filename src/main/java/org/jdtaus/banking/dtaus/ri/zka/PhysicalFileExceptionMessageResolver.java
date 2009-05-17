@@ -39,21 +39,6 @@ import org.jdtaus.core.text.Messages;
 public final class PhysicalFileExceptionMessageResolver
     implements ExceptionMessageResolver
 {
-    //--Constructors------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
-    // This section is managed by jdtaus-container-mojo.
-
-    /** Standard implementation constructor <code>org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver</code>. */
-    public PhysicalFileExceptionMessageResolver()
-    {
-        super();
-    }
-
-// </editor-fold>//GEN-END:jdtausConstructors
-
-    //------------------------------------------------------------Constructors--
-    //--ExceptionMessageResolver------------------------------------------------
 
     public Message[] resolve( final Exception exception )
     {
@@ -70,5 +55,18 @@ public final class PhysicalFileExceptionMessageResolver
         return resolved;
     }
 
-    //------------------------------------------------ExceptionMessageResolver--
+    //--Constructors------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
+    // This section is managed by jdtaus-container-mojo.
+
+    /** Standard implementation constructor <code>org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver</code>. */
+    public PhysicalFileExceptionMessageResolver()
+    {
+        super();
+    }
+
+// </editor-fold>//GEN-END:jdtausConstructors
+
+    //------------------------------------------------------------Constructors--
 }

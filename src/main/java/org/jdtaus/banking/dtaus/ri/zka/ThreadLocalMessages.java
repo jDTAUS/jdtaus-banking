@@ -33,13 +33,9 @@ import org.jdtaus.core.text.Messages;
  */
 public abstract class ThreadLocalMessages
 {
-    //--Constants---------------------------------------------------------------
 
     /** Maximum number of messages added to the collection. */
-    private static final int MAXIMUM_MESSAGES = 250;
-
-    //---------------------------------------------------------------Constants--
-    //--ThreadLocalMessages-----------------------------------------------------
+    private static final int MAXIMUM_MESSAGES = 100;
 
     /** Thread local collections of messages. */
     private static final ThreadLocal current = new ThreadLocal()
@@ -55,8 +51,7 @@ public abstract class ThreadLocalMessages
 
                 public void addMessage( final Message message )
                 {
-                    if ( this.messageCount + 1L <= Integer.MAX_VALUE &&
-                        this.messageCount + 1 < MAXIMUM_MESSAGES )
+                    if ( this.messageCount + 1L <= Integer.MAX_VALUE && this.messageCount + 1 < MAXIMUM_MESSAGES )
                     {
                         this.messageCount++;
                         super.addMessage( message );
@@ -97,9 +92,8 @@ public abstract class ThreadLocalMessages
     /**
      * Flag indicating that {@code CorruptedException}s are enabled.
      *
-     * @return {@code true} if a {@code CorruptedException} must be thrown
-     * whenever a file error is detected; {@code false} to not throw any
-     * exception when detecting a file error.
+     * @return {@code true} if a {@code CorruptedException} must be thrown whenever a file error is detected;
+     * {@code false} to not throw any exception when detecting a file error.
      */
     public static boolean isErrorsEnabled()
     {
@@ -116,9 +110,8 @@ public abstract class ThreadLocalMessages
     /**
      * Setter for property {@code errorsEnabled}.
      *
-     * @param value {@code true} if a {@code CorruptedException} should be
-     * thrown whenever a file error is detected; {@code false} to not throw any
-     * exception when detecting a file error.
+     * @param value {@code true} if a {@code CorruptedException} should be thrown whenever a file error is detected;
+     * {@code false} to not throw any exception when detecting a file error.
      */
     public static void setErrorsEnabled( final boolean value )
     {
@@ -126,16 +119,13 @@ public abstract class ThreadLocalMessages
     }
 
     /**
-     * Gets the collection of messages stored with the current thread of
-     * execution.
+     * Gets the collection of messages stored with the current thread of execution.
      *
-     * @return collection of messages stored with the current thread of
-     * execution.
+     * @return collection of messages stored with the current thread of execution.
      */
     public static Messages getMessages()
     {
         return (Messages) current.get();
     }
 
-    //-----------------------------------------------------ThreadLocalMessages--
 }
