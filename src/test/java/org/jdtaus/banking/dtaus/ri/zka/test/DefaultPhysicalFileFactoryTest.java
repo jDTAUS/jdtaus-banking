@@ -34,7 +34,6 @@ import org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory;
  */
 public class DefaultPhysicalFileFactoryTest extends PhysicalFileFactoryTest
 {
-    //--PhysicalFileFactoryTest-------------------------------------------------
 
     /** Implementation tests are performed with. */
     private PhysicalFileFactory factory;
@@ -49,5 +48,4 @@ public class DefaultPhysicalFileFactoryTest extends PhysicalFileFactoryTest
         return this.factory;
     }
 
-    //-------------------------------------------------PhysicalFileFactoryTest--
 }
