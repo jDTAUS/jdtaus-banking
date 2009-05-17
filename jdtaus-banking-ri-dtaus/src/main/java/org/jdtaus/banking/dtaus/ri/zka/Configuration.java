@@ -35,8 +35,7 @@ public class Configuration
 {
 
     /**
-     * Map of field constants to a flag indicating if space characters are
-     * allowed for a field.
+     * Map of field constants to a flag indicating if space characters are allowed for a field.
      * @serial
      */
     private Map spacesMap;
@@ -46,8 +45,7 @@ public class Configuration
      *
      * @param field constant for the field to query.
      *
-     * @return {@code true} if space characters are allowed for field
-     * {@code field}; {@code false} if not.
+     * @return {@code true} if space characters are allowed for field {@code field}; {@code false} if not.
      */
     public boolean isSpaceCharacterAllowed( final int field )
     {
@@ -56,31 +54,25 @@ public class Configuration
             this.spacesMap = new HashMap();
         }
 
-        final Boolean b =
-            ( Boolean ) this.spacesMap.get( new Integer( field ) );
-
+        final Boolean b = (Boolean) this.spacesMap.get( new Integer( field ) );
         return b != null && b.booleanValue();
     }
 
     /**
-     * Sets a flag indicating that space characters are allowed for a given
-     * field.
+     * Sets a flag indicating that space characters are allowed for a given field.
      *
      * @param field constant for the field to set.
-     * @param spaceCharacterAllowed {@code true} if space characters are allowed
-     * for field {@code field};{@code false} if not.
+     * @param spaceCharacterAllowed {@code true} if space characters are allowed for field {@code field};
+     * {@code false} if not.
      */
-    public void setSpaceCharacterAllowed( final int field,
-                                           boolean spaceCharacterAllowed )
+    public void setSpaceCharacterAllowed( final int field, final boolean spaceCharacterAllowed )
     {
         if ( this.spacesMap == null )
         {
             this.spacesMap = new HashMap();
         }
 
-        this.spacesMap.put( new Integer( field ),
-                            Boolean.valueOf( spaceCharacterAllowed ) );
-
+        this.spacesMap.put( new Integer( field ), Boolean.valueOf( spaceCharacterAllowed ) );
     }
 
 }

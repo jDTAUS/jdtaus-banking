@@ -46,6 +46,7 @@ import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.PropertyException;
+import org.jdtaus.core.logging.spi.Logger;
 import org.jdtaus.core.messages.MandatoryPropertyMessage;
 import org.jdtaus.core.text.Message;
 
@@ -57,6 +58,273 @@ import org.jdtaus.core.text.Message;
  */
 public final class DefaultHeaderValidator implements HeaderValidator
 {
+
+    /** Value of property {@code maxScheduleDays} in milliseconds. */
+    private long maxScheduleDaysMillis = Long.MIN_VALUE;
+
+    public IllegalHeaderException assertValidHeader( final Header header, IllegalHeaderException result )
+    {
+        if ( header == null )
+        {
+            throw new NullPointerException( "header" );
+        }
+
+        this.assertValidProperties();
+        final List messages = new LinkedList();
+        final Map properties = new HashMap( 20 );
+
+        if ( header.getCreateDate() == null )
+        {
+            properties.put( Header.PROP_CREATEDATE, new MandatoryPropertyMessage() );
+        }
+        else if ( !this.checkDate( header.getCreateDate() ) )
+        {
+            properties.put( Header.PROP_CREATEDATE, new IllegalDateMessage(
+                header.getCreateDate(), new Date( this.getMinDateMillis() ), new Date( this.getMaxDateMillis() ) ) );
+
+        }
+
+        if ( header.getExecutionDate() != null && !this.checkDate( header.getExecutionDate() ) )
+        {
+            properties.put( Header.PROP_EXECUTIONDATE, new IllegalDateMessage(
+                header.getExecutionDate(), new Date( this.getMinDateMillis() ), new Date( this.getMaxDateMillis() ) ) );
+
+        }
+        if ( header.getType() == null )
+        {
+            properties.put( Header.PROP_TYPE, new MandatoryPropertyMessage() );
+        }
+        else if ( header.getType().isSendByBank() && header.getBankData() == null )
+        {
+            properties.put( Header.PROP_BANKDATA, new MandatoryPropertyMessage() );
+        }
+
+        if ( header.getCustomer() == null )
+        {
+            properties.put( Header.PROP_CUSTOMER, new MandatoryPropertyMessage() );
+        }
+        if ( header.getBank() == null )
+        {
+            properties.put( Header.PROP_BANK, new MandatoryPropertyMessage() );
+        }
+        if ( header.getAccount() == null )
+        {
+            properties.put( Header.PROP_ACCOUNT, new MandatoryPropertyMessage() );
+        }
+        if ( header.getCurrency() == null )
+        {
+            properties.put( Header.PROP_CURRENCY, new MandatoryPropertyMessage() );
+        }
+
+        if ( header.getCreateDate() != null )
+        {
+            if ( header.getCurrency() != null )
+            {
+                try
+                {
+                    this.getCurrencyMapper().getDtausCode( header.getCurrency(), header.getCreateDate() );
+                }
+                catch ( UnsupportedCurrencyException ex )
+                {
+                    if ( this.getLogger().isDebugEnabled() )
+                    {
+                        this.getLogger().debug( ex.toString() );
+                    }
+
+                    properties.put( Header.PROP_CURRENCY, new IllegalCurrencyMessage(
+                        header.getCurrency().getCurrencyCode(), header.getCreateDate() ) );
+
+                }
+            }
+
+            if ( !this.checkSchedule( header.getCreateDate(), header.getExecutionDate() ) )
+            {
+                messages.add( new IllegalScheduleMessage(
+                    header.getCreateDate(), header.getExecutionDate(), this.getMaxScheduleDays() ) );
+
+            }
+        }
+
+        if ( properties.size() > 0 || messages.size() > 0 )
+        {
+            if ( result == null )
+            {
+                result = new IllegalHeaderException();
+            }
+
+            for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
+            {
+                final Map.Entry entry = (Map.Entry) it.next();
+                result.addMessage( (String) entry.getKey(), (Message) entry.getValue() );
+            }
+            for ( Iterator it = messages.iterator(); it.hasNext(); )
+            {
+                result.addMessage( (Message) it.next() );
+            }
+        }
+
+        return result;
+    }
+
+    public IllegalHeaderException assertValidHeader(
+        final LogicalFile lFile, final Header header, final CurrencyCounter counter, IllegalHeaderException result )
+        throws IOException
+    {
+        if ( lFile == null )
+        {
+            throw new NullPointerException( "lFile" );
+        }
+        if ( header == null )
+        {
+            throw new NullPointerException( "header" );
+        }
+        if ( counter == null )
+        {
+            throw new NullPointerException( "counter" );
+        }
+
+        this.assertValidProperties();
+
+        IllegalHeaderException e = this.assertValidHeader( header, result );
+        final LogicalFileType oldLabel = lFile.getHeader().getType();
+        final LogicalFileType newLabel = header.getType();
+
+        if ( oldLabel != null && lFile.getChecksum().getTransactionCount() > 0 &&
+             ( oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed() ) ||
+             ( oldLabel.isRemittanceAllowed() && !newLabel.isRemittanceAllowed() ) )
+        {
+            if ( e == null )
+            {
+                e = new IllegalHeaderException();
+            }
+
+            e.addMessage( Header.PROP_TYPE, new TextschluesselConstraintMessage(
+                newLabel, lFile.getTransaction( 0 ).getType() ) );
+
+        }
+
+        final Currency[] oldCurrencies = this.getCurrencyMapper().getDtausCurrencies(
+            lFile.getHeader().getCreateDate() );
+
+        final Currency[] newCurrencies = this.getCurrencyMapper().getDtausCurrencies( header.getCreateDate() );
+
+        if ( !Arrays.equals( oldCurrencies, newCurrencies ) )
+        {
+            final Currency[] current = counter.getCurrencies();
+            for ( int i = current.length - 1; i >= 0; i-- )
+            {
+                boolean currencyKept = false;
+
+                for ( int j = newCurrencies.length - 1; j >= 0; j-- )
+                {
+                    if ( newCurrencies[j].getCurrencyCode().equals( current[i].getCurrencyCode() ) )
+                    {
+                        currencyKept = true;
+                        break;
+                    }
+                }
+
+                if ( !currencyKept )
+                {
+                    if ( e == null )
+                    {
+                        e = new IllegalHeaderException();
+                    }
+
+                    e.addMessage( new CurrencyConstraintMessage(
+                        current[i].getCurrencyCode(), header.getCreateDate() ) );
+
+                }
+            }
+        }
+
+        return e;
+    }
+
+    /**
+     * Gets the value of property {@code maxScheduleDays} in milliseconds.
+     *
+     * @return the value of property {@code maxScheduleDays} in milliseconds.
+     */
+    private long getMaxScheduleDaysMillis()
+    {
+        if ( this.maxScheduleDaysMillis < 0L )
+        {
+            this.maxScheduleDaysMillis = this.getMaxScheduleDays() * 86400000L;
+        }
+
+        return this.maxScheduleDaysMillis;
+    }
+
+    /**
+     * Checks configured properties.
+     *
+     * @throws PropertyException for illegal property values.
+     */
+    private void assertValidProperties()
+    {
+        if ( this.getMinDateMillis() < 0L )
+        {
+            throw new PropertyException( "minDateMillis", Long.toString( this.getMinDateMillis() ) );
+        }
+        if ( this.getMaxDateMillis() < 0L || this.getMinDateMillis() > this.getMaxDateMillis() )
+        {
+            throw new PropertyException( "maxDateMillis", Long.toString( this.getMaxDateMillis() ) );
+        }
+        if ( this.getMaxScheduleDays() < 0 )
+        {
+            throw new PropertyException( "maxScheduleDays", Integer.toString( this.getMaxScheduleDays() ) );
+        }
+    }
+
+    /**
+     * Checks a given date.
+     *
+     * @param date instance to check.
+     *
+     * @return {@code true} if {@code date} is legal; {@code false} if not.
+     */
+    private boolean checkDate( final Date date )
+    {
+        boolean valid = false;
+
+        if ( date != null )
+        {
+            final long millis = date.getTime();
+            valid = millis >= this.getMinDateMillis() && millis <= this.getMaxDateMillis();
+        }
+
+        return valid;
+    }
+
+    /**
+     * Checks a given schedule.
+     *
+     * @param createDate file creation date to check.
+     * @param executionDate file execution date to check.
+     *
+     * @return {@code true} if {@code createDate} and {@code executionDate} is a legal combination; {@code false} if
+     * not.
+     */
+    private boolean checkSchedule( final Date createDate, final Date executionDate )
+    {
+        boolean valid = createDate != null;
+
+        if ( valid )
+        {
+            final long createMillis = createDate.getTime();
+            if ( executionDate != null )
+            {
+                final long executionMillis = executionDate.getTime();
+                valid = executionMillis >= createMillis &&
+                        executionMillis <= createMillis + this.getMaxScheduleDaysMillis();
+
+            }
+        }
+
+        return valid;
+    }
+
     //--Constructors------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausConstructors
@@ -85,6 +353,18 @@ public final class DefaultHeaderValidator implements HeaderValidator
     {
         return (CurrencyMapper) ContainerFactory.getContainer().
             getDependency( this, "CurrencyMapper" );
+
+    }
+
+    /**
+     * Gets the configured <code>Logger</code> implementation.
+     *
+     * @return The configured <code>Logger</code> implementation.
+     */
+    private Logger getLogger()
+    {
+        return (Logger) ContainerFactory.getContainer().
+            getDependency( this, "Logger" );
 
     }
 
@@ -135,316 +415,4 @@ public final class DefaultHeaderValidator implements HeaderValidator
 // </editor-fold>//GEN-END:jdtausProperties
 
     //--------------------------------------------------------------Properties--
-    //--HeaderValidator---------------------------------------------------------
-
-    public IllegalHeaderException assertValidHeader(
-        final Header header, IllegalHeaderException result )
-    {
-        if ( header == null )
-        {
-            throw new NullPointerException( "header" );
-        }
-
-        this.assertValidProperties();
-        final List messages = new LinkedList();
-        final Map properties = new HashMap( 20 );
-
-        if ( header.getCreateDate() == null )
-        {
-            properties.put( Header.PROP_CREATEDATE,
-                new MandatoryPropertyMessage() );
-
-        }
-        else if ( !this.checkDate( header.getCreateDate() ) )
-        {
-            properties.put( Header.PROP_CREATEDATE, new IllegalDateMessage(
-                header.getCreateDate(),
-                new Date( this.getMinDateMillis() ),
-                new Date( this.getMaxDateMillis() ) ) );
-
-        }
-
-        if ( header.getExecutionDate() != null &&
-            !this.checkDate( header.getExecutionDate() ) )
-        {
-            properties.put( Header.PROP_EXECUTIONDATE, new IllegalDateMessage(
-                header.getExecutionDate(),
-                new Date( this.getMinDateMillis() ),
-                new Date( this.getMaxDateMillis() ) ) );
-
-        }
-        if ( header.getType() == null )
-        {
-            properties.put( Header.PROP_TYPE, new MandatoryPropertyMessage() );
-        }
-        else if ( header.getType().isSendByBank() &&
-            header.getBankData() == null )
-        {
-            properties.put( Header.PROP_BANKDATA,
-                new MandatoryPropertyMessage() );
-
-        }
-
-        if ( header.getCustomer() == null )
-        {
-            properties.put( Header.PROP_CUSTOMER,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( header.getBank() == null )
-        {
-            properties.put( Header.PROP_BANK,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( header.getAccount() == null )
-        {
-            properties.put( Header.PROP_ACCOUNT,
-                new MandatoryPropertyMessage() );
-
-        }
-        if ( header.getCurrency() == null )
-        {
-            properties.put( Header.PROP_CURRENCY,
-                new MandatoryPropertyMessage() );
-
-        }
-
-        if ( header.getCreateDate() != null )
-        {
-            if ( header.getCurrency() != null )
-            {
-                try
-                {
-                    this.getCurrencyMapper().getDtausCode(
-                        header.getCurrency(), header.getCreateDate() );
-
-                }
-                catch ( UnsupportedCurrencyException ex )
-                {
-                    properties.put( Header.PROP_CURRENCY,
-                        new IllegalCurrencyMessage(
-                        header.getCurrency().getCurrencyCode(),
-                        header.getCreateDate() ) );
-
-                }
-            }
-
-            if ( !this.checkSchedule( header.getCreateDate(),
-                header.getExecutionDate() ) )
-            {
-                messages.add( new IllegalScheduleMessage(
-                    header.getCreateDate(), header.getExecutionDate(),
-                    this.getMaxScheduleDays() ) );
-
-            }
-        }
-
-        if ( properties.size() > 0 || messages.size() > 0 )
-        {
-            if ( result == null )
-            {
-                result = new IllegalHeaderException();
-            }
-
-            for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
-            {
-                final Map.Entry entry = (Map.Entry) it.next();
-                result.addMessage( (String) entry.getKey(),
-                    (Message) entry.getValue() );
-
-            }
-            for ( Iterator it = messages.iterator(); it.hasNext(); )
-            {
-                result.addMessage( (Message) it.next() );
-            }
-        }
-
-        return result;
-    }
-
-    public IllegalHeaderException assertValidHeader(
-        final LogicalFile lFile, final Header header,
-        final CurrencyCounter counter, IllegalHeaderException result )
-        throws IOException
-    {
-        if ( lFile == null )
-        {
-            throw new NullPointerException( "lFile" );
-        }
-        if ( header == null )
-        {
-            throw new NullPointerException( "header" );
-        }
-        if ( counter == null )
-        {
-            throw new NullPointerException( "counter" );
-        }
-
-        this.assertValidProperties();
-
-        IllegalHeaderException e = this.assertValidHeader( header, result );
-        final LogicalFileType oldLabel = lFile.getHeader().getType();
-        final LogicalFileType newLabel = header.getType();
-
-        if ( oldLabel != null && lFile.getChecksum().getTransactionCount() > 0 &&
-            ( oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed() ) ||
-             ( oldLabel.isRemittanceAllowed() && !newLabel.isRemittanceAllowed() ) )
-        {
-            if ( e == null )
-            {
-                e = new IllegalHeaderException();
-            }
-
-            e.addMessage( Header.PROP_TYPE, new TextschluesselConstraintMessage(
-                newLabel, lFile.getTransaction( 0 ).getType() ) );
-
-        }
-
-        final Currency[] oldCurrencies = this.getCurrencyMapper().
-            getDtausCurrencies( lFile.getHeader().getCreateDate() );
-
-        final Currency[] newCurrencies = this.getCurrencyMapper().
-            getDtausCurrencies( header.getCreateDate() );
-
-        if ( !Arrays.equals( oldCurrencies, newCurrencies ) )
-        {
-            final Currency[] current = counter.getCurrencies();
-            for ( int i = current.length - 1; i >= 0; i-- )
-            {
-                boolean currencyKept = false;
-
-                for ( int j = newCurrencies.length - 1; j >= 0; j-- )
-                {
-                    if ( newCurrencies[j].getCurrencyCode().
-                        equals( current[i].getCurrencyCode() ) )
-                    {
-                        currencyKept = true;
-                        break;
-                    }
-                }
-
-                if ( !currencyKept )
-                {
-                    if ( e == null )
-                    {
-                        e = new IllegalHeaderException();
-                    }
-
-                    e.addMessage( new CurrencyConstraintMessage(
-                        current[i].getCurrencyCode(),
-                        header.getCreateDate() ) );
-
-                }
-            }
-        }
-
-        return e;
-    }
-
-    //---------------------------------------------------------HeaderValidator--
-    //--DefaultHeaderValidator--------------------------------------------------
-
-    /** Value of property {@code maxScheduleDays} in milliseconds. */
-    private long maxScheduleDaysMillis = Long.MIN_VALUE;
-
-    /**
-     * Gets the value of property {@code maxScheduleDays} in milliseconds.
-     *
-     * @return the value of property {@code maxScheduleDays} in milliseconds.
-     */
-    private long getMaxScheduleDaysMillis()
-    {
-        if ( this.maxScheduleDaysMillis < 0L )
-        {
-            this.maxScheduleDaysMillis = this.getMaxScheduleDays() * 86400000L;
-        }
-
-        return this.maxScheduleDaysMillis;
-    }
-
-    /**
-     * Checks configured properties.
-     *
-     * @throws PropertyException for illegal property values.
-     */
-    private void assertValidProperties()
-    {
-        if ( this.getMinDateMillis() < 0L )
-        {
-            throw new PropertyException(
-                "minDateMillis",
-                Long.toString( this.getMinDateMillis() ) );
-
-        }
-        if ( this.getMaxDateMillis() < 0L ||
-            this.getMinDateMillis() > this.getMaxDateMillis() )
-        {
-            throw new PropertyException(
-                "maxDateMillis",
-                Long.toString( this.getMaxDateMillis() ) );
-
-        }
-        if ( this.getMaxScheduleDays() < 0 )
-        {
-            throw new PropertyException(
-                "maxScheduleDays",
-                Integer.toString( this.getMaxScheduleDays() ) );
-
-        }
-    }
-
-    /**
-     * Checks a given date.
-     *
-     * @param date instance to check.
-     *
-     * @return {@code true} if {@code date} is legal; {@code false} if not.
-     */
-    private boolean checkDate( final Date date )
-    {
-        boolean valid = false;
-
-        if ( date != null )
-        {
-            final long millis = date.getTime();
-            valid = millis >= this.getMinDateMillis() &&
-                millis <= this.getMaxDateMillis();
-
-        }
-
-        return valid;
-    }
-
-    /**
-     * Checks a given schedule.
-     *
-     * @param createDate file creation date to check.
-     * @param executionDate file execution date to check.
-     *
-     * @return {@code true} if {@code createDate} and {@code executionDate} is
-     * a legal combination; {@code false} if not.
-     */
-    private boolean checkSchedule( final Date createDate,
-        final Date executionDate )
-    {
-        boolean valid = createDate != null;
-
-        if ( valid )
-        {
-            final long createMillis = createDate.getTime();
-            if ( executionDate != null )
-            {
-                final long executionMillis = executionDate.getTime();
-                valid = executionMillis >= createMillis &&
-                    executionMillis <= createMillis +
-                    this.getMaxScheduleDaysMillis();
-
-            }
-        }
-
-        return valid;
-    }
-
-    //--------------------------------------------------DefaultHeaderValidator--
 }

@@ -139,5 +139,15 @@
       the <code>java.util.Locale</code> implementation to use.]]></action>
     </release>
 
+    <release version="1.8.1" date="2009-05-17" description="Bugfix release.">
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Prior to this version tape format extension records were written block
+      aligned using a block size of 150 bytes. This version corrects the tape
+      format implementation to correctly support the non block aligned tape
+      format extension records.]]></action>
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Incorrect positions reported when illegal data detected.]]></action>
+    </release>
+
   </body>
 </document>
