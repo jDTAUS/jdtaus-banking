@@ -59,6 +59,11 @@
     </testResources>
     <plugins>
       <plugin>
+        <groupId>org.jdtaus.mojo</groupId>
+        <artifactId>jdtaus-container-mojo</artifactId>
+        <version>3.2.1</version>
+      </plugin>
+      <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags</tagBase>
