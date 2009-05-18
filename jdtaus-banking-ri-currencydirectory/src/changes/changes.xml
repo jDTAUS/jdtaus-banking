@@ -92,7 +92,7 @@
       the <code>java.util.Locale</code> implementation to use.]]></action>
     </release>
 
-    <release version="1.8.1" date="2008-05-19"
+    <release version="1.8.1" date="2009-05-19"
              description="Bugfix release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Since version 1.4, parsing fails with a SAXException for any resource
