@@ -42,8 +42,6 @@ import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.Fields;
 import org.jdtaus.banking.messages.IllegalDataMessage;
-import org.jdtaus.banking.messages.IllegalScheduleMessage;
-import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.container.Implementation;
 import org.jdtaus.core.container.ModelFactory;
@@ -538,28 +536,8 @@ public final class DTAUSDisk extends AbstractLogicalFile
         final Date executionDate = this.readLongDate(
             Fields.FIELD_A11B, this.getHeaderPosition() + ARECORD_OFFSETS[11], ENCODING_ASCII );
 
-        if ( createDate != null )
-        {
-            if ( !this.checkSchedule( createDate, executionDate ) )
-            {
-                if ( ThreadLocalMessages.isErrorsEnabled() )
-                {
-                    throw new CorruptedException(
-                        this.getImplementation(), this.getHeaderPosition() + ARECORD_OFFSETS[11] );
-
-                }
-                else
-                {
-                    final Message msg = new IllegalScheduleMessage( createDate, executionDate, MAX_SCHEDULEDAYS );
-                    ThreadLocalMessages.getMessages().addMessage( msg );
-                }
-            }
-            else
-            {
-                ret.setCreateDate( createDate );
-                ret.setExecutionDate( executionDate );
-            }
-        }
+        ret.setCreateDate( createDate );
+        ret.setExecutionDate( executionDate );
 
         ret.setCurrency( null );
         if ( createDate != null )
@@ -1006,19 +984,6 @@ public final class DTAUSDisk extends AbstractLogicalFile
                         Fields.FIELD_C7A, IllegalDataMessage.TYPE_TEXTSCHLUESSEL, position + CRECORD_OFFSETS1[6],
                         keyType.toString() + num.toString() );
 
-                    ThreadLocalMessages.getMessages().addMessage( msg );
-                }
-            }
-            else if ( ( type.isDebit() && !this.getHeader().getType().isDebitAllowed() ) ||
-                      ( type.isRemittance() && !this.getHeader().getType().isRemittanceAllowed() ) )
-            {
-                if ( ThreadLocalMessages.isErrorsEnabled() )
-                {
-                    throw new CorruptedException( this.getImplementation(), position + CRECORD_OFFSETS1[6] );
-                }
-                else
-                {
-                    final Message msg = new TextschluesselConstraintMessage( this.getHeader().getType(), type );
                     ThreadLocalMessages.getMessages().addMessage( msg );
                 }
             }

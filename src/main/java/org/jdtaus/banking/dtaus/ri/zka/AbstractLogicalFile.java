@@ -115,9 +115,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /** Maximale Anzahl unterstützter Transaktionen pro logischer Datei. */
     private static final int MAX_TRANSACTIONS = 9999999;
 
-    /** Maximum allowed days between create and execution date in millis. */
-    private static final long MAX_SCHEDULEDAYS_MILLIS = MAX_SCHEDULEDAYS * 86400000L;
-
     /** 01/01/1980 00:00:00 CET. */
     private static final long VALID_DATES_START_MILLIS = 315529200000L;
 
@@ -1464,52 +1461,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     }
 
     /**
-     * Prüfung eines Transaktions-Betrages.
-     * <p>Sollte {@code amount} keinem gültigen Betrag entsprechen, so wird eine entsprechende
-     * {@code IllegalDataMessage} erzeugt.</p>
-     *
-     * @param field Feld-Konstante des Feldes.
-     * @param position Position ab der die Daten gelesen wurden.
-     * @param amount Wert für den geprüft werden soll, ob er einem gültigen Transaktions-Betrag entspricht
-     * (Euro = Cent).
-     * @param isMandatory {@code true} wenn bei der Prüfung vorausgesetzt werden soll, daß ein Betrag eine Pflichtangabe
-     * ist; {@code false} wenn nicht.
-     */
-    protected final void checkAmount( final int field, final long position, final long amount,
-                                      final boolean isMandatory )
-    {
-        if ( !this.checkAmount( amount, isMandatory ) )
-        {
-            if ( ThreadLocalMessages.isErrorsEnabled() )
-            {
-                throw new CorruptedException( this.getImplementation(), position );
-            }
-            else
-            {
-                final Message msg = new IllegalDataMessage(
-                    field, IllegalDataMessage.TYPE_NUMERIC, position, Long.toString( amount ) );
-
-                ThreadLocalMessages.getMessages().addMessage( msg );
-            }
-        }
-    }
-
-    /**
-     * Prüfung eines Transaktions-Betrages.
-     *
-     * @param amount Wert für den geprüft werden soll, ob er einem gültigen Transaktions-Betrag entspricht
-     * (Euro = Cent).
-     * @param isMandatory {@code true} wenn bei der Prüfung vorausgesetzt werden soll, daß ein Betrag eine Pflichtangabe
-     * ist; {@code false} wenn nicht.
-     *
-     * @return {@code true} wenn {@code amount} einem gültigen Transaktions-Betrag entspricht; {@code false} sonst.
-     */
-    protected boolean checkAmount( final long amount, final boolean isMandatory )
-    {
-        return ( isMandatory ? amount > 0L : amount >= 0L ) && amount < 100000000000L;
-    }
-
-    /**
      * Prüfung eines Datums.
      *
      * @param date zu prüfendes Datum.
@@ -1524,32 +1475,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         {
             final long millis = date.getTime();
             valid = millis >= VALID_DATES_START_MILLIS && millis <= VALID_DATES_END_MILLIS;
-        }
-
-        return valid;
-    }
-
-    /**
-     * Prüfung einer Auftrags-Terminierung.
-     *
-     * @param createDate zu prüfendes Dateierstellungs-Datum.
-     * @param executionDate zu prüfendes Ausführungs-Datum.
-     *
-     * @return {@code true} wenn {@code createDate} in Kombination mit {@code executionDate} einer gültigen
-     * Auftrags-Terminierung entspricht; {@code false} wenn nicht;
-     */
-    protected boolean checkSchedule( final Date createDate, final Date executionDate )
-    {
-        boolean valid = createDate != null;
-
-        if ( valid )
-        {
-            final long createMillis = createDate.getTime();
-            if ( executionDate != null )
-            {
-                final long executionMillis = executionDate.getTime();
-                valid = executionMillis >= createMillis && executionMillis <= createMillis + MAX_SCHEDULEDAYS_MILLIS;
-            }
         }
 
         return valid;
@@ -1928,6 +1853,25 @@ public abstract class AbstractLogicalFile implements LogicalFile
         if ( this.cachedHeader == null )
         {
             this.cachedHeader = this.readHeader();
+            IllegalHeaderException result = null;
+            final HeaderValidator[] validators = this.getHeaderValidator();
+            for ( int i = validators.length - 1; i >= 0; i-- )
+            {
+                result = validators[i].assertValidHeader( this.cachedHeader, result );
+            }
+            if ( result != null && result.getMessages().length > 0 )
+            {
+                if ( ThreadLocalMessages.isErrorsEnabled() )
+                {
+                    throw (CorruptedException) new CorruptedException(
+                        this.getImplementation(), this.getHeaderPosition() ).initCause( result );
+
+                }
+                else
+                {
+                    ThreadLocalMessages.getMessages().addMessages( result.getMessages() );
+                }
+            }
         }
 
         return (Header) this.cachedHeader.clone();
@@ -2121,7 +2065,32 @@ public abstract class AbstractLogicalFile implements LogicalFile
             throw new ArrayIndexOutOfBoundsException( index );
         }
 
-        return this.readTransaction( this.getHeaderPosition() + this.index[index], new Transaction() );
+        final Transaction transaction = this.readTransaction(
+            this.getHeaderPosition() + this.index[index], new Transaction() );
+
+        IllegalTransactionException result = null;
+        final TransactionValidator[] validators = this.getTransactionValidator();
+
+        for ( int i = validators.length - 1; i >= 0; i-- )
+        {
+            result = validators[i].assertValidTransaction( this, transaction, result );
+        }
+
+        if ( result != null && result.getMessages().length > 0 )
+        {
+            if ( ThreadLocalMessages.isErrorsEnabled() )
+            {
+                throw (CorruptedException) new CorruptedException(
+                    this.getImplementation(), this.getHeaderPosition() + this.index[index] ).initCause( result );
+
+            }
+            else
+            {
+                ThreadLocalMessages.getMessages().addMessages( result.getMessages() );
+            }
+        }
+
+        return transaction;
     }
 
     public Transaction setTransaction( final int index, final Transaction transaction ) throws IOException
