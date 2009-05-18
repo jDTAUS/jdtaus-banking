@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  jDTAUS Banking RI Textschluesselverzeichnis
+  Copyright (c) 2005 Christian Schulte
+
+  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
+  <cs@jdtaus.org> (+49 2331 3543887)
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Document   : textschluessel-1.1.xml
+  Author     : Christian Schulte <cs@jdtaus.org>
+  Version    : $Id$
+  Description: ZKA Textschlüssel.
+
+-->
+<jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml/textschluessel"
+                       xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
+                       jdtaus:version="1.1">
+
+  <jdtaus:transactionTypes>
+    <jdtaus:transactionType jdtaus:key="04"
+                            jdtaus:extension="000"
+                            jdtaus:type="DEBIT">
+
+      <jdtaus:description jdtaus:language="de">Lastschrift (Abbuchungsauftragsverfahren) ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Debit order ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="04"
+                            jdtaus:extension="888"
+                            jdtaus:type="DEBIT">
+
+      <jdtaus:description jdtaus:language="de">Lastschrift (Abbuchungsauftragsverfahren) - gebietsfremd ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Debit order - foreign ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="05"
+                            jdtaus:extension="000"
+                            jdtaus:type="DEBIT">
+
+      <jdtaus:description jdtaus:language="de">Lastschrift (Einzugsermächtigungsverfahren) ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Direct debit ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="05"
+                            jdtaus:extension="888"
+                            jdtaus:type="DEBIT">
+
+      <jdtaus:description jdtaus:language="de">Lastschrift (Einzugsermächtigungsverfahren) - gebietsfremd ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Direct debit - foreign ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="05"
+                            jdtaus:extension="005"
+                            jdtaus:type="DEBIT">
+
+      <jdtaus:description jdtaus:language="de">Lastschrift aus POS-Verfügung - electronic cash ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Debit from POS - electronic cash ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="05"
+                            jdtaus:extension="006"
+                            jdtaus:type="DEBIT">
+
+      <jdtaus:description jdtaus:language="de">Lastschrift aus POS-Verfügung (mit ausländischer Karte) - Maestro ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Debit from POS - Maestro ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="05"
+                            jdtaus:extension="008"
+                            jdtaus:type="DEBIT">
+
+      <jdtaus:description jdtaus:language="de">Lastschrift aus Kreditkartenumsätzen ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Debit from credit card ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="05"
+                            jdtaus:extension="015"
+                            jdtaus:type="DEBIT">
+
+      <jdtaus:description jdtaus:language="de">Lastschrift aus POS-Verfügung - POZ ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Debit from POS - POZ ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="51"
+                            jdtaus:extension="000"
+                            jdtaus:type="REMITTANCE">
+
+      <jdtaus:description jdtaus:language="de">Überweisungs-Gutschrift ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Remittance ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="53"
+                            jdtaus:extension="000"
+                            jdtaus:type="REMITTANCE">
+
+      <jdtaus:description jdtaus:language="de">Lohn-;Gehalts-;Renten-Gutschrift ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Lohn-;Gehalts-;Renten-Gutschrift ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="56"
+                            jdtaus:extension="000"
+                            jdtaus:type="REMITTANCE">
+
+      <jdtaus:description jdtaus:language="de">Überweisung öffentlicher Kassen ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Remittance of city treasuries ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+    <jdtaus:transactionType jdtaus:key="54"
+                            jdtaus:extension="VARIABLE"
+                            jdtaus:type="REMITTANCE">
+
+      <jdtaus:description jdtaus:language="de">Vermögenswirksame Leistung ({0,number,00}{1,number,000})</jdtaus:description>
+      <jdtaus:description jdtaus:language="en">Capital-forming payment ({0,number,00}{1,number,000})</jdtaus:description>
+    </jdtaus:transactionType>
+
+  </jdtaus:transactionTypes>
+</jdtaus:textschluessel>

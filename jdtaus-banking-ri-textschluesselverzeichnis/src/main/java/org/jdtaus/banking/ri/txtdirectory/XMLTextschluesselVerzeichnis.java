@@ -92,6 +92,10 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     private static final String BANKING_NS =
         "http://jdtaus.org/banking/model";
 
+    /** {@code http://www.w3.org/2001/XMLSchema-instance} namespace URI. */
+    private static final String XSI_NS =
+        "http://www.w3.org/2001/XMLSchema-instance";
+
     /** Version supported by this implementation. */
     private static final String[] SUPPORTED_VERSIONS =
     {
@@ -221,7 +225,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     }
 
     public Textschluessel getTextschluessel( final int key, final int extension,
-        final Date date )
+                                             final Date date )
     {
         if ( key < 0 || key > 99 )
         {
@@ -247,7 +251,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
             for ( int i = this.instances.length - 1; i >= 0; i-- )
             {
                 if ( this.instances[i].isValidAt( date ) &&
-                    this.instances[i].getKey() == key )
+                     this.instances[i].getKey() == key )
                 {
                     if ( this.instances[i].isVariable() )
                     {
@@ -286,13 +290,13 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     }
 
     public Textschluessel[] search( final boolean debit,
-        final boolean remittance )
+                                    final boolean remittance )
     {
         return this.search( debit, remittance, new Date() );
     }
 
     public Textschluessel[] search( final boolean debit,
-        final boolean remittance, final Date date )
+                                    final boolean remittance, final Date date )
     {
         if ( date == null )
         {
@@ -310,8 +314,8 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
             for ( int i = this.instances.length - 1; i >= 0; i-- )
             {
                 if ( this.instances[i].isDebit() == debit &&
-                    this.instances[i].isRemittance() == remittance &&
-                    this.instances[i].isValidAt( date ) )
+                     this.instances[i].isRemittance() == remittance &&
+                     this.instances[i].isValidAt( date ) )
                 {
                     col.add( this.instances[i].clone() );
                 }
@@ -544,7 +548,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     private void checkForModifications()
     {
         if ( System.currentTimeMillis() - this.lastCheck >
-            this.getReloadIntervalMillis() && this.monitorMap.size() > 0 )
+             this.getReloadIntervalMillis() && this.monitorMap.size() > 0 )
         {
             for ( Iterator it = this.monitorMap.entrySet().
                 iterator(); it.hasNext(); )
@@ -585,13 +589,19 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         InputStream stream = null;
 
         final URL[] resources = this.getResources();
-        final DocumentBuilder parser = this.getDocumentBuilder();
         final List documents = new LinkedList();
+        final DocumentBuilder validatingParser = this.getDocumentBuilder();
+        final DocumentBuilderFactory namespaceAwareFactory =
+            DocumentBuilderFactory.newInstance();
+
+        namespaceAwareFactory.setNamespaceAware( true );
+        final DocumentBuilder nonValidatingParser =
+            namespaceAwareFactory.newDocumentBuilder();
 
         for ( int i = resources.length - 1; i >= 0; i-- )
         {
             final URL resource = resources[i];
-            parser.setErrorHandler( new ErrorHandler()
+            final ErrorHandler errorHandler = new ErrorHandler()
             {
 
                 public void warning( final SAXParseException e )
@@ -624,11 +634,29 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
 
                 }
 
-            } );
+            };
+
+            nonValidatingParser.setErrorHandler( errorHandler );
+            validatingParser.setErrorHandler( errorHandler );
 
             this.monitorResource( resource );
             stream = resource.openStream();
-            documents.add( parser.parse( stream ) );
+            Document doc = nonValidatingParser.parse( stream );
+            if ( doc.getDocumentElement().hasAttributeNS(
+                XSI_NS, "schemaLocation" ) )
+            {
+                stream.close();
+                stream = resource.openStream();
+                doc = validatingParser.parse( stream );
+            }
+            else if ( this.getLogger().isInfoEnabled() )
+            {
+                this.getLogger().info( this.getNoSchemaLocationMessage(
+                    this.getLocale(), resource.toExternalForm() ) );
+
+            }
+
+            documents.add( doc );
             stream.close();
         }
 
@@ -785,7 +813,7 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                             TEXTSCHLUESSEL_NS, "description" );
 
                         for ( int d = descriptions.getLength() - 1; d >= 0;
-                            d-- )
+                              d-- )
                         {
                             final Element description =
                                 (Element) descriptions.item( d );
@@ -1187,6 +1215,28 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                     cause,
                     line,
                     column
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>noSchemaLocation</code>.
+     * <blockquote><pre>Kein schemaLocation Attribut in Ressource "{0}". Keine Schema-Validierung.</pre></blockquote>
+     * <blockquote><pre>No schemaLocation attribute in resource "{0}". Schema validation skipped.</pre></blockquote>
+     *
+     * @param locale The locale of the message instance to return.
+     * @param resource format argument.
+     *
+     * @return the text of message <code>noSchemaLocation</code>.
+     */
+    private String getNoSchemaLocationMessage( final Locale locale,
+            final java.lang.String resource )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "noSchemaLocation", locale,
+                new Object[]
+                {
+                    resource
                 });
 
     }
