@@ -127,7 +127,7 @@
       Added a recent bankfile valid to 2009-06-07.]]></action>
     </release>
 
-    <release version="1.8.2" date="2009-05-12"
+    <release version="1.8.2" date="2009-05-18"
              description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Added a recent bankfile valid from 2009-06-08 to 2009-09-06.]]></action>
