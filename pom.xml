@@ -60,6 +60,11 @@
     </testResources>
     <plugins>
       <plugin>
+        <groupId>org.jdtaus.mojo</groupId>
+        <artifactId>jdtaus-container-mojo</artifactId>
+        <version>3.2.1</version>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <executions>
