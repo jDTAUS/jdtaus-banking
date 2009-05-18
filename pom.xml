@@ -33,7 +33,7 @@
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI CurrencyDirectory</name>
   <description>jDTAUS CurrencyDirectory reference implementation.</description>
-  <version>1.8.1-SNAPSHOT</version>
+  <version>1.8.1</version>
   <build>
     <resources>
       <resource>
@@ -124,4 +124,10 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.8.1</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.8.1</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags/jdtaus-banking-ri-currencydirectory-1.8.1</url>
+  </scm>
 </project>
