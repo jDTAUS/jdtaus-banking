@@ -107,6 +107,7 @@
         <container:reference container:name="unsupportedNamespace"/>
         <container:reference container:name="unsupportedModelVersion"/>
         <container:reference container:name="parseException"/>
+        <container:reference container:name="noSchemaLocation"/>
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.ri.txtdirectory.ClasspathTextschluesselProvider"
@@ -240,6 +241,15 @@
         <container:argument container:index="1" container:name="cause" container:type="text"/>
         <container:argument container:index="2" container:name="line" container:type="number"/>
         <container:argument container:index="3" container:name="column" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <container:message container:name="noSchemaLocation">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[No schemaLocation attribute in resource "{0}". Schema validation skipped.]]></container:text>
+        <container:text container:language="de"><![CDATA[Kein schemaLocation Attribut in Ressource "{0}". Keine Schema-Validierung.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="resource" container:type="text"/>
       </container:arguments>
     </container:message>
   </container:messages>
