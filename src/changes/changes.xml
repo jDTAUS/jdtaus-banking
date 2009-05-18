@@ -92,5 +92,15 @@
       the <code>java.util.Locale</code> implementation to use.]]></action>
     </release>
 
+    <release version="1.8.1" date="2008-05-19"
+             description="Bugfix release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Since version 1.4, parsing fails with a SAXException for any resource
+      not specifying a schemaLocation attribute in namespace
+      <code>http://www.w3.org/2001/XMLSchema-instance</code>.
+      This version corrects parsing of any resource not specifying a
+      schemaLocation attribute by disabling schema validation for such
+      resources.]]></action>
+    </release>
   </body>
 </document>
