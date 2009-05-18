@@ -26,14 +26,13 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.8</version>
+    <version>1.9-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI CurrencyDirectory</name>
   <description>jDTAUS CurrencyDirectory reference implementation.</description>
-  <version>1.9-SNAPSHOT</version>
   <build>
     <resources>
       <resource>
@@ -58,17 +57,6 @@
       </testResource>
     </testResources>
     <plugins>
-      <plugin>
-        <groupId>org.jdtaus.mojo</groupId>
-        <artifactId>jdtaus-container-mojo</artifactId>
-        <version>3.2.1</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/jdtaus-banking-ri-currencydirectory/tags</tagBase>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
