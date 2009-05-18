@@ -147,6 +147,10 @@
       format extension records.]]></action>
       <action dev="schulte2005" type="fix"><![CDATA[
       Incorrect positions reported when illegal data detected.]]></action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Removed hardcoded checks of schedules and Textschlüssel constraints during
+      reading in favour of interfaces HeaderValidator and
+      TransactionValidator.]]></action>
     </release>
 
   </body>
