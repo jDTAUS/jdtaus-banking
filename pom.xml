@@ -33,6 +33,7 @@
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking RI CurrencyDirectory</name>
   <description>jDTAUS CurrencyDirectory reference implementation.</description>
+  <version>1.8.1-SNAPSHOT</version>
   <build>
     <resources>
       <resource>
