@@ -33,8 +33,6 @@ import org.jdtaus.banking.dtaus.LogicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.Transaction;
-import org.jdtaus.banking.dtaus.test.HeaderTest;
-import org.jdtaus.banking.dtaus.test.TransactionTest;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.io.FileOperations;
 import org.jdtaus.core.io.util.RandomAccessFileOperations;
@@ -170,10 +168,15 @@ public class PhysicalFileTest extends TestCase
 
         for ( int i = 10; i >= 0; i-- )
         {
-            final LogicalFile lFile = pFile.addLogicalFile( HeaderTest.getLegalHeader() );
+            final LogicalFile lFile = pFile.addLogicalFile( LogicalFileTest.getLegalHeader() );
+            final Header header = lFile.getHeader();
+            Assert.assertEquals( LogicalFileTest.getLegalHeader(), header );
+
             for ( int j = 10; j >= 0; j-- )
             {
-                lFile.addTransaction( TransactionTest.getLegalTransaction() );
+                final int index = lFile.addTransaction( LogicalFileTest.getLegalTransaction() );
+                final Transaction transaction = lFile.getTransaction( index );
+                Assert.assertEquals( LogicalFileTest.getLegalTransaction(), transaction );
             }
         }
 
@@ -184,12 +187,15 @@ public class PhysicalFileTest extends TestCase
         throws Exception
     {
         Assert.assertTrue( pFile.getLogicalFileCount() == 0 );
-        final Header header = HeaderTest.getLegalHeader();
+        final Header header = LogicalFileTest.getLegalHeader();
         final LogicalFile lFile = pFile.addLogicalFile( header );
-        final Transaction transaction = TransactionTest.getLegalTransaction();
-        lFile.addTransaction( transaction );
-        System.out.println( lFile.getTransaction( 0 ) );
-        lFile.removeTransaction( 0 );
+        final Transaction transaction = LogicalFileTest.getLegalTransaction();
+        final int index = lFile.addTransaction( transaction );
+
+        Assert.assertEquals( LogicalFileTest.getLegalHeader(), lFile.getHeader() );
+        Assert.assertEquals( LogicalFileTest.getLegalTransaction(), lFile.getTransaction( index ) );
+        Assert.assertEquals( LogicalFileTest.getLegalTransaction(), lFile.removeTransaction( 0 ) );
+
         pFile.removeLogicalFile( 0 );
     }
 
@@ -217,7 +223,7 @@ public class PhysicalFileTest extends TestCase
 
         try
         {
-            pFile.addLogicalFile( HeaderTest.getIllegalHeader() );
+            pFile.addLogicalFile( new Header() );
             fail( "IllegalArgumentException not thrown" );
         }
         catch ( IllegalArgumentException e )
@@ -233,7 +239,7 @@ public class PhysicalFileTest extends TestCase
 
         for ( files = 0; files < fileCount; files++ )
         {
-            h = HeaderTest.getLegalHeader();
+            h = LogicalFileTest.getLegalHeader();
             h.setReference( Referenznummer10.valueOf( new Long( files ) ) );
             pFile.addLogicalFile( h );
         }
@@ -242,11 +248,13 @@ public class PhysicalFileTest extends TestCase
         for ( files = pFile.getLogicalFileCount() - 1; files >= 0; files-- )
         {
             final LogicalFile dtaus = pFile.getLogicalFile( files );
-            Assert.assertTrue( dtaus.getHeader().getReference().longValue() == files );
+            final Header test = LogicalFileTest.getLegalHeader();
+            test.setReference( Referenznummer10.valueOf( new Long( files ) ) );
+            Assert.assertEquals( test, dtaus.getHeader() );
+
             for ( transactions = 0; transactions < transactionCount; transactions++ )
             {
-
-                tr = TransactionTest.getLegalTransaction();
+                tr = LogicalFileTest.getLegalTransaction();
                 tr.setReference( Referenznummer11.valueOf( new Long( transactions ) ) );
                 dtaus.addTransaction( tr );
             }
@@ -255,11 +263,16 @@ public class PhysicalFileTest extends TestCase
         for ( files = pFile.getLogicalFileCount() - 1; files >= 0; files-- )
         {
             final LogicalFile dtaus = pFile.getLogicalFile( files );
-            Assert.assertTrue( dtaus.getHeader().getReference().longValue() == files );
+            final Header test = LogicalFileTest.getLegalHeader();
+            test.setReference( Referenznummer10.valueOf( new Long( files ) ) );
+            Assert.assertEquals( test, dtaus.getHeader() );
+
             for ( transactions = dtaus.getChecksum().getTransactionCount() - 1; transactions >= 0; transactions-- )
             {
                 tr = dtaus.getTransaction( transactions );
-                Assert.assertTrue( tr.getReference().longValue() == transactions );
+                final Transaction testTransaction = LogicalFileTest.getLegalTransaction();
+                testTransaction.setReference( Referenznummer11.valueOf( new Long( transactions ) ) );
+                Assert.assertEquals( testTransaction, tr );
             }
         }
 
@@ -267,7 +280,9 @@ public class PhysicalFileTest extends TestCase
         for ( files = pFile.getLogicalFileCount() - 1; files >= 0; files-- )
         {
             final LogicalFile dtaus = pFile.getLogicalFile( files );
-            Assert.assertTrue( dtaus.getHeader().getReference().longValue() == files );
+            final Header test = LogicalFileTest.getLegalHeader();
+            test.setReference( Referenznummer10.valueOf( new Long( files ) ) );
+            Assert.assertEquals( test, dtaus.getHeader() );
             dtaus.removeTransaction( 0 );
         }
 
@@ -280,13 +295,17 @@ public class PhysicalFileTest extends TestCase
             Assert.assertTrue( files - 1 == pFile.getLogicalFileCount() );
             for ( files = pFile.getLogicalFileCount() - 1; files >= 0; files-- )
             {
-
                 final LogicalFile dtaus = pFile.getLogicalFile( files );
-                Assert.assertTrue( dtaus.getHeader().getReference().longValue() == files + removed );
+                final Header test = LogicalFileTest.getLegalHeader();
+                test.setReference( Referenznummer10.valueOf( new Long( files + removed ) ) );
+                Assert.assertEquals( test, dtaus.getHeader() );
+
                 for ( transactions = dtaus.getChecksum().getTransactionCount() - 1; transactions >= 0; transactions-- )
                 {
                     tr = dtaus.getTransaction( transactions );
-                    Assert.assertTrue( tr.getReference().longValue() == transactions + 1 );
+                    final Transaction testTransaction = LogicalFileTest.getLegalTransaction();
+                    testTransaction.setReference( Referenznummer11.valueOf( new Long( transactions + 1 ) ) );
+                    Assert.assertEquals( testTransaction, tr );
                 }
             }
         }
