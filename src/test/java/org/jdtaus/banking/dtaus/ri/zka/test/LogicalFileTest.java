@@ -22,12 +22,19 @@
  */
 package org.jdtaus.banking.dtaus.ri.zka.test;
 
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.Locale;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.jdtaus.banking.AlphaNumericText27;
+import org.jdtaus.banking.Bankleitzahl;
+import org.jdtaus.banking.Kontonummer;
+import org.jdtaus.banking.Referenznummer10;
+import org.jdtaus.banking.Referenznummer11;
+import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.dtaus.Checksum;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.IllegalHeaderException;
@@ -39,8 +46,6 @@ import org.jdtaus.banking.dtaus.PhysicalFileException;
 import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory;
-import org.jdtaus.banking.dtaus.test.HeaderTest;
-import org.jdtaus.banking.dtaus.test.TransactionTest;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.io.util.MemoryFileOperations;
 
@@ -52,6 +57,63 @@ import org.jdtaus.core.io.util.MemoryFileOperations;
  */
 public class LogicalFileTest extends TestCase
 {
+
+    private static final String LEGAL_TEXT = "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$.";
+
+    public static Header getLegalHeader()
+    {
+        final Header legal = new Header();
+        final Calendar cal = Calendar.getInstance();
+        cal.set( 2005, 0, 1, 0, 0, 0 );
+
+        legal.setAccount( Kontonummer.valueOf( new Long( 1111111111L ) ) );
+        legal.setBank( Bankleitzahl.valueOf( new Integer( 22222222 ) ) );
+        legal.setBankData( Bankleitzahl.valueOf( new Integer( 33333333 ) ) );
+        legal.setCurrency( Currency.getInstance( "EUR" ) );
+        legal.setCustomer( AlphaNumericText27.valueOf( LEGAL_TEXT ) );
+        legal.setReference( Referenznummer10.valueOf( new Long( 4444444444L ) ) );
+        legal.setCreateDate( cal.getTime() );
+        legal.setExecutionDate( cal.getTime() );
+        legal.setType( LogicalFileType.LB );
+
+        return legal;
+    }
+
+    public static Transaction getLegalTransaction()
+    {
+        final Textschluessel type = new Textschluessel();
+        type.setDebit( true );
+        type.setExtension( 0 );
+        type.setRemittance( true );
+        type.setKey( 4 );
+        type.setShortDescription( Locale.getDefault(), LEGAL_TEXT );
+        type.setVariable( false );
+
+        final Transaction t = new Transaction();
+
+        t.setAmount( BigInteger.ONE );
+        t.setCurrency( Currency.getInstance( "EUR" ) );
+        t.setExecutiveAccount( Kontonummer.valueOf( new Long( 1111111111L ) ) );
+        t.setExecutiveBank( Bankleitzahl.valueOf( new Integer( 22222222 ) ) );
+        t.setExecutiveExt( AlphaNumericText27.valueOf( LEGAL_TEXT ) );
+        t.setExecutiveName( AlphaNumericText27.valueOf( LEGAL_TEXT ) );
+        t.setPrimaryBank( Bankleitzahl.valueOf( new Integer( 33333333 ) ) );
+        t.setReference( Referenznummer11.valueOf( new Long( 44444444444L ) ) );
+        t.setTargetAccount( Kontonummer.valueOf( new Long( 5555555555L ) ) );
+        t.setTargetBank( Bankleitzahl.valueOf( new Integer( 66666666 ) ) );
+        t.setTargetExt( AlphaNumericText27.valueOf( LEGAL_TEXT ) );
+        t.setTargetName( AlphaNumericText27.valueOf( LEGAL_TEXT ) );
+        t.setType( type );
+
+        final AlphaNumericText27[] d = new AlphaNumericText27[ 14 ];
+        for ( int i = d.length - 1; i >= 0; i-- )
+        {
+            d[i] = AlphaNumericText27.valueOf( i + LEGAL_TEXT.substring( i > 9 ? 2 : 1 ) );
+        }
+
+        t.setDescriptions( d );
+        return t;
+    }
 
     protected static MemoryFileOperations getMemoryFileOperations()
     {
@@ -291,14 +353,6 @@ public class LogicalFileTest extends TestCase
     /** Testet die {@link org.jdtaus.banking.dtaus.LogicalFile#getHeader()} Methode.*/
     public void testGetHeader() throws Exception
     {
-        final Calendar createCal = Calendar.getInstance();
-        final Calendar executionCal = Calendar.getInstance();
-
-        createCal.set( 2003, 0, 1, 0, 0, 0 );
-        executionCal.set( 2003, 0, 15, 0, 0, 0 );
-        createCal.set( Calendar.MILLISECOND, 0 );
-        executionCal.set( Calendar.MILLISECOND, 0 );
-
         try
         {
             getDTAUSUnsupportedDataHeader();
@@ -322,18 +376,7 @@ public class LogicalFileTest extends TestCase
         }
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-        final Header h = file.getLogicalFile( 0 ).getHeader();
-        Assert.assertTrue( h.getCustomer().format().equals( "ABCDEFGHUJKI.UHZGTÄÖÜß+ ,$&" ) );
-        Assert.assertTrue( h.getAccount().longValue() == 1111111111L );
-        Assert.assertTrue( h.getBank().intValue() == 11111111 );
-        Assert.assertTrue( h.getBankData() == null );
-        Assert.assertTrue( h.getCurrency().equals( Currency.getInstance( "EUR" ) ) );
-        Assert.assertTrue( h.getType().equals( LogicalFileType.LK ) );
-        Assert.assertTrue( h.getReference().longValue() == 2222222222L );
-        Assert.assertEquals( h.getCreateDate(), createCal.getTime() );
-        Assert.assertEquals( h.getExecutionDate(), executionCal.getTime() );
-        Assert.assertEquals( h.getCreateDate(), createCal.getTime() );
-        Assert.assertEquals( h.getExecutionDate(), executionCal.getTime() );
+        this.assertValidHeader( file.getLogicalFile( 0 ).getHeader() );
     }
 
     /** Testet die {@link org.jdtaus.banking.dtaus.LogicalFile#setHeader(Header)} Methode. */
@@ -342,7 +385,7 @@ public class LogicalFileTest extends TestCase
         try
         {
             final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-            file.getLogicalFile( 0 ).setHeader( HeaderTest.getIllegalHeader() );
+            file.getLogicalFile( 0 ).setHeader( new Header() );
             throw new AssertionError();
         }
         catch ( IllegalArgumentException e )
@@ -357,7 +400,7 @@ public class LogicalFileTest extends TestCase
         }
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
-        final Header legal = HeaderTest.getLegalHeader();
+        final Header legal = getLegalHeader();
         file.getLogicalFile( 0 ).setHeader( legal );
         Assert.assertTrue( file.getLogicalFile( 0 ).getHeader().equals( legal ) );
     }
@@ -378,11 +421,7 @@ public class LogicalFileTest extends TestCase
 
         final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
         LogicalFile dt = file.getLogicalFile( 0 );
-        Checksum c = dt.getChecksum();
-        Assert.assertTrue( c.getSumTargetAccount() == 0L );
-        Assert.assertTrue( c.getSumTargetBank() == 0L );
-        Assert.assertTrue( c.getSumAmount() == 0L );
-        Assert.assertTrue( c.getTransactionCount() == 0 );
+        this.assertEmptyChecksum( dt.getChecksum() );
     }
 
     /** Testet die {@link org.jdtaus.banking.dtaus.LogicalFile#addTransaction(Transaction)} Methode.*/
@@ -393,7 +432,7 @@ public class LogicalFileTest extends TestCase
 
         try
         {
-            lFile.addTransaction( TransactionTest.getIllegalTransaction() );
+            lFile.addTransaction( new Transaction() );
             fail();
         }
         catch ( IllegalArgumentException e )
@@ -407,8 +446,8 @@ public class LogicalFileTest extends TestCase
             System.out.println( e.toString() );
         }
 
-        lFile.addTransaction( TransactionTest.getLegalTransaction() );
-        Assert.assertTrue( TransactionTest.getLegalTransaction().equals( lFile.getTransaction(
+        lFile.addTransaction( getLegalTransaction() );
+        Assert.assertTrue( getLegalTransaction().equals( lFile.getTransaction(
             lFile.getChecksum().getTransactionCount() - 1 ) ) );
 
     }
@@ -443,45 +482,13 @@ public class LogicalFileTest extends TestCase
         }
 
         PhysicalFile file = getDTAUSValidHeaderChecksumAndTransaction( true );
-        Transaction t = file.getLogicalFile( 0 ).getTransaction( 0 );
-        Assert.assertTrue( t.getPrimaryBank().intValue() == 11111111 );
-        Assert.assertTrue( t.getTargetBank().intValue() == 22222222 );
-        Assert.assertTrue( t.getTargetAccount().longValue() == 3333333333L );
-        Assert.assertTrue( t.getReference().longValue() == 44444444444L );
-        /*
-        Assert.assertTrue(t.getType().equals(AbstractLogicalFileTest.
-        getConfiguration().getTransactionType(5,0)));
-         */
-
-        Assert.assertTrue( t.getExecutiveBank().intValue() == 55555555 );
-        Assert.assertTrue( t.getExecutiveAccount().longValue() == 6666666666L );
-        Assert.assertTrue( t.getAmount().longValue() == 77777777777L ); // TODO longValueExact()
-        Assert.assertTrue( t.getTargetName().format().equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( t.getExecutiveName().format().equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( t.getCurrency().equals( Currency.getInstance( "EUR" ) ) );
-        AlphaNumericText27[] d = t.getDescriptions();
-        Assert.assertTrue( d[0].format().equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[1].format().equals( "2BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[2].format().equals( "3BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[3].format().equals( "4BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[4].format().equals( "5BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[5].format().equals( "6BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[6].format().equals( "7BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[7].format().equals( "8BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[8].format().equals( "9BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[9].format().equals( "10CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[10].format().equals( "11CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[11].format().equals( "12CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[12].format().equals( "13CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( d[13].format().equals( "14CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( t.getTargetExt().format().equals( "1BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
-        Assert.assertTrue( t.getExecutiveExt().format().equals( "15CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        this.assertValidTransaction( file.getLogicalFile( 0 ).getTransaction( 0 ) );
     }
 
     /** Testet die {@code org.jdtaus.banking.dtaus.LogicalFile#setTransaction(int, Transaction)} Methode. */
     public void testSetTransaction() throws Exception
     {
-        final Transaction legal = TransactionTest.getLegalTransaction();
+        final Transaction legal = getLegalTransaction();
 
         try
         {
@@ -525,8 +532,7 @@ public class LogicalFileTest extends TestCase
         Transaction t = dt.getTransaction( 0 );
         final int oldCount = dt.getChecksum().getTransactionCount();
         Assert.assertTrue( dt.removeTransaction( 0 ).equals( t ) );
-        Assert.assertTrue( dt.getChecksum().getTransactionCount() == oldCount -
-                                                                     1 );
+        Assert.assertTrue( dt.getChecksum().getTransactionCount() == oldCount - 1 );
     }
 
     /**
@@ -774,5 +780,69 @@ public class LogicalFileTest extends TestCase
         }
     }
 
-    //-------------------------------------------------------------------Tests--
+    private void assertValidHeader( final Header header )
+    {
+        final Calendar createCal = Calendar.getInstance();
+        final Calendar executionCal = Calendar.getInstance();
+
+        createCal.set( 2003, 0, 1, 0, 0, 0 );
+        executionCal.set( 2003, 0, 15, 0, 0, 0 );
+        createCal.set( Calendar.MILLISECOND, 0 );
+        executionCal.set( Calendar.MILLISECOND, 0 );
+
+        Assert.assertTrue( header.getCustomer().format().equals( "ABCDEFGHUJKI.UHZGTÄÖÜß+ ,$&" ) );
+        Assert.assertTrue( header.getAccount().longValue() == 1111111111L );
+        Assert.assertTrue( header.getBank().intValue() == 11111111 );
+        Assert.assertTrue( header.getBankData() == null );
+        Assert.assertTrue( header.getCurrency().equals( Currency.getInstance( "EUR" ) ) );
+        Assert.assertTrue( header.getType().equals( LogicalFileType.LK ) );
+        Assert.assertTrue( header.getReference().longValue() == 2222222222L );
+        Assert.assertEquals( header.getCreateDate(), createCal.getTime() );
+        Assert.assertEquals( header.getExecutionDate(), executionCal.getTime() );
+    }
+
+    private void assertEmptyChecksum( final Checksum checksum )
+    {
+        Assert.assertTrue( checksum.getSumTargetAccount() == 0L );
+        Assert.assertTrue( checksum.getSumTargetBank() == 0L );
+        Assert.assertTrue( checksum.getSumAmount() == 0L );
+        Assert.assertTrue( checksum.getTransactionCount() == 0 );
+    }
+
+    private void assertValidTransaction( final Transaction transaction )
+    {
+        Assert.assertTrue( transaction.getPrimaryBank().intValue() == 11111111 );
+        Assert.assertTrue( transaction.getTargetBank().intValue() == 22222222 );
+        Assert.assertTrue( transaction.getTargetAccount().longValue() == 3333333333L );
+        Assert.assertTrue( transaction.getReference().longValue() == 44444444444L );
+        /*
+        Assert.assertTrue(t.getType().equals(AbstractLogicalFileTest.
+        getConfiguration().getTransactionType(5,0)));
+         */
+
+        Assert.assertTrue( transaction.getExecutiveBank().intValue() == 55555555 );
+        Assert.assertTrue( transaction.getExecutiveAccount().longValue() == 6666666666L );
+        Assert.assertTrue( transaction.getAmount().longValue() == 77777777777L ); // TODO longValueExact()
+        Assert.assertTrue( transaction.getTargetName().format().equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( transaction.getExecutiveName().format().equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( transaction.getCurrency().equals( Currency.getInstance( "EUR" ) ) );
+        final AlphaNumericText27[] d = transaction.getDescriptions();
+        Assert.assertTrue( d[0].format().equals( "ABCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[1].format().equals( "2BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[2].format().equals( "3BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[3].format().equals( "4BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[4].format().equals( "5BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[5].format().equals( "6BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[6].format().equals( "7BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[7].format().equals( "8BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[8].format().equals( "9BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[9].format().equals( "10CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[10].format().equals( "11CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[11].format().equals( "12CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[12].format().equals( "13CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( d[13].format().equals( "14CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( transaction.getTargetExt().format().equals( "1BCDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+        Assert.assertTrue( transaction.getExecutiveExt().format().equals( "15CDEFGHIJKLMNOPQRSTUÄÖÜß$." ) );
+    }
+
 }
