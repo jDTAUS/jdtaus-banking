@@ -26,13 +26,14 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.9-SNAPSHOT</version>
+    <version>1.8</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
   <groupId>org.jdtaus.banking.dtaus</groupId>
   <name>jDTAUS Banking RI DTAUS</name>
   <description>jDTAUS DTAUS reference implementation.</description>
+  <version>1.8.1-SNAPSHOT</version>
   <build>
     <resources>
       <resource>
@@ -56,6 +57,13 @@
         </includes>
       </testResource>
     </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.jdtaus.mojo</groupId>
+        <artifactId>jdtaus-container-mojo</artifactId>
+        <version>3.2.1</version>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
     <dependency>
