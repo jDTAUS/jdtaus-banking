@@ -1517,11 +1517,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
             Arrays.fill( newIndex, this.index.length, newIndex.length, -1L );
             this.index = newIndex;
         }
-
-        if ( this.getLogger().isDebugEnabled() && this.index.length != oldLength )
-        {
-            this.getLogger().debug( this.getLogResizeIndexMessage( this.getLocale(), new Long( this.index.length ) ) );
-        }
     }
 
     /**
@@ -2368,28 +2363,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 {
                     readString,
                     convertedNumber
-                });
-
-    }
-
-    /**
-     * Gets the text of message <code>logResizeIndex</code>.
-     * <blockquote><pre>Größe des Index auf "{0,number}" Einträge erweitert.</pre></blockquote>
-     * <blockquote><pre>Resized index to "{0,number}" records.</pre></blockquote>
-     *
-     * @param locale The locale of the message instance to return.
-     * @param indexSize format argument.
-     *
-     * @return the text of message <code>logResizeIndex</code>.
-     */
-    protected String getLogResizeIndexMessage( final Locale locale,
-            final java.lang.Number indexSize )
-    {
-        return ContainerFactory.getContainer().
-            getMessage( this, "logResizeIndex", locale,
-                new Object[]
-                {
-                    indexSize
                 });
 
     }
