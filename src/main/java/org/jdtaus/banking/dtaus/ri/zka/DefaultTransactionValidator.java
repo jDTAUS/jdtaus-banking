@@ -81,7 +81,7 @@ public final class DefaultTransactionValidator implements TransactionValidator
         {
             properties.put( Transaction.PROP_EXECUTIVEBANK, new MandatoryPropertyMessage() );
         }
-        if ( transaction.getExecutiveName() == null )
+        if ( transaction.getExecutiveName() == null || transaction.getExecutiveName().isEmpty() )
         {
             properties.put( Transaction.PROP_EXECUTIVENAME, new MandatoryPropertyMessage() );
         }
@@ -93,7 +93,7 @@ public final class DefaultTransactionValidator implements TransactionValidator
         {
             properties.put( Transaction.PROP_TARGETBANK, new MandatoryPropertyMessage() );
         }
-        if ( transaction.getTargetName() == null )
+        if ( transaction.getTargetName() == null || transaction.getTargetName().isEmpty() )
         {
             properties.put( Transaction.PROP_TARGETNAME, new MandatoryPropertyMessage() );
         }

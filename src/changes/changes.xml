@@ -146,12 +146,20 @@
       format implementation to correctly support the non block aligned tape
       format extension records.]]></action>
       <action dev="schulte2005" type="fix"><![CDATA[
-      Incorrect positions reported when illegal data detected.]]></action>
+      Incorrect positions were reported when detecting illegal data.]]></action>
+      <action dev="schulte2005" type="fix"><![CDATA[
+      A NullPointerException got thrown when updating a logical file with a
+      Header instance having the createDate property equal to null instead
+      of an IllegalHeaderException.]]></action>
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Updated classes DefaultHeaderValidator and DefaultTransactionValidator
+      to correctly validate properties customer, executiveName and targetName
+      disallowing empty texts. Prior to this version properties customer,
+      executiveName and targetName were allowed to be empty.]]></action>
       <action dev="schulte2005" type="update"><![CDATA[
       Removed hardcoded checks of schedules and Textschlüssel constraints during
       reading in favour of interfaces HeaderValidator and
       TransactionValidator.]]></action>
     </release>
-
   </body>
 </document>

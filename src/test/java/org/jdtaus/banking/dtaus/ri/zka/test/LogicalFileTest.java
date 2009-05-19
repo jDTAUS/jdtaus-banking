@@ -388,12 +388,21 @@ public class LogicalFileTest extends TestCase
             file.getLogicalFile( 0 ).setHeader( new Header() );
             throw new AssertionError();
         }
-        catch ( IllegalArgumentException e )
+        catch ( IllegalHeaderException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
-        catch ( NullPointerException e )
+
+        try
+        {
+            final PhysicalFile file = getDTAUSValidHeaderAndChecksum();
+            final Header emptyCustomer = file.getLogicalFile( 0 ).getHeader();
+            emptyCustomer.setCustomer( AlphaNumericText27.valueOf( "" ) );
+            file.getLogicalFile( 0 ).setHeader( emptyCustomer );
+            throw new AssertionError();
+        }
+        catch ( IllegalHeaderException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -433,14 +442,35 @@ public class LogicalFileTest extends TestCase
         try
         {
             lFile.addTransaction( new Transaction() );
-            fail();
+            throw new AssertionError();
         }
-        catch ( IllegalArgumentException e )
+        catch ( IllegalTransactionException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
-        catch ( NullPointerException e )
+
+        try
+        {
+            final Transaction emptyExecutiveName = getLegalTransaction();
+            emptyExecutiveName.setExecutiveName( AlphaNumericText27.valueOf( "" ) );
+            lFile.addTransaction( emptyExecutiveName );
+            throw new AssertionError();
+        }
+        catch ( IllegalTransactionException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+
+        try
+        {
+            final Transaction emptyTargetName = getLegalTransaction();
+            emptyTargetName.setTargetName( AlphaNumericText27.valueOf( "" ) );
+            lFile.addTransaction( emptyTargetName );
+            throw new AssertionError();
+        }
+        catch ( IllegalTransactionException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
