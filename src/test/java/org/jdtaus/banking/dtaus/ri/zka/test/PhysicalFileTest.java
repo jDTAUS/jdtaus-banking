@@ -22,8 +22,6 @@
  */
 package org.jdtaus.banking.dtaus.ri.zka.test;
 
-import java.io.File;
-import java.io.RandomAccessFile;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.jdtaus.banking.Referenznummer10;
@@ -35,7 +33,7 @@ import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.io.FileOperations;
-import org.jdtaus.core.io.util.RandomAccessFileOperations;
+import org.jdtaus.core.io.util.MemoryFileOperations;
 
 /**
  * Tests für {@link org.jdtaus.common.dtaus.PhysicalFile}.
@@ -54,48 +52,31 @@ public class PhysicalFileTest extends TestCase
 
     public void testCreateReadDisk() throws Exception
     {
-        final File tmp = File.createTempFile( "jdtaus", ".dta" );
-        final FileOperations ops = new RandomAccessFileOperations( new RandomAccessFile(
-            tmp.getAbsolutePath(), "rw" ) );
-
+        final FileOperations ops = new MemoryFileOperations();
         final PhysicalFileFactory factory = (PhysicalFileFactory) ContainerFactory.getContainer().
             getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
 
         PhysicalFile pFile = factory.createPhysicalFile( ops, PhysicalFileFactory.FORMAT_DISK );
         this.createLegalFile( pFile );
-        pFile = factory.getPhysicalFile( tmp );
+        pFile = factory.getPhysicalFile( ops );
         pFile.commit();
-        if ( !tmp.delete() )
-        {
-            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
-        }
     }
 
     public void testCreateReadTape() throws Exception
     {
-        final File tmp = File.createTempFile( "jdtaus", ".dta" );
-        final FileOperations ops = new RandomAccessFileOperations( new RandomAccessFile(
-            tmp.getAbsolutePath(), "rw" ) );
-
+        final FileOperations ops = new MemoryFileOperations();
         final PhysicalFileFactory factory = (PhysicalFileFactory) ContainerFactory.getContainer().
             getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
 
         PhysicalFile pFile = factory.createPhysicalFile( ops, PhysicalFileFactory.FORMAT_TAPE );
         this.createLegalFile( pFile );
-        pFile = factory.getPhysicalFile( tmp );
+        pFile = factory.getPhysicalFile( ops );
         pFile.commit();
-        if ( !tmp.delete() )
-        {
-            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
-        }
     }
 
     public void testAddDeleteSimpleDisk() throws Exception
     {
-        final File tmp = File.createTempFile( "jdtaus", ".dta" );
-        final FileOperations ops = new RandomAccessFileOperations( new RandomAccessFile(
-            tmp.getAbsolutePath(), "rw" ) );
-
+        final FileOperations ops = new MemoryFileOperations();
         final PhysicalFileFactory factory = (PhysicalFileFactory) ContainerFactory.getContainer().
             getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
 
@@ -103,18 +84,11 @@ public class PhysicalFileTest extends TestCase
         this.testAddDeleteSimple( pFile );
         Assert.assertTrue( ops.getLength() == 0L );
         pFile.commit();
-        if ( !tmp.delete() )
-        {
-            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
-        }
     }
 
     public void testAddDeleteSimpleTape() throws Exception
     {
-        final File tmp = File.createTempFile( "jdtaus", ".dta" );
-        final FileOperations ops = new RandomAccessFileOperations( new RandomAccessFile(
-            tmp.getAbsolutePath(), "rw" ) );
-
+        final FileOperations ops = new MemoryFileOperations();
         final PhysicalFileFactory factory = (PhysicalFileFactory) ContainerFactory.getContainer().
             getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
 
@@ -122,16 +96,11 @@ public class PhysicalFileTest extends TestCase
         this.testAddDeleteSimple( pFile );
         Assert.assertTrue( ops.getLength() == 0L );
         pFile.commit();
-        if ( !tmp.delete() )
-        {
-            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
-        }
     }
 
     public void testAddDeleteDisk() throws Exception
     {
-        final File tmp = File.createTempFile( "jdtaus", ".dta" );
-        FileOperations ops = new RandomAccessFileOperations( new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
+        final FileOperations ops = new MemoryFileOperations();
         final PhysicalFileFactory factory = (PhysicalFileFactory) ContainerFactory.getContainer().
             getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
 
@@ -139,16 +108,11 @@ public class PhysicalFileTest extends TestCase
         this.testAddDelete( pFile );
         Assert.assertTrue( ops.getLength() == 0L );
         pFile.commit();
-        if ( !tmp.delete() )
-        {
-            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
-        }
     }
 
     public void testAddDeleteTape() throws Exception
     {
-        final File tmp = File.createTempFile( "jdtaus", ".dta" );
-        FileOperations ops = new RandomAccessFileOperations( new RandomAccessFile( tmp.getAbsolutePath(), "rw" ) );
+        final FileOperations ops = new MemoryFileOperations();
         final PhysicalFileFactory factory = (PhysicalFileFactory) ContainerFactory.getContainer().
             getObject( PhysicalFileFactory.class, "jDTAUS Banking SPI" );
 
@@ -156,10 +120,6 @@ public class PhysicalFileTest extends TestCase
         this.testAddDelete( pFile );
         Assert.assertTrue( ops.getLength() == 0L );
         pFile.commit();
-        if ( !tmp.delete() )
-        {
-            System.err.println( "Could not delete " + tmp.getAbsolutePath() );
-        }
     }
 
     private void createLegalFile( final PhysicalFile pFile ) throws Exception
