@@ -33,7 +33,7 @@
   <artifactId>jdtaus-banking-messages</artifactId>
   <name>jDTAUS Banking Messages</name>
   <description>jDTAUS banking application messages.</description>
-  <version>1.8.1-SNAPSHOT</version>
+  <version>1.8.1</version>
   <build>
     <resources>
       <resource>
@@ -67,4 +67,10 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-messages-1.8.1</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-messages-1.8.1</developerConnection>
+    <url>https://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/tags/jdtaus-banking-messages-1.8.1</url>
+  </scm>
 </project>
