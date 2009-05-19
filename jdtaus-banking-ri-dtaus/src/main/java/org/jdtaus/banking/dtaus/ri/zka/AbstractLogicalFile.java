@@ -1488,10 +1488,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
      */
     protected void resizeIndex( final int index, final Checksum checksum )
     {
-        long[] newIndex;
-        int newLength;
-        final int oldLength = this.index == null ? 0 : this.index.length;
-
         // Index initialisieren.
         if ( this.index == null )
         {
@@ -1502,7 +1498,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
 
         while ( this.index.length < index + 1 )
         {
-            newLength = this.index.length * 2;
+            int newLength = this.index.length * 2;
             if ( newLength <= index )
             {
                 newLength = index + 1;
@@ -1512,7 +1508,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 newLength = MAX_TRANSACTIONS;
             }
 
-            newIndex = this.getMemoryManager().allocateLongs( newLength );
+            final long[] newIndex = this.getMemoryManager().allocateLongs( newLength );
             System.arraycopy( this.index, 0, newIndex, 0, this.index.length );
             Arrays.fill( newIndex, this.index.length, newIndex.length, -1L );
             this.index = newIndex;
