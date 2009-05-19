@@ -73,5 +73,11 @@
       the <code>java.util.Locale</code> implementation to use.]]></action>
     </release>
 
+    <release version="1.8.1" date="2009-05-19"
+             description="Maintenance release.">
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Corrected a format argument of the message of class
+      <code>org.jdtaus.banking.messages.ChecksumErrorMessage</code>.]]></action>
+    </release>
   </body>
 </document>
