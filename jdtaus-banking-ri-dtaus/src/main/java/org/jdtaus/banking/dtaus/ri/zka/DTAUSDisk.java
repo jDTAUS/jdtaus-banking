@@ -701,25 +701,38 @@ public final class DTAUSDisk extends AbstractLogicalFile
         num = this.readNumber(
             Fields.FIELD_E4, this.getChecksumPosition() + ERECORD_OFFSETS[3], ERECORD_LENGTH[3], ENCODING_ASCII );
 
-        checksum.setTransactionCount( num.intValue() );
+        if ( num.longValue() != NO_NUMBER )
+        {
+            checksum.setTransactionCount( num.intValue() );
+        }
 
         // Feld 6
         num = this.readNumber(
             Fields.FIELD_E6, this.getChecksumPosition() + ERECORD_OFFSETS[5], ERECORD_LENGTH[5], ENCODING_ASCII );
 
-        checksum.setSumTargetAccount( num.longValue() );
+        if ( num.longValue() != NO_NUMBER )
+        {
+            checksum.setSumTargetAccount( num.longValue() );
+        }
 
         // Feld 7
         num = this.readNumber(
             Fields.FIELD_E7, this.getChecksumPosition() + ERECORD_OFFSETS[6], ERECORD_LENGTH[6], ENCODING_ASCII );
 
-        checksum.setSumTargetBank( num.longValue() );
+        if ( num.longValue() != NO_NUMBER )
+        {
+            checksum.setSumTargetBank( num.longValue() );
+        }
 
         // Feld 8
         num = this.readNumber(
             Fields.FIELD_E8, this.getChecksumPosition() + ERECORD_OFFSETS[7], ERECORD_LENGTH[7], ENCODING_ASCII );
 
-        checksum.setSumAmount( num.longValue() );
+        if ( num.longValue() != NO_NUMBER )
+        {
+            checksum.setSumAmount( num.longValue() );
+        }
+
         return checksum;
     }
 
@@ -1155,9 +1168,12 @@ public final class DTAUSDisk extends AbstractLogicalFile
                     transaction.setTargetExt( txt );
                 }
             }
-            else if ( num.longValue() == 2L && txt != null )
+            else if ( num.longValue() == 2L )
             {
-                desc.add( txt );
+                if ( txt != null )
+                {
+                    desc.add( txt );
+                }
             }
             else if ( num.longValue() == 3L )
             {
@@ -1183,8 +1199,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
                     transaction.setExecutiveExt( txt );
                 }
             }
-            else if ( num.longValue() != NO_NUMBER && num.longValue() != 1L && num.longValue() != 2L &&
-                      num.longValue() != 3L )
+            else if ( num.longValue() != NO_NUMBER )
             {
                 if ( ThreadLocalMessages.isErrorsEnabled() )
                 {

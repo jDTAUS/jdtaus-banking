@@ -680,25 +680,38 @@ public final class DTAUSTape extends AbstractLogicalFile
         num = this.readNumberPackedPositive(
             Fields.FIELD_E4, this.getChecksumPosition() + ERECORD_OFFSETS[4], ERECORD_LENGTH[4], true );
 
-        checksum.setTransactionCount( (int) num );
+        if ( num != NO_NUMBER )
+        {
+            checksum.setTransactionCount( (int) num );
+        }
 
         // Feld 6
         num = this.readNumberPackedPositive(
             Fields.FIELD_E6, this.getChecksumPosition() + ERECORD_OFFSETS[6], ERECORD_LENGTH[6], true );
 
-        checksum.setSumTargetAccount( num );
+        if ( num != NO_NUMBER )
+        {
+            checksum.setSumTargetAccount( num );
+        }
 
         // Feld 7
         num = this.readNumberPackedPositive(
             Fields.FIELD_E7, this.getChecksumPosition() + ERECORD_OFFSETS[7], ERECORD_LENGTH[7], true );
 
-        checksum.setSumTargetBank( num );
+        if ( num != NO_NUMBER )
+        {
+            checksum.setSumTargetBank( num );
+        }
 
         // Feld 8
         num = this.readNumberPackedPositive(
             Fields.FIELD_E8, this.getChecksumPosition() + ERECORD_OFFSETS[8], ERECORD_LENGTH[8], true );
 
-        checksum.setSumAmount( num );
+        if ( num != NO_NUMBER )
+        {
+            checksum.setSumAmount( num );
+        }
+
         return checksum;
     }
 
@@ -1133,9 +1146,12 @@ public final class DTAUSTape extends AbstractLogicalFile
                     transaction.setTargetExt( txt );
                 }
             }
-            else if ( num == 2L && txt != null )
+            else if ( num == 2L )
             {
-                desc.add( txt );
+                if ( txt != null )
+                {
+                    desc.add( txt );
+                }
             }
             else if ( num == 3L )
             {
@@ -1162,7 +1178,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                     transaction.setExecutiveExt( txt );
                 }
             }
-            else if ( num != NO_NUMBER && num != 1L && num != 2L && num != 3L )
+            else if ( num != NO_NUMBER )
             {
                 if ( ThreadLocalMessages.isErrorsEnabled() )
                 {
