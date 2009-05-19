@@ -171,29 +171,6 @@ public final class DTAUSTape extends AbstractLogicalFile
         this.myCalendar.setLenient( false );
     }
 
-    protected int checksumTransaction( final long position, final Transaction transaction, final Checksum checksum )
-        throws IOException
-    {
-        int ret = this.getBlockSize();
-        // Konstanter Teil - 1. Satzabschnitt - Feld 18
-        final long extCount = this.readNumberPackedPositive(
-            Fields.FIELD_C18, position + CRECORD_OFFSETS1[21], CRECORD_LENGTH1[21], true );
-
-        if ( extCount != NO_NUMBER )
-        {
-            final Transaction t = this.readTransaction( position, transaction );
-
-            if ( t.getAmount() != null && t.getTargetAccount() != null && t.getTargetBank() != null )
-            {
-                checksum.add( t );
-            }
-
-            ret += extCount * CRECORD_EXT_LENGTH;
-        }
-
-        return ret;
-    }
-
     protected char getBlockType( final long position ) throws IOException
     {
         // Feld 2
@@ -241,19 +218,6 @@ public final class DTAUSTape extends AbstractLogicalFile
         }
 
         return this.getBlockSize() + extCount * CRECORD_EXT_LENGTH;
-    }
-
-    protected int byteCount( final long position ) throws IOException
-    {
-        long extCount = this.readNumberPackedPositive(
-            Fields.FIELD_C18, position + CRECORD_OFFSETS1[21], CRECORD_LENGTH1[21], true );
-
-        if ( extCount == NO_NUMBER )
-        {
-            extCount = 0;
-        }
-
-        return (int) ( this.getBlockSize() + extCount * CRECORD_EXT_LENGTH );
     }
 
     public Header readHeader() throws IOException

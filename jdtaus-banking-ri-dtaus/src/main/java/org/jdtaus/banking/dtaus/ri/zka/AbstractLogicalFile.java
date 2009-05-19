@@ -643,8 +643,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see #ENCODING_EBCDI
      * @see org.jdtaus.banking.dtaus.spi.Fields
      */
-    protected void writeNumber( final int field, final long position,
-                                final int len, long number, final int encoding )
+    protected void writeNumber( final int field, final long position, final int len, long number, final int encoding )
         throws IOException
     {
         int i;
@@ -855,8 +854,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.Fields
      * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
      */
-    protected Date readShortDate( final int field, final long position, final int encoding )
-        throws IOException
+    protected Date readShortDate( final int field, final long position, final int encoding ) throws IOException
     {
         final int len;
         final String cset;
@@ -968,8 +966,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see #ENCODING_EBCDI
      * @see org.jdtaus.banking.dtaus.spi.Fields
      */
-    protected void writeShortDate( final int field, final long position, final Date date,
-                                   final int encoding ) throws IOException
+    protected void writeShortDate( final int field, final long position, final Date date, final int encoding )
+        throws IOException
     {
         int i;
         final byte[] buf;
@@ -1046,8 +1044,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.Fields
      * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
      */
-    protected Date readLongDate( final int field, final long position, final int encoding )
-        throws IOException
+    protected Date readLongDate( final int field, final long position, final int encoding ) throws IOException
     {
         final int len;
         final String cset;
@@ -1156,8 +1153,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see org.jdtaus.banking.dtaus.spi.Fields
      * @see org.jdtaus.banking.dtaus.ri.zka.ThreadLocalMessages
      */
-    protected void writeLongDate( final int field, final long position, final Date date,
-                                  final int encoding ) throws IOException
+    protected void writeLongDate( final int field, final long position, final Date date, final int encoding )
+        throws IOException
     {
         int i;
         final byte[] buf;
@@ -1234,8 +1231,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @see ThreadLocalMessages#isErrorsEnabled()
      * @see #NO_NUMBER
      */
-    protected long readNumberPackedPositive( final int field, final long position, final int len,
-                                             final boolean sign ) throws IOException
+    protected long readNumberPackedPositive( final int field, final long position, final int len, final boolean sign )
+        throws IOException
     {
         long ret = 0L;
         final int nibbles = 2 * len;
@@ -1488,12 +1485,10 @@ public abstract class AbstractLogicalFile implements LogicalFile
      */
     protected void resizeIndex( final int index, final Checksum checksum )
     {
-        // Index initialisieren.
         if ( this.index == null )
         {
             this.index = this.getMemoryManager().allocateLongs( checksum.getTransactionCount() + 1 );
             Arrays.fill( this.index, -1L );
-            this.index[0] = this.getBlockSize();
         }
 
         while ( this.index.length < index + 1 )
@@ -1724,22 +1719,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected abstract char getBlockType( long position ) throws IOException;
 
     /**
-     * Aktualisierung der Prüfsumme. Addiert die relevanten Daten der an {@code position} beginnenden Transaktion zu
-     * {@code checksum}.
-     *
-     * @param position Position an der die Transaktion beginnt, die zu {@code checksum} addiert werden soll.
-     * @param transaction temporäres Transaction-Objekt, das zum Zwischenspeichern der Transaktionen verwendet werden
-     * soll.
-     * @param checksum Prüfsumme, zu der die Daten der Transaktion addiert werden sollen.
-     *
-     * @return Anzahl Byte die von der Transaktion belegt werden.
-     *
-     * @throws IOException wenn nicht gelesen werden kann.
-     */
-    protected abstract int checksumTransaction( long position, Transaction transaction, Checksum checksum )
-        throws IOException;
-
-    /**
      * Ermittlung der Bytes einer Transaktion.
      *
      * @param transaction Transaktion, für die die Anzahl benötigter Bytes ermittelt werden soll.
@@ -1747,18 +1726,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * @return Anzahl der von {@code transaction} belegten Bytes.
      */
     protected abstract int byteCount( Transaction transaction );
-
-    /**
-     * Ermittlung der belegten Bytes einer Transaktion.
-     *
-     * @param position Position, an der die Transaktion beginnt, für die die Anzahl belegter Bytes ermittelt werden
-     * soll.
-     *
-     * @return Anzahl der von der Transaktion belegten Bytes.
-     *
-     * @throws IOException wenn nicht gelesen werden kann.
-     */
-    protected abstract int byteCount( long position ) throws IOException;
 
     /**
      * Gets implementation meta-data.
@@ -1844,25 +1811,6 @@ public abstract class AbstractLogicalFile implements LogicalFile
         if ( this.cachedHeader == null )
         {
             this.cachedHeader = this.readHeader();
-            IllegalHeaderException result = null;
-            final HeaderValidator[] validators = this.getHeaderValidator();
-            for ( int i = validators.length - 1; i >= 0; i-- )
-            {
-                result = validators[i].assertValidHeader( this.cachedHeader, result );
-            }
-            if ( result != null && result.getMessages().length > 0 )
-            {
-                if ( ThreadLocalMessages.isErrorsEnabled() )
-                {
-                    throw (CorruptedException) new CorruptedException(
-                        this.getImplementation(), this.getHeaderPosition() ).initCause( result );
-
-                }
-                else
-                {
-                    ThreadLocalMessages.getMessages().addMessages( result.getMessages() );
-                }
-            }
         }
 
         return (Header) this.cachedHeader.clone();
@@ -1908,7 +1856,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
     protected void checksum() throws IOException
     {
         final Checksum c = new Checksum();
-        final Transaction t = new Transaction();
+        Transaction t = new Transaction();
         final Task task = new Task();
         task.setIndeterminate( true );
         task.setCancelable( false );
@@ -1934,12 +1882,17 @@ public abstract class AbstractLogicalFile implements LogicalFile
                 while ( position < fileLength && ( type = this.getBlockType( position ) ) == 'C' )
                 {
                     this.resizeIndex( transactionIndex, c );
-                    this.index[transactionIndex++] = position - this.getHeaderPosition();
+                    this.index[transactionIndex] = position - this.getHeaderPosition();
+                    t = this.readTransaction( this.getHeaderPosition() + this.index[transactionIndex++], t );
+                    final int len = this.byteCount( t );
 
-                    final int len = this.checksumTransaction( position, t, c );
                     if ( t.getCurrency() != null )
                     {
                         this.counter.add( t.getCurrency() );
+                    }
+                    if ( t.getAmount() != null && t.getTargetAccount() != null && t.getTargetBank() != null )
+                    {
+                        c.add( t );
                     }
 
                     position += len;
@@ -2056,32 +2009,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             throw new ArrayIndexOutOfBoundsException( index );
         }
 
-        final Transaction transaction = this.readTransaction(
-            this.getHeaderPosition() + this.index[index], new Transaction() );
-
-        IllegalTransactionException result = null;
-        final TransactionValidator[] validators = this.getTransactionValidator();
-
-        for ( int i = validators.length - 1; i >= 0; i-- )
-        {
-            result = validators[i].assertValidTransaction( this, transaction, result );
-        }
-
-        if ( result != null && result.getMessages().length > 0 )
-        {
-            if ( ThreadLocalMessages.isErrorsEnabled() )
-            {
-                throw (CorruptedException) new CorruptedException(
-                    this.getImplementation(), this.getHeaderPosition() + this.index[index] ).initCause( result );
-
-            }
-            else
-            {
-                ThreadLocalMessages.getMessages().addMessages( result.getMessages() );
-            }
-        }
-
-        return transaction;
+        return this.readTransaction( this.index[index] + this.getHeaderPosition(), new Transaction() );
     }
 
     public Transaction setTransaction( final int index, final Transaction transaction ) throws IOException
@@ -2168,7 +2096,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
         checksum.subtract( removed );
         this.counter.substract( removed.getCurrency() );
 
-        final int len = this.byteCount( this.getHeaderPosition() + this.index[index] );
+        final int len = this.byteCount( removed );
         this.removeBytes( this.getHeaderPosition() + this.index[index], len );
         this.setChecksumPosition( this.getChecksumPosition() - len );
         for ( int i = index + 1; i < this.index.length; i++ )
@@ -2177,6 +2105,7 @@ public abstract class AbstractLogicalFile implements LogicalFile
             {
                 this.index[i] -= len;
             }
+
             this.index[i - 1] = this.index[i];
         }
 
