@@ -126,7 +126,6 @@
       </container:properties>
       <container:messages>
         <container:reference container:name="readNumberIllegalFileInfo"/>
-        <container:reference container:name="logResizeIndex"/>
       </container:messages>
     </container:implementation>
     <!--                                                                     -->
@@ -416,15 +415,6 @@
       <container:arguments>
         <container:argument container:index="0" container:name="readString" container:type="text"/>
         <container:argument container:index="1" container:name="convertedNumber" container:type="number"/>
-      </container:arguments>
-    </container:message>
-    <container:message container:name="logResizeIndex">
-      <container:template container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[Resized index to "{0,number}" records.]]></container:text>
-        <container:text container:language="de"><![CDATA[Größe des Index auf "{0,number}" Einträge erweitert.]]></container:text>
-      </container:template>
-      <container:arguments>
-        <container:argument container:index="0" container:name="indexSize" container:type="number"/>
       </container:arguments>
     </container:message>
     <container:message container:name="illegalAttributeType">
