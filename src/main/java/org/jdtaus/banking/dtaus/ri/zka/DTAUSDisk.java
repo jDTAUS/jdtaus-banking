@@ -261,29 +261,6 @@ public final class DTAUSDisk extends AbstractLogicalFile
         super();
     }
 
-    protected int checksumTransaction( final long position, final Transaction transaction, final Checksum checksum )
-        throws IOException
-    {
-        int ret = this.getBlockSize() * 2;
-
-        final long extCount = this.readNumber(
-            Fields.FIELD_C18, position + this.getBlockSize() + CRECORD_OFFSETS2[4], CRECORD_LENGTH2[4],
-            ENCODING_ASCII ).longValue();
-
-        if ( extCount != NO_NUMBER )
-        {
-            final Transaction t = this.readTransaction( position, transaction );
-            if ( t.getAmount() != null && t.getTargetAccount() != null && t.getTargetBank() != null )
-            {
-                checksum.add( t );
-            }
-
-            ret = CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[(int) extCount];
-        }
-
-        return ret * this.getBlockSize();
-    }
-
     protected char getBlockType( final long position ) throws IOException
     {
         // Feld 2
@@ -1424,20 +1401,6 @@ public final class DTAUSDisk extends AbstractLogicalFile
         }
 
         return CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[extCount] * this.getBlockSize();
-    }
-
-    protected int byteCount( final long position ) throws IOException
-    {
-        long extCount = this.readNumber(
-            Fields.FIELD_C18, position + this.getBlockSize() + CRECORD_OFFSETS2[4], CRECORD_LENGTH2[4],
-            ENCODING_ASCII ).longValue();
-
-        if ( extCount == NO_NUMBER )
-        {
-            extCount = 0L;
-        }
-
-        return CRECORD_EXTENSIONCOUNT_TO_BLOCKCOUNT[(int) extCount] * this.getBlockSize();
     }
 
     protected int getBlockSize()

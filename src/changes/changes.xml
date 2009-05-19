@@ -143,8 +143,8 @@
       <action dev="schulte2005" type="fix"><![CDATA[
       Prior to this version tape format extension records were written block
       aligned using a block size of 150 bytes. This version corrects the tape
-      format implementation to correctly support the non block aligned tape
-      format extension records.]]></action>
+      format implementation to correctly support non block aligned tape format
+      extension records.]]></action>
       <action dev="schulte2005" type="fix"><![CDATA[
       Incorrect positions were reported when detecting illegal data.]]></action>
       <action dev="schulte2005" type="fix"><![CDATA[
@@ -157,9 +157,18 @@
       disallowing empty texts. Prior to this version properties customer,
       executiveName and targetName were allowed to be empty.]]></action>
       <action dev="schulte2005" type="update"><![CDATA[
-      Removed hardcoded checks of schedules and Textschlüssel constraints during
-      reading in favour of interfaces HeaderValidator and
-      TransactionValidator.]]></action>
+      Removed redundant checks of schedules and currency and Textschlüssel
+      constraints during reading in favour of interfaces HeaderValidator and
+      TransactionValidator. Prior to this version any A record got validated
+      to specify a valid schedule and any C record got validated to hold correct
+      currency and Textschlüssel information during reading/checksumming a file.
+      The implementation now supports reading A records with illegal schedules
+      and C records with incompatible currencies or Textschlüssel information
+      without reporting an illegal file. Starting with this version an
+      application needs to validate schedules, currencies and Textschlüssel
+      information itself - that is - any validation performed during
+      checksumming/reading is only used for detecting corrupted or unsupported
+      files.]]></action>
     </release>
   </body>
 </document>
