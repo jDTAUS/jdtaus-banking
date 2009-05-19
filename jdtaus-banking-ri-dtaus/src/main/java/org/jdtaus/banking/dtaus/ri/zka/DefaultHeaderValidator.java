@@ -99,7 +99,7 @@ public final class DefaultHeaderValidator implements HeaderValidator
             properties.put( Header.PROP_BANKDATA, new MandatoryPropertyMessage() );
         }
 
-        if ( header.getCustomer() == null )
+        if ( header.getCustomer() == null || header.getCustomer().isEmpty() )
         {
             properties.put( Header.PROP_CUSTOMER, new MandatoryPropertyMessage() );
         }
@@ -203,37 +203,40 @@ public final class DefaultHeaderValidator implements HeaderValidator
 
         }
 
-        final Currency[] oldCurrencies = this.getCurrencyMapper().getDtausCurrencies(
-            lFile.getHeader().getCreateDate() );
-
-        final Currency[] newCurrencies = this.getCurrencyMapper().getDtausCurrencies( header.getCreateDate() );
-
-        if ( !Arrays.equals( oldCurrencies, newCurrencies ) )
+        if ( header.getCreateDate() != null )
         {
-            final Currency[] current = counter.getCurrencies();
-            for ( int i = current.length - 1; i >= 0; i-- )
+            final Currency[] oldCurrencies = this.getCurrencyMapper().getDtausCurrencies(
+                lFile.getHeader().getCreateDate() );
+
+            final Currency[] newCurrencies = this.getCurrencyMapper().getDtausCurrencies( header.getCreateDate() );
+
+            if ( !Arrays.equals( oldCurrencies, newCurrencies ) )
             {
-                boolean currencyKept = false;
-
-                for ( int j = newCurrencies.length - 1; j >= 0; j-- )
+                final Currency[] current = counter.getCurrencies();
+                for ( int i = current.length - 1; i >= 0; i-- )
                 {
-                    if ( newCurrencies[j].getCurrencyCode().equals( current[i].getCurrencyCode() ) )
-                    {
-                        currencyKept = true;
-                        break;
-                    }
-                }
+                    boolean currencyKept = false;
 
-                if ( !currencyKept )
-                {
-                    if ( e == null )
+                    for ( int j = newCurrencies.length - 1; j >= 0; j-- )
                     {
-                        e = new IllegalHeaderException();
+                        if ( newCurrencies[j].getCurrencyCode().equals( current[i].getCurrencyCode() ) )
+                        {
+                            currencyKept = true;
+                            break;
+                        }
                     }
 
-                    e.addMessage( new CurrencyConstraintMessage(
-                        current[i].getCurrencyCode(), header.getCreateDate() ) );
+                    if ( !currencyKept )
+                    {
+                        if ( e == null )
+                        {
+                            e = new IllegalHeaderException();
+                        }
 
+                        e.addMessage( new CurrencyConstraintMessage(
+                            current[i].getCurrencyCode(), header.getCreateDate() ) );
+
+                    }
                 }
             }
         }
