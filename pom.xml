@@ -46,6 +46,26 @@
     <system>MantisBT</system>
     <url>https://apps.sourceforge.net/mantisbt/jdtaus/</url>
   </issueManagement>
+  <contributors>
+    <contributor>
+      <name>Alexander Menz</name>
+    </contributor>
+    <contributor>
+      <name>Joachim Nelz</name>
+    </contributor>
+    <contributor>
+      <name>Owe Bretthauer</name>
+    </contributor>
+    <contributor>
+      <name>Tobias Genannt</name>
+    </contributor>
+    <contributor>
+      <name>Paolo Razzi</name>
+    </contributor>
+    <contributor>
+      <name>Claudio Di Vita</name>
+    </contributor>
+  </contributors>
   <build>
     <pluginManagement>
       <plugins>
