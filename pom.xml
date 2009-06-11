@@ -155,6 +155,7 @@
               <compress>true</compress>
               <manifestEntries>
                 <Build-Date>${buildNumber}</Build-Date>
+                <Maven-Version>${maven.version}</Maven-Version>
               </manifestEntries>
             </archive>
           </configuration>
@@ -230,6 +231,7 @@
               <compress>true</compress>
               <manifestEntries>
                 <Build-Date>${buildNumber}</Build-Date>
+                <Maven-Version>${maven.version}</Maven-Version>
               </manifestEntries>
             </archive>
           </configuration>
@@ -303,6 +305,7 @@
               <compress>true</compress>
               <manifestEntries>
                 <Build-Date>${buildNumber}</Build-Date>
+                <Maven-Version>${maven.version}</Maven-Version>
               </manifestEntries>
             </archive>
           </configuration>
@@ -380,7 +383,14 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.2</version>
+          <version>1.3</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>maven-version</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <artifactId>maven-scm-plugin</artifactId>
@@ -398,6 +408,10 @@
     <plugins>
       <plugin>
         <artifactId>buildnumber-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>build-helper-maven-plugin</artifactId>
         <groupId>org.codehaus.mojo</groupId>
       </plugin>
       <plugin>
