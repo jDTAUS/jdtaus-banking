@@ -55,6 +55,13 @@
         <directory>src/test/resources</directory>
       </testResource>
     </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.jdtaus.mojo</groupId>
+        <artifactId>jdtaus-container-mojo</artifactId>
+        <version>3.2.1</version>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
     <dependency>
