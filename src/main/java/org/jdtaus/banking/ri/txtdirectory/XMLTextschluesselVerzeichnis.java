@@ -189,7 +189,6 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         {
             this.assertValidProperties();
             this.assertInitialized();
-            this.checkForModifications();
 
             final Textschluessel[] ret =
                 new Textschluessel[ this.instances.length ];
@@ -244,7 +243,6 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         {
             this.assertValidProperties();
             this.assertInitialized();
-            this.checkForModifications();
 
             Textschluessel ret = null;
 
@@ -307,7 +305,6 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         {
             this.assertValidProperties();
             this.assertInitialized();
-            this.checkForModifications();
 
             final Collection col = new ArrayList( this.instances.length );
 
@@ -353,10 +350,10 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     private Textschluessel[] instances;
 
     /** Maps {@code File} instances to theire last modification timestamp. */
-    private Map monitorMap;
+    private final Map monitorMap = new HashMap();
 
     /** Holds the timestamp resources got checked for modifications. */
-    private long lastCheck;
+    private long lastCheck = System.currentTimeMillis();
 
     /**
      * Number of milliseconds to pass before resources are checked for
@@ -411,13 +408,36 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * @see #parseResources()
      * @see #transformDocument(Document)
      */
-    private void assertInitialized() throws IOException,
+    private synchronized void assertInitialized() throws IOException,
         ParserConfigurationException, SAXException, ParseException
     {
+        if ( System.currentTimeMillis() - this.lastCheck >
+             this.getReloadIntervalMillis() && !this.monitorMap.isEmpty() )
+        {
+            this.lastCheck = System.currentTimeMillis();
+            for ( Iterator it = this.monitorMap.entrySet().
+                iterator(); it.hasNext(); )
+            {
+                final Map.Entry entry = (Map.Entry) it.next();
+                final File file = (File) entry.getKey();
+                final Long lastModified = (Long) entry.getValue();
+
+                assert lastModified != null : "Expected modification time.";
+
+                if ( file.lastModified() != lastModified.longValue() )
+                {
+                    this.getLogger().info( this.getChangeInfoMessage(
+                        this.getLocale(), file.getAbsolutePath() ) );
+
+                    this.initialized = false;
+                    break;
+                }
+            }
+        }
+
         if ( !this.initialized )
         {
-            this.monitorMap = new HashMap();
-            this.lastCheck = System.currentTimeMillis();
+            this.monitorMap.clear();
 
             final List/*<Document>*/ documents = this.parseResources();
             final Collection parsedTextschluessel = new LinkedList();
@@ -541,33 +561,6 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
             this.getLogger().info( this.getNotMonitoringWarningMessage(
                 this.getLocale(), url.toExternalForm(), e.getMessage() ) );
 
-        }
-    }
-
-    /** Reloads the XML files when detecting a change. */
-    private void checkForModifications()
-    {
-        if ( System.currentTimeMillis() - this.lastCheck >
-             this.getReloadIntervalMillis() && this.monitorMap.size() > 0 )
-        {
-            for ( Iterator it = this.monitorMap.entrySet().
-                iterator(); it.hasNext(); )
-            {
-                final Map.Entry entry = (Map.Entry) it.next();
-                final File file = (File) entry.getKey();
-                final Long lastModified = (Long) entry.getValue();
-
-                assert lastModified != null : "Expected modification time.";
-
-                if ( file.lastModified() != lastModified.longValue() )
-                {
-                    this.getLogger().info( this.getChangeInfoMessage(
-                        this.getLocale(), file.getAbsolutePath() ) );
-
-                    this.initialized = false;
-                    break;
-                }
-            }
         }
     }
 
