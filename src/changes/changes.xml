@@ -102,5 +102,13 @@
       schemaLocation attribute by disabling schema validation for such
       resources.]]></action>
     </release>
+
+    <release version="1.8.2" date="2009-07-01"
+             description="Bugfix release.">
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Corrected a <code>DuplicateCurrencyException</code> thrown whenever
+      (re-)initialization is performed by multiple threads concurrently.]]></action>
+    </release>
+
   </body>
 </document>

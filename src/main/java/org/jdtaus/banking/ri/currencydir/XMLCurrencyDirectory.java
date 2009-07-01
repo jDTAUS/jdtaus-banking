@@ -191,7 +191,6 @@ public class XMLCurrencyDirectory implements CurrencyMapper
 
             this.assertValidProperties();
             this.assertInitialized();
-            this.checkForModifications();
 
             final Collection col = new LinkedList();
             for ( Iterator it = this.isoMap.keySet().iterator(); it.hasNext(); )
@@ -237,7 +236,6 @@ public class XMLCurrencyDirectory implements CurrencyMapper
         {
             this.assertValidProperties();
             this.assertInitialized();
-            this.checkForModifications();
 
             final XMLCurrency currency =
                 (XMLCurrency) this.dtausMap.get( new Character( code ) );
@@ -284,7 +282,6 @@ public class XMLCurrencyDirectory implements CurrencyMapper
         {
             this.assertValidProperties();
             this.assertInitialized();
-            this.checkForModifications();
 
             final XMLCurrency xml =
                 (XMLCurrency) this.isoMap.get( currency.getCurrencyCode() );
@@ -324,16 +321,16 @@ public class XMLCurrencyDirectory implements CurrencyMapper
     private boolean initialized;
 
     /** Maps ISO codes to currency instances. */
-    private Map isoMap;
+    private final Map isoMap = new HashMap();
 
     /** Maps DTAUS codes to currency instances. */
-    private Map dtausMap;
+    private final Map dtausMap = new HashMap();
 
     /** Maps {@code File} instances to theire last modification timestamp. */
-    private Map monitorMap;
+    private final Map monitorMap = new HashMap();
 
     /** Holds the timestamp resources got checked for modifications. */
-    private long lastCheck;
+    private long lastCheck = System.currentTimeMillis();
 
     /**
      * Number of milliseconds to pass before resources are checked for
@@ -388,14 +385,40 @@ public class XMLCurrencyDirectory implements CurrencyMapper
      * @see #parseResources()
      * @see #transformDocument(Document)
      */
-    private void assertInitialized()
+    private synchronized void assertInitialized()
         throws IOException, ParserConfigurationException, SAXException,
                ParseException
     {
+        if ( System.currentTimeMillis() - this.lastCheck >
+             this.getReloadIntervalMillis() && !this.monitorMap.isEmpty() )
+        {
+            this.lastCheck = System.currentTimeMillis();
+            for ( Iterator it = this.monitorMap.entrySet().
+                iterator(); it.hasNext(); )
+            {
+                final Map.Entry entry = (Map.Entry) it.next();
+                final File file = (File) entry.getKey();
+                final Long lastModified = (Long) entry.getValue();
+
+                assert lastModified != null : "Expected modification time.";
+
+                if ( file.lastModified() != lastModified.longValue() )
+                {
+                    this.getLogger().info(
+                        this.getChangeInfoMessage( this.getLocale(),
+                                                   file.getAbsolutePath() ) );
+
+                    this.initialized = false;
+                    break;
+                }
+            }
+        }
+
         if ( !this.initialized )
         {
-            this.monitorMap = new HashMap();
-            this.lastCheck = System.currentTimeMillis();
+            this.monitorMap.clear();
+            this.isoMap.clear();
+            this.dtausMap.clear();
 
             final Document docs[] = this.parseResources();
             final Collection col = new LinkedList();
@@ -406,9 +429,6 @@ public class XMLCurrencyDirectory implements CurrencyMapper
                     this.transformDocument( docs[i] ) ) );
 
             }
-
-            this.isoMap = new HashMap( col.size() );
-            this.dtausMap = new HashMap( col.size() );
 
             for ( Iterator it = col.iterator(); it.hasNext(); )
             {
@@ -511,34 +531,6 @@ public class XMLCurrencyDirectory implements CurrencyMapper
                                                      url.toExternalForm(),
                                                      e.getMessage() ) );
 
-        }
-    }
-
-    /** Reloads the XML files when detecting a change. */
-    private void checkForModifications()
-    {
-        if ( System.currentTimeMillis() - this.lastCheck >
-             this.getReloadIntervalMillis() && this.monitorMap.size() > 0 )
-        {
-            for ( Iterator it = this.monitorMap.entrySet().
-                iterator(); it.hasNext(); )
-            {
-                final Map.Entry entry = (Map.Entry) it.next();
-                final File file = (File) entry.getKey();
-                final Long lastModified = (Long) entry.getValue();
-
-                assert lastModified != null : "Expected modification time.";
-
-                if ( file.lastModified() != lastModified.longValue() )
-                {
-                    this.getLogger().info(
-                        this.getChangeInfoMessage( this.getLocale(),
-                                                   file.getAbsolutePath() ) );
-
-                    this.initialized = false;
-                    break;
-                }
-            }
         }
     }
 
