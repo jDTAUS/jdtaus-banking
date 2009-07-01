@@ -132,5 +132,12 @@
       <action dev="schulte2005" type="update"><![CDATA[
       Added a recent bankfile valid from 2009-06-08 to 2009-09-06.]]></action>
     </release>
+
+    <release version="1.8.3" date="2009-07-01"
+             description="Bugfix release.">
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Corrected an <code>IllegalArgumentException</code> thrown whenever
+      initialization is performed by multiple threads concurrently.]]></action>
+    </release>
   </body>
 </document>

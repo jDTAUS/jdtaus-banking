@@ -334,7 +334,7 @@ public class BundesbankBankleitzahlenVerzeichnis
      * @see #assertValidProperties()
      * @see #getFileResources()
      */
-    private void assertInitialized()
+    private synchronized void assertInitialized()
     {
         if ( !this.initialized )
         {
