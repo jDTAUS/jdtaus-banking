@@ -5,7 +5,7 @@
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
-  <cs@jdtaus.org> (+49 2331 3543887)
+  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Document   : module.xml
-  Author     : Christian Schulte <cs@jdtaus.org>
+  Author     : Christian Schulte <schulte2005@users.sourceforge.net>
   Version    : $Id$
   Description: Runtime configuration for the ${pom.name} module.
 
@@ -30,7 +30,7 @@
 -->
 <container:module xmlns:container="http://jdtaus.org/core/model/container"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://sites.jdtaus.org/jdtaus-core/1.0.x/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
+                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://jdtaus.sourceforge.net/1.0.x/jdtaus-core/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
                   container:name="${pom.name}"
                   container:version="${pom.version}"
                   container:modelVersion="1.4">

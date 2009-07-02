@@ -5,7 +5,7 @@
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
-  <cs@jdtaus.org> (+49 2331 3543887)
+  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -22,13 +22,13 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Document    : jdtaus-banking-1.0.xsd
-  Author      : Christian Schulte <cs@jdtaus.org>
+  Author      : Christian Schulte <schulte2005@users.sourceforge.net>
   Description : jDTAUS Banking Model.
 
   Example usage:
 
   <xsd:import namespace="http://jdtaus.org/banking/model"
-              schemaLocation="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
+              schemaLocation="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
 
   The recommended namespace prefix is "banking".
 
@@ -45,7 +45,7 @@
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
-  <cs@jdtaus.org> (+49 2331 3543887)
+  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -62,13 +62,13 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Document    : jdtaus-banking-1.0.xsd
-  Author      : Christian Schulte <cs@jdtaus.org>
+  Author      : Christian Schulte <schulte2005@users.sourceforge.net>
   Description : jDTAUS Banking Model.
 
   Example usage:
 
   <xsd:import namespace="http://jdtaus.org/banking/model"
-              schemaLocation="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
+              schemaLocation="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
 
   The recommended namespace prefix is "banking".
 

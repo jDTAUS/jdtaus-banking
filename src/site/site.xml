@@ -2,17 +2,9 @@
 <project name="jDTAUS Banking">
   <body>
 
-    <head>
-      <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
-      <script type="text/javascript">
-        _uacct = "UA-416120-1";
-        urchinTracker();
-      </script>
-    </head>
-
     <menu name="jDTAUS Banking">
-      <item name="Home" href="http://www.jdtaus.org/"/>
-      <item name="Introduction" href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/index.html"/>
+      <item name="Home" href="http://jdtaus.sourecforge.net/"/>
+      <item name="Introduction" href="http://jdtaus.sourecforge.net/1.0.x/jdtaus-banking/index.html"/>
     </menu>
 
     <menu ref="reports"/>

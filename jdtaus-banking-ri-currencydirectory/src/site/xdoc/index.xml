@@ -2,7 +2,7 @@
 <document>
   <properties>
     <title>jDTAUS Banking RI CurrencyDirectory</title>
-    <author email="cs@jdtaus.org">Christian Schulte</author>
+    <author email="schulte2005@users.sourceforge.net">Christian Schulte</author>
   </properties>
   <body>
     <section name="Introduction">
@@ -26,10 +26,10 @@
           <tr>
             <td>http://jdtaus.org/banking/xml/currencies</td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd">jdtaus-currencies-1.0.xsd</a>
+              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd">jdtaus-currencies-1.0.xsd</a>
             </td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/currencies-1.0.xml">currencies-1.0.xml</a>
+              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.0.xml">currencies-1.0.xml</a>
             </td>
             <td>1.0</td>
             <td>2.0</td>
@@ -37,10 +37,10 @@
           <tr>
             <td>http://jdtaus.org/banking/model</td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd">jdtaus-banking-1.0.xsd</a>
+              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd">jdtaus-banking-1.0.xsd</a>
             </td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/currencies-1.1.xml">currencies-1.1.xml</a>
+              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.1.xml">currencies-1.1.xml</a>
             </td>
             <td>1.4</td>
             <td>2.0</td>
@@ -48,10 +48,10 @@
           <tr>
             <td>http://jdtaus.org/banking/model</td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd">jdtaus-banking-1.1.xsd</a>
+              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd">jdtaus-banking-1.1.xsd</a>
             </td>
             <td>
-              <a href="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/currencies-1.2.xml">currencies-1.2.xml</a>
+              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.2.xml">currencies-1.2.xml</a>
             </td>
             <td>1.8</td>
             <td></td>

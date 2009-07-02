@@ -2,7 +2,7 @@
 <!--
 
   jDTAUS - DTAUS fileformat.
-  Copyright (c) 2005 Christian Schulte <cs@schulte.it>
+  Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Document    : jdtaus-currencies-1.0.xsd
-  Autor       : Christian Schulte <cs@jdtaus.org>
+  Autor       : Christian Schulte <schulte2005@users.sourceforge.net>
   Beschreibung: Schema for the XML model of the CurrencyDirectory.
 
   Beispiel:
@@ -28,7 +28,7 @@
   <jdtaus:currencies xmlns="http://jdtaus.org/banking/xml/currencies"
       xmlns:jdtaus="http://jdtaus.org/banking/xml/currencies"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://jdtaus.org/banking/xml/currencies http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-ri-currencydirectory/jdtaus-currencies-1.0.xsd"
+      xsi:schemaLocation="http://jdtaus.org/banking/xml/currencies http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/jdtaus-currencies-1.0.xsd"
       jdtaus:version="1.0">
 
   </jdtaus:currencies>
@@ -43,5 +43,5 @@
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
 
-  <xsd:include schemaLocation="http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd"/>
+  <xsd:include schemaLocation="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd"/>
 </xsd:schema>

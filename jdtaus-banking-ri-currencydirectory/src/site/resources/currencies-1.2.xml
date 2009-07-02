@@ -2,7 +2,7 @@
 <!--
 
   jDTAUS Banking RI CurrencyDirectory
-  Copyright (c) 2005 Christian Schulte <cs@schulte.it>
+  Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -19,14 +19,14 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Document   : currencies-1.1.xml
-  Author     : Christian Schulte <cs@jdtaus.org>
+  Author     : Christian Schulte <schulte2005@users.sourceforge.net>
   Version    : $Id$
   Description: ZKA currencies.
 
 -->
 <banking:currencyList xmlns:banking="http://jdtaus.org/banking/model"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                      xsi:schemaLocation="http://jdtaus.org/banking/model http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd"
+                      xsi:schemaLocation="http://jdtaus.org/banking/model http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd"
                       banking:modelVersion="1.0">
 
   <banking:currency banking:isoCode="EUR" banking:dtausCode="1"

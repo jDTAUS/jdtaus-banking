@@ -5,7 +5,7 @@
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
-  <cs@jdtaus.org> (+49 2331 3543887)
+  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Document   : textschluessel-1.1.xml
-  Author     : Christian Schulte <cs@jdtaus.org>
+  Author     : Christian Schulte <schulte2005@users.sourceforge.net>
   Version    : $Id$
   Description: ZKA Textschlüssel.
 
@@ -30,7 +30,7 @@
 <jdtaus:textschluessel xmlns="http://jdtaus.org/banking/xml/textschluessel"
                        xmlns:jdtaus="http://jdtaus.org/banking/xml/textschluessel"
                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                       xsi:schemaLocation="http://jdtaus.org/banking/xml/textschluessel http://sites.jdtaus.org/jdtaus-banking/1.0.x/jdtaus-banking-schemas/jdtaus-textschluessel-1.1.xsd"
+                       xsi:schemaLocation="http://jdtaus.org/banking/xml/textschluessel http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-textschluessel-1.1.xsd"
                        jdtaus:version="1.1">
 
   <jdtaus:transactionTypes>

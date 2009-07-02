@@ -11,7 +11,7 @@ import org.jdtaus.banking.spi.it.CurrencyMapperTest;
 /**
  * Base tests for the {@link XMLCurrencyDirectory} implementation.
  *
- * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
+ * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
 public abstract class AbstractXMLCurrencyDirectoryTest
