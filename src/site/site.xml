@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="jDTAUS Banking">
   <body>
-
     <menu name="jDTAUS Banking">
-      <item name="Home" href="http://jdtaus.sourecforge.net/"/>
-      <item name="Introduction" href="http://jdtaus.sourecforge.net/1.0.x/jdtaus-banking/index.html"/>
+      <item name="Home" href="http://jdtaus.sourceforge.net/"/>
+      <item name="Introduction" href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/index.html"/>
     </menu>
-
     <menu ref="reports"/>
   </body>
 </project>
