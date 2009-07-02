@@ -26,7 +26,7 @@
   <parent>
     <artifactId>jdtaus-site</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus</groupId>
@@ -189,7 +189,7 @@
               </goals>
               <configuration>
                 <resourceBundles>
-                  <resourceBundle>org.jdtaus:jdtaus-lgpl-resource-bundle:1.3-SNAPSHOT</resourceBundle>
+                  <resourceBundle>org.jdtaus:jdtaus-lgpl-resource-bundle:1.3</resourceBundle>
                 </resourceBundles>
                 <properties>
                   <buildNumber>${buildNumber}</buildNumber>
@@ -788,8 +788,8 @@
     </profile>
   </profiles>
   <properties>
-    <jdtausCoreVersion>1.9-SNAPSHOT</jdtausCoreVersion>
-    <jdtausContainerMojoVersion>3.3-SNAPSHOT</jdtausContainerMojoVersion>
+    <jdtausCoreVersion>1.9</jdtausCoreVersion>
+    <jdtausContainerMojoVersion>3.3</jdtausContainerMojoVersion>
     <jdtausBankingVersion>1.9-SNAPSHOT</jdtausBankingVersion>
     <mavenJavadocPluginVersion>2.5</mavenJavadocPluginVersion>
     <mavenJxrPluginVersion>2.1</mavenJxrPluginVersion>
