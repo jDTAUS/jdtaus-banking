@@ -790,7 +790,7 @@
   <properties>
     <jdtausCoreVersion>1.9</jdtausCoreVersion>
     <jdtausContainerMojoVersion>3.3</jdtausContainerMojoVersion>
-    <jdtausBankingVersion>1.9</jdtausBankingVersion>
+    <jdtausBankingVersion>1.10-SNAPSHOT</jdtausBankingVersion>
     <mavenJavadocPluginVersion>2.5</mavenJavadocPluginVersion>
     <mavenJxrPluginVersion>2.1</mavenJxrPluginVersion>
     <mavenPmdPluginVersion>2.4</mavenPmdPluginVersion>
