@@ -191,5 +191,43 @@
       <action dev="schulte2005" type="fix"><![CDATA[
       Corrected GPG signatures.]]></action>
     </release>
+    <release version="1.10" date="2009-07-13"
+             description="Bugfix release.">
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Updated classes<ul>
+      <li><code>org.jdtaus.banking.AlphaNumericText27</code>:<blockquote>
+      Corrected method <code>parse(String, ParsePosition)</code> to return the
+      correct index of the next character to parse on successful parsing.
+      Prior to this change the <code>parse(String)</code> method did not throw a
+      <code>ParseException</code> for texts of length 28 and the
+      <code>valueOf(String)</code> method did not throw an
+      <code>IllegalArgumentException</code> for texts of length 28.</li></ul>]]></action>
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Updated classes<ul>
+      <li><code>org.jdtaus.banking.AlphaNumericText27</code></li>
+      <li><code>org.jdtaus.banking.Bankleitzahl</code></li>
+      <li><code>org.jdtaus.banking.Kontonummer</code></li>
+      <li><code>org.jdtaus.banking.Referenznummer10</code></li>
+      <li><code>org.jdtaus.banking.Referenznummer11</code></li>
+      <blockquote>Corrected method <code>parse(String, ParsePosition)</code> to
+      correctly fail parsing illegal letter format values. Prior to this change
+      parsing allowed space characters to appear anywhere in the input string.
+      This change strengthens parsing to disallow space characters to appear
+      at illegal positions.</blockquote></ul>]]></action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated classes<ul>
+      <li><code>org.jdtaus.banking.Bankleitzahl</code>:<blockquote>
+      Added methods <code>isClearingAreaCodeSupported()</code>,
+      <code>isLocalityCodeSupported()</code> and
+      <code>isNetworkCodeSupported()</code> to support instances with fewer
+      than 8 digits. Prior to this change the <code>checkBankleitzahl()</code>
+      method rejected any values with fewer than 8 digits. This version adds
+      support for instances with fewer digits.</blockquote></li></ul>]]></action>
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated classes<ul>
+      <li><code>org.jdtaus.banking.Bankleitzahl</code>:<blockquote>
+      Deprecated method <code>getClearingArea()</code> in favour of method
+      <code>getClearingAreaCode()</code>.</blockquote></li></ul>]]></action>
+    </release>
   </body>
 </document>
