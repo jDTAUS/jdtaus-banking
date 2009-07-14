@@ -146,5 +146,25 @@
       <action dev="schulte2005" type="fix"><![CDATA[
       Corrected GPG signatures.]]></action>
     </release>
+    <release version="1.10" date="2009-07-14" description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Added Textschlüssel<ul>
+      <li>05010</li>
+      <li>51505</li>
+      <li>51506</li>
+      <li>51510</li>
+      <li>67000</li>
+      <li>67888</li>
+      <li>68000</li>
+      <li>68888</li>
+      <li>69000</li>
+      <li>69888</li>
+      </ul> valid from 2009-11-01.]]></action>
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Added Textschlüssel<ul>
+      <li>51888</li>
+      <li>53888</li>
+      </ul>.]]></action>
+    </release>
   </body>
 </document>

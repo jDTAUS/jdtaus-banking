@@ -109,5 +109,16 @@
       <action dev="schulte2005" type="fix"><![CDATA[
       Corrected GPG signatures.]]></action>
     </release>
+    <release version="1.10" date="2009-07-14" description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      Updated classes:<ul>
+      <li>org.jdtaus.banking.util.swing.AlphaNumericText27TextField</li>
+      <li>org.jdtaus.banking.util.swing.BankleitzahlTextField</li>
+      <li>org.jdtaus.banking.util.swing.KontonummerTextField</li>
+      <li>org.jdtaus.banking.util.swing.Referenznummer10TextField</li>
+      <li>org.jdtaus.banking.util.swing.Referenznummer11TextField</li>
+      <blockquote>To use a <code>DocumentFilter</code> for input validation
+      instead of an <code>InputVerifier</code>.</blockquote></ul>]]></action>
+    </release>
   </body>
 </document>

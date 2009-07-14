@@ -72,5 +72,8 @@
       <action dev="schulte2005" type="fix"><![CDATA[
       Corrected GPG signatures.]]></action>
     </release>
+    <release version="1.10" date="2009-07-14" description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[No changes.]]></action>
+    </release>
   </body>
 </document>
