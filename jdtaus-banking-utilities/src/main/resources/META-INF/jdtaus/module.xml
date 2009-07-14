@@ -39,6 +39,8 @@
   </container:documentation>
 
   <container:implementations>
+
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.util.BankleitzahlenDatei"
                               container:name="BankleitzahlenDatei"
                               container:vendor="${pom.organization.name}"
@@ -61,7 +63,6 @@
                                 container:value="org.jdtaus.banking.util.BankleitzahlenDatei"/>
 
           </container:properties>
-
         </container:dependency>
         <container:dependency container:identifier="org.jdtaus.core.monitor.spi.TaskMonitor"
                               container:version="1.3"
@@ -97,9 +98,8 @@
         <container:reference container:name="cannotModifyNonexistentRecord"/>
       </container:messages>
     </container:implementation>
-    <!--                                                                     -->
-    <!-- Swing components.                                                   -->
-    <!--                                                                     -->
+
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.util.swing.AlphaNumericText27TextField"
                               container:name="${pom.name}"
                               container:vendor="${organization.name}"
@@ -109,7 +109,7 @@
       <container:properties>
         <container:property container:name="defaultValidating"
                             container:type="java.lang.Boolean"
-                            container:value="false">
+                            container:value="true">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
@@ -125,6 +125,8 @@
         </container:property>
       </container:properties>
     </container:implementation>
+
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.util.swing.KontonummerTextField"
                               container:name="${pom.name}"
                               container:vendor="${organization.name}"
@@ -134,7 +136,7 @@
       <container:properties>
         <container:property container:name="defaultValidating"
                             container:type="java.lang.Boolean"
-                            container:value="false">
+                            container:value="true">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
@@ -150,6 +152,8 @@
         </container:property>
       </container:properties>
     </container:implementation>
+
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.util.swing.Referenznummer10TextField"
                               container:name="${pom.name}"
                               container:vendor="${organization.name}"
@@ -159,7 +163,7 @@
       <container:properties>
         <container:property container:name="defaultValidating"
                             container:type="java.lang.Boolean"
-                            container:value="false">
+                            container:value="true">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
@@ -175,6 +179,8 @@
         </container:property>
       </container:properties>
     </container:implementation>
+
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.util.swing.Referenznummer11TextField"
                               container:name="${pom.name}"
                               container:vendor="${organization.name}"
@@ -184,7 +190,7 @@
       <container:properties>
         <container:property container:name="defaultValidating"
                             container:type="java.lang.Boolean"
-                            container:value="false">
+                            container:value="true">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
@@ -200,6 +206,8 @@
         </container:property>
       </container:properties>
     </container:implementation>
+
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.util.swing.BankleitzahlTextField"
                               container:name="${pom.name}"
                               container:vendor="${organization.name}"
@@ -216,7 +224,7 @@
       <container:properties>
         <container:property container:name="defaultValidating"
                             container:type="java.lang.Boolean"
-                            container:value="false">
+                            container:value="true">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[Default value of the flag indicating if validation should be performed.]]></container:text>
@@ -231,9 +239,15 @@
           </container:documentation>
         </container:property>
       </container:properties>
+      <container:messages>
+        <container:reference container:name="blzInfo"/>
+        <container:reference container:name="bicInfo"/>
+        <container:reference container:name="headOfficeInfo"/>
+      </container:messages>
     </container:implementation>
   </container:implementations>
   <container:messages>
+    <!-- ******************************************************************* -->
     <container:message container:name="fileNameInfo">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Loading Bankleitzahlendatei "{0}".]]></container:text>
@@ -243,6 +257,7 @@
         <container:argument container:index="0" container:name="fileName" container:type="text"/>
       </container:arguments>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="addRecordInfo">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[{0}: Added record {1, number}.]]></container:text>
@@ -253,6 +268,7 @@
         <container:argument container:index="1" container:name="serialNumber" container:type="number"/>
       </container:arguments>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="modifyRecordInfo">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[{0}: Updated record {1, number}.]]></container:text>
@@ -263,6 +279,7 @@
         <container:argument container:index="1" container:name="serialNumber" container:type="number"/>
       </container:arguments>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="removeRecordInfo">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[{0}: Removed record {1, number}.]]></container:text>
@@ -273,6 +290,7 @@
         <container:argument container:index="1" container:name="serialNumber" container:type="number"/>
       </container:arguments>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="cannotAddDuplicateRecord">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Record with serial number {0,number} already exists and cannot be added.]]></container:text>
@@ -282,6 +300,7 @@
         <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
       </container:arguments>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="cannotModifyNonexistentRecord">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Record with serial number {0,number} does not exist and cannot be updated.]]></container:text>
@@ -290,6 +309,33 @@
       <container:arguments>
         <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
       </container:arguments>
+    </container:message>
+    <!-- ******************************************************************* -->
+    <container:message container:name="blzInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[BLZ {0}]]></container:text>
+        <container:text container:language="de"><![CDATA[BLZ {0}]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="bankCode" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <!-- ******************************************************************* -->
+    <container:message container:name="bicInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[BIC {0}]]></container:text>
+        <container:text container:language="de"><![CDATA[BIC {0}]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="bic" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <!-- ******************************************************************* -->
+    <container:message container:name="headOfficeInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Headoffice]]></container:text>
+        <container:text container:language="de"><![CDATA[Hauptstelle]]></container:text>
+      </container:template>
     </container:message>
   </container:messages>
 </container:module>
