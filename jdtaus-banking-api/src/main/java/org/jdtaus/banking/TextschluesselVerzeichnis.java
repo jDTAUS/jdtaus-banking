@@ -29,7 +29,7 @@ import java.util.Date;
  * <p>Example: Getting the jDTAUS Banking SPI implementation.<br/><pre>
  * TextschluesselVerzeichnis directory =
  *     (TextschluesselVerzeichnis) ContainerFactory.getContainer().
- *     getObject( TextschluesselVerzeichnis.class.getName() );
+ *     getObject( TextschluesselVerzeichnis.class );
  * </pre></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>

@@ -32,7 +32,7 @@ import org.jdtaus.core.io.FileOperations;
  * <p>Example: Getting the jDTAUS Banking SPI implementation.<br/><pre>
  * PhysicalFileFactory factory =
  *     (PhysicalFileFactory) ContainerFactory.getContainer().
- *     getObject( PhysicalFileFactory.class.getName() );
+ *     getObject( PhysicalFileFactory.class );
  * </pre></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>

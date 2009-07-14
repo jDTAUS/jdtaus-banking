@@ -33,7 +33,7 @@ import java.util.Date;
  * <p>Example: Getting the jDTAUS Banking SPI implementation.<br/><pre>
  * BankleitzahlenVerzeichnis directory =
  *     (BankleitzahlenVerzeichnis) ContainerFactory.getContainer().
- *     getObject( BankleitzahlenVerzeichnis.class.getName() );
+ *     getObject( BankleitzahlenVerzeichnis.class );
  * </pre></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>

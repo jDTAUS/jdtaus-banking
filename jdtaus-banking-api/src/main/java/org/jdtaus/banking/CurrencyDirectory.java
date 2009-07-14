@@ -30,7 +30,7 @@ import java.util.Date;
  * <p>Example: Getting the jDTAUS Banking SPI implementation.<br/><pre>
  * CurrencyDirectory directory =
  *     (CurrencyDirectory) ContainerFactory.getContainer().
- *     getObject( CurrencyDirectory.class.getName() );
+ *     getObject( CurrencyDirectory.class );
  * </pre></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
