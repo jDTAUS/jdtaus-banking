@@ -666,8 +666,8 @@ public class XMLTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * @throws IllegalArgumentException if {@code doc} cannot be transformed.
      * @throws ParseException if parsing fails.
      *
-     * @see #transformTextschluessel(Textschluessel, Element)
-     * @see #transformTexts(Textschluessel, Element)
+     * @see #transformTextschluesselDocument(Document)
+     * @see #transformBankingDocument(Document)
      */
     private List/*<Textschluessel>*/ transformDocument( final Document doc )
         throws ParseException
