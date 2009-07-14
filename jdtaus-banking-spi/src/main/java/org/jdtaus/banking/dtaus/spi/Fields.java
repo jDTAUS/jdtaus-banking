@@ -98,6 +98,9 @@ public interface Fields
     /** Constant for field 6b of a C record. */
     final int FIELD_C6B = 0xC6b;
 
+    /** Constant for field 6c of a C record. */
+    final int FIELD_C6C = 0xC6c;
+
     /** Constant for field 7a of a C record. */
     final int FIELD_C7A = 0xC7a;
 
