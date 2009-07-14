@@ -59,7 +59,7 @@ public final class AlphaNumericText27
     /**
      * Creates a new {@code AlphaNumericText27} instance holding {@code text}.
      *
-     * @param text the text for the instance.
+     * @param text The text for the instance.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws IllegalArgumentException if the length of {@code text} is greater
@@ -93,11 +93,11 @@ public final class AlphaNumericText27
      * can be used to indicate the starting point for the next call to this
      * method.</p>
      *
-     * @param text a string to parse alpha numeric characters from.
-     * @param pos a {@code ParsePosition} object with index and error index
+     * @param text A string to parse alpha numeric characters from.
+     * @param pos A {@code ParsePosition} object with index and error index
      * information as described above.
      *
-     * @return the parsed value, or {@code null} if the parse fails.
+     * @return The parsed value, or {@code null} if the parse fails.
      *
      * @throws NullPointerException if either {@code text} or {@code pos} is
      * {@code null}.
@@ -132,7 +132,7 @@ public final class AlphaNumericText27
 
         if ( valid )
         {
-            pos.setIndex( i + 1 );
+            pos.setIndex( i );
             ret = new AlphaNumericText27( text.substring( beginIndex, i ) );
         }
 
@@ -146,9 +146,9 @@ public final class AlphaNumericText27
      * throws a {@code ParseException} if {@code text} cannot be parsed or is of
      * invalid length.</p>
      *
-     * @param text a string to parse alpha numeric characters from.
+     * @param text A string to parse alpha numeric characters from.
      *
-     * @return the parsed value.
+     * @return The parsed value.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws ParseException if the parse fails or the length of {@code text}
@@ -170,11 +170,11 @@ public final class AlphaNumericText27
             txt = AlphaNumericText27.parse( text, pos );
 
             if ( txt == null || pos.getErrorIndex() != -1 ||
-                pos.getIndex() < text.length() )
+                 pos.getIndex() < text.length() )
             {
                 throw new ParseException( text, pos.getErrorIndex() != -1
-                    ? pos.getErrorIndex()
-                    : pos.getIndex() );
+                                                ? pos.getErrorIndex()
+                                                : pos.getIndex() );
 
             }
             else
@@ -193,10 +193,10 @@ public final class AlphaNumericText27
      * {@code IllegalArgumentException} if {@code text} cannot be parsed or is
      * of invalid length.</p>
      *
-     * @param text a formatted string representation of an
+     * @param text A formatted string representation of an
      * {@code AlphaNumericText27} instance.
      *
-     * @return the parsed value.
+     * @return The parsed value.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws IllegalArgumentException if the parse fails or the length of
@@ -236,10 +236,10 @@ public final class AlphaNumericText27
      * Formats alpha-numeric characters and appends the resulting text to the
      * given string buffer.
      *
-     * @param toAppendTo the buffer to which the formatted text is to be
+     * @param toAppendTo The buffer to which the formatted text is to be
      * appended.
      *
-     * @return the value passed in as {@code toAppendTo}.
+     * @return The value passed in as {@code toAppendTo}.
      *
      * @throws NullPointerException if {@code toAppendTo} is {@code null}.
      */
@@ -260,7 +260,7 @@ public final class AlphaNumericText27
      *     toString()</code>}
      * </blockquote>
      *
-     * @return the formatted string.
+     * @return The formatted string.
      */
     public String format()
     {
@@ -273,10 +273,10 @@ public final class AlphaNumericText27
      * {@link #format() alphaNumericText27.format()}
      * </blockquote>
      *
-     * @param alphaNumericText27 the {@code AlphaNumericText27} instance to
+     * @param alphaNumericText27 The {@code AlphaNumericText27} instance to
      * format.
      *
-     * @return the formatted string.
+     * @return The formatted string.
      *
      * @throws NullPointerException if {@code alphaNumericText27} is
      * {@code null}.
@@ -294,7 +294,7 @@ public final class AlphaNumericText27
     /**
      * Checks a given character to belong to the alpha-numeric alphabet.
      *
-     * @param c the character to check.
+     * @param c The character to check.
      *
      * @return {@code true} if {@code c} is a character of the alpha-numeric
      * DTAUS alphabet; {@code false} if not.
@@ -302,9 +302,9 @@ public final class AlphaNumericText27
     public static boolean checkAlphaNumeric( final char c )
     {
         return ( c >= 'A' && c <= 'Z' ) || ( c >= '0' && c <= '9' ) ||
-            ( c == '.' || c == '+' || c == '*' || c == '$' || c == ' ' ||
-            c == ',' || c == '&' || c == '-' || c == '/' || c == '%' ||
-            c == 'Ä' || c == 'Ö' || c == 'Ü' || c == 'ß' );
+               ( c == '.' || c == '+' || c == '*' || c == '$' || c == ' ' ||
+                 c == ',' || c == '&' || c == '-' || c == '/' || c == '%' ||
+                 c == 'Ä' || c == 'Ö' || c == 'Ü' || c == 'ß' );
 
     }
 
@@ -342,7 +342,7 @@ public final class AlphaNumericText27
      *
      * }</pre></blockquote></p>
      *
-     * @param text the text to normalize.
+     * @param text The text to normalize.
      *
      * @return {@code text} normalized to conform to the alpha-numeric alphabet.
      *
@@ -387,7 +387,7 @@ public final class AlphaNumericText27
     /**
      * Gets the current cache instance.
      *
-     * @return current cache instance.
+     * @return Current cache instance.
      */
     private static Map getCache()
     {
@@ -408,7 +408,7 @@ public final class AlphaNumericText27
      * Returns the length of this character sequence.  The length is the number
      * of 16-bit {@code char}s in the sequence.
      *
-     * @return the number of {@code char}s in this sequence.
+     * @return The number of {@code char}s in this sequence.
      */
     public int length()
     {
@@ -421,9 +421,9 @@ public final class AlphaNumericText27
      * {@code char} value of the sequence is at index zero, the next at index
      * one, and so on, as for array indexing.</p>
      *
-     * @param index the index of the {@code char} value to be returned.
+     * @param index The index of the {@code char} value to be returned.
      *
-     * @return the specified {@code char} value.
+     * @return The specified {@code char} value.
      *
      * @throws IndexOutOfBoundsException if {@code index} is negative or not
      * less than {@code length()}.
@@ -442,10 +442,10 @@ public final class AlphaNumericText27
      * {@code end - start}, so if {@code start == end} then an empty sequence is
      * returned.</p>
      *
-     * @param start the start index, inclusive.
-     * @param end the end index, exclusive.
+     * @param start The start index, inclusive.
+     * @param end The end index, exclusive.
      *
-     * @return the specified subsequence.
+     * @return The specified subsequence.
      *
      * @throws  IndexOutOfBoundsException if {@code start} or {@code end} are
      * negative, if {@code end} is greater than {@code length()}, or if
@@ -461,7 +461,7 @@ public final class AlphaNumericText27
      * order as this sequence.  The length of the string will be the length of
      * this sequence.
      *
-     * @return a string consisting of exactly this sequence of characters.
+     * @return A string consisting of exactly this sequence of characters.
      */
     public String toString()
     {
@@ -476,8 +476,8 @@ public final class AlphaNumericText27
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.<p>
      *
-     * @param o the Object to be compared.
-     * @return a negative integer, zero, or a positive integer as this object
+     * @param o The Object to be compared.
+     * @return A negative integer, zero, or a positive integer as this object
      * is less than, equal to, or greater than the specified object.
      *
      * @throws NullPointerException if {@code o} is {@code null}.
@@ -504,14 +504,14 @@ public final class AlphaNumericText27
             if ( this.text == null )
             {
                 result = that.text == null
-                    ? 0
-                    : -1;
+                         ? 0
+                         : -1;
             }
             else
             {
                 result = that.text == null
-                    ? 1
-                    : this.text.compareTo( that.text );
+                         ? 1
+                         : this.text.compareTo( that.text );
             }
         }
 
@@ -524,7 +524,7 @@ public final class AlphaNumericText27
     /**
      * Indicates whether some other object is equal to this one.
      *
-     * @param o the reference object with which to compare.
+     * @param o The reference object with which to compare.
      *
      * @return {@code true} if this object is the same as {@code o};
      * {@code false} otherwise.
@@ -537,8 +537,8 @@ public final class AlphaNumericText27
         {
             final AlphaNumericText27 that = (AlphaNumericText27) o;
             ret = this.text == null
-                ? that.text == null
-                : this.text.equals( that.text );
+                  ? that.text == null
+                  : this.text.equals( that.text );
 
         }
 
@@ -548,13 +548,13 @@ public final class AlphaNumericText27
     /**
      * Returns a hash code value for this object.
      *
-     * @return a hash code value for this object.
+     * @return A hash code value for this object.
      */
     public int hashCode()
     {
         return this.text == null
-            ? 0
-            : this.text.hashCode();
+               ? 0
+               : this.text.hashCode();
     }
 
     //------------------------------------------------------------------Object--
