@@ -226,19 +226,23 @@ public class Referenznummer10Test extends TestCase
         try
         {
             ref1.compareTo( null );
-            this.fail();
+            Assert.fail();
         }
         catch ( NullPointerException e )
         {
+            System.out.println( e.toString() );
+            Assert.assertNotNull( e.getMessage() );
         }
 
         try
         {
             ref1.compareTo( new Object() );
-            this.fail();
+            Assert.fail();
         }
         catch ( ClassCastException e )
         {
+            System.out.println( e.toString() );
+            Assert.assertNotNull( e.getMessage() );
         }
     }
 
@@ -263,10 +267,12 @@ public class Referenznummer10Test extends TestCase
             try
             {
                 Referenznummer10.parse( invalid[i] );
-                throw new IllegalStateException( invalid[i] );
+                throw new AssertionError( invalid[i] );
             }
             catch ( ParseException e )
             {
+                System.out.println( e.toString() );
+                Assert.assertNotNull( e.getMessage() );
             }
         }
     }

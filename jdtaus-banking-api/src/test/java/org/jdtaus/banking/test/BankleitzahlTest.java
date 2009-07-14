@@ -201,19 +201,23 @@ public class BankleitzahlTest extends TestCase
         try
         {
             blz1.compareTo( null );
-            this.fail();
+            Assert.fail();
         }
         catch ( NullPointerException e )
         {
+            System.out.println( e.toString() );
+            Assert.assertNotNull( e.getMessage() );
         }
 
         try
         {
             blz1.compareTo( new Object() );
-            this.fail();
+            Assert.fail();
         }
         catch ( ClassCastException e )
         {
+            System.out.println( e.toString() );
+            Assert.assertNotNull( e.getMessage() );
         }
     }
 
@@ -241,6 +245,8 @@ public class BankleitzahlTest extends TestCase
             }
             catch ( ParseException e )
             {
+                System.out.println( e.toString() );
+                Assert.assertNotNull( e.getMessage() );
             }
         }
     }
