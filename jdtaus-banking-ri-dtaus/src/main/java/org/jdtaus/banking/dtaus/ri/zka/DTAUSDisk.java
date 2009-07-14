@@ -1261,14 +1261,13 @@ public final class DTAUSDisk extends AbstractLogicalFile
                           transaction.getTargetAccount().longValue(), ENCODING_ASCII );
 
         // Konstanter Teil - 1. Satzabschnitt - Feld 6
-        // TODO -1
-        this.writeNumber( -1, position + CRECORD_OFFSETS1[5] - 1, 1, 0L, ENCODING_ASCII );
+        this.writeNumber( Fields.FIELD_C6A, position + CRECORD_OFFSETS1[5] - 1, 1, 0L, ENCODING_ASCII );
 
         this.writeNumber( Fields.FIELD_C6, position + CRECORD_OFFSETS1[5], CRECORD_LENGTH1[5],
                           transaction.getReference() != null ? transaction.getReference().longValue() : 0L,
                           ENCODING_ASCII );
 
-        this.writeNumber( -1, position + CRECORD_OFFSETS1[6] - 1, 1, 0L, ENCODING_ASCII );
+        this.writeNumber( Fields.FIELD_C6C, position + CRECORD_OFFSETS1[6] - 1, 1, 0L, ENCODING_ASCII );
 
         // Konstanter Teil - 1. Satzabschnitt - Felder 7a & 7b
         // TODO -3, +/- 2
