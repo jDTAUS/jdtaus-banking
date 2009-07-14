@@ -251,5 +251,96 @@ public class BankleitzahlTest extends TestCase
         }
     }
 
+    public void testIsClearingAreaCodeSupported() throws Exception
+    {
+        final Bankleitzahl supported =
+            Bankleitzahl.valueOf( new Integer( 10000000 ) );
+
+        final Bankleitzahl notSupported =
+            Bankleitzahl.valueOf( new Integer( 9999999 ) );
+
+        Assert.assertTrue( supported.isClearingAreaCodeSupported() );
+        Assert.assertFalse( notSupported.isClearingAreaCodeSupported() );
+        Assert.assertEquals( 1, supported.getClearingAreaCode() );
+
+        try
+        {
+            notSupported.getClearingAreaCode();
+            throw new AssertionError();
+        }
+        catch ( UnsupportedOperationException e )
+        {
+            System.out.println( e.toString() );
+        }
+    }
+
+    public void testIsLocalityCodeSupported() throws Exception
+    {
+        final Bankleitzahl supported =
+            Bankleitzahl.valueOf( new Integer( 100000 ) );
+
+        final Bankleitzahl notSupported =
+            Bankleitzahl.valueOf( new Integer( 99999 ) );
+
+        Assert.assertTrue( supported.isLocalityCodeSupported() );
+        Assert.assertFalse( notSupported.isLocalityCodeSupported() );
+        Assert.assertEquals( 1, supported.getLocalityCode() );
+
+        try
+        {
+            notSupported.getLocalityCode();
+            throw new AssertionError();
+        }
+        catch ( UnsupportedOperationException e )
+        {
+            System.out.println( e.toString() );
+        }
+    }
+
+    public void testIsNetworkCodeSupported() throws Exception
+    {
+        final Bankleitzahl supported =
+            Bankleitzahl.valueOf( new Integer( 10000 ) );
+
+        final Bankleitzahl notSupported =
+            Bankleitzahl.valueOf( new Integer( 9999 ) );
+
+        Assert.assertTrue( supported.isNetworkCodeSupported() );
+        Assert.assertFalse( notSupported.isNetworkCodeSupported() );
+        Assert.assertEquals( 1, supported.getNetworkCode() );
+
+        try
+        {
+            notSupported.getNetworkCode();
+            throw new AssertionError();
+        }
+        catch ( UnsupportedOperationException e )
+        {
+            System.out.println( e.toString() );
+        }
+    }
+
+    public void testGetInstituteCode() throws Exception
+    {
+        final Bankleitzahl blz = Bankleitzahl.valueOf( new Integer( 1 ) );
+        Assert.assertEquals( 1, blz.getInstituteCode() );
+    }
+
+    public void testCheckBankleitzahl() throws Exception
+    {
+        Assert.assertTrue(
+            Bankleitzahl.checkBankleitzahl( new Integer( 1 ) ) );
+
+        Assert.assertTrue(
+            Bankleitzahl.checkBankleitzahl( new Integer( 10000000 ) ) );
+
+        Assert.assertFalse(
+            Bankleitzahl.checkBankleitzahl( new Integer( 0 ) ) );
+
+        Assert.assertFalse(
+            Bankleitzahl.checkBankleitzahl( new Integer( 90000000 ) ) );
+
+    }
+
     //-------------------------------------------------------------------Tests--
 }
