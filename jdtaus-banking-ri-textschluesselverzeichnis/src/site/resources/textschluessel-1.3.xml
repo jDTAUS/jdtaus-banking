@@ -81,6 +81,13 @@
     </banking:texts>
   </banking:textschluessel>
 
+  <banking:textschluessel banking:key="05" banking:extension="010" banking:debit="true" banking:remittance="false" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="en">
+      <banking:text banking:language="de">Lastschrift aus POS-Verfügung (mit ausländischer Karte) – Maestro/EMV ({0,number,00}{1,number,000})</banking:text>
+      <banking:text banking:language="en">Debit from POS - Maestro/EMV ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
   <banking:textschluessel banking:key="05" banking:extension="011" banking:debit="true" banking:remittance="false" banking:variableExtension="false" banking:validFrom="2008-11-15">
     <banking:texts banking:defaultLanguage="en">
       <banking:text banking:language="de">Lastschrift aus POS-Verfügung - electronic cash, Magnetstreifen Spur 2, EMV ({0,number,00}{1,number,000})</banking:text>
@@ -116,6 +123,34 @@
     </banking:texts>
   </banking:textschluessel>
 
+  <banking:textschluessel banking:key="51" banking:extension="888" banking:debit="false" banking:remittance="true" banking:variableExtension="false">
+    <banking:texts banking:defaultLanguage="en">
+      <banking:text banking:language="de">Überweisungs-Gutschrift - gebietsfremd ({0,number,00}{1,number,000})</banking:text>
+      <banking:text banking:language="en">Remittance - foreign ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="51" banking:extension="505" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="en">
+      <banking:text banking:language="de">Korrektur - Lastschrift aus POS-Verfügung - electronic cash ({0,number,00}{1,number,000})</banking:text>
+      <banking:text banking:language="en">Correction - Debit from POS - electronic cash ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="51" banking:extension="506" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="en">
+      <banking:text banking:language="de">Korrektur - Lastschrift aus POS-Verfügung (mit ausländischer Karte) - Maestro/Magnetstreifen ({0,number,00}{1,number,000})</banking:text>
+      <banking:text banking:language="en">Correction - Debit from POS - Maestro/magnet strip ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="51" banking:extension="510" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="en">
+      <banking:text banking:language="de">Korrektur - Lastschrift aus POS-Verfügung (mit ausländischer Karte) - Maestro/EMV ({0,number,00}{1,number,000})</banking:text>
+      <banking:text banking:language="en">Correction - Debit from POS - Maestro/EMV ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
   <banking:textschluessel banking:key="51" banking:extension="511" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2008-11-15">
     <banking:texts banking:defaultLanguage="en">
       <banking:text banking:language="de">Korrektur - Lastschrift aus POS-Verfügung - electronic cash, Magnetstreifen Spur 2, EMV ({0,number,00}{1,number,000})</banking:text>
@@ -137,9 +172,16 @@
     </banking:texts>
   </banking:textschluessel>
 
+  <banking:textschluessel banking:key="53" banking:extension="888" banking:debit="false" banking:remittance="true" banking:variableExtension="false">
+    <banking:texts banking:defaultLanguage="en">
+      <banking:text banking:language="de">Lohn-;Gehalts-;Renten-Gutschrift - gebietsfremd ({0,number,00}{1,number,000})</banking:text>
+      <banking:text banking:language="en">Lohn-;Gehalts-;Renten-Gutschrift - foreign ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
   <banking:textschluessel banking:key="54" banking:extension="000" banking:debit="false" banking:remittance="true" banking:variableExtension="true">
     <banking:texts banking:defaultLanguage="en">
-      <banking:text banking:language="de">Vermögenswirksame Leistung ({0,number,00}{1,number,000})</banking:text>
+      <banking:text banking:language="de">Vermögenswirksame Leistung (VL) ({0,number,00}{1,number,000})</banking:text>
       <banking:text banking:language="en">Capital-forming payment ({0,number,00}{1,number,000})</banking:text>
     </banking:texts>
   </banking:textschluessel>
@@ -148,6 +190,42 @@
     <banking:texts banking:defaultLanguage="en">
       <banking:text banking:language="de">Überweisung öffentlicher Kassen ({0,number,00}{1,number,000})</banking:text>
       <banking:text banking:language="en">Remittance of city treasuries ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="67" banking:extension="000" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="de">
+      <banking:text banking:language="de">Überweisungsgutschrift mit prüfziffergesicherten Zuordnungsdaten ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="67" banking:extension="888" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="de">
+      <banking:text banking:language="de">Überweisungsgutschrift mit prüfziffergesicherten Zuordnungsdaten - gebietsfremd ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="68" banking:extension="000" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="de">
+      <banking:text banking:language="de">Gutschrift aus neutralem Überweisungs-/Zahlschein ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="68" banking:extension="888" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="de">
+      <banking:text banking:language="de">Gutschrift aus neutralem Überweisungs-/Zahlschein - gebietsfremd ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="69" banking:extension="000" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="de">
+      <banking:text banking:language="de">Gutschrift einer Spendenüberweisung ({0,number,00}{1,number,000})</banking:text>
+    </banking:texts>
+  </banking:textschluessel>
+
+  <banking:textschluessel banking:key="69" banking:extension="888" banking:debit="false" banking:remittance="true" banking:variableExtension="false" banking:validFrom="2009-11-01">
+    <banking:texts banking:defaultLanguage="de">
+      <banking:text banking:language="de">Gutschrift einer Spendenüberweisung - gebietsfremd ({0,number,00}{1,number,000})</banking:text>
     </banking:texts>
   </banking:textschluessel>
 
