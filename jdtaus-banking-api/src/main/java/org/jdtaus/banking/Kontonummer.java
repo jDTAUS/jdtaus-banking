@@ -45,17 +45,17 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Constant for the electronic format of a Kontonummer.
      * <p>The electronic format of a Kontonummer is a ten digit number with
-     * zeros omitted (e.g. 6789).</p>
+     * leading zeros omitted (e.g. 6789).</p>
      */
     public static final int ELECTRONIC_FORMAT = 4001;
 
     /**
      * Constant for the letter format of a Kontonummer.
      * <p>The letter format of a Kontonummer is a ten digit number with
-     * zeros omitted separated by spaces between the first three digits and
-     * the second three digits, the second three digits and the
-     * third three digits, and between the third three digits and the last
-     * digit (e.g. 123 456 789 0).</p>
+     * leading zeros omitted separated by spaces between the first three digits
+     * and the second three digits, the second three digits and the third three
+     * digits, and between the third three digits and the lastdigit
+     * (e.g. 123 456 789 0).</p>
      */
     public static final int LETTER_FORMAT = 4002;
 
@@ -84,7 +84,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Creates a new {@code Kontonummer} instance.
      *
-     * @param accountCode the number to create an instance from.
+     * @param accountCode The number to create an instance from.
      *
      * @throws IllegalArgumentException if {@code accountCode} is negative,
      * zero or greater than 9999999999.
@@ -105,23 +105,22 @@ public final class Kontonummer extends Number implements Comparable
      * Parses text from a string to produce a {@code Kontonummer}.
      * <p>The method attempts to parse text starting at the index given by
      * {@code pos}. If parsing succeeds, then the index of {@code pos} is
-     * updated to the index after the last character used
-     * (parsing does not necessarily use all characters up to the end of the
-     * string), and the parsed value is returned. The updated {@code pos}
-     * can be used to indicate the starting point for the next call to this
-     * method.</p>
+     * updated to the index after the last character used (parsing does not
+     * necessarily use all characters up to the end of the string), and the
+     * parsed value is returned. The updated {@code pos} can be used to indicate
+     * the starting point for the next call to this method.</p>
      *
-     * @param accountCode a Kontonummer in either electronic or letter format.
-     * @param pos a {@code ParsePosition} object with index and error index
+     * @param accountCode A Kontonummer in either electronic or letter format.
+     * @param pos A {@code ParsePosition} object with index and error index
      * information as described above.
      *
-     * @return the parsed value, or {@code null} if the parse fails.
+     * @return The parsed value, or {@code null} if the parse fails.
      *
      * @throws NullPointerException if either {@code accountCode} or {@code pos}
      * is {@code null}.
      */
     public static Kontonummer parse( final String accountCode,
-        final ParsePosition pos )
+                                     final ParsePosition pos )
     {
         if ( accountCode == null )
         {
@@ -131,44 +130,85 @@ public final class Kontonummer extends Number implements Comparable
         {
             throw new NullPointerException( "pos" );
         }
-        char c;
+
         Kontonummer ret = null;
         boolean sawSpace = false;
         boolean failed = false;
-
-        final Number num;
         final ParsePosition fmtPos = new ParsePosition( 0 );
         final int len = accountCode.length();
-        final int posIndex = pos.getIndex();
-        final int maxIndex = posIndex + MAX_CHARACTERS;
+        final int startIndex = pos.getIndex();
+        final int maxIndex = startIndex + MAX_CHARACTERS;
         final StringBuffer digits = new StringBuffer( MAX_DIGITS );
+        int mode = ELECTRONIC_FORMAT;
+        int part = 0;
+        int partStart = 0;
+        int partEnd = 2;
+        int digit = 0;
+        int i = startIndex;
 
-        for ( int i = posIndex; i < len && i < maxIndex; i++ )
+        for ( ; i < len && i < maxIndex && digits.length() < MAX_DIGITS; i++ )
         {
-            pos.setIndex( i );
-            c = accountCode.charAt( i );
+            final char c = accountCode.charAt( i );
 
             if ( Character.isDigit( c ) )
             {
-                digits.append( c );
                 sawSpace = false;
 
-                if ( digits.length() == MAX_DIGITS )
+                if ( mode == LETTER_FORMAT )
                 {
-                    break;
+                    if ( digit < partStart || digit > partEnd )
+                    {
+                        failed = true;
+                    }
+                    else
+                    {
+                        digits.append( c );
+                    }
+                }
+                else
+                {
+                    digits.append( c );
                 }
 
+                digit++;
             }
             else if ( c == ' ' )
             {
-                if ( sawSpace )
+                if ( sawSpace || i == startIndex ||
+                     ( mode == ELECTRONIC_FORMAT && digit != 3 ) )
                 {
                     failed = true;
                 }
                 else
                 {
-                    sawSpace = true;
+                    mode = LETTER_FORMAT;
+                    switch ( part )
+                    {
+                        case 0:
+                            partStart = 3;
+                            partEnd = 5;
+                            break;
+                        case 1:
+                            partStart = 6;
+                            partEnd = 8;
+                            break;
+                        case 2:
+                            partStart = 9;
+                            partEnd = 9;
+                            break;
+                        default:
+                            failed = true;
+                            break;
+                    }
+                    part++;
+
+                    if ( digit < partStart || digit > partEnd )
+                    {
+                        failed = true;
+                    }
                 }
+
+                sawSpace = true;
             }
             else
             {
@@ -177,7 +217,6 @@ public final class Kontonummer extends Number implements Comparable
 
             if ( failed )
             {
-                pos.setIndex( posIndex );
                 pos.setErrorIndex( i );
                 break;
             }
@@ -185,9 +224,8 @@ public final class Kontonummer extends Number implements Comparable
 
         if ( !failed )
         {
-            pos.setIndex( pos.getIndex() + 1 );
-            num = new DecimalFormat( "##########" ).parse( digits.toString(),
-                fmtPos );
+            final Number num = new DecimalFormat( "##########" ).parse(
+                digits.toString(), fmtPos );
 
             if ( num != null && fmtPos.getErrorIndex() == -1 )
             {
@@ -198,22 +236,24 @@ public final class Kontonummer extends Number implements Comparable
                 {
                     if ( !Kontonummer.checkKontonummer( num ) )
                     {
-                        // Reset pos and indicate parsing error.
-                        pos.setIndex( posIndex );
-                        pos.setErrorIndex( posIndex );
+                        pos.setErrorIndex( startIndex );
                         ret = null;
                     }
                     else
                     {
+                        pos.setIndex( i );
                         ret = new Kontonummer( num );
                         getCache().put( key, ret );
                     }
                 }
+                else
+                {
+                    pos.setIndex( i );
+                }
             }
             else
             {
-                pos.setIndex( posIndex );
-                pos.setErrorIndex( posIndex );
+                pos.setErrorIndex( startIndex );
             }
         }
 
@@ -227,9 +267,9 @@ public final class Kontonummer extends Number implements Comparable
      * throws a {@code ParseException} if {@code accountCode} cannot be parsed
      * or is of invalid length.</p>
      *
-     * @param accountCode a Kontonummer in either electronic or letter format.
+     * @param accountCode A Kontonummer in either electronic or letter format.
      *
-     * @return the parsed value.
+     * @return The parsed value.
      *
      * @throws NullPointerException if {@code accountCode} is {@code null}.
      * @throws ParseException if the parse fails or {@code accountCode} is of
@@ -249,12 +289,12 @@ public final class Kontonummer extends Number implements Comparable
             final ParsePosition pos = new ParsePosition( 0 );
             kto = Kontonummer.parse( accountCode, pos );
             if ( kto == null || pos.getErrorIndex() != -1 ||
-                pos.getIndex() < accountCode.length() )
+                 pos.getIndex() < accountCode.length() )
             {
                 throw new ParseException( accountCode,
-                    pos.getErrorIndex() != -1
-                    ? pos.getErrorIndex()
-                    : pos.getIndex() );
+                                          pos.getErrorIndex() != -1
+                                          ? pos.getErrorIndex()
+                                          : pos.getIndex() );
 
             }
             else
@@ -269,9 +309,9 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Returns an instance for the Kontonummer identified by the given number.
      *
-     * @param accountCode a number identifying a Kontonummer.
+     * @param accountCode A number identifying a Kontonummer.
      *
-     * @return an instance for {@code accountCode}.
+     * @return An instance for {@code accountCode}.
      *
      * @throws NullPointerException if {@code accountCode} is {@code null}.
      * @throws IllegalArgumentException if {@code accountCode} is negative,
@@ -304,9 +344,9 @@ public final class Kontonummer extends Number implements Comparable
      * {@code IllegalArgumentException} if {@code accountCode} cannot be parsed
      * or is of invalid length.</p>
      *
-     * @param accountCode a Kontonummer in either electronic or letter format.
+     * @param accountCode A Kontonummer in either electronic or letter format.
      *
-     * @return the parsed value.
+     * @return The parsed value.
      *
      * @throws NullPointerException if {@code accountCode} is {@code null}.
      * @throws IllegalArgumentException if the parse fails or
@@ -327,7 +367,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Checks a given number to conform to a Kontonummer.
      *
-     * @param accountCode the number to check.
+     * @param accountCode The number to check.
      *
      * @return {@code true} if {@code accountCode} is a valid Kontonummer;
      * {@code false} if not.
@@ -351,7 +391,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Returns this Kontonummer as an int value.
      *
-     * @return this Kontonummer as an int value.
+     * @return This Kontonummer as an int value.
      */
     public int intValue()
     {
@@ -361,7 +401,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Returns this Kontonummer as a long value.
      *
-     * @return this Kontonummer as a long value.
+     * @return This Kontonummer as a long value.
      */
     public long longValue()
     {
@@ -371,7 +411,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Returns this Kontonummer as a float value.
      *
-     * @return this Kontonummer as a float value.
+     * @return This Kontonummer as a float value.
      */
     public float floatValue()
     {
@@ -381,7 +421,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Returns this Kontonummer as a double value.
      *
-     * @return this Kontonummer as a double value.
+     * @return This Kontonummer as a double value.
      */
     public double doubleValue()
     {
@@ -401,12 +441,12 @@ public final class Kontonummer extends Number implements Comparable
      * Formats a Kontonummer and appends the resulting text to the given string
      * buffer.
      *
-     * @param style the style to use ({@code ELECTRONIC_FORMAT} or
+     * @param style The style to use ({@code ELECTRONIC_FORMAT} or
      * {@code LETTER_FORMAT}).
-     * @param toAppendTo the buffer to which the formatted text is to be
+     * @param toAppendTo The buffer to which the formatted text is to be
      * appended.
      *
-     * @return the value passed in as {@code toAppendTo}.
+     * @return The value passed in as {@code toAppendTo}.
      *
      * @throws NullPointerException if {@code toAppendTo} is {@code null}.
      * @throws IllegalArgumentException if {@code style} is neither
@@ -423,7 +463,7 @@ public final class Kontonummer extends Number implements Comparable
             throw new NullPointerException( "toAppendTo" );
         }
         if ( style != Kontonummer.ELECTRONIC_FORMAT &&
-            style != Kontonummer.LETTER_FORMAT )
+             style != Kontonummer.LETTER_FORMAT )
         {
 
             throw new IllegalArgumentException( Integer.toString( style ) );
@@ -439,7 +479,7 @@ public final class Kontonummer extends Number implements Comparable
             }
 
             if ( style == Kontonummer.LETTER_FORMAT &&
-                ( lastDigit == 3 || lastDigit == 6 || lastDigit == 9 ) )
+                 ( lastDigit == 3 || lastDigit == 6 || lastDigit == 9 ) )
             {
                 toAppendTo.append( ' ' );
             }
@@ -455,10 +495,10 @@ public final class Kontonummer extends Number implements Comparable
      *     new StringBuffer()).toString()</code>}
      * </blockquote>
      *
-     * @param style the style to use ({@code ELECTRONIC_FORMAT} or
+     * @param style The style to use ({@code ELECTRONIC_FORMAT} or
      * {@code LETTER_FORMAT}).
      *
-     * @return the formatted string.
+     * @return The formatted string.
      *
      * @throws IllegalArgumentException if {@code style} is neither
      * {@code ELECTRONIC_FORMAT} nor {@code LETTER_FORMAT}.
@@ -477,9 +517,9 @@ public final class Kontonummer extends Number implements Comparable
      * {@link #format(int) kontonummer.format(ELECTRONIC_FORMAT)}
      * </blockquote>
      *
-     * @param kontonummer the {@code Kontonummer} instance to format.
+     * @param kontonummer The {@code Kontonummer} instance to format.
      *
-     * @return the formatted string.
+     * @return The formatted string.
      *
      * @throws NullPointerException if {@code kontonummer} is {@code null}.
      */
@@ -496,9 +536,9 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Creates an array holding the digits of {@code number}.
      *
-     * @param number the number to return the digits for.
+     * @param number The number to return the digits for.
      *
-     * @return an array holding the digits of {@code number}.
+     * @return An array holding the digits of {@code number}.
      */
     private static int[] toDigits( final long number )
     {
@@ -522,7 +562,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Creates a string representing the properties of the instance.
      *
-     * @return a string representing the properties of the instance.
+     * @return A string representing the properties of the instance.
      */
     private String internalString()
     {
@@ -534,7 +574,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Gets the current cache instance.
      *
-     * @return current cache instance.
+     * @return Current cache instance.
      */
     private static Map getCache()
     {
@@ -556,9 +596,9 @@ public final class Kontonummer extends Number implements Comparable
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.<p>
      *
-     * @param   o the Object to be compared.
-     * @return  a negative integer, zero, or a positive integer as this object
-     * is less than, equal to, or greater than the specified object.
+     * @param o The Object to be compared.
+     * @return A negative integer, zero, or a positive integer as this object is
+     * less than, equal to, or greater than the specified object.
      *
      * @throws NullPointerException if {@code o} is {@code null}.
      * @throws ClassCastException if the specified object's type prevents it
@@ -581,8 +621,8 @@ public final class Kontonummer extends Number implements Comparable
         if ( !this.equals( that ) )
         {
             result = this.kto > that.kto
-                ? 1
-                : -1;
+                     ? 1
+                     : -1;
         }
 
         return result;
@@ -594,7 +634,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Indicates whether some other object is equal to this one.
      *
-     * @param o the reference object with which to compare.
+     * @param o The reference object with which to compare.
      *
      * @return {@code true} if this object is the same as {@code o};
      * {@code false} otherwise.
@@ -614,7 +654,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Returns a hash code value for this object.
      *
-     * @return a hash code value for this object.
+     * @return A hash code value for this object.
      */
     public int hashCode()
     {
@@ -624,7 +664,7 @@ public final class Kontonummer extends Number implements Comparable
     /**
      * Returns a string representation of the object.
      *
-     * @return a string representation of the object.
+     * @return A string representation of the object.
      */
     public String toString()
     {
