@@ -34,7 +34,7 @@
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
   <version>1.11-SNAPSHOT</version>
-  <description><![CDATA[jDTAUS Banking parent module.]]></description>
+  <description>jDTAUS Banking parent module.</description>
   <inceptionYear>2005</inceptionYear>
   <scm>
     <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</connection>
@@ -81,7 +81,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>2.0</version>
+          <version>2.0.1</version>
           <dependencies>
             <dependency>
               <groupId>org.jdtaus.core.container</groupId>
@@ -109,6 +109,8 @@
           <artifactId>maven-release-plugin</artifactId>
           <version>2.0-beta-9</version>
           <configuration>
+            <useReleaseProfile>false</useReleaseProfile>
+            <releaseProfiles>release</releaseProfiles>
             <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags</tagBase>
           </configuration>
         </plugin>
@@ -131,22 +133,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>2.2</version>
-          <executions>
-            <execution>
-              <id>sign</id>
-              <phase>package</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-              <configuration>
-                <storepass>${jarsigner.storepass}</storepass>
-                <keypass>${jarsigner.keypass}</keypass>
-                <alias>${jarsigner.alias}</alias>
-                <jarPath>${project.build.directory}/${project.build.finalName}.jar</jarPath>
-                <signedjar>${project.build.directory}/signed/${project.build.finalName}.jar</signedjar>
-              </configuration>
-            </execution>
-          </executions>
           <configuration>
             <archive>
               <index>true</index>
@@ -163,19 +149,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
           <version>1.0-alpha-4</version>
-          <executions>
-            <execution>
-              <id>sign</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-              <configuration>
-                <keyname>${gpg.keyname}</keyname>
-                <passphrase>${gpg.passphrase}</passphrase>
-              </configuration>
-            </execution>
-          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -308,7 +281,7 @@
         <plugin>
           <artifactId>buildnumber-maven-plugin</artifactId>
           <groupId>org.codehaus.mojo</groupId>
-          <version>1.0-beta-2</version>
+          <version>1.0-beta-3</version>
           <executions>
             <execution>
               <phase>validate</phase>
@@ -378,7 +351,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.3</version>
+          <version>1.4</version>
           <executions>
             <execution>
               <goals>
@@ -388,6 +361,7 @@
           </executions>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-scm-plugin</artifactId>
           <version>1.2</version>
           <configuration>
@@ -398,26 +372,59 @@
             <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/builds</tagBase>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.0-beta-1</version>
+          <executions>
+            <execution>
+              <id>enforce</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireProperty>
+                    <property>project.build.sourceEncoding</property>
+                    <message>Must set 'project.build.sourceEncoding'.</message>
+                  </requireProperty>
+                  <requireProperty>
+                    <property>project.reporting.outputEncoding</property>
+                    <message>Must set 'project.reporting.outputEncoding'.</message>
+                  </requireProperty>
+                </rules>
+                <fail>true</fail>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>net.sourceforge.mjarsigner</groupId>
+          <artifactId>jarsigner-maven-plugin</artifactId>
+          <version>1.0-beta-3</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <groupId>org.codehaus.mojo</groupId>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <groupId>org.codehaus.mojo</groupId>
       </plugin>
       <plugin>
-        <artifactId>maven-gpg-plugin</artifactId>
-      </plugin>
-      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
       </plugin>
       <plugin>
-        <artifactId>jdtaus-container-mojo</artifactId>
         <groupId>org.jdtaus.mojo</groupId>
+        <artifactId>jdtaus-container-mojo</artifactId>
       </plugin>
     </plugins>
   </build>
@@ -439,7 +446,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.1.1</version>
+        <version>2.1.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -744,6 +751,82 @@
   </dependencies>
   <profiles>
     <profile>
+      <id>release</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <inherited>true</inherited>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <configuration>
+              <updateReleaseInfo>true</updateReleaseInfo>
+            </configuration>
+          </plugin>
+          <plugin>
+            <inherited>true</inherited>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <inherited>true</inherited>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <inherited>true</inherited>
+            <groupId>net.sourceforge.mjarsigner</groupId>
+            <artifactId>jarsigner-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>verify</id>
+                <goals>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <inherited>true</inherited>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>ci</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -787,6 +870,32 @@
       </build>
     </profile>
   </profiles>
+  <repositories>
+    <repository>
+      <id>http://mjarsigner.sourceforge.net/maven2/releases</id>
+      <url>http://mjarsigner.sourceforge.net/maven2/releases</url>
+      <name>MJARSIGNER Releases</name>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>http://mjarsigner.sourceforge.net/maven2/releases</id>
+      <url>http://mjarsigner.sourceforge.net/maven2/releases</url>
+      <name>MJARSIGNER Releases</name>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <properties>
     <jdtausCoreVersion>1.9</jdtausCoreVersion>
     <jdtausContainerMojoVersion>3.3</jdtausContainerMojoVersion>
@@ -794,9 +903,8 @@
     <mavenJavadocPluginVersion>2.5</mavenJavadocPluginVersion>
     <mavenJxrPluginVersion>2.1</mavenJxrPluginVersion>
     <mavenPmdPluginVersion>2.4</mavenPmdPluginVersion>
-    <mavenCheckstylePluginVersion>2.2</mavenCheckstylePluginVersion>
+    <mavenCheckstylePluginVersion>2.3</mavenCheckstylePluginVersion>
     <mavenChangesPluginVersion>2.1</mavenChangesPluginVersion>
     <surefireVersion>2.4.3</surefireVersion>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

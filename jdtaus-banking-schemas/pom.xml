@@ -68,5 +68,32 @@
         <directory>src/test/resources</directory>
       </testResource>
     </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestSections>
+              <manifestSection>
+                <name>org/jdtaus/banking/model/jdtaus-banking-1.0.xsd</name>
+              </manifestSection>
+              <manifestSection>
+                <name>org/jdtaus/banking/model/jdtaus-banking-1.1.xsd</name>
+              </manifestSection>
+              <manifestSection>
+                <name>org/jdtaus/banking/xml/textschluessel/jdtaus-textschluessel-1.0.xsd</name>
+              </manifestSection>
+              <manifestSection>
+                <name>org/jdtaus/banking/xml/textschluessel/jdtaus-textschluessel-1.1.xsd</name>
+              </manifestSection>
+              <manifestSection>
+                <name>org/jdtaus/banking/xml/currencies/jdtaus-currencies-1.0.xsd</name>
+              </manifestSection>
+            </manifestSections>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>
