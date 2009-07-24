@@ -39,6 +39,7 @@
   </container:documentation>
 
   <container:specifications>
+    <!-- ******************************************************************* -->
     <container:specification container:identifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"
                              container:vendor="${pom.organization.name}"
                              container:version="1.1"
@@ -49,6 +50,7 @@
         <container:text container:language="en"><![CDATA[Public directory of german bank codes.]]></container:text>
       </container:documentation>
     </container:specification>
+    <!-- ******************************************************************* -->
     <container:specification container:identifier="org.jdtaus.banking.CurrencyDirectory"
                              container:vendor="${pom.organization.name}"
                              container:version="1.0"
@@ -59,6 +61,7 @@
         <container:text container:language="en"><![CDATA[Directory holding currency information.]]></container:text>
       </container:documentation>
     </container:specification>
+    <!-- ******************************************************************* -->
     <container:specification container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
                              container:vendor="${pom.organization.name}"
                              container:version="1.2"
@@ -69,6 +72,7 @@
         <container:text container:language="en"><![CDATA[Directory of german transaction types.]]></container:text>
       </container:documentation>
     </container:specification>
+    <!-- ******************************************************************* -->
     <container:specification container:identifier="org.jdtaus.banking.dtaus.PhysicalFileFactory"
                              container:vendor="${pom.organization.name}"
                              container:version="1.4"
@@ -80,8 +84,8 @@
       </container:documentation>
     </container:specification>
   </container:specifications>
-
   <container:implementations>
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.Textschluessel"
                               container:name="${pom.name}"
                               container:vendor="${pom.organization.name}"
@@ -113,6 +117,7 @@
         <container:reference container:name="textschluesselDescription"/>
       </container:messages>
     </container:implementation>
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.BankleitzahlExpirationException"
                               container:name="${pom.name}"
                               container:vendor="${pom.organization.name}"
@@ -134,6 +139,7 @@
         <container:reference container:name="bankleitzahlExpiration"/>
       </container:messages>
     </container:implementation>
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.IllegalTextschluesselException"
                               container:name="${pom.name}"
                               container:vendor="${pom.organization.name}"
@@ -155,6 +161,7 @@
         <container:reference container:name="illegalTextschluessel"/>
       </container:messages>
     </container:implementation>
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.CorruptedException"
                               container:name="${pom.name}"
                               container:vendor="${pom.organization.name}"
@@ -176,6 +183,7 @@
         <container:reference container:name="corruptedException"/>
       </container:messages>
     </container:implementation>
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.IllegalHeaderException"
                               container:name="${pom.name}"
                               container:vendor="${pom.organization.name}"
@@ -197,6 +205,7 @@
         <container:reference container:name="illegalHeader"/>
       </container:messages>
     </container:implementation>
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.IllegalTransactionException"
                               container:name="${pom.name}"
                               container:vendor="${pom.organization.name}"
@@ -218,6 +227,7 @@
         <container:reference container:name="illegalTransaction"/>
       </container:messages>
     </container:implementation>
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.PhysicalFileException"
                               container:name="${pom.name}"
                               container:vendor="${pom.organization.name}"
@@ -239,6 +249,7 @@
         <container:reference container:name="physicalFileException"/>
       </container:messages>
     </container:implementation>
+    <!-- ******************************************************************* -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.LogicalFileType"
                               container:name="${pom.name}"
                               container:vendor="${pom.organization.name}"
@@ -248,14 +259,6 @@
       <container:documentation container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Type of a logical file.]]></container:text>
       </container:documentation>
-      <container:dependencies>
-        <container:dependency container:identifier="java.util.Locale"
-                              container:version="1.1"
-                              container:name="Locale"
-                              container:bound="false"
-                              container:implementationName="default"/>
-
-      </container:dependencies>
       <container:messages>
         <container:reference container:name="logicalFileType_GB"/>
         <container:reference container:name="logicalFileType_LB"/>
@@ -265,6 +268,7 @@
     </container:implementation>
   </container:implementations>
   <container:messages>
+    <!-- ******************************************************************* -->
     <container:message container:name="textschluesselDescription">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[{0,number,00}{1,number,000}]]></container:text>
@@ -275,6 +279,7 @@
         <container:argument container:index="1" container:name="extension" container:type="number"/>
       </container:arguments>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="bankleitzahlExpiration">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[The Bankleitzahl {0} has expired. The bank published the replacement Bankleitzahl {1}.]]></container:text>
@@ -285,12 +290,14 @@
         <container:argument container:index="1" container:name="replacement" container:type="text"/>
       </container:arguments>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="illegalTextschluessel">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Illegal Textschlüssel.]]></container:text>
         <container:text container:language="de"><![CDATA[Ungültiger Textschlüssel.]]></container:text>
       </container:template>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="corruptedException">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[The physical file got corrupted at position {0,number}.]]></container:text>
@@ -300,42 +307,49 @@
         <container:argument container:index="0" container:name="position" container:type="number"/>
       </container:arguments>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="illegalHeader">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Illegal "A" record.]]></container:text>
         <container:text container:language="de"><![CDATA[Ungültiger "A" Datensatz.]]></container:text>
       </container:template>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="illegalTransaction">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Illegal "C" record.]]></container:text>
         <container:text container:language="de"><![CDATA[Ungültiger "C" Datensatz.]]></container:text>
       </container:template>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="physicalFileException">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[File error.]]></container:text>
         <container:text container:language="de"><![CDATA[Datei-Fehler.]]></container:text>
       </container:template>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="logicalFileType_GB">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Bank file - remittances]]></container:text>
         <container:text container:language="de"><![CDATA[Bankdatei - Gutschriften]]></container:text>
       </container:template>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="logicalFileType_LB">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Bank file - debits]]></container:text>
         <container:text container:language="de"><![CDATA[Bankdatei - Lastschriften]]></container:text>
       </container:template>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="logicalFileType_GK">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Customer file - remittances]]></container:text>
         <container:text container:language="de"><![CDATA[Kundendatei - Gutschriften]]></container:text>
       </container:template>
     </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="logicalFileType_LK">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Customer file - debits]]></container:text>
