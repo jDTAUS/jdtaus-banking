@@ -108,14 +108,14 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
      * @serial
      */
     private Date validFrom;
-    private long validFromMillis;
+    private transient long validFromMillis;
 
     /**
      * End date of validity.
      * @serial
      */
     private Date validTo;
-    private long validToMillis;
+    private transient long validToMillis;
 
     /**
      * Flag indicating if a transaction of the type is a debit.
