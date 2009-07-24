@@ -22,6 +22,7 @@
  */
 package org.jdtaus.banking;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -88,26 +89,6 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
     private static final long serialVersionUID = -8556424800883022756L;
 
     //---------------------------------------------------------------Constants--
-    //--Properties--------------------------------------------------------------
-
-// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
-    // This section is managed by jdtaus-container-mojo.
-
-    /**
-     * Gets the value of property <code>defaultLanguage</code>.
-     *
-     * @return Default language of descriptions when there is no description available for a requested language.
-     */
-    private java.lang.String getDefaultLanguage()
-    {
-        return (java.lang.String) ContainerFactory.getContainer().
-            getProperty( this, "defaultLanguage" );
-
-    }
-
-// </editor-fold>//GEN-END:jdtausProperties
-
-    //--------------------------------------------------------------Properties--
     //--Textschluessel----------------------------------------------------------
 
     /**
@@ -127,12 +108,14 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
      * @serial
      */
     private Date validFrom;
+    private long validFromMillis;
 
     /**
      * End date of validity.
      * @serial
      */
     private Date validTo;
+    private long validToMillis;
 
     /**
      * Flag indicating if a transaction of the type is a debit.
@@ -231,7 +214,16 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
      */
     public void setValidFrom( final Date value )
     {
-        this.validFrom = value != null ? (Date) value.clone() : null;
+        if ( value == null )
+        {
+            this.validFrom = null;
+            this.validFromMillis = 0L;
+        }
+        else
+        {
+            this.validFrom = (Date) value.clone();
+            this.validFromMillis = value.getTime();
+        }
     }
 
     /**
@@ -254,7 +246,16 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
      */
     public void setValidTo( final Date value )
     {
-        this.validTo = value != null ? (Date) value.clone() : null;
+        if ( value == null )
+        {
+            this.validTo = null;
+            this.validToMillis = 0L;
+        }
+        else
+        {
+            this.validTo = (Date) value.clone();
+            this.validToMillis = 0L;
+        }
     }
 
     /**
@@ -274,20 +275,12 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
             throw new NullPointerException( "date" );
         }
 
-        boolean valid = true;
 
-        if ( this.validFrom != null &&
-            this.validFrom.getTime() > date.getTime() )
-        {
-            valid = false;
-        }
-        if ( this.validTo != null &&
-            this.validTo.getTime() < date.getTime() )
-        {
-            valid = false;
-        }
+        return !( ( this.validFrom != null &&
+                    this.validFromMillis > date.getTime() ) ||
+                  ( this.validTo != null &&
+                    this.validToMillis < date.getTime() ) );
 
-        return valid;
     }
 
     /**
@@ -468,10 +461,10 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
     protected void assertValidProperties()
     {
         if ( this.getDefaultLanguage() == null ||
-            this.getDefaultLanguage().length() <= 0 )
+             this.getDefaultLanguage().length() <= 0 )
         {
             throw new PropertyException( "defaultLanguage",
-                this.getDefaultLanguage() );
+                                         this.getDefaultLanguage() );
 
         }
     }
@@ -541,6 +534,30 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
     }
 
     //--------------------------------------------------------------Comparable--
+    //--Serializable------------------------------------------------------------
+
+    /**
+     * Takes care of initializing the {@code validFromMillis} and
+     * {@code validToMillis} fields when constructed from an &lt;1.11
+     * object stream.
+     *
+     * @throws ObjectStreamException if resolution fails.
+     */
+    private Object readResolve() throws ObjectStreamException
+    {
+        if ( this.validFrom != null )
+        {
+            this.validFromMillis = this.validFrom.getTime();
+        }
+        if ( this.validTo != null )
+        {
+            this.validToMillis = this.validTo.getTime();
+        }
+
+        return this;
+    }
+
+    //------------------------------------------------------------Serializable--
     //--Object------------------------------------------------------------------
 
     /**
@@ -586,7 +603,7 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
             else
             {
                 ret = !that.isVariable() && this.key == that.getKey() &&
-                    this.extension == that.getExtension();
+                      this.extension == that.getExtension();
 
             }
         }
@@ -679,4 +696,24 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
 // </editor-fold>//GEN-END:jdtausMessages
 
     //----------------------------------------------------------------Messages--
+    //--Properties--------------------------------------------------------------
+
+// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausProperties
+    // This section is managed by jdtaus-container-mojo.
+
+    /**
+     * Gets the value of property <code>defaultLanguage</code>.
+     *
+     * @return Default language of descriptions when there is no description available for a requested language.
+     */
+    private java.lang.String getDefaultLanguage()
+    {
+        return (java.lang.String) ContainerFactory.getContainer().
+            getProperty( this, "defaultLanguage" );
+
+    }
+
+// </editor-fold>//GEN-END:jdtausProperties
+
+    //--------------------------------------------------------------Properties--
 }
