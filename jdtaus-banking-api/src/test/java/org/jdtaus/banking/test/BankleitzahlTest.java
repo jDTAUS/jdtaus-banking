@@ -23,6 +23,7 @@
 package org.jdtaus.banking.test;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,16 +67,16 @@ public class BankleitzahlTest extends TestCase
         final Map properties = this.getProperties();
         final Collection col = new LinkedList();
 
-        for ( it = properties.keySet().iterator(); it.hasNext();)
+        for ( it = properties.keySet().iterator(); it.hasNext(); )
         {
-            key = ( String ) it.next();
+            key = (String) it.next();
             if ( key.startsWith( VALID_PREFIX ) )
             {
                 col.add( properties.get( key ) );
             }
         }
 
-        return ( String[] ) col.toArray( new String[ col.size() ] );
+        return (String[]) col.toArray( new String[ col.size() ] );
     }
 
     /**
@@ -92,36 +93,23 @@ public class BankleitzahlTest extends TestCase
         final Map properties = this.getProperties();
         final Collection col = new LinkedList();
 
-        for ( it = properties.keySet().iterator(); it.hasNext();)
+        for ( it = properties.keySet().iterator(); it.hasNext(); )
         {
-            key = ( String ) it.next();
+            key = (String) it.next();
             if ( key.startsWith( INVALID_PREFIX ) )
             {
                 col.add( properties.get( key ) );
             }
         }
 
-        return ( String[] ) col.toArray( new String[ col.size() ] );
+        return (String[]) col.toArray( new String[ col.size() ] );
     }
 
     private Map getProperties() throws IOException
     {
-        ClassLoader classLoader =
-            Thread.currentThread().getContextClassLoader();
-
-        if ( classLoader == null )
-        {
-            classLoader = ClassLoader.getSystemClassLoader();
-        }
-
-        if ( classLoader == null )
-        {
-            throw new IllegalStateException( "classLoader" );
-        }
-
         final Properties ret = new Properties();
-        ret.load( classLoader.getResourceAsStream(
-                  "org/jdtaus/banking/test/BankleitzahlTest.properties" ) );
+        ret.load( this.getClass().getResourceAsStream(
+            "BankleitzahlTest.properties" ) );
 
         return ret;
     }
@@ -189,9 +177,9 @@ public class BankleitzahlTest extends TestCase
 
         Collections.sort( sorted );
 
-        for ( Iterator it = sorted.iterator(); it.hasNext();)
+        for ( Iterator it = sorted.iterator(); it.hasNext(); )
         {
-            final Bankleitzahl blz = ( Bankleitzahl ) it.next();
+            final Bankleitzahl blz = (Bankleitzahl) it.next();
             System.out.println(
                 blz.format( Bankleitzahl.ELECTRONIC_FORMAT ) + '\t' +
                 blz.format( Bankleitzahl.LETTER_FORMAT ) );
@@ -230,10 +218,10 @@ public class BankleitzahlTest extends TestCase
         {
             final Bankleitzahl blz = Bankleitzahl.parse( valid[i] );
             Assert.assertEquals( blz, Bankleitzahl.parse(
-                                 blz.format( Bankleitzahl.ELECTRONIC_FORMAT ) ) );
+                blz.format( Bankleitzahl.ELECTRONIC_FORMAT ) ) );
 
             Assert.assertEquals( blz, Bankleitzahl.parse(
-                                 blz.format( Bankleitzahl.LETTER_FORMAT ) ) );
+                blz.format( Bankleitzahl.LETTER_FORMAT ) ) );
 
         }
         for ( int i = invalid.length - 1; i >= 0; i-- )
@@ -339,6 +327,20 @@ public class BankleitzahlTest extends TestCase
 
         Assert.assertFalse(
             Bankleitzahl.checkBankleitzahl( new Integer( 90000000 ) ) );
+
+    }
+
+    public void testSerializable() throws Exception
+    {
+        final ObjectInputStream in = new ObjectInputStream(
+            this.getClass().getResourceAsStream( "Bankleitzahl.ser" ) );
+
+        final Bankleitzahl b = (Bankleitzahl) in.readObject();
+        in.close();
+
+        System.out.println( b.toString() );
+        Assert.assertEquals( new Integer( 11111111 ),
+                             new Integer( b.intValue() ) );
 
     }
 

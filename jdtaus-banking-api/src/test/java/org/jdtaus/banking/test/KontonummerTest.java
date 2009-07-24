@@ -23,6 +23,7 @@
 package org.jdtaus.banking.test;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,16 +67,16 @@ public class KontonummerTest extends TestCase
         final Map properties = this.getProperties();
         final Collection col = new LinkedList();
 
-        for ( it = properties.keySet().iterator(); it.hasNext();)
+        for ( it = properties.keySet().iterator(); it.hasNext(); )
         {
-            key = ( String ) it.next();
+            key = (String) it.next();
             if ( key.startsWith( VALID_PREFIX ) )
             {
                 col.add( properties.get( key ) );
             }
         }
 
-        return ( String[] ) col.toArray( new String[ col.size() ] );
+        return (String[]) col.toArray( new String[ col.size() ] );
     }
 
     /**
@@ -92,36 +93,23 @@ public class KontonummerTest extends TestCase
         final Map properties = this.getProperties();
         final Collection col = new LinkedList();
 
-        for ( it = properties.keySet().iterator(); it.hasNext();)
+        for ( it = properties.keySet().iterator(); it.hasNext(); )
         {
-            key = ( String ) it.next();
+            key = (String) it.next();
             if ( key.startsWith( INVALID_PREFIX ) )
             {
                 col.add( properties.get( key ) );
             }
         }
 
-        return ( String[] ) col.toArray( new String[ col.size() ] );
+        return (String[]) col.toArray( new String[ col.size() ] );
     }
 
     private Map getProperties() throws IOException
     {
-        ClassLoader classLoader =
-            Thread.currentThread().getContextClassLoader();
-
-        if ( classLoader == null )
-        {
-            classLoader = ClassLoader.getSystemClassLoader();
-        }
-
-        if ( classLoader == null )
-        {
-            throw new IllegalStateException( "classLoader" );
-        }
-
         final Properties ret = new Properties();
-        ret.load( classLoader.getResourceAsStream(
-                  "org/jdtaus/banking/test/KontonummerTest.properties" ) );
+        ret.load( this.getClass().getResourceAsStream(
+            "KontonummerTest.properties" ) );
 
         return ret;
     }
@@ -177,9 +165,9 @@ public class KontonummerTest extends TestCase
 
         Collections.sort( sorted );
 
-        for ( Iterator it = sorted.iterator(); it.hasNext();)
+        for ( Iterator it = sorted.iterator(); it.hasNext(); )
         {
-            final Kontonummer kto = ( Kontonummer ) it.next();
+            final Kontonummer kto = (Kontonummer) it.next();
             System.out.println(
                 kto.format( Kontonummer.ELECTRONIC_FORMAT ) + '\t' +
                 kto.format( Kontonummer.LETTER_FORMAT ) );
@@ -218,10 +206,10 @@ public class KontonummerTest extends TestCase
         {
             final Kontonummer kto = Kontonummer.parse( valid[i] );
             Assert.assertEquals( kto, Kontonummer.parse(
-                                 kto.format( Kontonummer.ELECTRONIC_FORMAT ) ) );
+                kto.format( Kontonummer.ELECTRONIC_FORMAT ) ) );
 
             Assert.assertEquals( kto, Kontonummer.parse(
-                                 kto.format( Kontonummer.LETTER_FORMAT ) ) );
+                kto.format( Kontonummer.LETTER_FORMAT ) ) );
 
         }
         for ( int i = invalid.length - 1; i >= 0; i-- )
@@ -237,6 +225,20 @@ public class KontonummerTest extends TestCase
                 Assert.assertNotNull( e.getMessage() );
             }
         }
+    }
+
+    public void testSerializable() throws Exception
+    {
+        final ObjectInputStream in = new ObjectInputStream(
+            this.getClass().getResourceAsStream( "Kontonummer.ser" ) );
+
+        final Kontonummer k = (Kontonummer) in.readObject();
+        in.close();
+
+        System.out.println( k.toString() );
+        Assert.assertEquals( new Long( 1111111111 ),
+                             new Long( k.longValue() ) );
+
     }
 
     //-------------------------------------------------------------------Tests--

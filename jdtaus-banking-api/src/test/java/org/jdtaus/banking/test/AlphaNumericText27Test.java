@@ -23,6 +23,7 @@
 package org.jdtaus.banking.test;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,16 +67,16 @@ public class AlphaNumericText27Test extends TestCase
         final Map properties = this.getProperties();
         final Collection col = new LinkedList();
 
-        for ( it = properties.keySet().iterator(); it.hasNext();)
+        for ( it = properties.keySet().iterator(); it.hasNext(); )
         {
-            key = ( String ) it.next();
+            key = (String) it.next();
             if ( key.startsWith( VALID_PREFIX ) )
             {
                 col.add( properties.get( key ) );
             }
         }
 
-        return ( String[] ) col.toArray( new String[ col.size() ] );
+        return (String[]) col.toArray( new String[ col.size() ] );
     }
 
     /**
@@ -92,36 +93,23 @@ public class AlphaNumericText27Test extends TestCase
         final Map properties = this.getProperties();
         final Collection col = new LinkedList();
 
-        for ( it = properties.keySet().iterator(); it.hasNext();)
+        for ( it = properties.keySet().iterator(); it.hasNext(); )
         {
-            key = ( String ) it.next();
+            key = (String) it.next();
             if ( key.startsWith( INVALID_PREFIX ) )
             {
                 col.add( properties.get( key ) );
             }
         }
 
-        return ( String[] ) col.toArray( new String[ col.size() ] );
+        return (String[]) col.toArray( new String[ col.size() ] );
     }
 
     private Map getProperties() throws IOException
     {
-        ClassLoader classLoader =
-            Thread.currentThread().getContextClassLoader();
-
-        if ( classLoader == null )
-        {
-            classLoader = ClassLoader.getSystemClassLoader();
-        }
-
-        if ( classLoader == null )
-        {
-            throw new IllegalStateException( "classLoader" );
-        }
-
         final Properties ret = new Properties();
-        ret.load( classLoader.getResourceAsStream(
-                  "org/jdtaus/banking/test/AlphaNumericText27Test.properties" ) );
+        ret.load( this.getClass().getResourceAsStream(
+            "AlphaNumericText27Test.properties" ) );
 
         return ret;
     }
@@ -197,9 +185,9 @@ public class AlphaNumericText27Test extends TestCase
 
         Collections.sort( sorted );
 
-        for ( Iterator it = sorted.iterator(); it.hasNext();)
+        for ( Iterator it = sorted.iterator(); it.hasNext(); )
         {
-            final AlphaNumericText27 txt = ( AlphaNumericText27 ) it.next();
+            final AlphaNumericText27 txt = (AlphaNumericText27) it.next();
             System.out.println( txt.format() );
         }
 
@@ -232,6 +220,7 @@ public class AlphaNumericText27Test extends TestCase
         final AlphaNumericText27 txt1 = AlphaNumericText27.parse( "" );
         final AlphaNumericText27 txt2 =
             AlphaNumericText27.parse( "           " );
+
         final AlphaNumericText27 txt3 = AlphaNumericText27.parse( "  A    " );
 
         Assert.assertTrue( txt1.isEmpty() );
@@ -261,6 +250,18 @@ public class AlphaNumericText27Test extends TestCase
                 Assert.assertNotNull( e.getMessage() );
             }
         }
+    }
+
+    public void testSerializable() throws Exception
+    {
+        final ObjectInputStream in = new ObjectInputStream(
+            this.getClass().getResourceAsStream( "AlphaNumericText27.ser" ) );
+
+        final AlphaNumericText27 t = (AlphaNumericText27) in.readObject();
+        in.close();
+
+        System.out.println( t.toString() );
+        Assert.assertEquals( "ABCDEFGHIJKLMNOPQRSTUVWXYZ", t.format() );
     }
 
     //-------------------------------------------------------------------Tests--

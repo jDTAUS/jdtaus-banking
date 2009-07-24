@@ -23,6 +23,7 @@
 package org.jdtaus.banking.test;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,16 +67,16 @@ public class Referenznummer10Test extends TestCase
         final Map properties = this.getProperties();
         final Collection col = new LinkedList();
 
-        for ( it = properties.keySet().iterator(); it.hasNext();)
+        for ( it = properties.keySet().iterator(); it.hasNext(); )
         {
-            key = ( String ) it.next();
+            key = (String) it.next();
             if ( key.startsWith( VALID_PREFIX ) )
             {
                 col.add( properties.get( key ) );
             }
         }
 
-        return ( String[] ) col.toArray( new String[ col.size() ] );
+        return (String[]) col.toArray( new String[ col.size() ] );
     }
 
     /**
@@ -92,36 +93,23 @@ public class Referenznummer10Test extends TestCase
         final Map properties = this.getProperties();
         final Collection col = new LinkedList();
 
-        for ( it = properties.keySet().iterator(); it.hasNext();)
+        for ( it = properties.keySet().iterator(); it.hasNext(); )
         {
-            key = ( String ) it.next();
+            key = (String) it.next();
             if ( key.startsWith( INVALID_PREFIX ) )
             {
                 col.add( properties.get( key ) );
             }
         }
 
-        return ( String[] ) col.toArray( new String[ col.size() ] );
+        return (String[]) col.toArray( new String[ col.size() ] );
     }
 
     private Map getProperties() throws IOException
     {
-        ClassLoader classLoader =
-            Thread.currentThread().getContextClassLoader();
-
-        if ( classLoader == null )
-        {
-            classLoader = ClassLoader.getSystemClassLoader();
-        }
-
-        if ( classLoader == null )
-        {
-            throw new IllegalStateException( "classLoader" );
-        }
-
         final Properties ret = new Properties();
-        ret.load( classLoader.getResourceAsStream(
-                  "org/jdtaus/banking/test/Referenznummer10Test.properties" ) );
+        ret.load( this.getClass().getResourceAsStream(
+            "Referenznummer10Test.properties" ) );
 
         return ret;
     }
@@ -133,10 +121,13 @@ public class Referenznummer10Test extends TestCase
     {
         final Referenznummer10 ref1 =
             Referenznummer10.valueOf( new Long( 9999999999L ) );
+
         final Referenznummer10 ref2 =
             Referenznummer10.valueOf( new Long( 9999999999L ) );
+
         final Referenznummer10 ref3 =
             Referenznummer10.valueOf( new Long( 9999999999L ) );
+
         final Referenznummer10 ref4 =
             Referenznummer10.valueOf( new Long( 1111111111L ) );
 
@@ -161,28 +152,40 @@ public class Referenznummer10Test extends TestCase
     {
         final Referenznummer10 ref1 =
             Referenznummer10.valueOf( new Long( 1000000000L ) );
+
         final Referenznummer10 ref2 =
             Referenznummer10.valueOf( new Long( 1000000001L ) );
+
         final Referenznummer10 ref3 =
             Referenznummer10.valueOf( new Long( 1000000002L ) );
+
         final Referenznummer10 leadingZeroes1 =
             Referenznummer10.valueOf( new Long( 1L ) );
+
         final Referenznummer10 leadingZeroes2 =
             Referenznummer10.valueOf( new Long( 11L ) );
+
         final Referenznummer10 leadingZeroes3 =
             Referenznummer10.valueOf( new Long( 111L ) );
+
         final Referenznummer10 leadingZeroes4 =
             Referenznummer10.valueOf( new Long( 1111L ) );
+
         final Referenznummer10 leadingZeroes5 =
             Referenznummer10.valueOf( new Long( 11111L ) );
+
         final Referenznummer10 leadingZeroes6 =
             Referenznummer10.valueOf( new Long( 111111L ) );
+
         final Referenznummer10 leadingZeroes7 =
             Referenznummer10.valueOf( new Long( 1111111L ) );
+
         final Referenznummer10 leadingZeroes8 =
             Referenznummer10.valueOf( new Long( 11111111L ) );
+
         final Referenznummer10 leadingZeroes9 =
             Referenznummer10.valueOf( new Long( 111111111L ) );
+
         final Referenznummer10 leadingZeroes10 =
             Referenznummer10.valueOf( new Long( 1111111111L ) );
 
@@ -214,9 +217,9 @@ public class Referenznummer10Test extends TestCase
 
         Collections.sort( sorted );
 
-        for ( Iterator it = sorted.iterator(); it.hasNext();)
+        for ( Iterator it = sorted.iterator(); it.hasNext(); )
         {
-            final Referenznummer10 ref = ( Referenznummer10 ) it.next();
+            final Referenznummer10 ref = (Referenznummer10) it.next();
             System.out.println(
                 ref.format( Referenznummer10.ELECTRONIC_FORMAT ) + '\t' +
                 ref.format( Referenznummer10.LETTER_FORMAT ) );
@@ -254,12 +257,11 @@ public class Referenznummer10Test extends TestCase
         for ( int i = valid.length - 1; i >= 0; i-- )
         {
             final Referenznummer10 ref = Referenznummer10.parse( valid[i] );
-            Assert.assertEquals( ref,
-                                 Referenznummer10.parse(
-                                 ref.format( Referenznummer10.ELECTRONIC_FORMAT ) ) );
+            Assert.assertEquals( ref, Referenznummer10.parse(
+                ref.format( Referenznummer10.ELECTRONIC_FORMAT ) ) );
 
             Assert.assertEquals( ref, Referenznummer10.parse(
-                                 ref.format( Referenznummer10.LETTER_FORMAT ) ) );
+                ref.format( Referenznummer10.LETTER_FORMAT ) ) );
 
         }
         for ( int i = invalid.length - 1; i >= 0; i-- )
@@ -275,6 +277,20 @@ public class Referenznummer10Test extends TestCase
                 Assert.assertNotNull( e.getMessage() );
             }
         }
+    }
+
+    public void testSerializable() throws Exception
+    {
+        final ObjectInputStream in = new ObjectInputStream(
+            this.getClass().getResourceAsStream( "Referenznummer10.ser" ) );
+
+        final Referenznummer10 r = (Referenznummer10) in.readObject();
+        in.close();
+
+        System.out.println( r.toString() );
+        Assert.assertEquals( new Long( 1111111111 ),
+                             new Long( r.longValue() ) );
+
     }
 
     //-------------------------------------------------------------------Tests--

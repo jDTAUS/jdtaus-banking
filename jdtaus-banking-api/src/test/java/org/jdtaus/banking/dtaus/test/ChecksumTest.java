@@ -22,6 +22,7 @@
  */
 package org.jdtaus.banking.dtaus.test;
 
+import java.io.ObjectInputStream;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.jdtaus.banking.dtaus.Checksum;
@@ -113,6 +114,17 @@ public class ChecksumTest extends TestCase
 
         c.subtract( TransactionTest.getLegalTransaction() );
         Assert.assertEquals( c, new Checksum() );
+    }
+
+    public void testSerializable() throws Exception
+    {
+        final ObjectInputStream in = new ObjectInputStream(
+            this.getClass().getResourceAsStream( "Checksum.ser" ) );
+
+        final Checksum c = (Checksum) in.readObject();
+        in.close();
+
+        System.out.println( c );
     }
 
     //------------------------------------------------------------ChecksumTest--

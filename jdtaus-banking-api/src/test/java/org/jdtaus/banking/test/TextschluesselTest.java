@@ -22,6 +22,7 @@
  */
 package org.jdtaus.banking.test;
 
+import java.io.ObjectInputStream;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.jdtaus.banking.Textschluessel;
@@ -112,21 +113,35 @@ public class TextschluesselTest extends TestCase
         try
         {
             t1.compareTo( null );
-            this.fail();
+            throw new AssertionError();
         }
         catch ( NullPointerException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
 
         try
         {
             t1.compareTo( new Object() );
-            this.fail();
+            throw new AssertionError();
         }
         catch ( ClassCastException e )
         {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
         }
+    }
 
+    public void testSerializable() throws Exception
+    {
+        final ObjectInputStream in = new ObjectInputStream(
+            this.getClass().getResourceAsStream( "Textschluessel.ser" ) );
+
+        final Textschluessel t = (Textschluessel) in.readObject();
+        in.close();
+
+        System.out.println( t.toString() );
     }
 
     //-------------------------------------------------------------------Tests--

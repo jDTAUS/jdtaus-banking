@@ -22,6 +22,7 @@
  */
 package org.jdtaus.banking.dtaus.test;
 
+import java.io.ObjectInputStream;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Currency;
@@ -83,22 +84,32 @@ public class TransactionTest extends TestCase
         legal.setExecutiveAccount(
             Kontonummer.valueOf( new Long( 1111111111L ) ) );
 
-        legal.setExecutiveBank( Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
-        legal.setExecutiveExt( AlphaNumericText27.parse(
-                               "TEST                       " ) );
+        legal.setExecutiveBank(
+            Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
 
-        legal.setExecutiveName( AlphaNumericText27.parse(
-                                "TEST                       " ) );
+        legal.setExecutiveExt(
+            AlphaNumericText27.parse( "TEST                       " ) );
 
-        legal.setPrimaryBank( Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
-        legal.setReference( Referenznummer11.valueOf( new Long( 11111111111L ) ) );
-        legal.setTargetAccount( Kontonummer.valueOf( new Long( 1111111111L ) ) );
-        legal.setTargetBank( Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
-        legal.setTargetExt( AlphaNumericText27.parse(
-                            "TEST                       " ) );
+        legal.setExecutiveName(
+            AlphaNumericText27.parse( "TEST                       " ) );
 
-        legal.setTargetName( AlphaNumericText27.parse(
-                             "TEST                       " ) );
+        legal.setPrimaryBank(
+            Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
+
+        legal.setReference(
+            Referenznummer11.valueOf( new Long( 11111111111L ) ) );
+
+        legal.setTargetAccount(
+            Kontonummer.valueOf( new Long( 1111111111L ) ) );
+
+        legal.setTargetBank(
+            Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
+
+        legal.setTargetExt(
+            AlphaNumericText27.parse( "TEST                       " ) );
+
+        legal.setTargetName(
+            AlphaNumericText27.parse( "TEST                       " ) );
 
         legal.setType( type );
 
@@ -156,23 +167,29 @@ public class TransactionTest extends TestCase
         System.out.println( t1.toString() );
         System.out.println( t2.toString() );
 
-        Assert.assertFalse( t1.equals( TransactionTest.getIllegalTransaction() ) );
-        Assert.assertFalse( t1.equals( TransactionTest.getLegalTransaction() ) );
-        Assert.assertFalse( t2.equals( TransactionTest.getIllegalTransaction() ) );
-        Assert.assertFalse( t2.equals( TransactionTest.getLegalTransaction() ) );
-        Assert.assertFalse( t1.hashCode() == TransactionTest.
-                            getIllegalTransaction().
-                            hashCode() );
+        Assert.assertFalse(
+            t1.equals( TransactionTest.getIllegalTransaction() ) );
 
-        Assert.assertFalse( t1.hashCode() == TransactionTest.getLegalTransaction().
-                            hashCode() );
+        Assert.assertFalse(
+            t1.equals( TransactionTest.getLegalTransaction() ) );
 
-        Assert.assertFalse( t2.hashCode() == TransactionTest.
-                            getIllegalTransaction().
-                            hashCode() );
+        Assert.assertFalse(
+            t2.equals( TransactionTest.getIllegalTransaction() ) );
 
-        Assert.assertFalse( t2.hashCode() == TransactionTest.getLegalTransaction().
-                            hashCode() );
+        Assert.assertFalse(
+            t2.equals( TransactionTest.getLegalTransaction() ) );
+
+        Assert.assertFalse(
+            t1.hashCode() == TransactionTest.getIllegalTransaction().hashCode() );
+
+        Assert.assertFalse(
+            t1.hashCode() == TransactionTest.getLegalTransaction().hashCode() );
+
+        Assert.assertFalse(
+            t2.hashCode() == TransactionTest.getIllegalTransaction().hashCode() );
+
+        Assert.assertFalse(
+            t2.hashCode() == TransactionTest.getLegalTransaction().hashCode() );
 
         Assert.assertFalse( t1 == t1.clone() );
         Assert.assertFalse( t2 == t2.clone() );
@@ -265,6 +282,17 @@ public class TransactionTest extends TestCase
 
         Assert.assertFalse( t1.equals( t2 ) );
         Assert.assertFalse( t1.hashCode() == t2.hashCode() );
+    }
+
+    public void testSerializable() throws Exception
+    {
+        final ObjectInputStream in = new ObjectInputStream(
+            this.getClass().getResourceAsStream( "Transaction.ser" ) );
+
+        final Transaction t = (Transaction) in.readObject();
+        in.close();
+
+        System.out.println( t );
     }
 
     //---------------------------------------------------------TransactionTest--
