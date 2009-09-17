@@ -31,7 +31,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
-  <version>1.11-SNAPSHOT</version>
+  <version>1.10.1-SNAPSHOT</version>
   <name>jDTAUS Banking RI Bankleitzahlenverzeichnis</name>
   <description>jDTAUS BankleitzahlenVerzeichnis reference implementation.</description>
   <build>
