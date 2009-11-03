@@ -31,7 +31,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
-  <version>1.10.20091206</version>
+  <version>1.11-SNAPSHOT</version>
   <name>jDTAUS Banking RI Bankleitzahlenverzeichnis</name>
   <description>jDTAUS BankleitzahlenVerzeichnis reference implementation.</description>
   <build>
@@ -98,10 +98,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.10.20091206</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.10.20091206</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/tags/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.10.20091206</url>
-  </scm>
 </project>
