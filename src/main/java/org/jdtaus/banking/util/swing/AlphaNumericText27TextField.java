@@ -114,7 +114,12 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
                                 {
                                     if ( isNormalizing() )
                                     {
-                                        s = s.toUpperCase( Locale.GERMANY );
+                                        final char[] chars = s.toCharArray();
+                                        for ( int i = chars.length - 1; i >= 0; i-- )
+                                        {
+                                            chars[i] = Character.toUpperCase( chars[i] );
+                                        }
+                                        s = String.valueOf( chars );
                                     }
 
                                     final StringBuffer b =
@@ -144,7 +149,12 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
                                 {
                                     if ( isNormalizing() )
                                     {
-                                        s = s.toUpperCase( Locale.GERMANY );
+                                        final char[] chars = s.toCharArray();
+                                        for ( int i = chars.length - 1; i >= 0; i-- )
+                                        {
+                                            chars[i] = Character.toUpperCase( chars[i] );
+                                        }
+                                        s = String.valueOf( chars );
                                     }
 
                                     final StringBuffer b =
