@@ -36,21 +36,46 @@ public class CharsetsTest extends TestCase
 {
     //--Tests-------------------------------------------------------------------
 
-    private static final String TEST =
-        "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789äöüß";
+    private static final String ASCII = "@[\\]{|}~";
+
+    private static final String ISO646DE = "§ÄÖÜäöüß";
 
     public void testISO646DE() throws Exception
     {
-        final byte[] encoded = Charsets.encode( TEST, "ISO646-DE" );
-        final String decoded = Charsets.decode( encoded, "ISO646-DE" );
-        Assert.assertEquals( TEST, decoded );
+        byte[] encoded = Charsets.encode( ISO646DE, "ISO646-DE" );
+        String decoded = Charsets.decode( encoded, "ISO646-DE" );
+        Assert.assertEquals( ISO646DE, decoded );
+
+        encoded = Charsets.encode( ASCII, "ISO646-DE" );
+        decoded = Charsets.decode( encoded, "ISO646-DE" );
+        Assert.assertEquals( "????????", decoded );
+
+        encoded = ISO646DE.getBytes( "ISO646-DE" );
+        decoded = new String( encoded, "ISO646-DE" );
+        Assert.assertEquals( ISO646DE, decoded );
+
+        encoded = ASCII.getBytes( "ISO646-DE" );
+        decoded = new String( encoded, "ISO646-DE" );
+        Assert.assertEquals( "????????", decoded );
     }
 
     public void testIBM273() throws Exception
     {
-        final byte[] encoded = Charsets.encode( TEST, "IBM273" );
-        final String decoded = Charsets.decode( encoded, "IBM273" );
-        Assert.assertEquals( TEST, decoded );
+        byte[] encoded = Charsets.encode( ISO646DE, "IBM273" );
+        String decoded = Charsets.decode( encoded, "IBM273" );
+        Assert.assertEquals( ISO646DE, decoded );
+
+        encoded = Charsets.encode( ASCII, "IBM273" );
+        decoded = Charsets.decode( encoded, "IBM273" );
+        Assert.assertEquals( ASCII, decoded );
+
+        encoded = ISO646DE.getBytes( "IBM273" );
+        decoded = new String( encoded, "IBM273" );
+        Assert.assertEquals( ISO646DE, decoded );
+
+        encoded = ASCII.getBytes( "IBM273" );
+        decoded = new String( encoded, "IBM273" );
+        Assert.assertEquals( ASCII, decoded );
     }
 
     //-------------------------------------------------------------------Tests--
