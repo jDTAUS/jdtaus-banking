@@ -120,5 +120,15 @@
       <blockquote>To use a <code>DocumentFilter</code> for input validation
       instead of an <code>InputVerifier</code>.</blockquote></ul>]]></action>
     </release>
+    <release version="1.10.1" date="2009-11-07" description="Bugfix release.">
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Updated classes:<ul>
+      <li>org.jdtaus.banking.util.swing.AlphaNumericText27TextField</li>
+      <blockquote>Corrected the <code>DocumentFilter</code> of the text field
+      to not convert <code>ß</code> characters to <code>SS</code> when
+      properties <code>normalizing</code> and <code>validating</code> are set
+      to <code>true</code>.</blockquote>
+      </ul>]]></action>
+    </release>
   </body>
 </document>
