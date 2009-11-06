@@ -31,7 +31,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-charsets</artifactId>
-  <version>1.10.1</version>
+  <version>1.10.2-SNAPSHOT</version>
   <name>jDTAUS Banking Charset Providers</name>
   <description>jDTAUS banking charset provider implementations.</description>
   <dependencies>
@@ -75,10 +75,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-charsets-1.10.1</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-charsets-1.10.1</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/tags/jdtaus-banking-charsets-1.10.1</url>
-  </scm>
 </project>
