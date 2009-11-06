@@ -26,12 +26,11 @@
   <parent>
     <artifactId>jdtaus-banking</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.10</version>
+    <version>1.11-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-charsets</artifactId>
-  <version>1.10.2-SNAPSHOT</version>
   <name>jDTAUS Banking Charset Providers</name>
   <description>jDTAUS banking charset provider implementations.</description>
   <dependencies>
