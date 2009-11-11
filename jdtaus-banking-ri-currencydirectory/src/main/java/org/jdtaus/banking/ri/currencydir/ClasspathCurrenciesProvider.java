@@ -134,7 +134,7 @@ public final class ClasspathCurrenciesProvider implements CurrenciesProvider
      * @param classLoader the classloader to search for resources.
      */
     public ClasspathCurrenciesProvider( final String resourceName,
-        final ClassLoader classLoader )
+                                        final ClassLoader classLoader )
     {
         this.resourceName = resourceName;
         this.classLoader = classLoader;
@@ -168,17 +168,15 @@ public final class ClasspathCurrenciesProvider implements CurrenciesProvider
     {
         if ( this.classLoader == null )
         {
-            this.classLoader =
-                Thread.currentThread().getContextClassLoader();
+            if ( Thread.currentThread().getContextClassLoader() != null )
+            {
+                return Thread.currentThread().getContextClassLoader();
+            }
 
+            this.classLoader = this.getClass().getClassLoader();
             if ( this.classLoader == null )
             {
-                this.classLoader = this.getClass().getClassLoader();
-
-                if ( this.classLoader == null )
-                {
-                    this.classLoader = ClassLoader.getSystemClassLoader();
-                }
+                this.classLoader = ClassLoader.getSystemClassLoader();
             }
         }
 
@@ -193,11 +191,11 @@ public final class ClasspathCurrenciesProvider implements CurrenciesProvider
     private void assertValidProperties()
     {
         if ( this.getResourceName() == null ||
-            this.getResourceName().length() <= 0 )
+             this.getResourceName().length() <= 0 )
         {
 
             throw new PropertyException( "resourceName",
-                this.getResourceName() );
+                                         this.getResourceName() );
 
         }
     }
