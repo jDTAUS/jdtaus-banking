@@ -167,17 +167,15 @@ public final class ClasspathTextschluesselProvider
     {
         if ( this.classLoader == null )
         {
-            this.classLoader =
-                Thread.currentThread().getContextClassLoader();
+            if ( Thread.currentThread().getContextClassLoader() != null )
+            {
+                return Thread.currentThread().getContextClassLoader();
+            }
 
+            this.classLoader = this.getClass().getClassLoader();
             if ( this.classLoader == null )
             {
-                this.classLoader = this.getClass().getClassLoader();
-
-                if ( this.classLoader == null )
-                {
-                    this.classLoader = ClassLoader.getSystemClassLoader();
-                }
+                this.classLoader = ClassLoader.getSystemClassLoader();
             }
         }
 

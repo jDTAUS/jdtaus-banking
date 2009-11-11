@@ -166,5 +166,10 @@
       <li>53888</li>
       </ul>.]]></action>
     </release>
+    <release version="1.11" date="2009-11-15" description="Bugfix release.">
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Updated class <code>org.jdtaus.banking.ri.txtdirectory.ClasspathTextschluesselProvider</code>
+      to not cache the thread context class loader.]]></action>
+    </release>
   </body>
 </document>
