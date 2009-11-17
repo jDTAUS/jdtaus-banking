@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-  ${pom.name}
+  ${project.name}
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
@@ -24,25 +24,25 @@
   Document   : module.xml
   Author     : Christian Schulte <schulte2005@users.sourceforge.net>
   Version    : $Id$
-  Description: Runtime configuration for the ${pom.name} module.
+  Description: Runtime configuration for the ${project.name} module.
 
   $Id$
 -->
 <container:module xmlns:container="http://jdtaus.org/core/model/container"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://jdtaus.org/core/model/container http://jdtaus.sourceforge.net/1.0.x/jdtaus-core/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
-                  container:name="${pom.name}"
-                  container:version="${pom.version}"
+                  container:name="${project.name}"
+                  container:version="${project.version}"
                   container:modelVersion="1.4">
 
   <container:documentation container:defaultLanguage="en">
-    <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>
+    <container:text container:language="en"><![CDATA[${project.description}]]></container:text>
   </container:documentation>
   <container:implementations>
     <container:implementation container:identifier="org.jdtaus.banking.messages.AnalysesFileMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -53,9 +53,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.BankleitzahlExpirationMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -66,9 +66,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.BankleitzahlReplacementMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -79,9 +79,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.ChecksumErrorMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -92,9 +92,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.ChecksumsFileMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -105,9 +105,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.CurrencyConstraintMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -118,9 +118,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalAmountMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -131,9 +131,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalCurrencyMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -144,9 +144,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalDataMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -157,9 +157,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalDateMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -170,9 +170,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalDescriptionCountMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -183,9 +183,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalFileLengthMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -196,9 +196,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.IllegalScheduleMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -209,9 +209,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -222,9 +222,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -235,9 +235,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.TextschluesselConstraintMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -248,9 +248,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.UnknownBankleitzahlMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -261,9 +261,9 @@
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">

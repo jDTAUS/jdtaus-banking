@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-  ${pom.name}
+  ${project.name}
   Copyright (c) 2005 Christian Schulte
 
   Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
@@ -24,27 +24,27 @@
   Document   : module.xml
   Author     : Christian Schulte <schulte2005@users.sourceforge.net>
   Version    : $Id$
-  Description: Runtime configuration for the ${pom.name} module.
+  Description: Runtime configuration for the ${project.name} module.
 
 -->
 <container:module xmlns:container="http://jdtaus.org/core/model/container"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://jdtaus.org/core/model/container http://jdtaus.sourceforge.net/1.0.x/jdtaus-core/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
-                  container:name="${pom.name}"
-                  container:version="${pom.version}"
+                  container:name="${project.name}"
+                  container:version="${project.version}"
                   container:modelVersion="1.4">
 
   <container:documentation container:defaultLanguage="en">
-    <container:text container:language="en"><![CDATA[${pom.description}]]></container:text>
+    <container:text container:language="en"><![CDATA[${project.description}]]></container:text>
   </container:documentation>
   <container:implementations>
     <!--                                                                     -->
     <!-- AbstractLogicalFile                                                 -->
     <!--                                                                     -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}">
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}">
 
       <container:documentation container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Abstract base class for LogicalFile implementations.]]></container:text>
@@ -133,8 +133,8 @@
     <!--                                                                     -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory"
                               container:name="jDTAUS Banking SPI"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -171,9 +171,9 @@
     <!-- DefaultPhysicalFile                                                 -->
     <!--                                                                     -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFile"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -197,9 +197,9 @@
     <!-- DTAUSDisk                                                           -->
     <!--                                                                     -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk"
-                              container:name="${pom.name} - Disk"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name} - Disk"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:parent="org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile"
                               container:final="true">
 
@@ -226,9 +226,9 @@
     <!-- DTAUSTape                                                           -->
     <!--                                                                     -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DTAUSTape"
-                              container:name="${pom.name} - Tape"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name} - Tape"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:parent="org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile"
                               container:final="true">
 
@@ -256,8 +256,8 @@
     <!--                                                                     -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultHeaderValidator"
                               container:name="jDTAUS Banking SPI"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -318,8 +318,8 @@
     <!--                                                                     -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.DefaultTransactionValidator"
                               container:name="jDTAUS Banking SPI"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
@@ -392,9 +392,9 @@
     <!-- PhysicalFileExceptionMessageResolver                                -->
     <!--                                                                     -->
     <container:implementation container:identifier="org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver"
-                              container:name="${pom.name}"
-                              container:vendor="${pom.organization.name}"
-                              container:version="${pom.version}"
+                              container:name="${project.name}"
+                              container:vendor="${project.organization.name}"
+                              container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">

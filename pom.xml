@@ -181,13 +181,13 @@
             <docencoding>UTF-8</docencoding>
             <encoding>UTF-8</encoding>
             <keywords>true</keywords>
-            <doctitle>${pom.name} Specification ${pom.version}</doctitle>
+            <doctitle>${project.name} Specification ${project.version}</doctitle>
             <linksource>true</linksource>
             <nodeprecated>true</nodeprecated>
             <quiet>false</quiet>
             <verbose>false</verbose>
             <serialwarn>true</serialwarn>
-            <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
+            <windowtitle>${project.name} Specification ${project.version}</windowtitle>
             <overview>${basedir}/src/main/javadoc/overview.html</overview>
             <show>public</show>
             <links>
@@ -368,7 +368,7 @@
             <message>[maven-scm-plugin] Build ${buildNumber}</message>
             <username>${jdtaus.scm.username}</username>
             <password>${jdtaus.scm.password}</password>
-            <tag>${pom.artifactId}-${pom.version}-${buildNumber}</tag>
+            <tag>${project.artifactId}-${project.version}-${buildNumber}</tag>
             <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/builds</tagBase>
           </configuration>
         </plugin>
@@ -465,13 +465,13 @@
               <docencoding>UTF-8</docencoding>
               <encoding>UTF-8</encoding>
               <keywords>true</keywords>
-              <doctitle>${pom.name} Specification ${pom.version}</doctitle>
+              <doctitle>${project.name} Specification ${project.version}</doctitle>
               <linksource>true</linksource>
               <nodeprecated>true</nodeprecated>
               <quiet>false</quiet>
               <verbose>false</verbose>
               <serialwarn>true</serialwarn>
-              <windowtitle>${pom.name} Specification ${pom.version}</windowtitle>
+              <windowtitle>${project.name} Specification ${project.version}</windowtitle>
               <overview>${basedir}/src/main/javadoc/overview.html</overview>
               <show>public</show>
               <links>
@@ -495,8 +495,8 @@
               <linksource>true</linksource>
               <serialwarn>true</serialwarn>
               <show>private</show>
-              <doctitle>${pom.name} ${pom.version} Documentation</doctitle>
-              <windowtitle>${pom.name} ${pom.version} Documentation</windowtitle>
+              <doctitle>${project.name} ${project.version} Documentation</doctitle>
+              <windowtitle>${project.name} ${project.version} Documentation</windowtitle>
               <groups>
                 <group>
                   <title>Application Programming Interface</title>
@@ -577,7 +577,7 @@
         <groupId>org.jdtaus.mojo</groupId>
         <version>${jdtausContainerMojoVersion}</version>
         <configuration>
-          <moduleName>${pom.name}</moduleName>
+          <moduleName>${project.name}</moduleName>
         </configuration>
       </plugin>
     </plugins>
