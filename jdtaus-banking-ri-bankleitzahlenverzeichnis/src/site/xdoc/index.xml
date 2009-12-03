@@ -10,10 +10,24 @@
         This artifact provides a <code>BankleitzahlenVerzeichnis</code>
         implementation backed by bankfiles. Bankfile resources are read using
         any available <a href="apidocs/org/jdtaus/banking/ri/blzdirectory/BankfileProvider.html">BankfileProvider</a>
-        implementation. The <a href="apidocs/org/jdtaus/banking/ri/blzdirectory/PropertyBankfileProvider.html">PropertyBankfileProvider</a>
-        default implementation expects the bankfiles to be kept in
-        directory <code>META-INF/jdtaus</code>. This location can be changed by
-        updating the configuration file located at <code>META-INF/jdtaus/module.xml</code>.
+        implementation. The <a href="apidocs/org/jdtaus/banking/ri/blzdirectory/DefaultBankfileProvider.html">DefaultBankfileProvider</a>
+        implementation searches the bankfiles at classpath location <code>META-INF/jdtaus</code>.
+        This location can be changed by updating the configuration file located at
+        <code>META-INF/jdtaus/module.xml</code>.
+      </p>
+    </section>
+    <section name="Upgrading from 1.10">
+      <p>
+        All released artifacts prior to 1.11 come with a set of default
+        bankfiles. Starting with version 1.11 these default bankfiles are no
+        longer part of the artifact's jar file. When upgrading your application
+        to 1.11 you need to provide bankfiles yourself by either placing the
+        files in the application's classpath for use by class
+        <code>DefaultBankfileProvider</code> or by supplying a custom
+        <code>BankfileProvider</code> implementation providing the
+        bankfile resources. The former default bankfiles are available for
+        download as a starting point from
+        <a href="http://repo1.maven.org/maven2/org/jdtaus/banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/1.11/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.11-bankfiles.jar">here</a>.
       </p>
     </section>
   </body>

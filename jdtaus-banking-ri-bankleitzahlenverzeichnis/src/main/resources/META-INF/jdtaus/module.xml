@@ -39,6 +39,8 @@
   </container:documentation>
 
   <container:specifications>
+
+    <!-- ******************************************************************* -->
     <container:specification container:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"
                              container:vendor="${project.organization.name}"
                              container:version="${project.version}"
@@ -52,7 +54,9 @@
   </container:specifications>
 
   <container:implementations>
-    <container:implementation container:identifier="org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis"
+
+    <!-- ******************************************************************* -->
+    <container:implementation container:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileBankleitzahlenVerzeichnis"
                               container:name="jDTAUS Banking SPI"
                               container:vendor="${project.organization.name}"
                               container:version="${project.version}"
@@ -64,7 +68,7 @@
 
       <container:specifications>
         <container:reference container:identifier="org.jdtaus.banking.BankleitzahlenVerzeichnis"
-                             container:version="1.1"/>
+                             container:version="1.2"/>
       </container:specifications>
 
       <container:dependencies>
@@ -76,7 +80,7 @@
           <container:properties>
             <container:property container:name="name"
                                 container:type="java.lang.String"
-                                container:value="org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis"/>
+                                container:value="org.jdtaus.banking.ri.blzdirectory.BankfileBankleitzahlenVerzeichnis"/>
 
           </container:properties>
         </container:dependency>
@@ -105,7 +109,7 @@
       <container:properties>
         <container:property container:name="dateOfExpirationText"
                             container:type="java.lang.String"
-                            container:value="2009-12-06">
+                            container:value="${buildNumber}">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[The date of expiration of the directory.]]></container:text>
@@ -113,82 +117,129 @@
         </container:property>
         <container:property container:name="dateOfExpirationPattern"
                             container:type="java.lang.String"
-                            container:value="yyyy-MM-dd">
+                            container:value="yyyy-MM-dd'T'HH:mm:ssZ">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[Format pattern of the date of expiration property.]]></container:text>
           </container:documentation>
         </container:property>
+        <container:property container:name="defaultReloadIntervalMillis"
+                            container:type="java.lang.Long"
+                            container:value="500">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default number of milliseconds to pass before providers are checked for modifications.]]>
+            </container:text>
+          </container:documentation>
+        </container:property>
       </container:properties>
       <container:messages>
-        <container:reference container:name="outdatedInfo"/>
-        <container:reference container:name="duplicateRecord"/>
-        <container:reference container:name="bankfileInfo"/>
+        <container:message container:name="outdatedInfo">
+          <container:template container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Bankleitzahl {0} is outdated.]]></container:text>
+            <container:text container:language="de"><![CDATA[Bankleitzahl {0} ist veraltet.]]></container:text>
+          </container:template>
+          <container:arguments>
+            <container:argument container:index="0" container:name="bankleitzahl" container:type="text"/>
+          </container:arguments>
+        </container:message>
+        <container:message container:name="duplicateRecord">
+          <container:template container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Multiple bankfile records with serial number {0,number} detected during searching the directory for bankcode {1}.]]></container:text>
+            <container:text container:language="de"><![CDATA[Mehrere Bankleitzahlendatei-Datensätze mit Seriennummer {0,number} während der Suche nach Bankleitzahl {1}.]]></container:text>
+          </container:template>
+          <container:arguments>
+            <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
+            <container:argument container:index="1" container:name="bankleitzahl" container:type="text"/>
+          </container:arguments>
+        </container:message>
+        <container:message container:name="bankfileInfo">
+          <container:template container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Read {1,choice,0#no bankfile|1#one bankfile|1<{1} bankfiles}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.]]></container:text>
+            <container:text container:language="de"><![CDATA[{1,choice,0#Keine Bankleitzahlendatei|1#Eine Bankleitzahlendatei|1<{1} Bankleitzahlendateien} gelesen. {0,choice,0#Keine Datensätze|1#Einen Datensatz|1<{0} Datensätze} verarbeitet.]]></container:text>
+          </container:template>
+          <container:arguments>
+            <container:argument container:index="0" container:name="entityCount" container:type="number"/>
+            <container:argument container:index="1" container:name="bankfileCount" container:type="number"/>
+          </container:arguments>
+        </container:message>
+        <container:message container:name="reloadInfo">
+          <container:template container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Provider's last modification timestamp changed from ''{0,date,long}'' to ''{1,date,long}''. Loading new bankcodes.]]></container:text>
+            <container:text container:language="de"><![CDATA[Änderungszeitstempel des Bankleitzahlen-Providers von ''{0,date,long}'' zu ''{1,date,long}''. Lädt neue Bankleitzahlen.]]></container:text>
+          </container:template>
+          <container:arguments>
+            <container:argument container:index="0" container:name="lastModification" container:type="date"/>
+            <container:argument container:index="1" container:name="lastProviderModification" container:type="date"/>
+          </container:arguments>
+        </container:message>
       </container:messages>
     </container:implementation>
 
-    <container:implementation container:identifier="org.jdtaus.banking.ri.blzdirectory.PropertyBankfileProvider"
+    <!-- ******************************************************************* -->
+    <container:implementation container:identifier="org.jdtaus.banking.ri.blzdirectory.DefaultBankfileProvider"
                               container:name="jDTAUS Banking SPI"
                               container:vendor="${project.organization.name}"
                               container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[BankfileProvider implementation backed by a property file.]]></container:text>
+        <container:text container:language="en"><![CDATA[Default {@code BankfileProvider} implementation.]]></container:text>
       </container:documentation>
       <container:specifications>
         <container:reference container:identifier="org.jdtaus.banking.ri.blzdirectory.BankfileProvider"/>
       </container:specifications>
+      <container:dependencies>
+        <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
+                              container:version="1.0"
+                              container:name="Logger"
+                              container:bound="true">
+
+          <container:properties>
+            <container:property container:name="name"
+                                container:type="java.lang.String"
+                                container:value="org.jdtaus.banking.ri.blzdirectory.DefaultBankfileProvider"/>
+
+          </container:properties>
+        </container:dependency>
+        <container:dependency container:identifier="java.util.Locale"
+                              container:version="1.1"
+                              container:name="Locale"
+                              container:bound="false"
+                              container:implementationName="default"/>
+
+      </container:dependencies>
       <container:properties>
-        <container:property container:name="defaultDataDirectory"
+        <container:property container:name="defaultClasspathLocation"
                             container:type="java.lang.String"
                             container:value="META-INF/jdtaus">
 
           <container:documentation container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Default name of the directory holding bankfiles.]]></container:text>
+            <container:text container:language="en"><![CDATA[Default classpath location of the resources backing the implementation.]]>
+            </container:text>
           </container:documentation>
         </container:property>
-
-        <container:property container:name="defaultPropertiesResource"
+        <container:property container:name="defaultPropertiesResourceName"
                             container:type="java.lang.String"
-                            container:value="META-INF/jdtaus/BundesbankBankleitzahlenVerzeichnis.properties">
+                            container:value="bankfiles.properties">
 
           <container:documentation container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Default name of the properties file resource specifying the bankfiles to load.]]></container:text>
+            <container:text container:language="en"><![CDATA[Default resource name of the classpath properties resource backing the implementation.]]>
+            </container:text>
           </container:documentation>
         </container:property>
       </container:properties>
+      <container:messages>
+        <container:message container:name="propertiesNotFound">
+          <container:template container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Properties resource ''{0}'' not found - not providing classpath bankcode files.]]></container:text>
+            <container:text container:language="de"><![CDATA[Properties Ressource ''{0}'' nicht gefunden - keine Bereitstellung von Klassenpfad-Bankleitzahlen-Dateien.]]></container:text>
+          </container:template>
+          <container:arguments>
+            <container:argument container:index="0" container:name="location" container:type="text"/>
+          </container:arguments>
+        </container:message>
+      </container:messages>
     </container:implementation>
   </container:implementations>
-  <container:messages>
-    <container:message container:name="outdatedInfo">
-      <container:template container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[Bankleitzahl {0} is outdated.]]></container:text>
-        <container:text container:language="de"><![CDATA[Bankleitzahl {0} ist veraltet.]]></container:text>
-      </container:template>
-      <container:arguments>
-        <container:argument container:index="0" container:name="bankleitzahl" container:type="text"/>
-      </container:arguments>
-    </container:message>
-    <container:message container:name="duplicateRecord">
-      <container:template container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[Multiple bankfile records with serial number {0,number} detected during searching the directory for bankcode {1}.]]></container:text>
-        <container:text container:language="de"><![CDATA[Mehrere Bankleitzahlendatei-Datensätze mit Seriennummer {0,number} während der Suche nach Bankleitzahl {1}.]]></container:text>
-      </container:template>
-      <container:arguments>
-        <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
-        <container:argument container:index="1" container:name="bankleitzahl" container:type="text"/>
-      </container:arguments>
-    </container:message>
-    <container:message container:name="bankfileInfo">
-      <container:template container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[Read {1,choice,0#no bankfile|1#one bankfile|1<{1} bankfiles}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.]]></container:text>
-        <container:text container:language="de"><![CDATA[{1,choice,0#Keine Bankleitzahlendatei|1#Eine Bankleitzahlendatei|1<{1} Bankleitzahlendateien} gelesen. {0,choice,0#Keine Datensätze|1#Einen Datensatz|1<{0} Datensätze} verarbeitet.]]></container:text>
-      </container:template>
-      <container:arguments>
-        <container:argument container:index="0" container:name="entityCount" container:type="number"/>
-        <container:argument container:index="1" container:name="bankfileCount" container:type="number"/>
-      </container:arguments>
-    </container:message>
-  </container:messages>
 </container:module>

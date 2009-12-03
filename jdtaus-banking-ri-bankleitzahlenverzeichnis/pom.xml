@@ -39,21 +39,41 @@
         <filtering>true</filtering>
         <directory>src/main/resources</directory>
       </resource>
-      <resource>
-        <filtering>false</filtering>
-        <directory>src/main/bankfiles</directory>
-        <targetPath>META-INF/jdtaus</targetPath>
-        <includes>
-          <include>*.txt</include>
-        </includes>
-      </resource>
     </resources>
     <testResources>
       <testResource>
         <filtering>true</filtering>
         <directory>src/test/resources</directory>
       </testResource>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>src/main/bankfiles</directory>
+        <targetPath>META-INF/jdtaus</targetPath>
+      </testResource>
     </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-bankfiles</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classesDirectory>src/main/bankfiles</classesDirectory>
+              <classifier>bankfiles</classifier>
+              <includes>
+                <include>*.txt</include>
+                <include>*.properties</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
     <dependency>

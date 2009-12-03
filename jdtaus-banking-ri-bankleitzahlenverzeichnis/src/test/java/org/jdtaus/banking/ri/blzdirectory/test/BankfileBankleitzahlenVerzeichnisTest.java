@@ -24,18 +24,16 @@ package org.jdtaus.banking.ri.blzdirectory.test;
 
 import org.jdtaus.banking.BankleitzahlenVerzeichnis;
 import org.jdtaus.banking.it.BankleitzahlenVerzeichnisTest;
-import org.jdtaus.banking.ri.blzdirectory.BundesbankBankleitzahlenVerzeichnis;
+import org.jdtaus.banking.ri.blzdirectory.BankfileBankleitzahlenVerzeichnis;
 
 /**
- * Tests the {@link BundesbankBankleitzahlenVerzeichnis} implementation.
+ * Tests the {@link BankfileBankleitzahlenVerzeichnis} implementation.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class BundesbankBankleitzahlenVerzeichnisTest
-    extends BankleitzahlenVerzeichnisTest
+public class BankfileBankleitzahlenVerzeichnisTest extends BankleitzahlenVerzeichnisTest
 {
-    //--BankleitzahlenVerzeichnisTest-------------------------------------------
 
     /** The implementation to test. */
     private BankleitzahlenVerzeichnis directory;
@@ -44,12 +42,11 @@ public class BundesbankBankleitzahlenVerzeichnisTest
     {
         if ( this.directory == null )
         {
-            this.directory = new BundesbankBankleitzahlenVerzeichnis();
+            this.directory = new BankfileBankleitzahlenVerzeichnis();
             this.setBankleitzahlenVerzeichnis( this.directory );
         }
 
         return super.getBankleitzahlenVerzeichnis();
     }
 
-    //-------------------------------------------BankleitzahlenVerzeichnisTest--
 }

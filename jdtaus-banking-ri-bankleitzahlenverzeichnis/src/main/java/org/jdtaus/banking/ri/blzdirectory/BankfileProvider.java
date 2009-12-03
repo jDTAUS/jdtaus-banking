@@ -24,27 +24,74 @@ package org.jdtaus.banking.ri.blzdirectory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 
 /**
- * Bankfile resource provider interface.
+ * Bankfile provider interface.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @see BundesbankBankleitzahlenVerzeichnis
+ * @see BankfileBankleitzahlenVerzeichnis
  */
 public interface BankfileProvider
 {
-    //--BankfileProvider--------------------------------------------------------
 
     /**
-     * Gets URLs to bankfiles.
+     * Gets the timestamp this provider was last modified.
      *
-     * @return URLs to bankfiles in the order to be loaded sequentially.
+     * @return The timestamp this provider was last modified.
      *
-     * @throws IOException if providing the resources fails.
+     * @throws IOException if getting the last modification timestamp fails.
      */
-    URL[] getResources() throws IOException;
+    long getLastModifiedMillis() throws IOException;
 
-    //--------------------------------------------------------BankfileProvider--
+    /**
+     * Gets the number of provided bankfile resources.
+     *
+     * @return The number of provided bankfile resources.
+     *
+     * @throws IOException if getting the number of provided bankfile resources fails.
+     */
+    int getBankfileCount() throws IOException;
+
+    /**
+     * Gets a bankfile resource.
+     *
+     * @param index The index of the bankfile resource to get.
+     *
+     * @return The bankfile resource at {@code index}.
+     *
+     * @throws IndexOutOfBoundsException if {@code index} is negative or greater or equal to the value returned by
+     * method {@code getBankfileCount()}.
+     * @throws IOException if getting the bankfile resource fails.
+     */
+    URL getBankfile( int index ) throws IOException;
+
+    /**
+     * Gets the date of validity of a bankfile resource.
+     *
+     * @param index The index of the bankfile resource to get the date of validity of.
+     *
+     * @return The date of validity of the bankfile resource {@code index}.
+     *
+     * @throws IndexOutOfBoundsException if {@code index} is negative or greater or equal to the value returned by
+     * method {@code getBankfileCount()}.
+     * @throws IOException if getting the date of validity fails.
+     */
+    Date getDateOfValidity( int index ) throws IOException;
+
+    /**
+     * Gets the date of expiration of a bankfile resource.
+     *
+     * @param index The index of the bankfile resource to get the date of expiration of.
+     *
+     * @return The date of expiration of the bankfile resource {@code index}.
+     *
+     * @throws IndexOutOfBoundsException if {@code index} is negative or greater or equal to the value returned by
+     * method {@code getBankfileCount()}.
+     * @throws IOException if getting the date of expiration fails.
+     */
+    Date getDateOfExpiration( int index ) throws IOException;
+
 }
