@@ -34,15 +34,11 @@ import org.jdtaus.core.container.Implementation;
  */
 public class ExceptionsTest
 {
-    //--Tests-------------------------------------------------------------------
 
     public void testExceptionInstantiation() throws Exception
     {
-        System.out.println( new CorruptedException(
-                            new Implementation(), 100L ).getMessage() );
-
+        System.out.println( new CorruptedException( new Implementation(), 100L ).getMessage() );
         System.out.println( new PhysicalFileException( null ).getMessage() );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

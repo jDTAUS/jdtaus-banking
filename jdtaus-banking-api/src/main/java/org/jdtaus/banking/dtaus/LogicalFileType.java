@@ -36,35 +36,18 @@ import org.jdtaus.core.container.ContainerFactory;
  */
 public final class LogicalFileType implements Serializable
 {
-    //--Constants---------------------------------------------------------------
 
-    /**
-     * Constant for a logical file holding debit orders sent by a customer.
-     * Kundendatei Lastschriften.
-     */
-    public static final LogicalFileType LK =
-        new LogicalFileType( "LK", true, false, true, false );
+    /** Constant for a logical file holding debit orders sent by a customer. Kundendatei Lastschriften. */
+    public static final LogicalFileType LK = new LogicalFileType( "LK", true, false, true, false );
 
-    /**
-     * Constant for a logical file holding remittance orders sent by a customer.
-     * Kundendatei Gutschriften.
-     */
-    public static final LogicalFileType GK =
-        new LogicalFileType( "GK", false, true, true, false );
+    /** Constant for a logical file holding remittance orders sent by a customer. Kundendatei Gutschriften. */
+    public static final LogicalFileType GK = new LogicalFileType( "GK", false, true, true, false );
 
-    /**
-     * Constant for a logical file holding debit orders sent by a bank.
-     * Bankdatei Lastschriften.
-     */
-    public static final LogicalFileType LB =
-        new LogicalFileType( "LB", true, false, false, true );
+    /** Constant for a logical file holding debit orders sent by a bank. Bankdatei Lastschriften. */
+    public static final LogicalFileType LB = new LogicalFileType( "LB", true, false, false, true );
 
-    /**
-     * Constant for a logical file holding remittance orders sent by a bank.
-     * Bankdatei Gutschriften.
-     */
-    public static final LogicalFileType GB =
-        new LogicalFileType( "GB", false, true, false, true );
+    /** Constant for a logical file holding remittance orders sent by a bank. Bankdatei Gutschriften. */
+    public static final LogicalFileType GB = new LogicalFileType( "GB", false, true, false, true );
 
     /** Supported DTAUS codes. */
     private static final LogicalFileType[] SUPPORTED =
@@ -74,9 +57,6 @@ public final class LogicalFileType implements Serializable
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 5932863701674153762L;
-
-    //---------------------------------------------------------------Constants--
-    //--LogicalFileType---------------------------------------------------------
 
     /**
      * DTAUS code.
@@ -109,25 +89,19 @@ public final class LogicalFileType implements Serializable
     private boolean sendByBank;
 
     /**
-     * Creates a new {@code LogicalFileType} instance initializing all
-     * properties.
+     * Creates a new {@code LogicalFileType} instance initializing all properties.
      *
      * @param code DTAUS code of the type.
-     * @param debitAllowed {@code true} if a logical file may hold debit orders;
-     * {@code false} if not.
-     * @param remittanceAllowed {@code true} if a logical file may hold
-     * remittance orders; {@code false} if not.
-     * @param sendByBank {@code true} if a logical file is allowed to be created
-     * by a bank; {@code false} if not.
-     * @param sendByCustomer {@code true} if a logical file is allowed to be
-     * created by a customer; {@code false} if not.
+     * @param debitAllowed {@code true} if a logical file may hold debit orders; {@code false} if not.
+     * @param remittanceAllowed {@code true} if a logical file may hold remittance orders; {@code false} if not.
+     * @param sendByBank {@code true} if a logical file is allowed to be created by a bank; {@code false} if not.
+     * @param sendByCustomer {@code true} if a logical file is allowed to be created by a customer; {@code false} if
+     * not.
      *
      * @throws NullPointerException if {@code code} is {@code null}.
      */
-    private LogicalFileType(
-        final String code, final boolean debitAllowed,
-        final boolean remittanceAllowed, final boolean sendByCustomer,
-        final boolean sendByBank )
+    private LogicalFileType( final String code, final boolean debitAllowed, final boolean remittanceAllowed,
+                             final boolean sendByCustomer, final boolean sendByBank )
     {
         if ( code == null )
         {
@@ -142,12 +116,11 @@ public final class LogicalFileType implements Serializable
     }
 
     /**
-     * Returns an instance for the type identified by a code.
+     * Returns an instance for the type identified by a DTAUS code.
      *
      * @param code A DTAUS code identifying a type of a logical file.
      *
-     * @return An instance for {@code code} or {@code null} if {@code code} is
-     * no known logical file type.
+     * @return An instance for {@code code} or {@code null} if {@code code} is no known logical file type.
      *
      * @throws NullPointerException if {@code code} is {@code null}.
      */
@@ -182,8 +155,7 @@ public final class LogicalFileType implements Serializable
     /**
      * Flag indicating if a logical file may hold debit orders.
      *
-     * @return {@code true} if a logical file may hold debit orders;
-     * {@code false} if not.
+     * @return {@code true} if a logical file may hold debit orders; {@code false} if not.
      */
     public boolean isDebitAllowed()
     {
@@ -193,8 +165,7 @@ public final class LogicalFileType implements Serializable
     /**
      * Flag indicating if a logical file may hold remittance orders.
      *
-     * @return {@code true} if a logical file may hold remittance orders;
-     * {@code false} if not.
+     * @return {@code true} if a logical file may hold remittance orders; {@code false} if not.
      */
     public boolean isRemittanceAllowed()
     {
@@ -204,8 +175,7 @@ public final class LogicalFileType implements Serializable
     /**
      * Flag indicating if a logical file is allowed to be created by a customer.
      *
-     * @return {@code true} if a logical file is allowed to be created by a
-     * customer; {@code false} if not.
+     * @return {@code true} if a logical file is allowed to be created by a customer; {@code false} if not.
      */
     public boolean isSendByCustomer()
     {
@@ -215,8 +185,7 @@ public final class LogicalFileType implements Serializable
     /**
      * Flag indicating if a logical file is allowed to be created by a bank.
      *
-     * @return {@code true} if a logical file is allowed to be created by a
-     * bank; {@code false} if not.
+     * @return {@code true} if a logical file is allowed to be created by a bank; {@code false} if not.
      */
     public boolean isSendByBank()
     {
@@ -226,86 +195,56 @@ public final class LogicalFileType implements Serializable
     /**
      * Gets the short description of the file type for a given locale.
      *
-     * @param locale The locale of the short description to return or
-     * {@code null} for {@code Locale.getDefault()}.
+     * @param locale The locale of the short description to return or {@code null} for {@code Locale.getDefault()}.
      *
      * @return The short description of the instance.
      */
-    public String getShortDescription( Locale locale )
+    public String getShortDescription( final Locale locale )
     {
         String shortDescription = "";
 
-        if ( locale == null )
-        {
-            locale = Locale.getDefault();
-        }
+        final Locale l = locale == null ? Locale.getDefault() : locale;
 
         if ( "LK".equals( this.getCode() ) )
         {
-            shortDescription =
-                this.getLogicalFileType_LKMessage( locale );
-
+            shortDescription = this.getLogicalFileType_LKMessage( l );
         }
         else if ( "GK".equals( this.getCode() ) )
         {
-            shortDescription =
-                this.getLogicalFileType_GKMessage( locale );
-
+            shortDescription = this.getLogicalFileType_GKMessage( l );
         }
         else if ( "LB".equals( this.getCode() ) )
         {
-            shortDescription =
-                this.getLogicalFileType_LBMessage( locale );
-
+            shortDescription = this.getLogicalFileType_LBMessage( l );
         }
         else if ( "GB".equals( this.getCode() ) )
         {
-            shortDescription =
-                this.getLogicalFileType_GBMessage( locale );
-
+            shortDescription = this.getLogicalFileType_GBMessage( l );
         }
 
         return shortDescription;
     }
 
     /**
-     * Searches the implementation for {@code LogicalFileType} instances
-     * according to the given arguments.
+     * Searches the implementation for {@code LogicalFileType} instances according to the given arguments.
      *
      * @param debitAllowed Value to compare property {@code debitAllowed} with.
-     * @param remittanceAllowed Value to compare property
-     * {@code remittanceAllowed} with.
+     * @param remittanceAllowed Value to compare property {@code remittanceAllowed} with.
      * @param sendByBank Value to compare property {@code sendByBank} with.
-     * @param sendByCustomer Value to compare property {@code sendByCustomer}
-     * with.
+     * @param sendByCustomer Value to compare property {@code sendByCustomer} with.
      *
-     * @return All {@code LogicalFileType} instances with property
-     * {@code debitAllowed} equal to the {@code debitAllowed} argument,
-     * property {@code remittanceAllowed} equal to the {@code remittanceAllowed}
-     * argument, property {@code sendByBank} equal to the {@code sendByBank}
-     * argument and property {@code sendByCustomer} equal to the
-     * {@code sendByCustomer} argument.
+     * @return All {@code LogicalFileType} instances with property {@code debitAllowed} equal to the
+     * {@code debitAllowed} argument, property {@code remittanceAllowed} equal to the {@code remittanceAllowed}
+     * argument, property {@code sendByBank} equal to the {@code sendByBank} argument and property
+     * {@code sendByCustomer} equal to the {@code sendByCustomer} argument.
      *
-     * @deprecated Replaced by {@link #searchLogicalFileTypes(java.lang.Boolean, java.lang.Boolean, java.lang.Boolean, java.lang.Boolean) }
+     * @deprecated Replaced by {@link #searchLogicalFileTypes(java.lang.Boolean, java.lang.Boolean, java.lang.Boolean, java.lang.Boolean) }.
      */
-    public static LogicalFileType[] search(
-        final boolean debitAllowed, final boolean remittanceAllowed,
-        final boolean sendByBank, final boolean sendByCustomer )
+    public static LogicalFileType[] search( final boolean debitAllowed, final boolean remittanceAllowed,
+                                            final boolean sendByBank, final boolean sendByCustomer )
     {
-        final Collection col = new ArrayList( SUPPORTED.length );
-        for ( int i = SUPPORTED.length - 1; i >= 0; i-- )
-        {
-            if ( SUPPORTED[i].isDebitAllowed() == debitAllowed &&
-                 SUPPORTED[i].isRemittanceAllowed() == remittanceAllowed &&
-                 SUPPORTED[i].isSendByBank() == sendByBank &&
-                 SUPPORTED[i].isSendByCustomer() == sendByCustomer )
-            {
-                col.add( SUPPORTED[i] );
-            }
-        }
-
-        return (LogicalFileType[]) col.toArray(
-            new LogicalFileType[ col.size() ] );
+        return searchLogicalFileTypes( Boolean.valueOf( debitAllowed ), Boolean.valueOf( remittanceAllowed ),
+                                       Boolean.valueOf( sendByBank ), Boolean.valueOf( sendByCustomer ) );
 
     }
 
@@ -331,26 +270,18 @@ public final class LogicalFileType implements Serializable
      * and property {@code sendByCustomer} equal to the {@code sendByCustomer}
      * argument when given.
      */
-    public static LogicalFileType[] searchLogicalFileTypes(
-        final Boolean debitAllowed, final Boolean remittanceAllowed,
-        final Boolean sendByBank, final Boolean sendByCustomer )
+    public static LogicalFileType[] searchLogicalFileTypes( final Boolean debitAllowed, final Boolean remittanceAllowed,
+                                                            final Boolean sendByBank, final Boolean sendByCustomer )
     {
         final Collection c = new ArrayList( SUPPORTED.length );
 
         for ( int i = SUPPORTED.length - 1; i >= 0; i-- )
         {
-            if ( ( debitAllowed == null
-                   ? true : SUPPORTED[i].isDebitAllowed() ==
-                            debitAllowed.booleanValue() ) &&
+            if ( ( debitAllowed == null ? true : SUPPORTED[i].isDebitAllowed() == debitAllowed.booleanValue() ) &&
                  ( remittanceAllowed == null
-                   ? true : SUPPORTED[i].isRemittanceAllowed() ==
-                            remittanceAllowed.booleanValue() ) &&
-                 ( sendByBank == null
-                   ? true : SUPPORTED[i].isSendByBank() ==
-                            sendByBank.booleanValue() ) &&
-                 ( sendByCustomer == null
-                   ? true : SUPPORTED[i].isSendByCustomer() ==
-                            sendByCustomer.booleanValue() ) )
+                   ? true : SUPPORTED[i].isRemittanceAllowed() == remittanceAllowed.booleanValue() ) &&
+                 ( sendByBank == null ? true : SUPPORTED[i].isSendByBank() == sendByBank.booleanValue() ) &&
+                 ( sendByCustomer == null ? true : SUPPORTED[i].isSendByCustomer() == sendByCustomer.booleanValue() ) )
             {
                 c.add( SUPPORTED[i] );
             }
@@ -376,17 +307,12 @@ public final class LogicalFileType implements Serializable
 
     }
 
-    //-------------------------------------------------------------HeaderLabel--
-    //--Object------------------------------------------------------------------
-
     /**
-     * Indicates whether some other object is equal to this one by comparing
-     * the values of all properties.
+     * Indicates whether some other object is equal to this one by comparing the values of all properties.
      *
      * @param o The reference object with which to compare.
      *
-     * @return {@code true} if this object is the same as {@code o};
-     * {@code false} otherwise.
+     * @return {@code true} if this object is the same as {@code o}; {@code false} otherwise.
      */
     public boolean equals( final Object o )
     {
@@ -400,9 +326,7 @@ public final class LogicalFileType implements Serializable
                   this.isRemittanceAllowed() == that.isRemittanceAllowed() &&
                   this.isSendByBank() == that.isSendByBank() &&
                   this.isSendByCustomer() == that.isSendByCustomer() &&
-                  ( this.getCode() == null
-                    ? that.getCode() == null
-                    : this.getCode().equals( that.getCode() ) );
+                  ( this.getCode() == null ? that.getCode() == null : this.getCode().equals( that.getCode() ) );
 
         }
 
@@ -429,7 +353,6 @@ public final class LogicalFileType implements Serializable
         return super.toString() + this.internalString();
     }
 
-    //------------------------------------------------------------------Object--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

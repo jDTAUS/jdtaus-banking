@@ -45,7 +45,6 @@ import org.jdtaus.banking.Referenznummer11;
  */
 public class Referenznummer11Test extends TestCase
 {
-    //--Referenznummer11Test----------------------------------------------------
 
     /** Prefix for property names holding valid values. */
     private static final String VALID_PREFIX = "valid.";
@@ -56,7 +55,7 @@ public class Referenznummer11Test extends TestCase
     /**
      * Gets an array of valid {@code Referenznummer11} values.
      *
-     * @return an array of valid {@code Referenznummer11} values.
+     * @return An array of valid {@code Referenznummer11} values.
      *
      * @throws IOException if reading property resources fails.
      */
@@ -82,7 +81,7 @@ public class Referenznummer11Test extends TestCase
     /**
      * Gets an array of invalid {@code Referenznummer11} values.
      *
-     * @return an array of invalid {@code Referenznummer11} values.
+     * @return An array of invalid {@code Referenznummer11} values.
      *
      * @throws IOException if reading property resources fails.
      */
@@ -108,28 +107,16 @@ public class Referenznummer11Test extends TestCase
     private Map getProperties() throws IOException
     {
         final Properties ret = new Properties();
-        ret.load( this.getClass().getResourceAsStream(
-            "Referenznummer11Test.properties" ) );
-
+        ret.load( this.getClass().getResourceAsStream( "Referenznummer11Test.properties" ) );
         return ret;
     }
 
-    //----------------------------------------------------Referenznummer11Test--
-    //--Tests-------------------------------------------------------------------
-
     public void testObject() throws Exception
     {
-        final Referenznummer11 ref1 =
-            Referenznummer11.valueOf( new Long( 99999999999L ) );
-
-        final Referenznummer11 ref2 =
-            Referenznummer11.valueOf( new Long( 99999999999L ) );
-
-        final Referenznummer11 ref3 =
-            Referenznummer11.valueOf( new Long( 99999999999L ) );
-
-        final Referenznummer11 ref4 =
-            Referenznummer11.valueOf( new Long( 11111111111L ) );
+        final Referenznummer11 ref1 = Referenznummer11.valueOf( new Long( 99999999999L ) );
+        final Referenznummer11 ref2 = Referenznummer11.valueOf( new Long( 99999999999L ) );
+        final Referenznummer11 ref3 = Referenznummer11.valueOf( new Long( 99999999999L ) );
+        final Referenznummer11 ref4 = Referenznummer11.valueOf( new Long( 11111111111L ) );
 
         System.out.println( ref1.toString() );
         System.out.println( ref2.toString() );
@@ -150,47 +137,20 @@ public class Referenznummer11Test extends TestCase
 
     public void testComparable() throws Exception
     {
-        final Referenznummer11 ref1 =
-            Referenznummer11.valueOf( new Long( 10000000000L ) );
-
-        final Referenznummer11 ref2 =
-            Referenznummer11.valueOf( new Long( 10000000001L ) );
-
-        final Referenznummer11 ref3 =
-            Referenznummer11.valueOf( new Long( 10000000002L ) );
-
-        final Referenznummer11 leadingZeroes1 =
-            Referenznummer11.valueOf( new Long( 1L ) );
-
-        final Referenznummer11 leadingZeroes2 =
-            Referenznummer11.valueOf( new Long( 11L ) );
-
-        final Referenznummer11 leadingZeroes3 =
-            Referenznummer11.valueOf( new Long( 111L ) );
-
-        final Referenznummer11 leadingZeroes4 =
-            Referenznummer11.valueOf( new Long( 1111L ) );
-
-        final Referenznummer11 leadingZeroes5 =
-            Referenznummer11.valueOf( new Long( 11111L ) );
-
-        final Referenznummer11 leadingZeroes6 =
-            Referenznummer11.valueOf( new Long( 111111L ) );
-
-        final Referenznummer11 leadingZeroes7 =
-            Referenznummer11.valueOf( new Long( 1111111L ) );
-
-        final Referenznummer11 leadingZeroes8 =
-            Referenznummer11.valueOf( new Long( 11111111L ) );
-
-        final Referenznummer11 leadingZeroes9 =
-            Referenznummer11.valueOf( new Long( 111111111L ) );
-
-        final Referenznummer11 leadingZeroes10 =
-            Referenznummer11.valueOf( new Long( 1111111111L ) );
-
-        final Referenznummer11 leadingZeroes11 =
-            Referenznummer11.valueOf( new Long( 11111111111L ) );
+        final Referenznummer11 ref1 = Referenznummer11.valueOf( new Long( 10000000000L ) );
+        final Referenznummer11 ref2 = Referenznummer11.valueOf( new Long( 10000000001L ) );
+        final Referenznummer11 ref3 = Referenznummer11.valueOf( new Long( 10000000002L ) );
+        final Referenznummer11 leadingZeroes1 = Referenznummer11.valueOf( new Long( 1L ) );
+        final Referenznummer11 leadingZeroes2 = Referenznummer11.valueOf( new Long( 11L ) );
+        final Referenznummer11 leadingZeroes3 = Referenznummer11.valueOf( new Long( 111L ) );
+        final Referenznummer11 leadingZeroes4 = Referenznummer11.valueOf( new Long( 1111L ) );
+        final Referenznummer11 leadingZeroes5 = Referenznummer11.valueOf( new Long( 11111L ) );
+        final Referenznummer11 leadingZeroes6 = Referenznummer11.valueOf( new Long( 111111L ) );
+        final Referenznummer11 leadingZeroes7 = Referenznummer11.valueOf( new Long( 1111111L ) );
+        final Referenznummer11 leadingZeroes8 = Referenznummer11.valueOf( new Long( 11111111L ) );
+        final Referenznummer11 leadingZeroes9 = Referenznummer11.valueOf( new Long( 111111111L ) );
+        final Referenznummer11 leadingZeroes10 = Referenznummer11.valueOf( new Long( 1111111111L ) );
+        final Referenznummer11 leadingZeroes11 = Referenznummer11.valueOf( new Long( 11111111111L ) );
 
         Assert.assertEquals( ref1.compareTo( ref1 ), 0 );
         Assert.assertEquals( ref2.compareTo( ref2 ), 0 );
@@ -224,9 +184,8 @@ public class Referenznummer11Test extends TestCase
         for ( Iterator it = sorted.iterator(); it.hasNext(); )
         {
             final Referenznummer11 ref = (Referenznummer11) it.next();
-            System.out.println(
-                ref.format( Referenznummer11.ELECTRONIC_FORMAT ) + '\t' +
-                ref.format( Referenznummer11.LETTER_FORMAT ) );
+            System.out.println( ref.format( Referenznummer11.ELECTRONIC_FORMAT ) + '\t' +
+                                ref.format( Referenznummer11.LETTER_FORMAT ) );
 
         }
 
@@ -261,12 +220,8 @@ public class Referenznummer11Test extends TestCase
         for ( int i = valid.length - 1; i >= 0; i-- )
         {
             final Referenznummer11 ref = Referenznummer11.parse( valid[i] );
-            Assert.assertEquals( ref, Referenznummer11.parse(
-                ref.format( Referenznummer11.ELECTRONIC_FORMAT ) ) );
-
-            Assert.assertEquals( ref, Referenznummer11.parse(
-                ref.format( Referenznummer11.LETTER_FORMAT ) ) );
-
+            Assert.assertEquals( ref, Referenznummer11.parse( ref.format( Referenznummer11.ELECTRONIC_FORMAT ) ) );
+            Assert.assertEquals( ref, Referenznummer11.parse( ref.format( Referenznummer11.LETTER_FORMAT ) ) );
         }
         for ( int i = invalid.length - 1; i >= 0; i-- )
         {
@@ -285,17 +240,13 @@ public class Referenznummer11Test extends TestCase
 
     public void testSerializable() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream(
-            this.getClass().getResourceAsStream( "Referenznummer11.ser" ) );
+        final ObjectInputStream in =
+            new ObjectInputStream( this.getClass().getResourceAsStream( "Referenznummer11.ser" ) );
 
         final Referenznummer11 r = (Referenznummer11) in.readObject();
         in.close();
-
         System.out.println( r.toString() );
-        Assert.assertEquals( new Long( 11111111111L ),
-                             new Long( r.longValue() ) );
-
+        Assert.assertEquals( new Long( 11111111111L ), new Long( r.longValue() ) );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

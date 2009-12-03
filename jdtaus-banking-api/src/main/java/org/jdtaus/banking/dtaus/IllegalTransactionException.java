@@ -27,8 +27,7 @@ import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
- * Gets thrown whenever an illegal transaction is passed to a method expecting a
- * legal transaction.
+ * Gets thrown whenever an illegal transaction is passed to a method expecting a legal transaction.
  * <p>Example: Catching an {@code IllegalTransactionException}<br/><blockquote>
  * <pre>
  * catch(IllegalTransactionException e)
@@ -42,21 +41,16 @@ import org.jdtaus.core.text.Message;
  *         e.getMessages();
  *         ...
  *     }
- * }</blockquote></pre></p>
+ * }</pre></blockquote></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class IllegalTransactionException
-    extends IllegalArgumentException
+public abstract class IllegalTransactionException extends IllegalArgumentException
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 2094280705320453233L;
-
-    //---------------------------------------------------------------Constants--
-    //--IllegalTransactionException---------------------------------------------
 
     /** Creates a new {@code IllegalTransactionException} instance. */
     public IllegalTransactionException()
@@ -67,20 +61,18 @@ public abstract class IllegalTransactionException
     /**
      * Gets all messages describing the exception.
      *
-     * @return an array of messages describing the exception or an empty array
-     * if the instance does not hold any messages.
+     * @return An array of messages describing the exception or an empty array if the instance does not hold any
+     * messages.
      */
     public abstract Message[] getMessages();
 
     /**
-     * Gets messages bound to a property removing these messages from the
-     * instance.
+     * Gets messages bound to a property removing these messages from the instance.
      *
      * @param propertyName the name of a property to return any messages for.
      *
-     * @return all messages bound to a property with name {@code propertyName}
-     * or an empty array if the instance does not hold messages for a property
-     * with name {@code propertyName}.
+     * @return All messages bound to a property with name {@code propertyName} or an empty array if the instance does
+     * not hold messages for a property with name {@code propertyName}.
      *
      * @throws NullPointerException if {@code propertyName} is {@code null}.
      */
@@ -89,23 +81,21 @@ public abstract class IllegalTransactionException
     /**
      * Gets the names of all properties for which the exception holds messages.
      *
-     * @return an array of the names of all properties for which the exception
-     * holds messages or an empty array if the exception does not hold any
-     * message bound to a property.
+     * @return An array of the names of all properties for which the exception holds messages or an empty array if the
+     * exception does not hold any message bound to a property.
      */
     public abstract String[] getPropertyNames();
 
     /**
      * Returns the message of the exception.
      *
-     * @return the message of the exception.
+     * @return The message of the exception.
      */
     public String getMessage()
     {
         return this.getIllegalTransactionMessage( this.getLocale() );
     }
 
-    //---------------------------------------------IllegalTransactionException--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies

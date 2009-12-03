@@ -45,7 +45,6 @@ import org.jdtaus.banking.AlphaNumericText27;
  */
 public class AlphaNumericText27Test extends TestCase
 {
-    //--AlphaNumericText27Test--------------------------------------------------
 
     /** Prefix for property names holding valid values. */
     private static final String VALID_PREFIX = "valid.";
@@ -56,7 +55,7 @@ public class AlphaNumericText27Test extends TestCase
     /**
      * Gets an array of valid {@code AlphaNumericText27} values.
      *
-     * @return an array of valid {@code AlphaNumericText27} values.
+     * @return An array of valid {@code AlphaNumericText27} values.
      *
      * @throws IOException if reading property resources fails.
      */
@@ -82,7 +81,7 @@ public class AlphaNumericText27Test extends TestCase
     /**
      * Gets an array of invalid {@code AlphaNumericText27} values.
      *
-     * @return an array of invalid {@code AlphaNumericText27} values.
+     * @return An array of invalid {@code AlphaNumericText27} values.
      *
      * @throws IOException if reading property resources fails.
      */
@@ -108,14 +107,9 @@ public class AlphaNumericText27Test extends TestCase
     private Map getProperties() throws IOException
     {
         final Properties ret = new Properties();
-        ret.load( this.getClass().getResourceAsStream(
-            "AlphaNumericText27Test.properties" ) );
-
+        ret.load( this.getClass().getResourceAsStream( "AlphaNumericText27Test.properties" ) );
         return ret;
     }
-
-    //--------------------------------------------------AlphaNumericText27Test--
-    //--Tests-------------------------------------------------------------------
 
     public void testCharSequence() throws Exception
     {
@@ -218,9 +212,7 @@ public class AlphaNumericText27Test extends TestCase
     public void testIsEmpty() throws Exception
     {
         final AlphaNumericText27 txt1 = AlphaNumericText27.parse( "" );
-        final AlphaNumericText27 txt2 =
-            AlphaNumericText27.parse( "           " );
-
+        final AlphaNumericText27 txt2 = AlphaNumericText27.parse( "           " );
         final AlphaNumericText27 txt3 = AlphaNumericText27.parse( "  A    " );
 
         Assert.assertTrue( txt1.isEmpty() );
@@ -259,10 +251,8 @@ public class AlphaNumericText27Test extends TestCase
 
         final AlphaNumericText27 t = (AlphaNumericText27) in.readObject();
         in.close();
-
         System.out.println( t.toString() );
         Assert.assertEquals( "ABCDEFGHIJKLMNOPQRSTUVWXYZ", t.format() );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

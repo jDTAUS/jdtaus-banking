@@ -27,10 +27,9 @@ import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
- * Gets thrown whenever an illegal Textschlüssel is passed to a method expecting
- * a legal Textschlüssel.
- * <p>Example: Catching an {@code IllegalTextschluesselException}<br/>
- * <blockquote><pre>catch(IllegalTextschluesselException e)
+ * Gets thrown whenever an illegal Textschlüssel is passed to a method expecting a legal Textschlüssel.
+ * <p>Example: Catching an {@code IllegalTextschluesselException}<br/><blockquote><pre>
+ * catch(IllegalTextschluesselException e)
  * {
  *     if(e.getMessages().length > 0)
  *     {
@@ -46,16 +45,11 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class IllegalTextschluesselException
-    extends IllegalArgumentException
+public abstract class IllegalTextschluesselException extends IllegalArgumentException
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.1.x classes. */
     private static final long serialVersionUID = 7472131429277078032L;
-
-    //---------------------------------------------------------------Constants--
-    //--IllegalTextschluesselException------------------------------------------
 
     /** Creates a new {@code IllegalTextschluesselException} instance. */
     public IllegalTextschluesselException()
@@ -66,20 +60,18 @@ public abstract class IllegalTextschluesselException
     /**
      * Gets all messages describing the exception.
      *
-     * @return an array of messages describing the exception or an empty array
-     * if the instance does not hold any messages.
+     * @return An array of messages describing the exception or an empty array if the instance does not hold any
+     * messages.
      */
     public abstract Message[] getMessages();
 
     /**
-     * Gets messages bound to a property removing these messages from the
-     * instance.
+     * Gets messages bound to a property removing these messages from the instance.
      *
-     * @param propertyName the name of a property to return any messages for.
+     * @param propertyName The name of a property to return any messages for.
      *
-     * @return all messages bound to a property with name {@code propertyName}
-     * or an empty array if the instance does not hold messages for a property
-     * with name {@code propertyName}.
+     * @return All messages bound to a property with name {@code propertyName} or an empty array if the instance does
+     * not hold messages for a property with name {@code propertyName}.
      *
      * @throws NullPointerException if {@code propertyName} is {@code null}.
      */
@@ -88,23 +80,21 @@ public abstract class IllegalTextschluesselException
     /**
      * Gets the names of all properties for which the exception holds messages.
      *
-     * @return an array of the names of all properties for which the exception
-     * holds messages or an empty array if the exception does not hold any
-     * message bound to a property.
+     * @return An array of the names of all properties for which the exception holds messages or an empty array if the
+     * exception does not hold any message bound to a property.
      */
     public abstract String[] getPropertyNames();
 
     /**
      * Returns the message of the exception.
      *
-     * @return the message of the exception.
+     * @return The message of the exception.
      */
     public String getMessage()
     {
         return this.getIllegalTextschluesselMessage( this.getLocale() );
     }
 
-    //------------------------------------------IllegalTextschluesselException--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies

@@ -10,7 +10,6 @@
     <!-- ******************************************************************* -->
     <release version="1.0" date="2007-06-01"
              description="First stable release."/>
-
     <!-- ******************************************************************* -->
     <release version="1.1" date="2007-07-02"
              description="Feature enhancements.">
@@ -44,7 +43,6 @@
       Added method <code>getDateOfExpiration()</code>.</blockquote></li></ul>]]>
       </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.2" date="2007-08-01"
              description="Feature enhancements.">
@@ -56,7 +54,6 @@
       Added method <code>commit()</code>.</blockquote></li></ul>]]>
       </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.3" date="2007-08-24"
              description="Feature enhancements.">
@@ -85,7 +82,6 @@
       Added method <code>getPhysicalFile(File)</code>.</blockquote></li></ul>]]>
       </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.3.1" date="2008-03-13"
              description="Maintenance release.">
@@ -95,7 +91,6 @@
       compatibility. Updated to latest mojo releases.]]>
       </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.4" date="2008-04-12"
              description="Feature enhancements.">
@@ -129,7 +124,6 @@
       an implementation.</blockquote></li></ul>]]>
       </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.5" date="2008-07-06"
              description="Feature enhancements.">
@@ -151,7 +145,6 @@
       <code>subtract(Transaction)</code>.</blockquote></li></ul>]]>
       </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.6" date="2008-10-28"
              description="Maintenance release.">
@@ -160,12 +153,13 @@
       Upgraded to latest core features.<ul>
       <li>Removed any internal properties resources and moved any messages to
       the META-INF/jdtaus/module.xml module descriptor.</li>
-      <li>Added support for compatibility checking.</li></ul>]]></action>
+      <li>Added support for compatibility checking.</li></ul>]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[
       Updated the format of the strings produced by the <code>toString()</code>
-      method of various classes.]]></action>
+      method of various classes.]]>
+      </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.7" date="2008-11-28"
              description="Maintenance release.">
@@ -180,31 +174,33 @@
       method <code>getTextschluessel(int,int)</code>. Added method
       <code>search(boolean,boolean,Date)</code> deprecating method
       <code>serach(boolean,boolean)</code>.</blockquote></li>
-      </ul>]]></action>
+      </ul>]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[
       Updated specification documents to recent versions.<ul>
       <li>Anlage 3 - Spezifikation der Datenformate - Version 2.3 Endfassung vom 05.11.2008</li>
-      <li>Bankleitzahlen Richtlinie - Stand 8. September 2008</li></ul>]]></action>
+      <li>Bankleitzahlen Richtlinie - Stand 8. September 2008</li></ul>]]>
+      </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.8" date="2008-12-29"
              description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Upgraded to jDTAUS Core version 1.8 to support exchanging references to
-      the <code>java.util.Locale</code> implementation to use.]]></action>
+      the <code>java.util.Locale</code> implementation to use.]]>
+      </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.9" date="2009-07-02"
              description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Updated any references to the jDTAUS server to point to the SF.net
-      servers.]]></action>
+      servers.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[
-      Corrected GPG signatures.]]></action>
+      Corrected GPG signatures.]]>
+      </action>
     </release>
-
     <!-- ******************************************************************* -->
     <release version="1.10" date="2009-07-14"
              description="Bugfix release.">
@@ -216,7 +212,8 @@
       Prior to this change the <code>parse(String)</code> method did not throw a
       <code>ParseException</code> for texts of length 28 and the
       <code>valueOf(String)</code> method did not throw an
-      <code>IllegalArgumentException</code> for texts of length 28.</li></ul>]]></action>
+      <code>IllegalArgumentException</code> for texts of length 28.</li></ul>]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[
       Updated classes<ul>
       <li><code>org.jdtaus.banking.AlphaNumericText27</code></li>
@@ -228,7 +225,8 @@
       correctly fail parsing illegal letter format values. Prior to this change
       parsing allowed space characters to appear anywhere in the input string.
       This change strengthens parsing to disallow space characters to appear
-      at illegal positions.</blockquote></ul>]]></action>
+      at illegal positions.</blockquote></ul>]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[
       Updated classes<ul>
       <li><code>org.jdtaus.banking.Bankleitzahl</code>:<blockquote>
@@ -237,27 +235,48 @@
       <code>isNetworkCodeSupported()</code> to support instances with fewer
       than 8 digits. Prior to this change the <code>checkBankleitzahl()</code>
       method rejected any values with fewer than 8 digits. This version adds
-      support for instances with fewer digits.</blockquote></li></ul>]]></action>
+      support for instances with fewer digits.</blockquote></li></ul>]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[
       Updated classes<ul>
       <li><code>org.jdtaus.banking.Bankleitzahl</code>:<blockquote>
       Deprecated method <code>getClearingArea()</code> in favour of method
-      <code>getClearingAreaCode()</code>.</blockquote></li></ul>]]></action>
+      <code>getClearingAreaCode()</code>.</blockquote></li></ul>]]>
+      </action>
     </release>
-
     <!-- ******************************************************************* -->
-    <release version="1.11" description="Bugfix release.">
+    <release version="1.11" date="2009-12-05" description="Feature enhancements.">
       <action dev="schulte2005" type="fix"><![CDATA[
       Updated classes<ul>
       <li><code>org.jdtaus.banking.dtaus.LogicalFileType</code>:<blockquote>
       Corrected method <code>getShortDescription(Locale)</code> to stop
-      ignoring the given locale.</blockquote></li></ul>]]></action>
+      ignoring the given locale.</blockquote></li></ul>]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[
+      Updated classes<ul>
+      <li><code>org.jdtaus.banking.AlphaNumericText27</code></li>
+      <li><code>org.jdtaus.banking.Bankleitzahl</code></li>
+      <li><code>org.jdtaus.banking.Kontonummer</code></li>
+      <li><code>org.jdtaus.banking.Referenznummer10</code></li>
+      <li><code>org.jdtaus.banking.Referenznummer11</code></li>
+      </ul><blockquote>to add the <code>volatile</code> modifier to static cache
+      references.</blockquote></ul>]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[
       Updated classes<ul>
       <li><code>org.jdtaus.banking.dtaus.LogicalFileType</code>:<blockquote>
       Added method <code>searchLogicalFileTypes(Boolean,Boolean,Boolean,Boolean)</code>
       deprecating method <code>search(boolean,boolean,boolean,boolean)</code>.
-      </blockquote></li></ul>]]></action>
+      </blockquote></li>
+      <li>org.jdtaus.banking.BankleitzahlenVerzeichnis</li>:<blockquote>
+      Added method <code>searchBankleitzahlInfos</code> deprecating method
+      <code>search</code>. Updated specification version to <code>1.2</code>.
+      </blockquote></li>
+      <li>org.jdtaus.banking.TextschluesselVerzeichnis</li>:<blockquote>
+      Added method <code>searchTextschluessel</code> deprecating method
+      <code>search</code>. Updated specification version to <code>1.3</code>.
+      </blockquote></li></ul>]]>
+      </action>
     </release>
   </body>
 </document>

@@ -35,7 +35,6 @@ import org.jdtaus.banking.dtaus.Checksum;
  */
 public class ChecksumTest extends TestCase
 {
-    //--ChecksumTest------------------------------------------------------------
 
     public void testObject() throws Exception
     {
@@ -118,14 +117,10 @@ public class ChecksumTest extends TestCase
 
     public void testSerializable() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream(
-            this.getClass().getResourceAsStream( "Checksum.ser" ) );
-
+        final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream( "Checksum.ser" ) );
         final Checksum c = (Checksum) in.readObject();
         in.close();
-
         System.out.println( c );
     }
 
-    //------------------------------------------------------------ChecksumTest--
 }

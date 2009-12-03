@@ -45,7 +45,6 @@ import org.jdtaus.banking.Bankleitzahl;
  */
 public class BankleitzahlTest extends TestCase
 {
-    //--BankleitzahlTest--------------------------------------------------------
 
     /** Prefix for property names holding valid values. */
     private static final String VALID_PREFIX = "valid.";
@@ -56,7 +55,7 @@ public class BankleitzahlTest extends TestCase
     /**
      * Gets an array of valid {@code Bankleitzahl} values.
      *
-     * @return an array of valid {@code Bankleitzahl} values.
+     * @return An array of valid {@code Bankleitzahl} values.
      *
      * @throws IOException if reading property resources fails.
      */
@@ -82,7 +81,7 @@ public class BankleitzahlTest extends TestCase
     /**
      * Gets an array of invalid {@code Bankleitzahl} values.
      *
-     * @return an array of invalid {@code Bankleitzahl} values.
+     * @return An array of invalid {@code Bankleitzahl} values.
      *
      * @throws IOException if reading property resources fails.
      */
@@ -108,28 +107,16 @@ public class BankleitzahlTest extends TestCase
     private Map getProperties() throws IOException
     {
         final Properties ret = new Properties();
-        ret.load( this.getClass().getResourceAsStream(
-            "BankleitzahlTest.properties" ) );
-
+        ret.load( this.getClass().getResourceAsStream( "BankleitzahlTest.properties" ) );
         return ret;
     }
 
-    //--------------------------------------------------------BankleitzahlTest--
-    //--Tests-------------------------------------------------------------------
-
     public void testObject() throws Exception
     {
-        final Bankleitzahl blz1 =
-            Bankleitzahl.valueOf( new Integer( 45050001 ) );
-
-        final Bankleitzahl blz2 =
-            Bankleitzahl.valueOf( new Integer( 45050001 ) );
-
-        final Bankleitzahl blz3 =
-            Bankleitzahl.valueOf( new Integer( 45050001 ) );
-
-        final Bankleitzahl blz4 =
-            Bankleitzahl.valueOf( new Integer( 10000000 ) );
+        final Bankleitzahl blz1 = Bankleitzahl.valueOf( new Integer( 45050001 ) );
+        final Bankleitzahl blz2 = Bankleitzahl.valueOf( new Integer( 45050001 ) );
+        final Bankleitzahl blz3 = Bankleitzahl.valueOf( new Integer( 45050001 ) );
+        final Bankleitzahl blz4 = Bankleitzahl.valueOf( new Integer( 10000000 ) );
 
         System.out.println( blz1.toString() );
         System.out.println( blz2.toString() );
@@ -150,14 +137,9 @@ public class BankleitzahlTest extends TestCase
 
     public void testComparable() throws Exception
     {
-        final Bankleitzahl blz1 =
-            Bankleitzahl.valueOf( new Integer( 10000000 ) );
-
-        final Bankleitzahl blz2 =
-            Bankleitzahl.valueOf( new Integer( 10000001 ) );
-
-        final Bankleitzahl blz3 =
-            Bankleitzahl.valueOf( new Integer( 10000002 ) );
+        final Bankleitzahl blz1 = Bankleitzahl.valueOf( new Integer( 10000000 ) );
+        final Bankleitzahl blz2 = Bankleitzahl.valueOf( new Integer( 10000001 ) );
+        final Bankleitzahl blz3 = Bankleitzahl.valueOf( new Integer( 10000002 ) );
 
         Assert.assertEquals( blz1.compareTo( blz1 ), 0 );
         Assert.assertEquals( blz2.compareTo( blz2 ), 0 );
@@ -180,9 +162,8 @@ public class BankleitzahlTest extends TestCase
         for ( Iterator it = sorted.iterator(); it.hasNext(); )
         {
             final Bankleitzahl blz = (Bankleitzahl) it.next();
-            System.out.println(
-                blz.format( Bankleitzahl.ELECTRONIC_FORMAT ) + '\t' +
-                blz.format( Bankleitzahl.LETTER_FORMAT ) );
+            System.out.println( blz.format( Bankleitzahl.ELECTRONIC_FORMAT ) + '\t' +
+                                blz.format( Bankleitzahl.LETTER_FORMAT ) );
 
         }
 
@@ -217,12 +198,8 @@ public class BankleitzahlTest extends TestCase
         for ( int i = valid.length - 1; i >= 0; i-- )
         {
             final Bankleitzahl blz = Bankleitzahl.parse( valid[i] );
-            Assert.assertEquals( blz, Bankleitzahl.parse(
-                blz.format( Bankleitzahl.ELECTRONIC_FORMAT ) ) );
-
-            Assert.assertEquals( blz, Bankleitzahl.parse(
-                blz.format( Bankleitzahl.LETTER_FORMAT ) ) );
-
+            Assert.assertEquals( blz, Bankleitzahl.parse( blz.format( Bankleitzahl.ELECTRONIC_FORMAT ) ) );
+            Assert.assertEquals( blz, Bankleitzahl.parse( blz.format( Bankleitzahl.LETTER_FORMAT ) ) );
         }
         for ( int i = invalid.length - 1; i >= 0; i-- )
         {
@@ -231,7 +208,7 @@ public class BankleitzahlTest extends TestCase
                 Bankleitzahl.parse( invalid[i] );
                 throw new AssertionError( invalid[i] );
             }
-            catch ( ParseException e )
+            catch ( final ParseException e )
             {
                 System.out.println( e.toString() );
                 Assert.assertNotNull( e.getMessage() );
@@ -241,11 +218,8 @@ public class BankleitzahlTest extends TestCase
 
     public void testIsClearingAreaCodeSupported() throws Exception
     {
-        final Bankleitzahl supported =
-            Bankleitzahl.valueOf( new Integer( 10000000 ) );
-
-        final Bankleitzahl notSupported =
-            Bankleitzahl.valueOf( new Integer( 9999999 ) );
+        final Bankleitzahl supported = Bankleitzahl.valueOf( new Integer( 10000000 ) );
+        final Bankleitzahl notSupported = Bankleitzahl.valueOf( new Integer( 9999999 ) );
 
         Assert.assertTrue( supported.isClearingAreaCodeSupported() );
         Assert.assertFalse( notSupported.isClearingAreaCodeSupported() );
@@ -256,7 +230,7 @@ public class BankleitzahlTest extends TestCase
             notSupported.getClearingAreaCode();
             throw new AssertionError();
         }
-        catch ( UnsupportedOperationException e )
+        catch ( final UnsupportedOperationException e )
         {
             System.out.println( e.toString() );
         }
@@ -264,11 +238,8 @@ public class BankleitzahlTest extends TestCase
 
     public void testIsLocalityCodeSupported() throws Exception
     {
-        final Bankleitzahl supported =
-            Bankleitzahl.valueOf( new Integer( 100000 ) );
-
-        final Bankleitzahl notSupported =
-            Bankleitzahl.valueOf( new Integer( 99999 ) );
+        final Bankleitzahl supported = Bankleitzahl.valueOf( new Integer( 100000 ) );
+        final Bankleitzahl notSupported = Bankleitzahl.valueOf( new Integer( 99999 ) );
 
         Assert.assertTrue( supported.isLocalityCodeSupported() );
         Assert.assertFalse( notSupported.isLocalityCodeSupported() );
@@ -279,7 +250,7 @@ public class BankleitzahlTest extends TestCase
             notSupported.getLocalityCode();
             throw new AssertionError();
         }
-        catch ( UnsupportedOperationException e )
+        catch ( final UnsupportedOperationException e )
         {
             System.out.println( e.toString() );
         }
@@ -287,11 +258,8 @@ public class BankleitzahlTest extends TestCase
 
     public void testIsNetworkCodeSupported() throws Exception
     {
-        final Bankleitzahl supported =
-            Bankleitzahl.valueOf( new Integer( 10000 ) );
-
-        final Bankleitzahl notSupported =
-            Bankleitzahl.valueOf( new Integer( 9999 ) );
+        final Bankleitzahl supported = Bankleitzahl.valueOf( new Integer( 10000 ) );
+        final Bankleitzahl notSupported = Bankleitzahl.valueOf( new Integer( 9999 ) );
 
         Assert.assertTrue( supported.isNetworkCodeSupported() );
         Assert.assertFalse( notSupported.isNetworkCodeSupported() );
@@ -302,7 +270,7 @@ public class BankleitzahlTest extends TestCase
             notSupported.getNetworkCode();
             throw new AssertionError();
         }
-        catch ( UnsupportedOperationException e )
+        catch ( final UnsupportedOperationException e )
         {
             System.out.println( e.toString() );
         }
@@ -316,33 +284,19 @@ public class BankleitzahlTest extends TestCase
 
     public void testCheckBankleitzahl() throws Exception
     {
-        Assert.assertTrue(
-            Bankleitzahl.checkBankleitzahl( new Integer( 1 ) ) );
-
-        Assert.assertTrue(
-            Bankleitzahl.checkBankleitzahl( new Integer( 10000000 ) ) );
-
-        Assert.assertFalse(
-            Bankleitzahl.checkBankleitzahl( new Integer( 0 ) ) );
-
-        Assert.assertFalse(
-            Bankleitzahl.checkBankleitzahl( new Integer( 90000000 ) ) );
-
+        Assert.assertTrue( Bankleitzahl.checkBankleitzahl( new Integer( 1 ) ) );
+        Assert.assertTrue( Bankleitzahl.checkBankleitzahl( new Integer( 10000000 ) ) );
+        Assert.assertFalse( Bankleitzahl.checkBankleitzahl( new Integer( 0 ) ) );
+        Assert.assertFalse( Bankleitzahl.checkBankleitzahl( new Integer( 90000000 ) ) );
     }
 
     public void testSerializable() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream(
-            this.getClass().getResourceAsStream( "Bankleitzahl.ser" ) );
-
+        final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream( "Bankleitzahl.ser" ) );
         final Bankleitzahl b = (Bankleitzahl) in.readObject();
         in.close();
-
         System.out.println( b.toString() );
-        Assert.assertEquals( new Integer( 11111111 ),
-                             new Integer( b.intValue() ) );
-
+        Assert.assertEquals( new Integer( 11111111 ), new Integer( b.intValue() ) );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

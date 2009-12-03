@@ -27,8 +27,7 @@ import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
- * Gets thrown whenever an illegal header is passed to a method expecting a
- * legal header.
+ * Gets thrown whenever an illegal header is passed to a method expecting a legal header.
  * <p>Example: Catching an {@code IllegalHeaderException}<br/><blockquote><pre>
  * catch(IllegalHeaderException e)
  * {
@@ -48,13 +47,9 @@ import org.jdtaus.core.text.Message;
  */
 public abstract class IllegalHeaderException extends IllegalArgumentException
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 4287460475792358013L;
-
-    //---------------------------------------------------------------Constants--
-    //--IllegalHeaderException--------------------------------------------------
 
     /** Creates a new {@code IllegalHeaderException} instance. */
     public IllegalHeaderException()
@@ -65,20 +60,18 @@ public abstract class IllegalHeaderException extends IllegalArgumentException
     /**
      * Gets all messages describing the exception.
      *
-     * @return an array of messages describing the exception or an empty array
-     * if the instance does not hold any messages.
+     * @return An array of messages describing the exception or an empty array if the instance does not hold any
+     * messages.
      */
     public abstract Message[] getMessages();
 
     /**
-     * Gets messages bound to a property removing these messages from the
-     * instance.
+     * Gets messages bound to a property removing these messages from the instance.
      *
      * @param propertyName the name of a property to return any messages for.
      *
-     * @return all messages bound to a property with name {@code propertyName}
-     * or an empty array if the instance does not hold messages for a property
-     * with name {@code propertyName}.
+     * @return All messages bound to a property with name {@code propertyName} or an empty array if the instance does
+     * not hold messages for a property with name {@code propertyName}.
      *
      * @throws NullPointerException if {@code propertyName} is {@code null}.
      */
@@ -87,23 +80,21 @@ public abstract class IllegalHeaderException extends IllegalArgumentException
     /**
      * Gets the names of all properties for which the exception holds messages.
      *
-     * @return an array of the names of all properties for which the exception
-     * holds messages or an empty array if the exception does not hold any
-     * message bound to a property.
+     * @return An array of the names of all properties for which the exception holds messages or an empty array if the
+     * exception does not hold any message bound to a property.
      */
     public abstract String[] getPropertyNames();
 
     /**
      * Returns the message of the exception.
      *
-     * @return the message of the exception.
+     * @return The message of the exception.
      */
     public String getMessage()
     {
         return this.getIllegalHeaderMessage( this.getLocale() );
     }
 
-    //--------------------------------------------------IllegalHeaderException--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies

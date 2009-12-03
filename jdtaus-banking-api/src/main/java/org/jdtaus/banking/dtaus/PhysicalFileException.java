@@ -34,53 +34,46 @@ import org.jdtaus.core.text.Message;
  */
 public class PhysicalFileException extends Exception
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = -8624765386920924529L;
 
-    //---------------------------------------------------------------Constants--
-    //--PhysicalFileException---------------------------------------------------
+    /** Empty {@code Message} array. */
+    private static final Message[] NO_MESSAGES =
+    {
+    };
 
     /**
      * Messages describing the exception.
      * @serial
      */
-    private Message[] messages;
+    private final Message[] messages;
 
     /**
-     * Creates a new {@code PhysicalFileException} instance taking an array
-     * of messages describing the exception.
+     * Creates a new {@code PhysicalFileException} instance taking an array of messages describing the exception.
      *
-     * @param messages array of messages describing the exception or
-     * {@code null} if no information is available.
+     * @param messages array of messages describing the exception or {@code null} if no information is available.
      */
     public PhysicalFileException( final Message[] messages )
     {
         super();
-        this.messages = messages;
+        this.messages = messages == null ? NO_MESSAGES : messages;
     }
 
     /**
      * Getter for property {@code messages}.
      *
-     * @return messages describing the exception or an empty array if no
-     * information is available.
+     * @return Messages describing the exception or an empty array if no information is available.
      */
     public final Message[] getMessages()
     {
-        if ( this.messages == null )
-        {
-            this.messages = new Message[ 0 ];
-        }
-
         return this.messages;
     }
 
     /**
      * Returns the message of the exception.
      *
-     * @return the message of the exception.
+     * @return The message of the exception.
      */
     public String getMessage()
     {
@@ -88,9 +81,19 @@ public class PhysicalFileException extends Exception
     }
 
     /**
+     * Returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    public String toString()
+    {
+        return super.toString() + this.internalString();
+    }
+
+    /**
      * Creates a string representing the properties of the instance.
      *
-     * @return a string representing the properties of the instance.
+     * @return A string representing the properties of the instance.
      */
     private String internalString()
     {
@@ -98,9 +101,7 @@ public class PhysicalFileException extends Exception
         final Message[] msgs = this.getMessages();
         for ( int i = 0; i < msgs.length; i++ )
         {
-            buf.append( "[" ).append( i ).append( "]=" ).
-                append( msgs[i].getText( Locale.getDefault() ) );
-
+            buf.append( "[" ).append( i ).append( "]=" ).append( msgs[i].getText( Locale.getDefault() ) );
             if ( i + 1 < msgs.length )
             {
                 buf.append( ", " );
@@ -110,20 +111,6 @@ public class PhysicalFileException extends Exception
         return buf.append( '}' ).toString();
     }
 
-    //---------------------------------------------------PhysicalFileException--
-    //--Object------------------------------------------------------------------
-
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return a string representation of the object.
-     */
-    public String toString()
-    {
-        return super.toString() + this.internalString();
-    }
-
-    //------------------------------------------------------------------Object--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies

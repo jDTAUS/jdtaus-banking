@@ -34,42 +34,34 @@ import org.jdtaus.core.container.ContainerFactory;
  */
 public class BankleitzahlExpirationException extends Exception
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.1.x classes. */
     private static final long serialVersionUID = -1834668094534345716L;
-
-    //---------------------------------------------------------------Constants--
-    //--BankleitzahlExpirationException-----------------------------------------
 
     /**
      * Information about the expired Bankleitzahl.
      * @serial
      */
-    private BankleitzahlInfo info;
+    private final BankleitzahlInfo info;
 
     /**
      * Information about the Bankleitzahl replacing the expired Bankleitzahl.
      * @serial
      */
-    private BankleitzahlInfo replacement;
+    private final BankleitzahlInfo replacement;
 
     /**
-     * Creates a new {@code BankleitzahlExpirationException} taking the
-     * bankcode information of the expired Bankleitzahl.
+     * Creates a new {@code BankleitzahlExpirationException} taking the bankcode information of the expired
+     * Bankleitzahl.
      *
-     * @param info the bankcode information of the expired Bankleitzahl.
-     * @param replacement the bankcode information of the Bankleitzahl
-     * replacing {@code info}.
+     * @param info The bankcode information of the expired Bankleitzahl.
+     * @param replacement The bankcode information of the Bankleitzahl replacing {@code info}.
      *
-     * @throws NullPointerException if either {@code info} or
-     * {@code replacement} is {@code null}.
+     * @throws NullPointerException if either {@code info} or {@code replacement} is {@code null}.
      */
-    public BankleitzahlExpirationException( final BankleitzahlInfo info,
-        final BankleitzahlInfo replacement )
+    public BankleitzahlExpirationException( final BankleitzahlInfo info, final BankleitzahlInfo replacement )
     {
         super();
-
         this.info = info;
         this.replacement = replacement;
     }
@@ -77,7 +69,7 @@ public class BankleitzahlExpirationException extends Exception
     /**
      * Gets information about the expired Bankleitzahl.
      *
-     * @return information about the expired Bankleitzahl.
+     * @return Information about the expired Bankleitzahl.
      */
     public BankleitzahlInfo getExpiredBankleitzahlInfo()
     {
@@ -85,11 +77,9 @@ public class BankleitzahlExpirationException extends Exception
     }
 
     /**
-     * Gets information about the Bankleitzahl replacing the expired
-     * Bankleitzahl.
+     * Gets information about the Bankleitzahl replacing the expired Bankleitzahl.
      *
-     * @return information about the Bankleitzahl replacing the expired
-     * Bankleitzahl.
+     * @return information about the Bankleitzahl replacing the expired Bankleitzahl.
      */
     public BankleitzahlInfo getReplacingBankleitzahlInfo()
     {
@@ -99,15 +89,13 @@ public class BankleitzahlExpirationException extends Exception
     /**
      * Returns the message of the exception.
      *
-     * @return the message of the exception.
+     * @return The message of the exception.
      */
     public String getMessage()
     {
         return this.getBankleitzahlExpirationMessage(
-            this.getLocale(),
-            this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT ),
-            this.replacement.getBankCode().format(
-            Bankleitzahl.LETTER_FORMAT ) );
+            this.getLocale(), this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT ),
+            this.replacement.getBankCode().format( Bankleitzahl.LETTER_FORMAT ) );
 
     }
 
@@ -143,21 +131,21 @@ public class BankleitzahlExpirationException extends Exception
      * <blockquote><pre>The Bankleitzahl {0} has expired. The bank published the replacement Bankleitzahl {1}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param bankleitzahl format argument.
-     * @param replacement format argument.
+     * @param expired format argument.
+     * @param rplc format argument.
      *
      * @return the text of message <code>bankleitzahlExpiration</code>.
      */
     private String getBankleitzahlExpirationMessage( final Locale locale,
-            final java.lang.String bankleitzahl,
-            final java.lang.String replacement )
+            final java.lang.String expired,
+            final java.lang.String rplc )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "bankleitzahlExpiration", locale,
                 new Object[]
                 {
-                    bankleitzahl,
-                    replacement
+                    expired,
+                    rplc
                 });
 
     }

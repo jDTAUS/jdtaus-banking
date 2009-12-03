@@ -39,49 +39,40 @@ import java.util.Date;
  */
 public interface TextschluesselVerzeichnis
 {
-    //--TextschluesselVerzeichnis-----------------------------------------------
 
     /**
-     * Gets all Textschlüssel instances from the directory.
+     * Gets all Textschlüssel instances of the directory.
      *
-     * @return all Textschlüssel instances from the directory.
+     * @return All Textschlüssel instances of the directory.
      */
     Textschluessel[] getTextschluessel();
 
     /**
-     * Gets a Textschlüssel from the directory.
-     * <p>Calling this method is the same as calling<blockquote><pre>
-     * getTextschluessel( key, extension, new Date() )</pre></blockquote></p>
+     * Gets a Textschlüssel instance of the directory.
      *
-     * @param key the key of the Textschlüssel to return.
-     * @param extension the extension of the Textschlüssel to return.
+     * @param key The key of the Textschlüssel to return.
+     * @param extension The extension of the Textschlüssel to return.
      *
-     * @return the Textschlüssel identified by {@code key} and {@code extension}
-     * or {@code null} if nothing is known about {@code key} and
-     * {@code extension}.
+     * @return The Textschlüssel identified by {@code key} and {@code extension} or {@code null} if nothing is known
+     * about {@code key} and {@code extension}.
      *
-     * @throws IllegalArgumentException if {@code key} or {@code extension} is
-     * negative, or {@code key} is greater than {@code 99} or {@code extension}
-     * is greater than {@code 999}.
-     *
-     * @deprecated Replaced by {@link #getTextschluessel(int, int, java.util.Date) }
+     * @throws IllegalArgumentException if {@code key} or {@code extension} is negative, or {@code key} is greater than
+     * {@code 99} or {@code extension} is greater than {@code 999}.
      */
-     Textschluessel getTextschluessel( int key, int extension );
+    Textschluessel getTextschluessel( int key, int extension );
 
     /**
-     * Gets a Textschlüssel from the directory for a given date.
+     * Gets a Textschlüssel instance of the directory for a given date.
      *
-     * @param key the key of the Textschlüssel to return.
-     * @param extension the extension of the Textschlüssel to return.
-     * @param date the date of validity of the Textschlüssel to return.
+     * @param key The key of the Textschlüssel to return.
+     * @param extension The extension of the Textschlüssel to return.
+     * @param date The date of validity of the Textschlüssel to return.
      *
-     * @return the Textschlüssel identified by {@code key} and {@code extension}
-     * valid at {@code date} or {@code null} if nothing is known about
-     * {@code key} and {@code extension} at {@code date}.
+     * @return The Textschlüssel identified by {@code key} and {@code extension} valid at {@code date} or {@code null}
+     * if nothing is known about {@code key} and {@code extension} at {@code date}.
      *
-     * @throws IllegalArgumentException if {@code key} or {@code extension} is
-     * negative, or {@code key} is greater than {@code 99} or {@code extension}
-     * is greater than {@code 999}.
+     * @throws IllegalArgumentException if {@code key} or {@code extension} is negative, or {@code key} is greater than
+     * {@code 99} or {@code extension} is greater than {@code 999}.
      * @throws NullPointerException if {@code date} is {@code null}.
      *
      * @see Textschluessel#isValidAt(java.util.Date)
@@ -90,39 +81,45 @@ public interface TextschluesselVerzeichnis
 
     /**
      * Searches the directory for Textschlüssel instances.
-     * <p>Calling this method is the same as calling<blockquote><pre>
-     * search( key, extension, new Date() )</pre></blockquote></p>
      *
-     * @param debit desired value of property {@code debit} of the Textschlüssel
-     * instances to return.
-     * @param remittance desired value of property {@code remittance} of the
-     * Textschlüssel instances to return.
+     * @param debit Value of property {@code debit} of the Textschlüssel instances to return.
+     * @param remittance Value of property {@code remittance} of the Textschlüssel instances to return.
      *
-     * @return all Textschlüssel instances from the directory with property
-     * {@code debit} equal to the {@code debit} argument and property
-     * {@code remittance} equal to the {@code remittance} argument.
+     * @return All Textschlüssel instances from the directory with property {@code debit} equal to the {@code debit}
+     * argument and property {@code remittance} equal to the {@code remittance} argument.
      *
-     * @deprecated Replaced by {@link #search(boolean, boolean, java.util.Date) }
+     * @deprecated Replaced by {@link #searchTextschluessel(java.lang.Boolean, java.lang.Boolean, java.util.Date) }.
      */
      Textschluessel[] search( boolean debit, boolean remittance );
 
     /**
      * Searches the directory for Textschlüssel instances for a given date.
      *
-     * @param debit desired value of property {@code debit} of the Textschlüssel
-     * instances to return.
-     * @param remittance desired value of property {@code remittance} of the
-     * Textschlüssel instances to return.
-     * @param date the date of validity of the Textschlüssel to return.
+     * @param debit Value of property {@code debit} of the Textschlüssel instances to return.
+     * @param remittance Value of property {@code remittance} of the Textschlüssel instances to return.
+     * @param date The date of validity of the Textschlüssel to return.
      *
-     * @return all Textschlüssel instances from the directory with property
-     * {@code debit} equal to the {@code debit} argument and property
-     * {@code remittance} equal to the {@code remittance} argument valid at
-     * {@code date}.
+     * @return All Textschlüssel instances from the directory with property {@code debit} equal to the {@code debit}
+     * argument and property {@code remittance} equal to the {@code remittance} argument valid at {@code date}.
      *
      * @throws NullPointerException if {@code date} is {@code null}.
+     *
+     * @deprecated Replaced by {@link #searchTextschluessel(java.lang.Boolean, java.lang.Boolean, java.util.Date)}.
      */
-    Textschluessel[] search( boolean debit, boolean remittance, Date date );
+     Textschluessel[] search( boolean debit, boolean remittance, Date date );
 
-    //------------------------------------------------TextschlüsselVerzeichnis--
+    /**
+     * Searches the directory for Textschlüssel instances.
+     *
+     * @param debit Value of property {@code debit} of the Textschlüssel instances to return; {@code null} to ignore
+     * property {@code debit} during searching.
+     * @param remittance Value of property {@code remittance} of the Textschlüssel instances to return; {@code null}
+     * to ignore property {@code remittance} during searching.
+     * @param date The date of validity of the Textschlüssel to return; {@code null} to ignore properties
+     * {@code validFrom} and {@code validTo} during searching.
+     *
+     * @return All Textschlüssel instances matching the given criteria.
+     */
+    Textschluessel[] searchTextschluessel( Boolean debit, Boolean remittance, Date date );
+
 }

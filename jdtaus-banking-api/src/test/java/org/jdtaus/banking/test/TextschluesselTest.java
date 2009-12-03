@@ -35,7 +35,6 @@ import org.jdtaus.banking.Textschluessel;
  */
 public class TextschluesselTest extends TestCase
 {
-    //--Tests-------------------------------------------------------------------
 
     public void testObject() throws Exception
     {
@@ -135,14 +134,12 @@ public class TextschluesselTest extends TestCase
 
     public void testSerializable() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream(
-            this.getClass().getResourceAsStream( "Textschluessel.ser" ) );
+        final ObjectInputStream in =
+            new ObjectInputStream( this.getClass().getResourceAsStream( "Textschluessel.ser" ) );
 
         final Textschluessel t = (Textschluessel) in.readObject();
         in.close();
-
         System.out.println( t.toString() );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

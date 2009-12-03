@@ -37,14 +37,10 @@ public class BankleitzahlExpirationExceptionTest
     public void testSerializable() throws Exception
     {
         final ObjectInputStream in =
-            new ObjectInputStream( this.getClass().getResourceAsStream(
-            "BankleitzahlExpirationException.ser" ) );
+            new ObjectInputStream( this.getClass().getResourceAsStream( "BankleitzahlExpirationException.ser" ) );
 
-        final BankleitzahlExpirationException e =
-            (BankleitzahlExpirationException) in.readObject();
-
+        final BankleitzahlExpirationException e = (BankleitzahlExpirationException) in.readObject();
         in.close();
-
         System.out.println( e.toString() );
     }
 

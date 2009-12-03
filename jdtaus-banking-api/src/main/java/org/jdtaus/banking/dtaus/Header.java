@@ -39,49 +39,36 @@ import org.jdtaus.banking.Referenznummer10;
  */
 public class Header implements Cloneable, Serializable
 {
-    //--Constants---------------------------------------------------------------
 
     /** Constant for the name of property {@code customer}. */
-    public static final String PROP_CUSTOMER =
-        Header.class.getName() + ".PROP_CUSTOMER";
+    public static final String PROP_CUSTOMER = "org.jdtaus.banking.dtaus.Header.PROP_CUSTOMER";
 
     /** Constant for the name of property {@code account}. */
-    public static final String PROP_ACCOUNT =
-        Header.class.getName() + ".PROP_ACCOUNT";
+    public static final String PROP_ACCOUNT = "org.jdtaus.banking.dtaus.Header.PROP_ACCOUNT";
 
     /** Constant for the name of property {@code bank}. */
-    public static final String PROP_BANK =
-        Header.class.getName() + ".PROP_BANK";
+    public static final String PROP_BANK = "org.jdtaus.banking.dtaus.Header.PROP_BANK";
 
     /** Constant for the name of property {@code type}. */
-    public static final String PROP_TYPE =
-        Header.class.getName() + ".PROP_TYPE";
+    public static final String PROP_TYPE = "org.jdtaus.banking.dtaus.Header.PROP_TYPE";
 
     /** Constant for the name of property {@code currency}. */
-    public static final String PROP_CURRENCY =
-        Header.class.getName() + ".PROP_CURRENCY";
+    public static final String PROP_CURRENCY = "org.jdtaus.banking.dtaus.Header.PROP_CURRENCY";
 
     /** Constant for the name of property {@code reference}. */
-    public static final String PROP_REFERENCE =
-        Header.class.getName() + ".PROP_REFERENCE";
+    public static final String PROP_REFERENCE = "org.jdtaus.banking.dtaus.Header.PROP_REFERENCE";
 
     /** Constant for the name of property {@code bankData}. */
-    public static final String PROP_BANKDATA =
-        Header.class.getName() + ".PROP_BANKDATA";
+    public static final String PROP_BANKDATA = "org.jdtaus.banking.dtaus.Header.PROP_BANKDATA";
 
     /** Constant for the name of property {@code createDate}. */
-    public static final String PROP_CREATEDATE =
-        Header.class.getName() + ".PROP_CREATEDATE";
+    public static final String PROP_CREATEDATE = "org.jdtaus.banking.dtaus.Header.PROP_CREATEDATE";
 
     /** Constant for the name of property {@code executionDate}. */
-    public static final String PROP_EXECUTIONDATE =
-        Header.class.getName() + ".PROP_EXECUTIONDATE";
+    public static final String PROP_EXECUTIONDATE = "org.jdtaus.banking.dtaus.Header.PROP_EXECUTIONDATE";
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = -5704199858711059732L;
-
-    //---------------------------------------------------------------Constants--
-    //--Header------------------------------------------------------------------
 
     /**
      * Name of the customer a logical file belongs to.
@@ -141,10 +128,16 @@ public class Header implements Cloneable, Serializable
     private transient int hashCode = NO_HASHCODE;
     private static final int NO_HASHCODE = Integer.MIN_VALUE;
 
+    /** Creates a new {@code Header} instance. */
+    public Header()
+    {
+        super();
+    }
+
     /**
      * Getter for property {@code customer}.
      *
-     * @return name of the customer a logical file belongs to.
+     * @return Name of the customer a logical file belongs to.
      */
     public AlphaNumericText27 getCustomer()
     {
@@ -154,18 +147,18 @@ public class Header implements Cloneable, Serializable
     /**
      * Setter for property {@code customer}.
      *
-     * @param customer name of the customer a logical file belongs to.
+     * @param value Name of the customer a logical file belongs to.
      */
-    public void setCustomer( final AlphaNumericText27 customer )
+    public void setCustomer( final AlphaNumericText27 value )
     {
-        this.customer = customer;
+        this.customer = value;
         this.hashCode = NO_HASHCODE;
     }
 
     /**
      * Getter for property {@code account}.
      *
-     * @return code of the account a logical file belongs to.
+     * @return Code of the account a logical file belongs to.
      */
     public Kontonummer getAccount()
     {
@@ -175,18 +168,18 @@ public class Header implements Cloneable, Serializable
     /**
      * Setter for property {@code account}.
      *
-     * @param account code of the account a logical file belongs to.
+     * @param value Code of the account a logical file belongs to.
      */
-    public void setAccount( final Kontonummer account )
+    public void setAccount( final Kontonummer value )
     {
-        this.account = account;
+        this.account = value;
         this.hashCode = NO_HASHCODE;
     }
 
     /**
      * Getter for property {@code bank}.
      *
-     * @return code of the bank a logical file belongs to.
+     * @return Code of the bank a logical file belongs to.
      */
     public Bankleitzahl getBank()
     {
@@ -196,18 +189,18 @@ public class Header implements Cloneable, Serializable
     /**
      * Setter for property {@code bank}.
      *
-     * @param bank code of the bank a logical file belongs to.
+     * @param value Code of the bank a logical file belongs to.
      */
-    public void setBank( final Bankleitzahl bank )
+    public void setBank( final Bankleitzahl value )
     {
-        this.bank = bank;
+        this.bank = value;
         this.hashCode = NO_HASHCODE;
     }
 
     /**
      * Getter for property {@code type}.
      *
-     * @return the type of a logical file.
+     * @return The type of a logical file.
      */
     public LogicalFileType getType()
     {
@@ -217,18 +210,18 @@ public class Header implements Cloneable, Serializable
     /**
      * Setter for property {@code type}.
      *
-     * @param type the type of a logical file.
+     * @param value The type of a logical file.
      */
-    public void setType( final LogicalFileType type )
+    public void setType( final LogicalFileType value )
     {
-        this.type = type;
+        this.type = value;
         this.hashCode = NO_HASHCODE;
     }
 
     /**
      * Getter for property {@code currency}.
      *
-     * @return currency of a logical file.
+     * @return Currency of a logical file.
      */
     public Currency getCurrency()
     {
@@ -238,18 +231,18 @@ public class Header implements Cloneable, Serializable
     /**
      * Setter for property {@code currency}.
      *
-     * @param currency currency for a logical file.
+     * @param value Currency for a logical file.
      */
-    public void setCurrency( final Currency currency )
+    public void setCurrency( final Currency value )
     {
-        this.currency = currency;
+        this.currency = value;
         this.hashCode = NO_HASHCODE;
     }
 
     /**
      * Getter for property {@code reference}.
      *
-     * @return reference code of a logical file or {@code null}.
+     * @return Reference code of a logical file or {@code null}.
      */
     public Referenznummer10 getReference()
     {
@@ -259,33 +252,34 @@ public class Header implements Cloneable, Serializable
     /**
      * Setter for property {@code reference}.
      *
-     * @param reference reference code of a logical file or {@code null}.
+     * @param value Reference code of a logical file or {@code null}.
      */
-    public void setReference( final Referenznummer10 reference )
+    public void setReference( final Referenznummer10 value )
     {
-        this.reference = reference;
+        this.reference = value;
         this.hashCode = NO_HASHCODE;
     }
 
     /**
      * Getter for property {@code createDate}.
      *
-     * @return create date of a logical file.
+     * @return Create date of a logical file.
      */
     public Date getCreateDate()
     {
-        return this.createDate != null
-            ? (Date) this.createDate.clone()
-            : null;
+        return this.createDate != null ? (Date) this.createDate.clone() : null;
     }
 
     /**
      * Setter for property {@code createDate}.
      *
-     * @param value create date of a logical file.
+     * @param value Create date of a logical file.
      */
-    public void setCreateDate( Date value )
+    public void setCreateDate( final Date value )
     {
+        this.createDate = null;
+        this.hashCode = NO_HASHCODE;
+
         if ( value != null )
         {
             final Calendar cal = Calendar.getInstance();
@@ -294,33 +288,30 @@ public class Header implements Cloneable, Serializable
             cal.clear( Calendar.MINUTE );
             cal.clear( Calendar.SECOND );
             cal.clear( Calendar.MILLISECOND );
-            value = cal.getTime();
+            this.createDate = cal.getTime();
         }
-
-        this.createDate = value;
-        this.hashCode = NO_HASHCODE;
     }
 
     /**
      * Getter for property {@code executionDate}.
      *
-     * @return execution date of a logical file or {@code null}.
+     * @return Execution date of a logical file or {@code null}.
      */
     public Date getExecutionDate()
     {
-        return this.executionDate != null
-            ? (Date) this.executionDate.clone()
-            : null;
-
+        return this.executionDate != null ? (Date) this.executionDate.clone() : null;
     }
 
     /**
      * Setter for property {@code executionDate}.
      *
-     * @param value execution date of a logical file or {@code null}.
+     * @param value Execution date of a logical file or {@code null}.
      */
-    public void setExecutionDate( Date value )
+    public void setExecutionDate( final Date value )
     {
+        this.executionDate = null;
+        this.hashCode = NO_HASHCODE;
+
         if ( value != null )
         {
             final Calendar cal = Calendar.getInstance();
@@ -329,17 +320,14 @@ public class Header implements Cloneable, Serializable
             cal.clear( Calendar.MINUTE );
             cal.clear( Calendar.SECOND );
             cal.clear( Calendar.MILLISECOND );
-            value = cal.getTime();
+            this.executionDate = cal.getTime();
         }
-
-        this.executionDate = value;
-        this.hashCode = NO_HASHCODE;
     }
 
     /**
      * Getter for property {@code bankData}.
      *
-     * @return bank internal data.
+     * @return Bank internal data.
      */
     public Bankleitzahl getBankData()
     {
@@ -349,18 +337,118 @@ public class Header implements Cloneable, Serializable
     /**
      * Setter for property {@code bankData}.
      *
-     * @param bankData bank internal data.
+     * @param value Bank internal data.
      */
-    public void setBankData( final Bankleitzahl bankData )
+    public void setBankData( final Bankleitzahl value )
     {
-        this.bankData = bankData;
+        this.bankData = value;
         this.hashCode = NO_HASHCODE;
+    }
+
+    /**
+     * Indicates whether some other object is equal to this one by comparing the values of all properties.
+     *
+     * @param o The reference object with which to compare.
+     *
+     * @return {@code true} if this object is the same as {@code o}; {@code false} otherwise.
+     */
+    public boolean equals( final Object o )
+    {
+        boolean ret = o == this;
+
+        if ( !ret && o instanceof Header )
+        {
+            final Header that = (Header) o;
+            ret = ( this.getAccount() == null
+                    ? that.getAccount() == null : this.getAccount().equals( that.getAccount() ) ) &&
+                  ( this.getBank() == null
+                    ? that.getBank() == null : this.getBank().equals( that.getBank() ) ) &&
+                  ( this.getBankData() == null
+                    ? that.getBankData() == null : this.getBankData().equals( that.getBankData() ) ) &&
+                  ( this.getCurrency() == null
+                    ? that.getCurrency() == null : this.getCurrency().equals( that.getCurrency() ) ) &&
+                  ( this.getCustomer() == null
+                    ? that.getCustomer() == null : this.getCustomer().equals( that.getCustomer() ) ) &&
+                  ( this.getType() == null
+                    ? that.getType() == null : this.getType().equals( that.getType() ) ) &&
+                  ( this.getReference() == null
+                    ? that.getReference() == null : this.getReference().equals( that.getReference() ) ) &&
+                  ( this.getCreateDate() == null
+                    ? that.getCreateDate() == null : this.getCreateDate().equals( that.getCreateDate() ) ) &&
+                  ( this.getExecutionDate() == null
+                    ? that.getExecutionDate() == null : this.getExecutionDate().equals( that.getExecutionDate() ) );
+
+        }
+
+        return ret;
+    }
+
+    /**
+     * Returns a hash code value for this object.
+     *
+     * @return A hash code value for this object.
+     */
+    public int hashCode()
+    {
+        if ( this.hashCode == NO_HASHCODE )
+        {
+            int hc = 23;
+            hc = 37 * hc + ( this.account == null ? 0 : this.account.hashCode() );
+            hc = 37 * hc + ( this.bank == null ? 0 : this.bank.hashCode() );
+            hc = 37 * hc + ( this.bankData == null ? 0 : this.bankData.hashCode() );
+            hc = 37 * hc + ( this.currency == null ? 0 : this.currency.hashCode() );
+            hc = 37 * hc + ( this.customer == null ? 0 : this.customer.hashCode() );
+            hc = 37 * hc + ( this.type == null ? 0 : this.type.hashCode() );
+            hc = 37 * hc + ( this.reference == null ? 0 : this.reference.hashCode() );
+            hc = 37 * hc + ( this.createDate == null ? 0 : this.createDate.hashCode() );
+            hc = 37 * hc + ( this.executionDate == null ? 0 : this.executionDate.hashCode() );
+            this.hashCode = hc;
+        }
+
+        return this.hashCode;
+    }
+
+    /**
+     * Creates and returns a copy of this object.
+     *
+     * @return A clone of this instance.
+     */
+    public Object clone()
+    {
+        try
+        {
+            final Object o = super.clone();
+            if ( this.createDate != null )
+            {
+                ( (Header) o ).createDate = (Date) this.createDate.clone();
+            }
+            if ( this.executionDate != null )
+            {
+                ( (Header) o ).executionDate = (Date) this.executionDate.clone();
+            }
+
+            return o;
+        }
+        catch ( final CloneNotSupportedException e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    public String toString()
+    {
+        return super.toString() + this.internalString();
     }
 
     /**
      * Creates a string representing the properties of the instance.
      *
-     * @return a string representing the properties of the instance.
+     * @return A string representing the properties of the instance.
      */
     private String internalString()
     {
@@ -378,148 +466,4 @@ public class Header implements Cloneable, Serializable
 
     }
 
-    //------------------------------------------------------------------Header--
-    //--Object------------------------------------------------------------------
-
-    /**
-     * Indicates whether some other object is equal to this one by comparing
-     * the values of all properties.
-     *
-     * @param o the reference object with which to compare.
-     *
-     * @return {@code true} if this object is the same as {@code o};
-     * {@code false} otherwise.
-     */
-    public boolean equals( final Object o )
-    {
-        boolean ret = o == this;
-
-        if ( !ret && o instanceof Header )
-        {
-            final Header h = (Header) o;
-            ret =
-                ( this.getAccount() == null
-                ? h.getAccount() == null
-                : this.getAccount().equals( h.getAccount() ) ) &&
-                ( this.getBank() == null
-                ? h.getBank() == null
-                : this.getBank().equals( h.getBank() ) ) &&
-                ( this.getBankData() == null
-                ? h.getBankData() == null
-                : this.getBankData().equals( h.getBankData() ) ) &&
-                ( this.getCurrency() == null
-                ? h.getCurrency() == null
-                : this.getCurrency().equals( h.getCurrency() ) ) &&
-                ( this.getCustomer() == null
-                ? h.getCustomer() == null
-                : this.getCustomer().equals( h.getCustomer() ) ) &&
-                ( this.getType() == null
-                ? h.getType() == null
-                : this.getType().equals( h.getType() ) ) &&
-                ( this.getReference() == null
-                ? h.getReference() == null
-                : this.getReference().equals( h.getReference() ) ) &&
-                ( this.getCreateDate() == null
-                ? h.getCreateDate() == null
-                : this.getCreateDate().equals( h.getCreateDate() ) ) &&
-                ( this.getExecutionDate() == null
-                ? h.getExecutionDate() == null
-                : this.getExecutionDate().equals( h.getExecutionDate() ) );
-
-        }
-
-        return ret;
-    }
-
-    /**
-     * Returns a hash code value for this object.
-     *
-     * @return a hash code value for this object.
-     */
-    public int hashCode()
-    {
-        if ( this.hashCode == NO_HASHCODE )
-        {
-            int hc = 23;
-
-            hc = 37 * hc + ( this.account == null
-                ? 0
-                : this.account.hashCode() );
-
-            hc = 37 * hc + ( this.bank == null
-                ? 0
-                : this.bank.hashCode() );
-
-            hc = 37 * hc + ( this.bankData == null
-                ? 0
-                : this.bankData.hashCode() );
-
-            hc = 37 * hc + ( this.currency == null
-                ? 0
-                : this.currency.hashCode() );
-
-            hc = 37 * hc + ( this.customer == null
-                ? 0
-                : this.customer.hashCode() );
-
-            hc = 37 * hc + ( this.type == null
-                ? 0
-                : this.type.hashCode() );
-            hc = 37 * hc + ( this.reference == null
-                ? 0
-                : this.reference.hashCode() );
-
-            hc = 37 * hc + ( this.createDate == null
-                ? 0
-                : this.createDate.hashCode() );
-
-            hc = 37 * hc + ( this.executionDate == null
-                ? 0
-                : this.executionDate.hashCode() );
-
-            this.hashCode = hc;
-        }
-
-        return this.hashCode;
-    }
-
-    /**
-     * Creates and returns a copy of this object.
-     *
-     * @return a clone of this instance.
-     */
-    public Object clone()
-    {
-        try
-        {
-            final Object o = super.clone();
-            if ( this.createDate != null )
-            {
-                ( (Header) o ).createDate = (Date) this.createDate.clone();
-            }
-            if ( this.executionDate != null )
-            {
-                ( (Header) o ).executionDate =
-                    (Date) this.executionDate.clone();
-            }
-
-            return o;
-        }
-        catch ( CloneNotSupportedException e )
-        {
-            throw new AssertionError( e );
-        }
-    }
-
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return a string representation of the object.
-     */
-    public String toString()
-    {
-        return super.toString() + this.internalString();
-    }
-
-    //------------------------------------------------------------------Object--
 }

@@ -43,7 +43,6 @@ import org.jdtaus.banking.dtaus.LogicalFileType;
  */
 public class HeaderTest extends TestCase
 {
-    //--HeaderTest--------------------------------------------------------------
 
     public static Header getIllegalHeader()
     {
@@ -53,20 +52,14 @@ public class HeaderTest extends TestCase
     public static Header getLegalHeader() throws ParseException
     {
         final Header legal = new Header();
-
         legal.setAccount( Kontonummer.valueOf( new Long( 1111111111L ) ) );
         legal.setBank( Bankleitzahl.valueOf( new Integer( 11111111 ) ) );
         legal.setBankData( Bankleitzahl.valueOf( new Integer( 11111111 ) ) );
         legal.setCurrency( Currency.getInstance( "EUR" ) );
-        legal.setCustomer(
-            AlphaNumericText27.parse( "TEST                       " ) );
-
-        legal.setReference(
-            Referenznummer10.valueOf( new Long( 2222222222L ) ) );
-
+        legal.setCustomer( AlphaNumericText27.parse( "TEST                       " ) );
+        legal.setReference( Referenznummer10.valueOf( new Long( 2222222222L ) ) );
         legal.setCreateDate( new Date() );
         legal.setType( LogicalFileType.LB );
-
         return legal;
     }
 
@@ -91,9 +84,7 @@ public class HeaderTest extends TestCase
         h1.setBank( Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
         h1.setBankData( Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
         h1.setCurrency( Currency.getInstance( "EUR" ) );
-        h1.setCustomer(
-            AlphaNumericText27.parse( "TEST 1                     " ) );
-
+        h1.setCustomer( AlphaNumericText27.parse( "TEST 1                     " ) );
         h1.setReference( Referenznummer10.valueOf( new Integer( 123 ) ) );
         h1.setCreateDate( createDate );
         h1.setExecutionDate( executionDate );
@@ -102,9 +93,7 @@ public class HeaderTest extends TestCase
         h2.setBank( Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
         h2.setBankData( Bankleitzahl.valueOf( new Integer( 45050001 ) ) );
         h2.setCurrency( Currency.getInstance( "EUR" ) );
-        h2.setCustomer(
-            AlphaNumericText27.parse( "TEST 1                     " ) );
-
+        h2.setCustomer( AlphaNumericText27.parse( "TEST 1                     " ) );
         h2.setReference( Referenznummer10.valueOf( new Integer( 123 ) ) );
         h2.setCreateDate( createDate );
         h2.setExecutionDate( executionDate );
@@ -122,18 +111,10 @@ public class HeaderTest extends TestCase
         Assert.assertFalse( h1.equals( HeaderTest.getLegalHeader() ) );
         Assert.assertFalse( h2.equals( HeaderTest.getIllegalHeader() ) );
         Assert.assertFalse( h2.equals( HeaderTest.getLegalHeader() ) );
-        Assert.assertFalse(
-            h1.hashCode() == HeaderTest.getIllegalHeader().hashCode() );
-
-        Assert.assertFalse(
-            h1.hashCode() == HeaderTest.getLegalHeader().hashCode() );
-
-        Assert.assertFalse(
-            h2.hashCode() == HeaderTest.getIllegalHeader().hashCode() );
-
-        Assert.assertFalse(
-            h2.hashCode() == HeaderTest.getLegalHeader().hashCode() );
-
+        Assert.assertFalse( h1.hashCode() == HeaderTest.getIllegalHeader().hashCode() );
+        Assert.assertFalse( h1.hashCode() == HeaderTest.getLegalHeader().hashCode() );
+        Assert.assertFalse( h2.hashCode() == HeaderTest.getIllegalHeader().hashCode() );
+        Assert.assertFalse( h2.hashCode() == HeaderTest.getLegalHeader().hashCode() );
         Assert.assertFalse( h1 == h1.clone() );
         Assert.assertFalse( h2 == h2.clone() );
 
@@ -199,14 +180,10 @@ public class HeaderTest extends TestCase
 
     public void testSerializable() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream(
-            this.getClass().getResourceAsStream( "Header.ser" ) );
-
+        final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream( "Header.ser" ) );
         final Header h = (Header) in.readObject();
         in.close();
-
         System.out.println( h );
     }
 
-    //--------------------------------------------------------------HeaderTest--
 }

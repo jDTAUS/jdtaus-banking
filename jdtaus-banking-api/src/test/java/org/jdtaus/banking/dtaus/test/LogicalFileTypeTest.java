@@ -39,9 +39,7 @@ public class LogicalFileTypeTest
 
     public void testSearchLogicalFileTypes() throws Exception
     {
-        final LogicalFileType[] types =
-            LogicalFileType.searchLogicalFileTypes( null, null, null, null );
-
+        final LogicalFileType[] types = LogicalFileType.searchLogicalFileTypes( null, null, null, null );
         Assert.assertNotNull( types );
 
         final List l = Arrays.asList( types );
@@ -53,12 +51,11 @@ public class LogicalFileTypeTest
 
     public void testSerializable() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream(
-            this.getClass().getResourceAsStream( "LogicalFileType.ser" ) );
+        final ObjectInputStream in =
+            new ObjectInputStream( this.getClass().getResourceAsStream( "LogicalFileType.ser" ) );
 
         final LogicalFileType l = (LogicalFileType) in.readObject();
         in.close();
-
         System.out.println( l );
         Assert.assertEquals( LogicalFileType.GK, l );
     }

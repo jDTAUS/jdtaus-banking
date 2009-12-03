@@ -32,12 +32,11 @@ import java.io.IOException;
  */
 public interface PhysicalFile
 {
-    //--PhysicalFile------------------------------------------------------------
 
     /**
      * Gets the number of logical files stored in the physical file.
      *
-     * @return number of logical files stored in the physical file.
+     * @return The number of logical files stored in the physical file.
      *
      * @throws IOException if reading fails.
      *
@@ -48,7 +47,7 @@ public interface PhysicalFile
     /**
      * Gets the number of logical files stored in the physical file.
      *
-     * @return number of logical files stored in the physical file.
+     * @return Number of logical files stored in the physical file.
      *
      * @throws IOException if reading fails.
      */
@@ -57,9 +56,9 @@ public interface PhysicalFile
     /**
      * Adds a logical file to the physical file.
      *
-     * @param header the A record of the new logical file.
+     * @param header The A record of the new logical file.
      *
-     * @return the added logical file.
+     * @return The added logical file.
      *
      * @throws NullPointerException if {@code header} is {@code null}.
      * @throws IllegalHeaderException if {@code header} holds illegal values.
@@ -72,9 +71,9 @@ public interface PhysicalFile
     /**
      * Adds a logical file to the physical file.
      *
-     * @param header the A record of the new logical file.
+     * @param header The A record of the new logical file.
      *
-     * @return the added logical file.
+     * @return The added logical file.
      *
      * @throws NullPointerException if {@code header} is {@code null}.
      * @throws IllegalHeaderException if {@code header} holds illegal values.
@@ -85,12 +84,11 @@ public interface PhysicalFile
     /**
      * Gets a logical file for an index.
      *
-     * @param index the index of the logical file to return.
+     * @param index The index of the logical file to return.
      *
-     * @return the logical file at {@code index}.
+     * @return The logical file at {@code index}.
      *
-     * @throws IndexOutOfBoundsException if {@code index} is either negative,
-     * or greater or equal to {@code count()}.
+     * @throws IndexOutOfBoundsException if {@code index} is either negative, or greater or equal to {@code count()}.
      * @throws IOException if reading fails.
      *
      * @deprecated This method got renamed to {@link #getLogicalFile(int)}.
@@ -100,12 +98,11 @@ public interface PhysicalFile
     /**
      * Gets a logical file for an index.
      *
-     * @param index the index of the logical file to return.
+     * @param index The index of the logical file to return.
      *
-     * @return the logical file at {@code index}.
+     * @return The logical file at {@code index}.
      *
-     * @throws IndexOutOfBoundsException if {@code index} is either negative,
-     * or greater or equal to {@code count()}.
+     * @throws IndexOutOfBoundsException if {@code index} is either negative, or greater or equal to {@code count()}.
      * @throws IOException if reading fails.
      */
     LogicalFile getLogicalFile( int index ) throws IOException;
@@ -113,10 +110,9 @@ public interface PhysicalFile
     /**
      * Removes a logical file from the physical file.
      *
-     * @param index the index of the logical file to remove.
+     * @param index The index of the logical file to remove.
      *
-     * @throws IndexOutOfBoundsException if {@code index} is either negative,
-     * or greater or equal to {@code count()}.
+     * @throws IndexOutOfBoundsException if {@code index} is either negative, or greater or equal to {@code count()}.
      * @throws IOException if reading or writing fails.
      *
      * @deprecated This method got renamed to {@link #removeLogicalFile(int)}.
@@ -126,10 +122,9 @@ public interface PhysicalFile
     /**
      * Removes a logical file from the physical file.
      *
-     * @param index the index of the logical file to remove.
+     * @param index The index of the logical file to remove.
      *
-     * @throws IndexOutOfBoundsException if {@code index} is either negative,
-     * or greater or equal to {@code count()}.
+     * @throws IndexOutOfBoundsException if {@code index} is either negative, or greater or equal to {@code count()}.
      * @throws IOException if reading or writing fails.
      */
     void removeLogicalFile( int index ) throws IOException;
@@ -137,16 +132,13 @@ public interface PhysicalFile
     /**
      * Commits any pending changes.
      * <p><b>Note:</b><br/>
-     * This method should be called once after finishing work with an instance.
-     * Implementations may close any open files when calling this method so that
-     * no more operations will be possible after the method returns. Therefore
-     * state of an instance is undefined after calling this method. Also note
-     * that not calling this method may lead to leaking open file descriptors in
-     * the system.</p>
+     * This method should be called once after finishing work with an instance. Implementations may close any open files
+     * when calling this method so that no more operations will be possible after the method returns. Therefore state of
+     * an instance is undefined after calling this method. Also note that not calling this method may lead to leaking
+     * open file descriptors in the system.</p>
      *
      * @throws IOException if reading or writing fails.
      */
     void commit() throws IOException;
 
-    //------------------------------------------------------------PhysicalFile--
 }

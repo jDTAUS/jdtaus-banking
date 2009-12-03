@@ -32,12 +32,11 @@ import java.io.IOException;
  */
 public interface LogicalFile
 {
-    //--LogicalFile-------------------------------------------------------------
 
     /**
      * Gets the A record of the logical file.
      *
-     * @return the A record of the logical file.
+     * @return The A record of the logical file.
      *
      * @throws IOException if reading fails.
      */
@@ -46,9 +45,9 @@ public interface LogicalFile
     /**
      * Updates the A record of the logical file.
      *
-     * @param header new A record for the logical file.
+     * @param header New A record for the logical file.
      *
-     * @return the previous A record of the logical file.
+     * @return The previous A record of the logical file.
      *
      * @throws NullPointerException if {@code header} is {@code null}.
      * @throws IllegalHeaderException if {@code header} holds illegal values.
@@ -59,7 +58,7 @@ public interface LogicalFile
     /**
      * Gets the E record of the logical file.
      *
-     * @return the E record of the logical file.
+     * @return The E record of the logical file.
      *
      * @throws IOException if reading fails.
      */
@@ -68,17 +67,14 @@ public interface LogicalFile
     /**
      * Adds a C record to the logical file.
      *
-     * @param transaction the transaction to add to the logical file.
+     * @param transaction The transaction to add to the logical file.
      *
-     * @throws IndexOutOfBoundsException if no more transactions can be added
-     * to the logical file.
+     * @throws IndexOutOfBoundsException if no more transactions can be added to the logical file.
      * @throws NullPointerException if {@code transaction} is {@code null}.
-     * @throws IllegalTransactionException if {@code transaction} holds
-     * illegal values.
+     * @throws IllegalTransactionException if {@code transaction} holds illegal values.
      * @throws IOException if writing fails.
      *
-     * @deprecated This method got replaced by
-     * {@link #addTransaction(Transaction)} which is capable of returning the
+     * @deprecated This method got replaced by {@link #addTransaction(Transaction)} which is capable of returning the
      * index of the transaction in the file.
      */
      void createTransaction( Transaction transaction ) throws IOException;
@@ -86,15 +82,13 @@ public interface LogicalFile
     /**
      * Adds a C record to the logical file.
      *
-     * @param transaction the transaction to add to the logical file.
+     * @param transaction The transaction to add to the logical file.
      *
-     * @return the index of the transaction in the logical file.
+     * @return The index of the transaction in the logical file.
      *
-     * @throws IndexOutOfBoundsException if no more transactions can be added
-     * to the logical file.
+     * @throws IndexOutOfBoundsException if no more transactions can be added to the logical file.
      * @throws NullPointerException if {@code transaction} is {@code null}.
-     * @throws IllegalTransactionException if {@code transaction} holds
-     * illegal values.
+     * @throws IllegalTransactionException if {@code transaction} holds illegal values.
      * @throws IOException if writing fails.
      */
     int addTransaction( Transaction transaction ) throws IOException;
@@ -102,13 +96,12 @@ public interface LogicalFile
     /**
      * Gets a C record for an index.
      *
-     * @param index the index of the transaction to return.
+     * @param index The index of the transaction to return.
      *
-     * @return the C record at {@code index}.
+     * @return The C record at {@code index}.
      *
-     * @throws IndexOutOfBoundsException if the logical file holds transactions
-     * and {@code index} is either negative or greater or equal to the number
-     * of transactions stored in the file.
+     * @throws IndexOutOfBoundsException if the logical file holds transactions and {@code index} is either negative or
+     * greater or equal to the number of transactions stored in the file.
      * @throws IOException if reading fails.
      */
     Transaction getTransaction( int index ) throws IOException;
@@ -116,36 +109,30 @@ public interface LogicalFile
     /**
      * Updates a C record at a given index.
      *
-     * @param index the index of the transaction to update.
-     * @param transaction the transaction to overwrite the transaction at
-     * {@code index} with.
+     * @param index The index of the transaction to update.
+     * @param transaction The transaction to overwrite the transaction at {@code index} with.
      *
-     * @return the transaction previously stored at {@code index}.
+     * @return The transaction previously stored at {@code index}.
      *
-     * @throws IndexOutOfBoundsException if the logical file holds transactions
-     * and {@code index} is either negative or greater or equal to the number
-     * of transactions stored in the file.
+     * @throws IndexOutOfBoundsException if the logical file holds transactions and {@code index} is either negative or
+     * greater or equal to the number of transactions stored in the file.
      * @throws NullPointerException if {@code transaction} is {@code null}.
-     * @throws IllegalTransactionException if {@code transaction} holds illegal
-     * values.
+     * @throws IllegalTransactionException if {@code transaction} holds illegal values.
      * @throws IOException if reading or writing fails.
      */
-    Transaction setTransaction( int index, Transaction transaction )
-        throws IOException;
+    Transaction setTransaction( int index, Transaction transaction ) throws IOException;
 
     /**
      * Removes a C record at a given index.
      *
-     * @param index the index of the transaction to remove.
+     * @param index The index of the transaction to remove.
      *
-     * @return the removed transaction.
+     * @return The removed transaction.
      *
-     * @throws IndexOutOfBoundsException if the logical file holds transactions
-     * and {@code index} is either negative or greater or equal to the number
-     * of transactions stored in the file.
+     * @throws IndexOutOfBoundsException if the logical file holds transactions and {@code index} is either negative or
+     * greater or equal to the number of transactions stored in the file.
      * @throws IOException if reading or writing fails.
      */
     Transaction removeTransaction( int index ) throws IOException;
 
-    //-------------------------------------------------------------LogicalFile--
 }

@@ -33,12 +33,10 @@ import java.util.Map;
 
 /**
  * Unique identifier to a particular office (branch) of a german bank.
- * <p>A Bankleitzahl (BLZ) is a positive integer with a maximum of eight
- * digits. For further information see the
+ * <p>A Bankleitzahl (BLZ) is a positive integer with a maximum of eight digits. For further information see the
  * <a href="../../../doc-files/Bankleitzahlen%20Richtlinie%20-%20Stand%208.%20September%202008.pdf">
- * Bankleitzahlen Richtlinie</a>. An updated version of the document may be
- * found at <a href="http://www.bundesbank.de/index.en.php">
- * Deutsche Bundesbank</a>.</p>
+ * Bankleitzahlen Richtlinie</a>. An updated version of the document may be found at
+ * <a href="http://www.bundesbank.de/index.en.php">Deutsche Bundesbank</a>.</p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
@@ -47,21 +45,18 @@ import java.util.Map;
  */
 public final class Bankleitzahl extends Number implements Comparable
 {
-    //--Constants---------------------------------------------------------------
 
     /**
      * Constant for the electronic format of a Bankleitzahl.
-     * <p>The electronic format of a Bankleitzahl is an eigth digit number with
-     * leading zeros omitted (e.g. 5678).</p>
+     * <p>The electronic format of a Bankleitzahl is an eigth digit number with leading zeros omitted (e.g. 5678).</p>
      */
     public static final int ELECTRONIC_FORMAT = 3001;
 
     /**
      * Constant for the letter format of a Bankleitzahl.
-     * <p>The letter format of a Bankleitzahl is an eigth digit number with
-     * leading zeros omitted separated by spaces between the first three digits
-     * and the second three digits, and between the second three digits and the
-     * last two digits (e.g. 123 456 78).</p>
+     * <p>The letter format of a Bankleitzahl is an eigth digit number with leading zeros omitted separated by spaces
+     * between the first three digits and the second three digits, and between the second three digits and the last two
+     * digits (e.g. 123 456 78).</p>
      */
     public static final int LETTER_FORMAT = 3002;
 
@@ -71,7 +66,7 @@ public final class Bankleitzahl extends Number implements Comparable
     /** Maximum number of characters of a Bankleitzahl. */
     public static final int MAX_CHARACTERS = 10;
 
-    /** {@code 10^0..10^7} */
+    /** {@code 10^0..10^7}. */
     private static final double[] EXP10 =
     {
         1, 10, 100, 1000, 10000, 100000, 1000000, 10000000
@@ -80,19 +75,46 @@ public final class Bankleitzahl extends Number implements Comparable
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = -3329406998979147668L;
 
-    //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
-
     /** Used to cache instances. */
-    private static Reference cacheReference = new SoftReference( null );
+    private static volatile Reference cacheReference = new SoftReference( null );
+
+    /**
+     * German bank code.
+     * @serial
+     */
+    private int blz;
+
+    /**
+     * Clearing area code of this Bankleitzahl.
+     * @serial
+     */
+    private int clearingArea;
+
+    /**
+     * Locality code of this Bankleitzahl.
+     * @serial
+     */
+    private int localityCode;
+
+    /**
+     * Network code of this Bankleitzahl.
+     * @serial
+     */
+    private int networkCode;
+
+    /**
+     * Institute code of this Bankleitzahl.
+     * @serial
+     */
+    private int instituteCode;
 
     /**
      * Creates a new {@code Bankleitzahl} instance.
      *
      * @param bankCode The integer to create an instance from.
      *
-     * @throws IllegalArgumentException if {@code bankCode} is negative, zero,
-     * greater than 99999999 or its first digit is either zero or nine.
+     * @throws IllegalArgumentException if {@code bankCode} is negative, zero, greater than 99999999 or its first digit
+     * is either zero or nine.
      *
      * @see #checkBankleitzahl(Number)
      */
@@ -110,34 +132,29 @@ public final class Bankleitzahl extends Number implements Comparable
         this.localityCode = (int) Math.floor( lCode / Bankleitzahl.EXP10[5] );
         this.networkCode = digits[4];
         this.instituteCode =
-            (int) Math.floor( ( lCode - digits[7] * Bankleitzahl.EXP10[7] -
-                                digits[6] * Bankleitzahl.EXP10[6] -
-                                digits[5] * Bankleitzahl.EXP10[5] -
-                                digits[4] * Bankleitzahl.EXP10[4] ) );
+            (int) Math.floor( lCode - digits[7] * Bankleitzahl.EXP10[7] -
+                              digits[6] * Bankleitzahl.EXP10[6] -
+                              digits[5] * Bankleitzahl.EXP10[5] -
+                              digits[4] * Bankleitzahl.EXP10[4] );
 
         this.blz = bankCode.intValue();
     }
 
     /**
      * Parses text from a string to produce a {@code Bankleitzahl}.
-     * <p>The method attempts to parse text starting at the index given by
-     * {@code pos}. If parsing succeeds, then the index of {@code pos} is
-     * updated to the index after the last character used (parsing does not
-     * necessarily use all characters up to the end of the string), and the
-     * parsed value is returned. The updated {@code pos} can be used to indicate
-     * the starting point for the next call to this method.</p>
+     * <p>The method attempts to parse text starting at the index given by {@code pos}. If parsing succeeds, then the
+     * index of {@code pos} is updated to the index after the last character used (parsing does not necessarily use all
+     * characters up to the end of the string), and the parsed value is returned. The updated {@code pos} can be used to
+     * indicate the starting point for the next call to this method.</p>
      *
      * @param bankCode A Bankleitzahl in either electronic or letter format.
-     * @param pos A {@code ParsePosition} object with index and error index
-     * information as described above.
+     * @param pos A {@code ParsePosition} object with index and error index information as described above.
      *
      * @return The parsed value, or {@code null} if the parse fails.
      *
-     * @throws NullPointerException if either {@code bankCode} or {@code pos} is
-     * {@code null}.
+     * @throws NullPointerException if either {@code bankCode} or {@code pos} is {@code null}.
      */
-    public static Bankleitzahl parse(
-        final String bankCode, final ParsePosition pos )
+    public static Bankleitzahl parse( final String bankCode, final ParsePosition pos )
     {
         if ( bankCode == null )
         {
@@ -191,8 +208,7 @@ public final class Bankleitzahl extends Number implements Comparable
             }
             else if ( c == ' ' )
             {
-                if ( sawSpace || i == startIndex ||
-                     ( mode == ELECTRONIC_FORMAT && digit != 3 ) )
+                if ( sawSpace || i == startIndex || ( mode == ELECTRONIC_FORMAT && digit != 3 ) )
                 {
                     failed = true;
                 }
@@ -237,8 +253,7 @@ public final class Bankleitzahl extends Number implements Comparable
 
         if ( !failed )
         {
-            final Number num = new DecimalFormat( "########" ).parse(
-                digits.toString(), fmtPos );
+            final Number num = new DecimalFormat( "########" ).parse( digits.toString(), fmtPos );
 
             if ( num != null && fmtPos.getErrorIndex() == -1 )
             {
@@ -274,22 +289,18 @@ public final class Bankleitzahl extends Number implements Comparable
     }
 
     /**
-     * Parses text from the beginning of the given string to produce a
-     * {@code Bankleitzahl}.
-     * <p>Unlike the {@link #parse(String, ParsePosition)} method this method
-     * throws a {@code ParseException} if {@code bankCode} cannot be parsed or
-     * is of invalid length.</p>
+     * Parses text from the beginning of the given string to produce a {@code Bankleitzahl}.
+     * <p>Unlike the {@link #parse(String, ParsePosition)} method this method throws a {@code ParseException} if
+     * {@code bankCode} cannot be parsed or is of invalid length.</p>
      *
      * @param bankCode A Bankleitzahl in either electronic or letter format.
      *
      * @return The parsed value.
      *
      * @throws NullPointerException if {@code bankCode} is {@code null}.
-     * @throws ParseException if the parse fails or {@code bankCode} is of
-     * invalid length.
+     * @throws ParseException if the parse fails or {@code bankCode} is of invalid length.
      */
-    public static Bankleitzahl parse( final String bankCode )
-        throws ParseException
+    public static Bankleitzahl parse( final String bankCode ) throws ParseException
     {
         if ( bankCode == null )
         {
@@ -303,13 +314,9 @@ public final class Bankleitzahl extends Number implements Comparable
             final ParsePosition pos = new ParsePosition( 0 );
             blz = Bankleitzahl.parse( bankCode, pos );
 
-            if ( blz == null || pos.getErrorIndex() != -1 ||
-                 pos.getIndex() < bankCode.length() )
+            if ( blz == null || pos.getErrorIndex() != -1 || pos.getIndex() < bankCode.length() )
             {
-                throw new ParseException( bankCode, pos.getErrorIndex() != -1
-                                                    ? pos.getErrorIndex()
-                                                    : pos.getIndex() );
-
+                throw new ParseException( bankCode, pos.getErrorIndex() != -1 ? pos.getErrorIndex() : pos.getIndex() );
             }
             else
             {
@@ -328,8 +335,8 @@ public final class Bankleitzahl extends Number implements Comparable
      * @return An instance for {@code bankCode}.
      *
      * @throws NullPointerException if {@code bankCode} is {@code null}.
-     * @throws IllegalArgumentException if {@code bankCode} is negative, zero,
-     * greater than 99999999 or its first digit is either zero or nine.
+     * @throws IllegalArgumentException if {@code bankCode} is negative, zero, greater than 99999999 or its first digit
+     * is either zero or nine.
      *
      * @see #checkBankleitzahl(Number)
      */
@@ -353,19 +360,16 @@ public final class Bankleitzahl extends Number implements Comparable
     }
 
     /**
-     * Parses text from the beginning of the given string to produce a
-     * {@code Bankleitzahl}.
-     * <p>Unlike the {@link #parse(String)} method this method
-     * throws an {@code IllegalArgumentException} if {@code bankCode} cannot
-     * be parsed or is of invalid length.</p>
+     * Parses text from the beginning of the given string to produce a {@code Bankleitzahl}.
+     * <p>Unlike the {@link #parse(String)} method this method throws an {@code IllegalArgumentException} if
+     * {@code bankCode} cannot be parsed or is of invalid length.</p>
      *
      * @param bankCode A Bankleitzahl in either electronic or letter format.
      *
      * @return The parsed value.
      *
      * @throws NullPointerException if {@code bankCode} is {@code null}.
-     * @throws IllegalArgumentException if the parse fails or {@code bankCode}
-     * is of invalid length.
+     * @throws IllegalArgumentException if the parse fails or {@code bankCode} is of invalid length.
      */
     public static Bankleitzahl valueOf( final String bankCode )
     {
@@ -373,9 +377,9 @@ public final class Bankleitzahl extends Number implements Comparable
         {
             return Bankleitzahl.parse( bankCode );
         }
-        catch ( ParseException e )
+        catch ( final ParseException e )
         {
-            throw new IllegalArgumentException( bankCode );
+            throw (IllegalArgumentException) new IllegalArgumentException( bankCode ).initCause( e );
         }
     }
 
@@ -384,8 +388,7 @@ public final class Bankleitzahl extends Number implements Comparable
      *
      * @param bankCode The number to check.
      *
-     * @return {@code true} if {@code bankCode} is a valid Bankleitzahl;
-     * {@code false} if not.
+     * @return {@code true} if {@code bankCode} is a valid Bankleitzahl; {@code false} if not.
      */
     public static boolean checkBankleitzahl( final Number bankCode )
     {
@@ -404,9 +407,6 @@ public final class Bankleitzahl extends Number implements Comparable
 
         return valid;
     }
-
-    //------------------------------------------------------------Constructors--
-    //--Number------------------------------------------------------------------
 
     /**
      * Returns this Bankleitzahl as an int value.
@@ -448,46 +448,11 @@ public final class Bankleitzahl extends Number implements Comparable
         return this.blz;
     }
 
-    //------------------------------------------------------------------Number--
-    //--Bankleitzahl------------------------------------------------------------
-
     /**
-     * German bank code.
-     * @serial
-     */
-    private int blz;
-
-    /**
-     * Clearing area code of this Bankleitzahl.
-     * @serial
-     */
-    private int clearingArea;
-
-    /**
-     * Locality code of this Bankleitzahl.
-     * @serial
-     */
-    private int localityCode;
-
-    /**
-     * Network code of this Bankleitzahl.
-     * @serial
-     */
-    private int networkCode;
-
-    /**
-     * Institute code of this Bankleitzahl.
-     * @serial
-     */
-    private int instituteCode;
-
-    /**
-     * Gets a flag indicating that this Bankleitzahl provides a clearing area
-     * code.
+     * Gets a flag indicating that this Bankleitzahl provides a clearing area code.
      *
-     * @return {@code true} if property {@code clearingAreaCode} is supported by
-     * this instance; {@code false} if property {@code clearingAreaCode} is not
-     * supported by this instance.
+     * @return {@code true} if property {@code clearingAreaCode} is supported by this instance; {@code false} if
+     * property {@code clearingAreaCode} is not supported by this instance.
      *
      * @see #getClearingAreaCode()
      */
@@ -511,8 +476,7 @@ public final class Bankleitzahl extends Number implements Comparable
      *
      * @return Code identifying the clearing area of this Bankleitzahl.
      *
-     * @throws UnsupportedOperationException if this Bankleitzahl does not
-     * provide clearing area information.
+     * @throws UnsupportedOperationException if this Bankleitzahl does not provide clearing area information.
      *
      * @see #isClearingAreaCodeSupported()
      *
@@ -538,8 +502,7 @@ public final class Bankleitzahl extends Number implements Comparable
      *
      * @return Code identifying the clearing area of this Bankleitzahl.
      *
-     * @throws UnsupportedOperationException if this Bankleitzahl does not
-     * provide clearing area information.
+     * @throws UnsupportedOperationException if this Bankleitzahl does not provide clearing area information.
      *
      * @see #isClearingAreaCodeSupported()
      */
@@ -556,9 +519,8 @@ public final class Bankleitzahl extends Number implements Comparable
     /**
      * Gets a flag indicating that this Bankleitzahl provides a locality code.
      *
-     * @return {@code true} if property {@code localityCode} is supported by
-     * this instance; {@code false} if property {@code localityCode} is not
-     * supported by this instance.
+     * @return {@code true} if property {@code localityCode} is supported by this instance; {@code false} if property
+     * {@code localityCode} is not supported by this instance.
      *
      * @see #getLocalityCode()
      */
@@ -572,8 +534,7 @@ public final class Bankleitzahl extends Number implements Comparable
      *
      * @return Locality code of this Bankleitzahl.
      *
-     * @throws UnsupportedOperationException if this Bankleitzahl does not
-     * provide a locality code.
+     * @throws UnsupportedOperationException if this Bankleitzahl does not provide a locality code.
      *
      * @see #isLocalityCodeSupported()
      */
@@ -590,9 +551,8 @@ public final class Bankleitzahl extends Number implements Comparable
     /**
      * Gets a flag indicating that this Bankleitzahl provides a network code.
      *
-     * @return {@code true} if property {@code networkCode} is supported by
-     * this instance; {@code false} if property {@code networkCode} is not
-     * supported by this instance.
+     * @return {@code true} if property {@code networkCode} is supported by this instance; {@code false} if property
+     * {@code networkCode} is not supported by this instance.
      *
      * @see #getNetworkCode()
      */
@@ -641,8 +601,7 @@ public final class Bankleitzahl extends Number implements Comparable
      *
      * @return Network code of this Bankleitzahl.
      *
-     * @throws UnsupportedOperationException if this Bankleitzahl does not
-     * provide a network code.
+     * @throws UnsupportedOperationException if this Bankleitzahl does not provide a network code.
      *
      * @see #isNetworkCodeSupported()
      */
@@ -667,34 +626,27 @@ public final class Bankleitzahl extends Number implements Comparable
     }
 
     /**
-     * Formats a Bankleitzahl and appends the resulting text to the given string
-     * buffer.
+     * Formats a Bankleitzahl and appends the resulting text to the given string buffer.
      *
-     * @param style The style to use ({@code ELECTRONIC_FORMAT} or
-     * {@code LETTER_FORMAT}).
-     * @param toAppendTo The buffer to which the formatted text is to be
-     * appended.
+     * @param style The style to use ({@code ELECTRONIC_FORMAT} or {@code LETTER_FORMAT}).
+     * @param toAppendTo The buffer to which the formatted text is to be appended.
      *
      * @return The value passed in as {@code toAppendTo}.
      *
      * @throws NullPointerException if {@code toAppendTo} is {@code null}.
-     * @throws IllegalArgumentException if {@code style} is neither
-     * {@code ELECTRONIC_FORMAT} nor {@code LETTER_FORMAT}.
+     * @throws IllegalArgumentException if {@code style} is neither {@code ELECTRONIC_FORMAT} nor {@code LETTER_FORMAT}.
      *
      * @see #ELECTRONIC_FORMAT
      * @see #LETTER_FORMAT
      */
-    public StringBuffer format( final int style,
-                                final StringBuffer toAppendTo )
+    public StringBuffer format( final int style, final StringBuffer toAppendTo )
     {
         if ( toAppendTo == null )
         {
             throw new NullPointerException( "toAppendTo" );
         }
-        if ( style != Bankleitzahl.ELECTRONIC_FORMAT &&
-             style != Bankleitzahl.LETTER_FORMAT )
+        if ( style != Bankleitzahl.ELECTRONIC_FORMAT && style != Bankleitzahl.LETTER_FORMAT )
         {
-
             throw new IllegalArgumentException( Integer.toString( style ) );
         }
 
@@ -707,8 +659,7 @@ public final class Bankleitzahl extends Number implements Comparable
                 lastDigit++;
             }
 
-            if ( style == Bankleitzahl.LETTER_FORMAT &&
-                 ( lastDigit == 3 || lastDigit == 6 ) )
+            if ( style == Bankleitzahl.LETTER_FORMAT && ( lastDigit == 3 || lastDigit == 6 ) )
             {
                 toAppendTo.append( ' ' );
             }
@@ -720,17 +671,14 @@ public final class Bankleitzahl extends Number implements Comparable
     /**
      * Formats a Bankleitzahl to produce a string. Same as
      * <blockquote>
-     * {@link #format(int, StringBuffer) format<code>(style,
-     *     new StringBuffer()).toString()</code>}
+     * {@link #format(int, StringBuffer) format<code>(style, new StringBuffer()).toString()</code>}
      * </blockquote>
      *
-     * @param style The style to use ({@code ELECTRONIC_FORMAT} or
-     * {@code LETTER_FORMAT}).
+     * @param style The style to use ({@code ELECTRONIC_FORMAT} or {@code LETTER_FORMAT}).
      *
      * @return The formatted string.
      *
-     * @throws IllegalArgumentException if {@code style} is neither
-     * {@code ELECTRONIC_FORMAT} nor {@code LETTER_FORMAT}.
+     * @throws IllegalArgumentException if {@code style} is neither {@code ELECTRONIC_FORMAT} nor {@code LETTER_FORMAT}.
      *
      * @see #ELECTRONIC_FORMAT
      * @see #LETTER_FORMAT
@@ -828,21 +776,16 @@ public final class Bankleitzahl extends Number implements Comparable
         return cache;
     }
 
-    //------------------------------------------------------------Bankleitzahl--
-    //--Comparable--------------------------------------------------------------
-
     /**
-     * Compares this object with the specified object for order. Returns a
-     * negative integer, zero, or a positive integer as this object is less
-     * than, equal to, or greater than the specified object.<p>
+     * Compares this object with the specified object for order. Returns a negative integer, zero, or a positive integer
+     * as this object is less than, equal to, or greater than the specified object.<p>
      *
      * @param o The Object to be compared.
-     * @return A negative integer, zero, or a positive integer as this object
-     * is less than, equal to, or greater than the specified object.
+     * @return A negative integer, zero, or a positive integer as this object is less than, equal to, or greater than
+     * the specified object.
      *
      * @throws NullPointerException if {@code o} is {@code null}.
-     * @throws ClassCastException if the specified object's type prevents it
-     * from being compared to this Object.
+     * @throws ClassCastException if the specified object's type prevents it from being compared to this Object.
      */
     public int compareTo( final Object o )
     {
@@ -868,16 +811,12 @@ public final class Bankleitzahl extends Number implements Comparable
         return result;
     }
 
-    //--------------------------------------------------------------Comparable--
-    //--Object------------------------------------------------------------------
-
     /**
      * Indicates whether some other object is equal to this one.
      *
      * @param o The reference object with which to compare.
      *
-     * @return {@code true} if this object is the same as {@code o};
-     * {@code false} otherwise.
+     * @return {@code true} if this object is the same as {@code o}; {@code false} otherwise.
      */
     public boolean equals( final Object o )
     {
@@ -911,5 +850,4 @@ public final class Bankleitzahl extends Number implements Comparable
         return super.toString() + this.internalString();
     }
 
-    //------------------------------------------------------------------Object--
 }

@@ -36,30 +36,28 @@ import org.jdtaus.core.text.Message;
  */
 public class ExceptionsTest
 {
-    //--Tests-------------------------------------------------------------------
 
     public void testExceptionInstantiation() throws Exception
     {
-        final IllegalTextschluesselException e =
-            new IllegalTextschluesselException()
+        final IllegalTextschluesselException e = new IllegalTextschluesselException()
+        {
+
+            public Message[] getMessages()
             {
+                return new Message[ 0 ];
+            }
 
-                public Message[] getMessages()
-                {
-                    return new Message[ 0 ];
-                }
+            public Message[] getMessages( final String propertyName )
+            {
+                return new Message[ 0 ];
+            }
 
-                public Message[] getMessages( final String propertyName )
-                {
-                    return new Message[ 0 ];
-                }
+            public String[] getPropertyNames()
+            {
+                return new String[ 0 ];
+            }
 
-                public String[] getPropertyNames()
-                {
-                    return new String[ 0 ];
-                }
-
-            };
+        };
 
         System.out.println( e.toString() );
 
@@ -67,10 +65,7 @@ public class ExceptionsTest
         final BankleitzahlInfo info2 = new BankleitzahlInfo();
         info1.setBankCode( Bankleitzahl.valueOf( "88888888" ) );
         info2.setBankCode( Bankleitzahl.valueOf( "88888888" ) );
-        System.out.println( new BankleitzahlExpirationException(
-                            info1, info2 ).toString() );
-
+        System.out.println( new BankleitzahlExpirationException( info1, info2 ).toString() );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

@@ -45,7 +45,6 @@ import org.jdtaus.banking.Kontonummer;
  */
 public class KontonummerTest extends TestCase
 {
-    //--KontonummerTest---------------------------------------------------------
 
     /** Prefix for property names holding valid values. */
     private static final String VALID_PREFIX = "valid.";
@@ -56,7 +55,7 @@ public class KontonummerTest extends TestCase
     /**
      * Gets an array of valid {@code Kontonummer} values.
      *
-     * @return an array of valid {@code Kontonummer} values.
+     * @return An array of valid {@code Kontonummer} values.
      *
      * @throws IOException if reading property resources fails.
      */
@@ -82,7 +81,7 @@ public class KontonummerTest extends TestCase
     /**
      * Gets an array of invalid {@code Kontonummer} values.
      *
-     * @return an array of invalid {@code Kontonummer} values.
+     * @return An array of invalid {@code Kontonummer} values.
      *
      * @throws IOException if reading property resources fails.
      */
@@ -108,14 +107,9 @@ public class KontonummerTest extends TestCase
     private Map getProperties() throws IOException
     {
         final Properties ret = new Properties();
-        ret.load( this.getClass().getResourceAsStream(
-            "KontonummerTest.properties" ) );
-
+        ret.load( this.getClass().getResourceAsStream( "KontonummerTest.properties" ) );
         return ret;
     }
-
-    //---------------------------------------------------------KontonummerTest--
-    //--Tests-------------------------------------------------------------------
 
     public void testObject() throws Exception
     {
@@ -168,9 +162,8 @@ public class KontonummerTest extends TestCase
         for ( Iterator it = sorted.iterator(); it.hasNext(); )
         {
             final Kontonummer kto = (Kontonummer) it.next();
-            System.out.println(
-                kto.format( Kontonummer.ELECTRONIC_FORMAT ) + '\t' +
-                kto.format( Kontonummer.LETTER_FORMAT ) );
+            System.out.println( kto.format( Kontonummer.ELECTRONIC_FORMAT ) + '\t' +
+                                kto.format( Kontonummer.LETTER_FORMAT ) );
 
         }
 
@@ -205,12 +198,8 @@ public class KontonummerTest extends TestCase
         for ( int i = valid.length - 1; i >= 0; i-- )
         {
             final Kontonummer kto = Kontonummer.parse( valid[i] );
-            Assert.assertEquals( kto, Kontonummer.parse(
-                kto.format( Kontonummer.ELECTRONIC_FORMAT ) ) );
-
-            Assert.assertEquals( kto, Kontonummer.parse(
-                kto.format( Kontonummer.LETTER_FORMAT ) ) );
-
+            Assert.assertEquals( kto, Kontonummer.parse( kto.format( Kontonummer.ELECTRONIC_FORMAT ) ) );
+            Assert.assertEquals( kto, Kontonummer.parse( kto.format( Kontonummer.LETTER_FORMAT ) ) );
         }
         for ( int i = invalid.length - 1; i >= 0; i-- )
         {
@@ -219,7 +208,7 @@ public class KontonummerTest extends TestCase
                 Kontonummer.parse( invalid[i] );
                 throw new AssertionError( invalid[i] );
             }
-            catch ( ParseException e )
+            catch ( final ParseException e )
             {
                 System.out.println( e.toString() );
                 Assert.assertNotNull( e.getMessage() );
@@ -229,16 +218,11 @@ public class KontonummerTest extends TestCase
 
     public void testSerializable() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream(
-            this.getClass().getResourceAsStream( "Kontonummer.ser" ) );
-
+        final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream( "Kontonummer.ser" ) );
         final Kontonummer k = (Kontonummer) in.readObject();
         in.close();
-
         System.out.println( k.toString() );
-        Assert.assertEquals( new Long( 1111111111 ),
-                             new Long( k.longValue() ) );
-
+        Assert.assertEquals( new Long( 1111111111 ), new Long( k.longValue() ) );
     }
 
     //-------------------------------------------------------------------Tests--

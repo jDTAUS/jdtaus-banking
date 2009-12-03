@@ -40,19 +40,17 @@ import java.util.Date;
  */
 public interface CurrencyDirectory
 {
-    //--CurrencyDirectory-------------------------------------------------------
 
     /**
      * Gets all DTAUS currencies known to the directory for a given date.
      *
-     * @param date the date to return known currencies for.
+     * @param date The date to return known currencies for.
      *
-     * @return all DTAUS currencies known to the directory at {@code date} or an
-     * empty array if the directory does not hold currencies at {@code date}.
+     * @return All DTAUS currencies known to the directory at {@code date} or an empty array if the directory does not
+     * hold currencies at {@code date}.
      *
      * @throws NullPointerException if {@code date} is {@code null}.
      */
     Currency[] getDtausCurrencies( Date date );
 
-    //-------------------------------------------------------CurrencyDirectory--
 }

@@ -29,9 +29,8 @@ import org.jdtaus.core.container.ImplementationException;
 
 /**
  * Gets thrown for any unexpected defects detected at runtime.
- * <p>Applications should not depend on this exception for theire correctness.
- * It is thrown whenever an unexpected situation is encountered.
- * <i>{@code CorruptedException} should be used only to detect bugs.</i></p>
+ * <p>Applications should not depend on this exception for theire correctness. It is thrown whenever an unexpected
+ * situation is encountered. <i>{@code CorruptedException} should be used only to detect bugs.</i></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
@@ -42,30 +41,23 @@ import org.jdtaus.core.container.ImplementationException;
  */
 public class CorruptedException extends ImplementationException
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 4974992290184417024L;
-
-    //---------------------------------------------------------------Constants--
-    //--CorruptedException------------------------------------------------------
 
     /**
      * Absolute file position at which a {@code CorruptedException} is caused.
      * @serial
      */
-    private long position;
+    private final long position;
 
     /**
-     * Creates a new {@code CorruptedException} taking the absolute position
-     * to the defect.
+     * Creates a new {@code CorruptedException} taking the absolute position to the defect.
      *
-     * @param implementation meta-data describing the implementation causing
-     * the exception to be thrown.
+     * @param implementation meta-data describing the implementation causing the exception to be thrown.
      * @param position absolute position at which the file is defect.
      */
-    public CorruptedException( final Implementation implementation,
-        final long position )
+    public CorruptedException( final Implementation implementation, final long position )
     {
         super( implementation );
         this.position = position;
@@ -74,8 +66,7 @@ public class CorruptedException extends ImplementationException
     /**
      * Gets the absolute file position causing this exception to be thrown.
      *
-     * @return the absolute file position causing this exception to be thrown or
-     * {@code null}.
+     * @return The absolute file position causing this exception to be thrown or {@code null}.
      */
     public long getPosition()
     {
@@ -85,16 +76,13 @@ public class CorruptedException extends ImplementationException
     /**
      * Returns the message of the exception.
      *
-     * @return the message of the exception.
+     * @return The message of the exception.
      */
     public String getMessage()
     {
-        return this.getCorruptedExceptionMessage( this.getLocale(),
-                                                  new Long( this.position ) );
-
+        return this.getCorruptedExceptionMessage( this.getLocale(), new Long( this.position ) );
     }
 
-    //------------------------------------------------------CorruptedException--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies
@@ -126,18 +114,18 @@ public class CorruptedException extends ImplementationException
      * <blockquote><pre>The physical file got corrupted at position {0,number}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param position format argument.
+     * @param pos format argument.
      *
      * @return the text of message <code>corruptedException</code>.
      */
     private String getCorruptedExceptionMessage( final Locale locale,
-            final java.lang.Number position )
+            final java.lang.Number pos )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "corruptedException", locale,
                 new Object[]
                 {
-                    position
+                    pos
                 });
 
     }

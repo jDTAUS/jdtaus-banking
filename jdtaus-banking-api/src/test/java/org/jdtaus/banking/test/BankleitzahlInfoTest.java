@@ -36,12 +36,11 @@ public class BankleitzahlInfoTest
 
     public void testSerializable() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream(
-            this.getClass().getResourceAsStream( "BankleitzahlInfo.ser" ) );
+        final ObjectInputStream in =
+            new ObjectInputStream( this.getClass().getResourceAsStream( "BankleitzahlInfo.ser" ) );
 
         final BankleitzahlInfo b = (BankleitzahlInfo) in.readObject();
         in.close();
-
         System.out.println( b.toString() );
     }
 
