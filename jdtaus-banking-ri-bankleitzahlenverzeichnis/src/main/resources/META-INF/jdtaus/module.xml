@@ -125,7 +125,7 @@
         </container:property>
         <container:property container:name="defaultReloadIntervalMillis"
                             container:type="java.lang.Long"
-                            container:value="500">
+                            container:value="10000">
 
           <container:documentation container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[Default number of milliseconds to pass before providers are checked for modifications.]]>
@@ -165,8 +165,8 @@
         </container:message>
         <container:message container:name="reloadInfo">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Provider's last modification timestamp changed from ''{0,date,long}'' to ''{1,date,long}''. Loading new bankcodes.]]></container:text>
-            <container:text container:language="de"><![CDATA[Änderungszeitstempel des Bankleitzahlen-Providers von ''{0,date,long}'' zu ''{1,date,long}''. Lädt neue Bankleitzahlen.]]></container:text>
+            <container:text container:language="en"><![CDATA[Provider's last modification timestamp changed from ''{0,date} {0,time}'' to ''{1,date} {1,time}''. Loading new bankcodes.]]></container:text>
+            <container:text container:language="de"><![CDATA[Änderungszeitstempel des Bankleitzahlen-Providers von ''{0,date} {0,time}'' zu ''{1,date} {1,time}''. Lädt neue Bankleitzahlen.]]></container:text>
           </container:template>
           <container:arguments>
             <container:argument container:index="0" container:name="lastModification" container:type="date"/>
