@@ -744,8 +744,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
     /**
      * Gets the text of message <code>reloadInfo</code>.
-     * <blockquote><pre>Änderungszeitstempel des Bankleitzahlen-Providers von ''{0,date,long}'' zu ''{1,date,long}''. Lädt neue Bankleitzahlen.</pre></blockquote>
-     * <blockquote><pre>Provider's last modification timestamp changed from ''{0,date,long}'' to ''{1,date,long}''. Loading new bankcodes.</pre></blockquote>
+     * <blockquote><pre>Änderungszeitstempel des Bankleitzahlen-Providers von ''{0,date} {0,time}'' zu ''{1,date} {1,time}''. Lädt neue Bankleitzahlen.</pre></blockquote>
+     * <blockquote><pre>Provider's last modification timestamp changed from ''{0,date} {0,time}'' to ''{1,date} {1,time}''. Loading new bankcodes.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      * @param lastModification format argument.
