@@ -35,17 +35,14 @@ import org.jdtaus.banking.BankleitzahlenVerzeichnis;
  */
 public class BankleitzahlenVerzeichnisTest
 {
-    //--BankleitzahlenVerzeichnisTest-------------------------------------------
 
     /** Implementation to test. */
     private BankleitzahlenVerzeichnis directory;
 
     /**
-     * Gets the {@code BankleitzahlenVerzeichnis} implementation tests are
-     * performed with.
+     * Gets the {@code BankleitzahlenVerzeichnis} implementation tests are performed with.
      *
-     * @return the {@code BankleitzahlenVerzeichnis} implementation tests are
-     * performed with.
+     * @return the {@code BankleitzahlenVerzeichnis} implementation tests are performed with.
      */
     public BankleitzahlenVerzeichnis getBankleitzahlenVerzeichnis()
     {
@@ -53,25 +50,18 @@ public class BankleitzahlenVerzeichnisTest
     }
 
     /**
-     * Sets the {@code BankleitzahlenVerzeichnis} implementation tests are
-     * performed with.
+     * Sets the {@code BankleitzahlenVerzeichnis} implementation tests are performed with.
      *
-     * @param value the {@code BankleitzahlenVerzeichnis} implementation to
-     * perform tests with.
+     * @param value the {@code BankleitzahlenVerzeichnis} implementation to perform tests with.
      */
-    public final void setBankleitzahlenVerzeichnis(
-        final BankleitzahlenVerzeichnis value )
+    public final void setBankleitzahlenVerzeichnis( final BankleitzahlenVerzeichnis value )
     {
         this.directory = value;
     }
 
-    //-------------------------------------------BankleitzahlenVerzeichnisTest--
-    //--Tests-------------------------------------------------------------------
-
     /**
-     * Tests the {@link BankleitzahlenVerzeichnis#getHeadOffice(Bankleitzahl)}
-     * method to handle {@code null} references correctly by throwing a
-     * corresponding {@code NullPointerException}.
+     * Tests the {@link BankleitzahlenVerzeichnis#getHeadOffice(Bankleitzahl)} method to handle {@code null} references
+     * correctly by throwing a corresponding {@code NullPointerException}.
      */
     public void testGetHeadOfficeNull() throws Exception
     {
@@ -91,10 +81,8 @@ public class BankleitzahlenVerzeichnisTest
     }
 
     /**
-     * Tests the
-     * {@link BankleitzahlenVerzeichnis#getBranchOffices(Bankleitzahl)} method
-     * to handle {@code null} references correctly by throwing a corresponding
-     * {@code NullPointerException}.
+     * Tests the {@link BankleitzahlenVerzeichnis#getBranchOffices(Bankleitzahl)} method to handle {@code null}
+     * references correctly by throwing a corresponding {@code NullPointerException}.
      */
     public void testGetBranchOfficesNull() throws Exception
     {
@@ -114,26 +102,20 @@ public class BankleitzahlenVerzeichnisTest
     }
 
     /**
-     * Tests the {@link BankleitzahlenVerzeichnis#getDateOfExpiration()}
-     * method to not return a {@code null} value.
+     * Tests the {@link BankleitzahlenVerzeichnis#getDateOfExpiration()} method to not return a {@code null} value.
      */
     public void testGetDateOfExpirationNull() throws Exception
     {
         assert this.getBankleitzahlenVerzeichnis() != null;
 
-        Assert.assertNotNull( this.getBankleitzahlenVerzeichnis().
-                              getDateOfExpiration() );
-
-        System.out.println( this.getBankleitzahlenVerzeichnis().
-                            getDateOfExpiration() );
-
+        Assert.assertNotNull( this.getBankleitzahlenVerzeichnis().getDateOfExpiration() );
+        System.out.println( this.getBankleitzahlenVerzeichnis().getDateOfExpiration() );
     }
 
     /**
-     * Tests the {@link BankleitzahlenVerzeichnis#getHeadOffice(Bankleitzahl)}
-     * and {@link BankleitzahlenVerzeichnis#getBranchOffices(Bankleitzahl)}
-     * methods to throw a {@code BankleitzahlExpirationException} for the
-     * expired Bankleitzahl 26264884 and 83064538.
+     * Tests the {@link BankleitzahlenVerzeichnis#getHeadOffice(Bankleitzahl)} and
+     * {@link BankleitzahlenVerzeichnis#getBranchOffices(Bankleitzahl)} methods to throw a
+     * {@code BankleitzahlExpirationException} for the expired Bankleitzahl 26264884 and 83064538.
      */
     public void testBankleitzahlExpirationException() throws Exception
     {
@@ -141,9 +123,7 @@ public class BankleitzahlenVerzeichnisTest
 
         try
         {
-            this.getBankleitzahlenVerzeichnis().getHeadOffice(
-                Bankleitzahl.valueOf( "26264884" ) );
-
+            this.getBankleitzahlenVerzeichnis().getHeadOffice( Bankleitzahl.valueOf( "26264884" ) );
             throw new AssertionError();
         }
         catch ( BankleitzahlExpirationException e )
@@ -154,9 +134,7 @@ public class BankleitzahlenVerzeichnisTest
 
         try
         {
-            this.getBankleitzahlenVerzeichnis().getHeadOffice(
-                Bankleitzahl.valueOf( "83064538" ) );
-
+            this.getBankleitzahlenVerzeichnis().getHeadOffice( Bankleitzahl.valueOf( "83064538" ) );
             throw new AssertionError();
         }
         catch ( BankleitzahlExpirationException e )
@@ -167,9 +145,7 @@ public class BankleitzahlenVerzeichnisTest
 
         try
         {
-            this.getBankleitzahlenVerzeichnis().getBranchOffices(
-                Bankleitzahl.valueOf( "26264884" ) );
-
+            this.getBankleitzahlenVerzeichnis().getBranchOffices( Bankleitzahl.valueOf( "26264884" ) );
             throw new AssertionError();
         }
         catch ( BankleitzahlExpirationException e )
@@ -180,9 +156,7 @@ public class BankleitzahlenVerzeichnisTest
 
         try
         {
-            this.getBankleitzahlenVerzeichnis().getBranchOffices(
-                Bankleitzahl.valueOf( "83064538" ) );
-
+            this.getBankleitzahlenVerzeichnis().getBranchOffices( Bankleitzahl.valueOf( "83064538" ) );
             throw new AssertionError();
         }
         catch ( BankleitzahlExpirationException e )
@@ -194,19 +168,12 @@ public class BankleitzahlenVerzeichnisTest
     }
 
     /**
-     * Tests the
-     * {@link BankleitzahlenVerzeichnis#search(String,String,String,boolean)}
-     * method to return sane values.
+     * Tests the {@link BankleitzahlenVerzeichnis#search(String,String,String,boolean)} method to return sane values.
      */
     public void testSearch() throws Exception
     {
         assert this.getBankleitzahlenVerzeichnis() != null;
-
-
-        Assert.assertTrue( this.getBankleitzahlenVerzeichnis().
-                           search( null, null, null, true ).length >= 0 );
-
+        Assert.assertTrue( this.getBankleitzahlenVerzeichnis().search( null, null, null, true ).length >= 0 );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

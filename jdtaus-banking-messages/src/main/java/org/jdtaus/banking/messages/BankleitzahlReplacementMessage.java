@@ -29,21 +29,16 @@ import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
- * Message stating that a Bankleitzahl has been published as a replacement for
- * an expired Bankleitzahl.
+ * Message stating that a Bankleitzahl has been published as a replacement for an expired Bankleitzahl.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
 public final class BankleitzahlReplacementMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.2.x classes. */
     private static final long serialVersionUID = -4309551284229560988L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * Information regarding the replacement Bankleitzahl.
@@ -52,10 +47,9 @@ public final class BankleitzahlReplacementMessage extends Message
     private final BankleitzahlInfo info;
 
     /**
-     * Creates a new {@code BankleitzahlReplacementMessage} taking information
-     * about a replacement Bankleitzahl.
+     * Creates a new {@code BankleitzahlReplacementMessage} taking information about a replacement Bankleitzahl.
      *
-     * @param info information regarding the replacement Bankleitzahl.
+     * @param info Information regarding the replacement Bankleitzahl.
      *
      * @throws NullPointerException if {@code info} is {@code null}.
      */
@@ -79,9 +73,10 @@ public final class BankleitzahlReplacementMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT )
-        };
+        return new Object[]
+            {
+                this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT )
+            };
     }
 
     /**
@@ -95,12 +90,10 @@ public final class BankleitzahlReplacementMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getBankleitzahlReplacementMessage(
-            locale, this.info.getBankCode().format(
-            Bankleitzahl.LETTER_FORMAT ) );
+            locale, this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT ) );
 
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

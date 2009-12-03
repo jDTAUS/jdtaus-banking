@@ -23,7 +23,6 @@
 package org.jdtaus.banking.util.swing;
 
 import java.text.ParseException;
-import java.util.Locale;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.text.AttributeSet;

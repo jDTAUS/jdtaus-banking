@@ -38,17 +38,14 @@ import org.jdtaus.core.io.util.MemoryFileOperations;
  */
 public class PhysicalFileFactoryTest
 {
-    //--PhysicalFileFactoryTest-------------------------------------------------
 
     /** Implementation to test. */
     private PhysicalFileFactory factory;
 
     /**
-     * Gets the {@code PhysicalFileFactory} implementation tests are performed
-     * with.
+     * Gets the {@code PhysicalFileFactory} implementation tests are performed with.
      *
-     * @return the {@code PhysicalFileFactory} implementation tests are
-     * performed with.
+     * @return the {@code PhysicalFileFactory} implementation tests are performed with.
      */
     public PhysicalFileFactory getPhysicalFileFactory()
     {
@@ -56,24 +53,18 @@ public class PhysicalFileFactoryTest
     }
 
     /**
-     * Sets the {@code PhysicalFileFactory} implementation tests are performed
-     * with.
+     * Sets the {@code PhysicalFileFactory} implementation tests are performed with.
      *
-     * @param value the {@code PhysicalFileFactory} implementation to perform
-     * tests with.
+     * @param value the {@code PhysicalFileFactory} implementation to perform tests with.
      */
     public final void setPhysicalFileFactory( final PhysicalFileFactory value )
     {
         this.factory = value;
     }
 
-    //-------------------------------------------------PhysicalFileFactoryTest--
-    //--Tests-------------------------------------------------------------------
-
     /**
-     * Tests the {@link PhysicalFileFactory#createPhysicalFile(FileOperations,int)}
-     * method to handle illegal arguments correctly by throwing a corresponding
-     * {@code NullPointerException} or {@code IllegalArgumentException}.
+     * Tests the {@link PhysicalFileFactory#createPhysicalFile(FileOperations,int)} method to handle illegal arguments
+     * correctly by throwing a corresponding {@code NullPointerException} or {@code IllegalArgumentException}.
      */
     public void testCreateIllegalArguments() throws Exception
     {
@@ -81,9 +72,7 @@ public class PhysicalFileFactoryTest
 
         try
         {
-            this.getPhysicalFileFactory().createPhysicalFile(
-                (FileOperations) null, PhysicalFileFactory.FORMAT_DISK );
-
+            this.getPhysicalFileFactory().createPhysicalFile( (FileOperations) null, PhysicalFileFactory.FORMAT_DISK );
             throw new AssertionError();
         }
         catch ( NullPointerException e )
@@ -94,9 +83,7 @@ public class PhysicalFileFactoryTest
 
         try
         {
-            this.getPhysicalFileFactory().createPhysicalFile(
-                (File) null, PhysicalFileFactory.FORMAT_DISK );
-
+            this.getPhysicalFileFactory().createPhysicalFile( (File) null, PhysicalFileFactory.FORMAT_DISK );
             throw new AssertionError();
         }
         catch ( NullPointerException e )
@@ -107,9 +94,7 @@ public class PhysicalFileFactoryTest
 
         try
         {
-            this.getPhysicalFileFactory().createPhysicalFile(
-                new MemoryFileOperations(), Integer.MIN_VALUE );
-
+            this.getPhysicalFileFactory().createPhysicalFile( new MemoryFileOperations(), Integer.MIN_VALUE );
             throw new AssertionError();
         }
         catch ( IllegalArgumentException e )
@@ -122,9 +107,8 @@ public class PhysicalFileFactoryTest
     }
 
     /**
-     * Tests the {@link PhysicalFileFactory#createPhysicalFile(FileOperations,int)}
-     * method to return a working {@code PhysicalFile} instance for the tape and
-     * disk format.
+     * Tests the {@link PhysicalFileFactory#createPhysicalFile(FileOperations,int)} method to return a working
+     * {@code PhysicalFile} instance for the tape and disk format.
      */
     public void testCreate() throws Exception
     {
@@ -133,11 +117,11 @@ public class PhysicalFileFactoryTest
         final FileOperations diskOps = new MemoryFileOperations();
         final FileOperations tapeOps = new MemoryFileOperations();
 
-        final PhysicalFile diskFile = this.getPhysicalFileFactory().
-            createPhysicalFile( diskOps, PhysicalFileFactory.FORMAT_DISK );
+        final PhysicalFile diskFile =
+            this.getPhysicalFileFactory().createPhysicalFile( diskOps, PhysicalFileFactory.FORMAT_DISK );
 
-        final PhysicalFile tapeFile = this.getPhysicalFileFactory().
-            createPhysicalFile( tapeOps, PhysicalFileFactory.FORMAT_TAPE );
+        final PhysicalFile tapeFile =
+            this.getPhysicalFileFactory().createPhysicalFile( tapeOps, PhysicalFileFactory.FORMAT_TAPE );
 
         Assert.assertNotNull( diskFile );
         Assert.assertNotNull( tapeFile );
@@ -147,8 +131,8 @@ public class PhysicalFileFactoryTest
     }
 
     /**
-     * Test the {@link PhysicalFileFactory#getPhysicalFile(FileOperations)}
-     * method to handle illegal arguments correctly.
+     * Test the {@link PhysicalFileFactory#getPhysicalFile(FileOperations)} method to handle illegal arguments
+     * correctly.
      */
     public void testGetPhysicalFileNull() throws Exception
     {
@@ -156,9 +140,7 @@ public class PhysicalFileFactoryTest
 
         try
         {
-            this.getPhysicalFileFactory().
-                getPhysicalFile( (FileOperations) null );
-
+            this.getPhysicalFileFactory().getPhysicalFile( (FileOperations) null );
             throw new AssertionError();
         }
         catch ( NullPointerException e )
@@ -180,24 +162,20 @@ public class PhysicalFileFactoryTest
     }
 
     /**
-     * Test the {@link PhysicalFileFactory#getPhysicalFile(FileOperations)}
-     * method to return en empty {@code PhysicalFile} for a given
-     * {@code FileOperations} instance of no length.
+     * Test the {@link PhysicalFileFactory#getPhysicalFile(FileOperations)} method to return en empty
+     * {@code PhysicalFile} for a given {@code FileOperations} instance of no length.
      */
     public void testGetPhysicalFileNoLength() throws Exception
     {
         assert this.getPhysicalFileFactory() != null;
 
-        final PhysicalFile pFile = this.getPhysicalFileFactory().
-            getPhysicalFile( new MemoryFileOperations() );
-
+        final PhysicalFile pFile = this.getPhysicalFileFactory().getPhysicalFile( new MemoryFileOperations() );
         Assert.assertNotNull( pFile );
         Assert.assertTrue( pFile.getLogicalFileCount() == 0 );
     }
 
     /**
-     * Test the {@link PhysicalFileFactory#analyse(FileOperations)}
-     * method to handle illegal arguments correctly.
+     * Test the {@link PhysicalFileFactory#analyse(FileOperations)} method to handle illegal arguments correctly.
      */
     public void testAnalyseNull() throws Exception
     {
@@ -227,9 +205,8 @@ public class PhysicalFileFactoryTest
     }
 
     /**
-     * Test the {@link PhysicalFileFactory#analyse(FileOperations)}
-     * method to correctly analyze an empty file by throwing a
-     * {@code PhysicalFileExceptin}.
+     * Test the {@link PhysicalFileFactory#analyse(FileOperations)} method to correctly analyze an empty file by
+     * throwing a {@code PhysicalFileExceptin}.
      */
     public void testAnalyseNoLength() throws Exception
     {
@@ -248,5 +225,4 @@ public class PhysicalFileFactoryTest
 
     }
 
-    //-------------------------------------------------------------------Tests--
 }

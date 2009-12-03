@@ -37,7 +37,6 @@ import org.jdtaus.banking.spi.UnsupportedCurrencyException;
  */
 public class CurrencyMapperTest extends CurrencyDirectoryTest
 {
-    //--CurrencyMapperTest------------------------------------------------------
 
     /** Implementation to test. */
     private CurrencyMapper mapper;
@@ -45,8 +44,7 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
     /**
      * Gets the {@code CurrencyMapper} implementation tests are performed with.
      *
-     * @return the {@code CurrencyMapper} implementation tests are performed
-     * with.
+     * @return the {@code CurrencyMapper} implementation tests are performed with.
      */
     public CurrencyMapper getCurrencyMapper()
     {
@@ -54,11 +52,9 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
     }
 
     /**
-     * Sets the {@code CurrencyMapper} implementation tests are performed
-     * with.
+     * Sets the {@code CurrencyMapper} implementation tests are performed with.
      *
-     * @param value the {@code CurrencyMapper} implementation to perform
-     * tests with.
+     * @param value the {@code CurrencyMapper} implementation to perform tests with.
      */
     public final void setCurrencyMapper( final CurrencyMapper value )
     {
@@ -66,13 +62,9 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
         this.mapper = value;
     }
 
-    //------------------------------------------------------CurrencyMapperTest--
-    //--Tests-------------------------------------------------------------------
-
     /**
-     * Tests the {@link CurrencyMapper#getDtausCode(Currency,Date)} method to
-     * handle illegal arguments correctly and to return the {@code 1} DTAUS code
-     * for the {@code EUR} currency.
+     * Tests the {@link CurrencyMapper#getDtausCode(Currency,Date)} method to handle illegal arguments correctly and to
+     * return the {@code 1} DTAUS code for the {@code EUR} currency.
      */
     public void testGetDtausCode() throws Exception
     {
@@ -91,9 +83,7 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
 
         try
         {
-            this.getCurrencyMapper().getDtausCode(
-                Currency.getInstance( "EUR" ), null );
-
+            this.getCurrencyMapper().getDtausCode( Currency.getInstance( "EUR" ), null );
             throw new AssertionError();
         }
         catch ( NullPointerException e )
@@ -104,9 +94,7 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
 
         try
         {
-            this.getCurrencyMapper().getDtausCode(
-                Currency.getInstance( "DEM" ), new Date() );
-
+            this.getCurrencyMapper().getDtausCode( Currency.getInstance( "DEM" ), new Date() );
             throw new AssertionError();
         }
         catch ( UnsupportedCurrencyException e )
@@ -115,16 +103,12 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
             System.out.println( e.toString() );
         }
 
-        Assert.assertTrue( this.getCurrencyMapper().
-                           getDtausCode( Currency.getInstance( "EUR" ),
-                                         new Date() ) == '1' );
-
+        Assert.assertTrue( this.getCurrencyMapper().getDtausCode( Currency.getInstance( "EUR" ), new Date() ) == '1' );
     }
 
     /**
-     * Tests the {@link CurrencyMapper#getDtausCurrency(char,Date)} method to
-     * handle illegal arguments correctly and to return the {@code EUR}
-     * currency for the {@code 1} DTAUS code.
+     * Tests the {@link CurrencyMapper#getDtausCurrency(char,Date)} method to handle illegal arguments correctly and to
+     * return the {@code EUR} currency for the {@code 1} DTAUS code.
      */
     public void testGetDtausCurrency() throws Exception
     {
@@ -142,11 +126,9 @@ public class CurrencyMapperTest extends CurrencyDirectoryTest
         }
 
 
-        Assert.assertEquals( this.getCurrencyMapper().
-                             getDtausCurrency( '1', new Date() ),
+        Assert.assertEquals( this.getCurrencyMapper().getDtausCurrency( '1', new Date() ),
                              Currency.getInstance( "EUR" ) );
 
     }
 
-    //-------------------------------------------------------------------Tests--
 }

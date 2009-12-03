@@ -36,13 +36,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class BankleitzahlExpirationMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.2.x classes. */
     private static final long serialVersionUID = 972991639355392550L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * Information regarding the expired Bankleitzahl.
@@ -51,10 +47,9 @@ public final class BankleitzahlExpirationMessage extends Message
     private final BankleitzahlInfo info;
 
     /**
-     * Creates a new {@code BankleitzahlExpirationMessage} taking information
-     * about the expired Bankleitzahl.
+     * Creates a new {@code BankleitzahlExpirationMessage} taking information about the expired Bankleitzahl.
      *
-     * @param info information regarding the expired Bankleitzahl.
+     * @param info Information regarding the expired Bankleitzahl.
      *
      * @throws NullPointerException if {@code info} is {@code null}.
      */
@@ -78,9 +73,10 @@ public final class BankleitzahlExpirationMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT )
-        };
+        return new Object[]
+            {
+                this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT )
+            };
     }
 
     /**
@@ -94,12 +90,10 @@ public final class BankleitzahlExpirationMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getBankleitzahlExpirationMessage(
-            locale, this.info.getBankCode().format(
-            Bankleitzahl.LETTER_FORMAT ) );
+            locale, this.info.getBankCode().format( Bankleitzahl.LETTER_FORMAT ) );
 
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

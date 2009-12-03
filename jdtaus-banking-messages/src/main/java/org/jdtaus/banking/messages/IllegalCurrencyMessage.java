@@ -35,13 +35,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalCurrencyMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = -2259517733162759316L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * The ISO currency code of the illegal currency.
@@ -56,14 +52,13 @@ public final class IllegalCurrencyMessage extends Message
     private final Date date;
 
     /**
-     * Creates a new {@code IllegalCurrencyMessage} instance taking the ISO
-     * currency code of the illegal currency at a given date.
+     * Creates a new {@code IllegalCurrencyMessage} instance taking the ISO currency code of the illegal currency at a
+     * given date.
      *
-     * @param currencyCode the ISO currency code of the illegal currency.
-     * @param date the date at which {@code currencyCode} is illegal.
+     * @param currencyCode The ISO currency code of the illegal currency.
+     * @param date The date at which {@code currencyCode} is illegal.
      *
-     * @throws NullPointerException if either {@code currencyCode} or
-     * {@code date} is {@code null}.
+     * @throws NullPointerException if either {@code currencyCode} or {@code date} is {@code null}.
      */
     public IllegalCurrencyMessage( final String currencyCode, final Date date )
     {
@@ -85,8 +80,7 @@ public final class IllegalCurrencyMessage extends Message
     /**
      * {@inheritDoc}
      *
-     * @return The ISO currency code of the illegal currency with corresponding
-     * date.
+     * @return The ISO currency code of the illegal currency with corresponding date.
      * <ul>
      * <li>[0]: ISO currency code.</li>
      * <li>[1]: date.</li>
@@ -94,7 +88,10 @@ public final class IllegalCurrencyMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] { this.currencyCode, this.date };
+        return new Object[]
+            {
+                this.currencyCode, this.date
+            };
     }
 
     /**
@@ -107,12 +104,9 @@ public final class IllegalCurrencyMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getIllegalCurrencyMessage( locale, this.currencyCode,
-                                               this.date );
-
+        return this.getIllegalCurrencyMessage( locale, this.currencyCode, this.date );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -124,21 +118,21 @@ public final class IllegalCurrencyMessage extends Message
      * <blockquote><pre>The currency {0} is illegal at {1,date,long}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param currency format argument.
-     * @param date format argument.
+     * @param cur format argument.
+     * @param dat format argument.
      *
      * @return the text of message <code>illegalCurrency</code>.
      */
     private String getIllegalCurrencyMessage( final Locale locale,
-            final java.lang.String currency,
-            final java.util.Date date )
+            final java.lang.String cur,
+            final java.util.Date dat )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "illegalCurrency", locale,
                 new Object[]
                 {
-                    currency,
-                    date
+                    cur,
+                    dat
                 });
 
     }

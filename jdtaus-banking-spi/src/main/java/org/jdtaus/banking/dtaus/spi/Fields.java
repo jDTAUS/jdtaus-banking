@@ -30,7 +30,6 @@ package org.jdtaus.banking.dtaus.spi;
  */
 public interface Fields
 {
-    //--Fields------------------------------------------------------------------
 
     /** Constant for field 1 of an A record. */
     final int FIELD_A1 = 0xA1;
@@ -299,5 +298,4 @@ public interface Fields
     /** Constant for field 9 of an E record. */
     final int FIELD_E9 = 0xE9;
 
-    //------------------------------------------------------------------Fields--
 }

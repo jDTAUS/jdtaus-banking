@@ -20,31 +20,30 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.ri.currencydir;
+package org.jdtaus.banking.ri.currencydir.test;
 
-import java.io.IOException;
 import java.net.URL;
+import org.jdtaus.banking.ri.currencydir.JaxpCurrencyDirectory;
 
 /**
- * Currency resource provider interface.
+ * Tests the {@link JaxpCurrencyDirectory} implementation to support resources of the
+ * {@code http://jdtaus.org/banking/model} namespace.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- *
- * @see XMLCurrencyDirectory
  */
-public interface CurrenciesProvider
+public class JaxpCurrencyDirectroy_1_2_NoSchemaLocationTest extends AbstractJaxpCurrencyDirectoryTest
 {
-    //--CurrenciesProvider------------------------------------------------------
 
-    /**
-     * Gets URLs to XML documents holding currency instances.
-     *
-     * @return URLs to XML documents holding currency instances.
-     *
-     * @throws IOException if providing the resources fails.
-     */
-    URL[] getResources() throws IOException;
+    protected ClassLoader getClassLoader()
+    {
+        final ResourceLoader cl = new ResourceLoader( this.getClass().getClassLoader() );
+        cl.addResources( "META-INF/jdtaus/currencies.xml", new URL[]
+            {
+                this.getClass().getResource( "currencies-no-schemalocation-1.2.xml" )
+            } );
 
-    //------------------------------------------------------CurrenciesProvider--
+        return cl;
+    }
+
 }

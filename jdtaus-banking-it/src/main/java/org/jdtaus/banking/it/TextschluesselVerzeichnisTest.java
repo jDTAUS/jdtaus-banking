@@ -34,17 +34,14 @@ import org.jdtaus.banking.TextschluesselVerzeichnis;
  */
 public class TextschluesselVerzeichnisTest
 {
-    //--TextschluesselVerzeichnisTest-------------------------------------------
 
     /** Implementation to test. */
     private TextschluesselVerzeichnis directory;
 
     /**
-     * Gets the {@code TextschluesselVerzeichnis} implementation tests are
-     * performed with.
+     * Gets the {@code TextschluesselVerzeichnis} implementation tests are performed with.
      *
-     * @return the {@code TextschluesselVerzeichnis} implementation tests are
-     * performed with.
+     * @return the {@code TextschluesselVerzeichnis} implementation tests are performed with.
      */
     public TextschluesselVerzeichnis getTextschluesselVerzeichnis()
     {
@@ -52,24 +49,18 @@ public class TextschluesselVerzeichnisTest
     }
 
     /**
-     * Sets the {@code TextschluesselVerzeichnis} implementation tests are
-     * performed with.
+     * Sets the {@code TextschluesselVerzeichnis} implementation tests are performed with.
      *
-     * @param value the {@code TextschluesselVerzeichnis} implementation to
-     * perform tests with.
+     * @param value the {@code TextschluesselVerzeichnis} implementation to perform tests with.
      */
-    public final void setTextschluesselVerzeichnis(
-        final TextschluesselVerzeichnis value )
+    public final void setTextschluesselVerzeichnis( final TextschluesselVerzeichnis value )
     {
         this.directory = value;
     }
 
-    //-------------------------------------------TextschluesselVerzeichnisTest--
-    //--Tests-------------------------------------------------------------------
-
     /**
-     * Tests the {@link TextschluesselVerzeichnis#getTextschluessel(int,int)}
-     * method to handle illegal arguments correctly.
+     * Tests the {@link TextschluesselVerzeichnis#getTextschluessel(int,int)} method to handle illegal arguments
+     * correctly.
      */
     public void testGetTextschluessel() throws Exception
     {
@@ -77,9 +68,7 @@ public class TextschluesselVerzeichnisTest
 
         try
         {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( Integer.MIN_VALUE, 0 );
-
+            this.getTextschluesselVerzeichnis().getTextschluessel( Integer.MIN_VALUE, 0 );
             throw new AssertionError();
         }
         catch ( IllegalArgumentException e )
@@ -90,9 +79,7 @@ public class TextschluesselVerzeichnisTest
 
         try
         {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( 0, Integer.MIN_VALUE );
-
+            this.getTextschluesselVerzeichnis().getTextschluessel( 0, Integer.MIN_VALUE );
             throw new AssertionError();
         }
         catch ( IllegalArgumentException e )
@@ -103,62 +90,7 @@ public class TextschluesselVerzeichnisTest
 
         try
         {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( Integer.MAX_VALUE, 0 );
-
-            throw new AssertionError();
-        }
-        catch ( IllegalArgumentException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e.toString() );
-        }
-
-
-        try
-        {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( 0, Integer.MAX_VALUE );
-
-            throw new AssertionError();
-        }
-        catch ( IllegalArgumentException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e.toString() );
-        }
-
-        try
-        {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( Integer.MIN_VALUE, 0, new Date() );
-
-            throw new AssertionError();
-        }
-        catch ( IllegalArgumentException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e.toString() );
-        }
-
-        try
-        {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( 0, Integer.MIN_VALUE, new Date() );
-
-            throw new AssertionError();
-        }
-        catch ( IllegalArgumentException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e.toString() );
-        }
-
-        try
-        {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( Integer.MAX_VALUE, 0, new Date() );
-
+            this.getTextschluesselVerzeichnis().getTextschluessel( Integer.MAX_VALUE, 0 );
             throw new AssertionError();
         }
         catch ( IllegalArgumentException e )
@@ -170,9 +102,7 @@ public class TextschluesselVerzeichnisTest
 
         try
         {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( 0, Integer.MAX_VALUE, new Date() );
-
+            this.getTextschluesselVerzeichnis().getTextschluessel( 0, Integer.MAX_VALUE );
             throw new AssertionError();
         }
         catch ( IllegalArgumentException e )
@@ -183,9 +113,51 @@ public class TextschluesselVerzeichnisTest
 
         try
         {
-            this.getTextschluesselVerzeichnis().
-                getTextschluessel( 0, 0, null );
+            this.getTextschluesselVerzeichnis().getTextschluessel( Integer.MIN_VALUE, 0, new Date() );
+            throw new AssertionError();
+        }
+        catch ( IllegalArgumentException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
 
+        try
+        {
+            this.getTextschluesselVerzeichnis().getTextschluessel( 0, Integer.MIN_VALUE, new Date() );
+            throw new AssertionError();
+        }
+        catch ( IllegalArgumentException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+
+        try
+        {
+            this.getTextschluesselVerzeichnis().getTextschluessel( Integer.MAX_VALUE, 0, new Date() );
+            throw new AssertionError();
+        }
+        catch ( IllegalArgumentException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+
+        try
+        {
+            this.getTextschluesselVerzeichnis().getTextschluessel( 0, Integer.MAX_VALUE, new Date() );
+            throw new AssertionError();
+        }
+        catch ( IllegalArgumentException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+
+        try
+        {
+            this.getTextschluesselVerzeichnis().getTextschluessel( 0, 0, null );
             throw new AssertionError();
         }
         catch ( NullPointerException e )
@@ -196,28 +168,21 @@ public class TextschluesselVerzeichnisTest
     }
 
     /**
-     * Test the {@link TextschluesselVerzeichnis#getTextschluessel()} method
-     * to not throw any exceptions.
+     * Test the {@link TextschluesselVerzeichnis#getTextschluessel()} method to not throw any exceptions.
      */
     public void testGetAllTextschluessel() throws Exception
     {
         assert this.getTextschluesselVerzeichnis() != null;
-
-        Assert.assertNotNull( this.getTextschluesselVerzeichnis().
-            getTextschluessel() );
-
+        Assert.assertNotNull( this.getTextschluesselVerzeichnis().getTextschluessel() );
     }
 
     /**
-     * Tests the {@link TextschluesselVerzeichnis#search(boolean,boolean)}
-     * method to not return {@code null} references.
+     * Tests the {@link TextschluesselVerzeichnis#search(boolean,boolean)} method to not return {@code null} references.
      */
     public void testSearch() throws Exception
     {
         assert this.getTextschluesselVerzeichnis() != null;
-
-        Assert.assertTrue( this.getTextschluesselVerzeichnis().
-            search( false, false ).length >= 0 );
+        Assert.assertTrue( this.getTextschluesselVerzeichnis().search( false, false ).length >= 0 );
 
         try
         {
@@ -231,5 +196,4 @@ public class TextschluesselVerzeichnisTest
         }
     }
 
-    //-------------------------------------------------------------------Tests--
 }

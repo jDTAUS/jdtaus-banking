@@ -24,22 +24,21 @@ package org.jdtaus.banking.ri.currencydir.test;
 
 import java.util.Date;
 import junit.framework.Assert;
-import org.jdtaus.banking.ri.currencydir.XMLCurrency;
+import org.jdtaus.banking.ri.currencydir.JaxpCurrency;
 
 /**
- * Tests the {@link XMLCurrency} implementation.
+ * Tests the {@link JaxpCurrency} implementation.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class XMLCurrencyTest
+public class JaxpCurrencyTest
 {
-    //--Tests-------------------------------------------------------------------
 
     public void testObject() throws Exception
     {
-        XMLCurrency c1 = new XMLCurrency();
-        XMLCurrency c2 = new XMLCurrency();
+        JaxpCurrency c1 = new JaxpCurrency();
+        JaxpCurrency c2 = new JaxpCurrency();
 
         Assert.assertEquals( c1, c2 );
         Assert.assertEquals( c1.hashCode(), c2.hashCode() );
@@ -73,5 +72,4 @@ public class XMLCurrencyTest
         Assert.assertEquals( c1.hashCode(), c2.hashCode() );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

@@ -36,17 +36,14 @@ import org.jdtaus.banking.CurrencyDirectory;
  */
 public class CurrencyDirectoryTest
 {
-    //--CurrencyDirectoryTest---------------------------------------------------
 
     /** Implementation to test. */
     private CurrencyDirectory directory;
 
     /**
-     * Gets the {@code CurrencyDirectory} implementation tests are performed
-     * with.
+     * Gets the {@code CurrencyDirectory} implementation tests are performed with.
      *
-     * @return the {@code CurrencyDirectory} implementation tests are performed
-     * with.
+     * @return the {@code CurrencyDirectory} implementation tests are performed with.
      */
     public CurrencyDirectory getCurrencyDirectory()
     {
@@ -54,11 +51,9 @@ public class CurrencyDirectoryTest
     }
 
     /**
-     * Sets the {@code CurrencyDirectory} implementation tests are performed
-     * with.
+     * Sets the {@code CurrencyDirectory} implementation tests are performed with.
      *
-     * @param value the {@code CurrencyDirectory} implementation to perform
-     * tests with.
+     * @param value the {@code CurrencyDirectory} implementation to perform tests with.
      */
     public final void setCurrencyDirectory( final CurrencyDirectory value )
     {
@@ -66,17 +61,14 @@ public class CurrencyDirectoryTest
     }
 
     /**
-     * Checks a given array of currencies to contain an instance corresponding
-     * to a given ISO code.
+     * Checks a given array of currencies to contain an instance corresponding to a given ISO code.
      *
-     * @param currencies the currencies to check.
+     * @param currencies The currencies to check.
      * @param isoCode ISO code to check existence in {@code currencies} with.
      *
-     * @throws NullPointerException if either {@code currencies} or
-     * {@code isoCode} is {@code null}.
+     * @throws NullPointerException if either {@code currencies} or {@code isoCode} is {@code null}.
      */
-    protected void assertContainsCurrency( final Currency[] currencies,
-                                            final String isoCode )
+    protected void assertContainsCurrency( final Currency[] currencies, final String isoCode )
     {
         if ( currencies == null )
         {
@@ -104,17 +96,14 @@ public class CurrencyDirectoryTest
     }
 
     /**
-     * Checks a given array of currencies to not contain an instance
-     * corresponding to a given ISO code.
+     * Checks a given array of currencies to not contain an instance corresponding to a given ISO code.
      *
-     * @param currencies the currencies to check.
+     * @param currencies The currencies to check.
      * @param isoCode ISO code to check existence in {@code currencies} with.
      *
-     * @throws NullPointerException if either {@code currencies} or
-     * {@code isoCode} is {@code null}.
+     * @throws NullPointerException if either {@code currencies} or {@code isoCode} is {@code null}.
      */
-    protected void assertNotContainsCurrency( final Currency[] currencies,
-                                               final String isoCode )
+    protected void assertNotContainsCurrency( final Currency[] currencies, final String isoCode )
     {
         if ( currencies == null )
         {
@@ -141,13 +130,9 @@ public class CurrencyDirectoryTest
         }
     }
 
-    //---------------------------------------------------CurrencyDirectoryTest--
-    //--Tests-------------------------------------------------------------------
-
     /**
-     * Test the {@link CurrencyDirectory#getDtausCurrencies(Date)} method
-     * to handle illegal arguments correctly by throwing a
-     * {@code NullPointerException}.
+     * Test the {@link CurrencyDirectory#getDtausCurrencies(Date)} method to handle illegal arguments correctly by
+     * throwing a {@code NullPointerException}.
      */
     public void testGetDtausCurrenciesNull()
     {
@@ -165,22 +150,16 @@ public class CurrencyDirectoryTest
         }
     }
 
-    /**
-     * Tests the {@link CurrencyDirectory#getDtausCurrencies(Date)} method to
-     * return sane values.
-     */
+    /** Tests the {@link CurrencyDirectory#getDtausCurrencies(Date)} method to return sane values. */
     public void testGetDtausCurrencies() throws Exception
     {
         assert this.getCurrencyDirectory() != null;
-
-        Assert.assertTrue( this.getCurrencyDirectory().
-                           getDtausCurrencies( new Date() ).length >= 0 );
-
+        Assert.assertTrue( this.getCurrencyDirectory().getDtausCurrencies( new Date() ).length >= 0 );
     }
 
     /**
-     * Tests the {@link CurrencyDirectory#getDtausCurrencies(Date)} method to
-     * return correct values for the EUR and DEM currency for various dates.
+     * Tests the {@link CurrencyDirectory#getDtausCurrencies(Date)} method to return correct values for the EUR and DEM
+     * currency for various dates.
      */
     public void testCurrencyConstraints() throws Exception
     {
@@ -201,25 +180,12 @@ public class CurrencyDirectoryTest
 
         final Date firstDayEUR = cal.getTime();
 
-        this.assertContainsCurrency( this.getCurrencyDirectory().
-                                     getDtausCurrencies( now ), "EUR" );
-
-        this.assertNotContainsCurrency( this.getCurrencyDirectory().
-                                        getDtausCurrencies( now ), "DEM" );
-
-        this.assertNotContainsCurrency( this.getCurrencyDirectory().
-                                        getDtausCurrencies( lastDayDEM ), "EUR" );
-
-        this.assertContainsCurrency( this.getCurrencyDirectory().
-                                     getDtausCurrencies( lastDayDEM ), "DEM" );
-
-        this.assertContainsCurrency( this.getCurrencyDirectory().
-                                     getDtausCurrencies( firstDayEUR ), "EUR" );
-
-        this.assertNotContainsCurrency( this.getCurrencyDirectory().
-                                        getDtausCurrencies( firstDayEUR ), "DEM" );
-
+        this.assertContainsCurrency( this.getCurrencyDirectory().getDtausCurrencies( now ), "EUR" );
+        this.assertNotContainsCurrency( this.getCurrencyDirectory().getDtausCurrencies( now ), "DEM" );
+        this.assertNotContainsCurrency( this.getCurrencyDirectory().getDtausCurrencies( lastDayDEM ), "EUR" );
+        this.assertContainsCurrency( this.getCurrencyDirectory().getDtausCurrencies( lastDayDEM ), "DEM" );
+        this.assertContainsCurrency( this.getCurrencyDirectory().getDtausCurrencies( firstDayEUR ), "EUR" );
+        this.assertNotContainsCurrency( this.getCurrencyDirectory().getDtausCurrencies( firstDayEUR ), "DEM" );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

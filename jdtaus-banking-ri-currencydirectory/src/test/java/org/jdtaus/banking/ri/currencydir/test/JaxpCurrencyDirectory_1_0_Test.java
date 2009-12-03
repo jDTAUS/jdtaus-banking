@@ -23,34 +23,27 @@
 package org.jdtaus.banking.ri.currencydir.test;
 
 import java.net.URL;
-import org.jdtaus.banking.ri.currencydir.XMLCurrencyDirectory;
+import org.jdtaus.banking.ri.currencydir.JaxpCurrencyDirectory;
 
 /**
- * Tests the {@link  XMLCurrencyDirectory} implementation to support resources
- * of the {@code http://jdtaus.org/banking/model} namespace.
+ * Tests the {@link JaxpCurrencyDirectory} implementation to support resources of the
+ * {@code http://jdtaus.org/banking/xml/currencies} namespace.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class XMLCurrencyDirectory_1_1_NoSchemaLocationTest
-    extends AbstractXMLCurrencyDirectoryTest
+public class JaxpCurrencyDirectory_1_0_Test extends AbstractJaxpCurrencyDirectoryTest
 {
 
-    //--AbstractXMLCurrencyDirectoryTest----------------------------------------
     protected ClassLoader getClassLoader()
     {
-        final ResourceLoader cl =
-            new ResourceLoader( this.getClass().getClassLoader() );
-
-        cl.addResources( "META-INF/jdtaus/currencies.xml",
-                         new URL[]
+        final ResourceLoader cl = new ResourceLoader( this.getClass().getClassLoader() );
+        cl.addResources( "META-INF/jdtaus/currencies.xml", new URL[]
             {
-                this.getClass().getResource(
-                "currencies-no-schemalocation-1.1.xml" )
+                this.getClass().getResource( "currencies-1.0.xml" )
             } );
 
         return cl;
     }
 
-    //----------------------------------------AbstractXMLCurrencyDirectoryTest--
 }

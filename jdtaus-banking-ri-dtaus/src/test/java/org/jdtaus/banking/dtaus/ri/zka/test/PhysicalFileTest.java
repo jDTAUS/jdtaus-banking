@@ -36,7 +36,7 @@ import org.jdtaus.core.io.FileOperations;
 import org.jdtaus.core.io.util.MemoryFileOperations;
 
 /**
- * Tests für {@link org.jdtaus.common.dtaus.PhysicalFile}.
+ * Tests für {@link PhysicalFile}.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$

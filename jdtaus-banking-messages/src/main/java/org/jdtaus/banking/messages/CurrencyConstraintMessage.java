@@ -28,21 +28,16 @@ import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
- * Message stating that a currency is in use in combination with a date at which
- * its use is invalid.
+ * Message stating that a currency is in use in combination with a date at which its use is invalid.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
 public final class CurrencyConstraintMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 3569739879822644273L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * The ISO currency code of the currency violating the constraint.
@@ -57,19 +52,15 @@ public final class CurrencyConstraintMessage extends Message
     private final Date date;
 
     /**
-     * Creates a new {@code CurrencyConstraintMessage} taking a currency code
-     * of the currency violating the constraint at a given date.
+     * Creates a new {@code CurrencyConstraintMessage} taking a currency code of the currency violating the constraint
+     * at a given date.
      *
-     * @param currencyCode the ISO currency code of the currency violating the
-     * constraint.
-     * @param date the date at which {@code currencyCode} violates the
-     * constraint.
+     * @param currencyCode The ISO currency code of the currency violating the constraint.
+     * @param date The date at which {@code currencyCode} violates the constraint.
      *
-     * @throws NullPointerException if either {@code currencyCode} or
-     * {@code date} is {@code null}.
+     * @throws NullPointerException if either {@code currencyCode} or {@code date} is {@code null}.
      */
-    public CurrencyConstraintMessage( final String currencyCode,
-                                       final Date date )
+    public CurrencyConstraintMessage( final String currencyCode, final Date date )
     {
         if ( currencyCode == null )
         {
@@ -87,8 +78,7 @@ public final class CurrencyConstraintMessage extends Message
     /**
      * {@inheritDoc}
      *
-     * @return The ISO currency code of the currency violating the constraint
-     * with corresponding date.
+     * @return The ISO currency code of the currency violating the constraint with corresponding date.
      * <ul>
      * <li>[0]: ISO currency code.</li>
      * <li>[1]: date.</li>
@@ -96,7 +86,10 @@ public final class CurrencyConstraintMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] { this.currencyCode, this.date };
+        return new Object[]
+            {
+                this.currencyCode, this.date
+            };
     }
 
     /**
@@ -109,12 +102,9 @@ public final class CurrencyConstraintMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getCurrencyConstraintMessage( locale, this.currencyCode,
-                                                  this.date );
-
+        return this.getCurrencyConstraintMessage( locale, this.currencyCode, this.date );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

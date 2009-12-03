@@ -38,19 +38,19 @@
     <container:text container:language="en"><![CDATA[${project.description}]]></container:text>
   </container:documentation>
   <container:specifications>
-    <container:specification container:identifier="org.jdtaus.banking.ri.txtdirectory.TextschluesselProvider"
+    <container:specification container:identifier="org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselProvider"
                              container:vendor="${project.organization.name}"
                              container:version="${project.version}"
                              container:scope="multiton"
                              container:multiplicity="many">
 
       <container:documentation container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[Textschlüssel resource provider interface.]]></container:text>
+        <container:text container:language="en"><![CDATA[Textschlüssel JAXP resource provider interface.]]></container:text>
       </container:documentation>
     </container:specification>
   </container:specifications>
   <container:implementations>
-    <container:implementation container:identifier="org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis"
+    <container:implementation container:identifier="org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselVerzeichnis"
                               container:name="jDTAUS Banking SPI"
                               container:vendor="${project.organization.name}"
                               container:version="${project.version}"
@@ -61,7 +61,7 @@
       </container:documentation>
       <container:specifications>
         <container:reference container:identifier="org.jdtaus.banking.TextschluesselVerzeichnis"
-                             container:version="1.2"/>
+                             container:version="1.3"/>
       </container:specifications>
       <container:dependencies>
         <container:dependency container:identifier="org.jdtaus.core.logging.spi.Logger"
@@ -72,14 +72,19 @@
           <container:properties>
             <container:property container:name="name"
                                 container:type="java.lang.String"
-                                container:value="org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis"/>
+                                container:value="org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselVerzeichnis"/>
 
           </container:properties>
         </container:dependency>
-        <container:dependency container:identifier="org.jdtaus.banking.ri.txtdirectory.TextschluesselProvider"
+        <container:dependency container:identifier="org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselProvider"
                               container:version="${project.version}"
                               container:name="TextschluesselProvider"
                               container:bound="true" />
+
+        <container:dependency container:identifier="org.jdtaus.core.monitor.spi.TaskMonitor"
+                              container:version="1.3"
+                              container:name="TaskMonitor"
+                              container:bound="true"/>
 
         <container:dependency container:identifier="java.util.Locale"
                               container:version="1.1"
@@ -108,19 +113,20 @@
         <container:reference container:name="unsupportedModelVersion"/>
         <container:reference container:name="parseException"/>
         <container:reference container:name="noSchemaLocation"/>
+        <container:reference container:name="duplicateTextschluessel"/>
       </container:messages>
     </container:implementation>
-    <container:implementation container:identifier="org.jdtaus.banking.ri.txtdirectory.ClasspathTextschluesselProvider"
+    <container:implementation container:identifier="org.jdtaus.banking.ri.txtdirectory.DefaultJaxpTextschluesselProvider"
                               container:name="${project.name}"
                               container:vendor="${project.organization.name}"
                               container:version="${project.version}"
                               container:final="true">
 
       <container:documentation container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[Classpath TextschluesselProvider implementation.]]></container:text>
+        <container:text container:language="en"><![CDATA[Default {@code JaxpTextschluesselProvider} implementation.]]></container:text>
       </container:documentation>
       <container:specifications>
-        <container:reference container:identifier="org.jdtaus.banking.ri.txtdirectory.TextschluesselProvider"/>
+        <container:reference container:identifier="org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselProvider"/>
       </container:specifications>
       <container:properties>
         <container:property container:name="defaultResourceName"
@@ -132,27 +138,6 @@
           </container:documentation>
       </container:property>
       </container:properties>
-    </container:implementation>
-    <container:implementation container:identifier="org.jdtaus.banking.ri.txtdirectory.DuplicateTextschluesselException"
-                              container:name="${project.name}"
-                              container:vendor="${project.organization.name}"
-                              container:version="${project.version}"
-                              container:final="true">
-
-      <container:documentation container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[Gets thrown for duplicate Textschluessel.]]></container:text>
-      </container:documentation>
-      <container:dependencies>
-        <container:dependency container:identifier="java.util.Locale"
-                              container:version="1.1"
-                              container:name="Locale"
-                              container:bound="false"
-                              container:implementationName="default"/>
-
-      </container:dependencies>
-      <container:messages>
-        <container:reference container:name="duplicateTextschluessel"/>
-      </container:messages>
     </container:implementation>
   </container:implementations>
   <container:messages>

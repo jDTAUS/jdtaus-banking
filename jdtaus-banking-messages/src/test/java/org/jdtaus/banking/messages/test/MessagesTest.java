@@ -47,6 +47,9 @@ import org.jdtaus.banking.messages.IllegalFileLengthMessage;
 import org.jdtaus.banking.messages.IllegalScheduleMessage;
 import org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage;
 import org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage;
+import org.jdtaus.banking.messages.SearchesBankleitzahlInfosMessage;
+import org.jdtaus.banking.messages.SearchesCurrenciesMessage;
+import org.jdtaus.banking.messages.SearchesTextschluesselMessage;
 import org.jdtaus.banking.messages.TextschluesselConstraintMessage;
 import org.jdtaus.banking.messages.UnknownBankleitzahlMessage;
 import org.jdtaus.banking.messages.UpdatesBankleitzahlenDateiMessage;
@@ -60,11 +63,9 @@ import org.jdtaus.core.text.Message;
  */
 public class MessagesTest extends TestCase
 {
-    //--Tests-------------------------------------------------------------------
 
     /**
-     * Tests instantiation of each core application message and for non-null
-     * texts for the current default locale.
+     * Tests instantiation of each core application message and for non-null texts for the current default locale.
      */
     public void testMessages() throws Exception
     {
@@ -78,33 +79,23 @@ public class MessagesTest extends TestCase
         this.assertNotNull( new CurrencyConstraintMessage( "DEM", new Date() ) );
         this.assertNotNull( new IllegalAmountMessage( new BigInteger( "10" ) ) );
         this.assertNotNull( new IllegalCurrencyMessage( "DEM", new Date() ) );
-        this.assertNotNull( new IllegalDataMessage(
-                            0xA1, IllegalDataMessage.TYPE_CONSTANT, 0L, "TEST" ) );
-
-        this.assertNotNull( new IllegalDateMessage(
-                            new Date(), new Date(), new Date() ) );
-
+        this.assertNotNull( new IllegalDataMessage( 0xA1, IllegalDataMessage.TYPE_CONSTANT, 0L, "TEST" ) );
+        this.assertNotNull( new IllegalDateMessage( new Date(), new Date(), new Date() ) );
         this.assertNotNull( new IllegalDescriptionCountMessage( 0, 1 ) );
         this.assertNotNull( new IllegalFileLengthMessage( 1, 3 ) );
-        this.assertNotNull( new IllegalScheduleMessage(
-                            new Date(), new Date(), 0 ) );
-
-        this.assertNotNull( new OutdatedBankleitzahlenVerzeichnisMessage(
-                            new Date() ) );
-
-        this.assertNotNull( new TextschluesselConstraintMessage(
-                            LogicalFileType.GB, new Textschluessel() ) );
-
+        this.assertNotNull( new IllegalScheduleMessage( new Date(), new Date(), 0 ) );
+        this.assertNotNull( new OutdatedBankleitzahlenVerzeichnisMessage( new Date() ) );
+        this.assertNotNull( new TextschluesselConstraintMessage( LogicalFileType.GB, new Textschluessel() ) );
         this.assertNotNull( new UpdatesBankleitzahlenDateiMessage() );
         this.assertNotNull( new ReadsBankleitzahlenDateiMessage() );
-        this.assertNotNull( new UnknownBankleitzahlMessage(
-                            Bankleitzahl.valueOf( "88888888" ) ) );
-
+        this.assertNotNull( new UnknownBankleitzahlMessage( Bankleitzahl.valueOf( "88888888" ) ) );
         final BankleitzahlInfo testInfo = new BankleitzahlInfo();
         testInfo.setBankCode( Bankleitzahl.valueOf( "88888888" ) );
-
         this.assertNotNull( new BankleitzahlExpirationMessage( testInfo ) );
         this.assertNotNull( new BankleitzahlReplacementMessage( testInfo ) );
+        this.assertNotNull( new SearchesBankleitzahlInfosMessage() );
+        this.assertNotNull( new SearchesCurrenciesMessage() );
+        this.assertNotNull( new SearchesTextschluesselMessage() );
     }
 
     private void assertNotNull( final Message message )
@@ -113,5 +104,4 @@ public class MessagesTest extends TestCase
         System.out.println( message.getText( Locale.getDefault() ) );
     }
 
-    //-------------------------------------------------------------------Tests--
 }

@@ -34,13 +34,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalFileLengthMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 961185282869701368L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * The length of a file incompatible to {@code blockSize}.
@@ -55,18 +51,16 @@ public final class IllegalFileLengthMessage extends Message
     private final int blockSize;
 
     /**
-     * Creates a new {@code IllegalFileLengthMessage} instance taking the
-     * length of a file incompatible to a given block size.
+     * Creates a new {@code IllegalFileLengthMessage} instance taking the length of a file incompatible to a given block
+     * size.
      *
-     * @param fileLength length of a file incompatible to {@code blockSize}.
-     * @param blockSize length of one block in byte.
+     * @param fileLength Length of a file incompatible to {@code blockSize}.
+     * @param blockSize Length of one block in byte.
      *
-     * @throws IllegalArgumentException if either {@code fileLength} or
-     * {@code blockSize} is negative, or if {@code fileLength % blockSize}
-     * equals {@code 0}.
+     * @throws IllegalArgumentException if either {@code fileLength} or {@code blockSize} is negative, or if
+     * {@code fileLength % blockSize} equals {@code 0}.
      */
-    public IllegalFileLengthMessage( final long fileLength,
-                                      final int blockSize )
+    public IllegalFileLengthMessage( final long fileLength, final int blockSize )
     {
         if ( fileLength < 0 )
         {
@@ -78,9 +72,7 @@ public final class IllegalFileLengthMessage extends Message
         }
         if ( fileLength != 0 && fileLength % blockSize == 0 )
         {
-            throw new IllegalArgumentException(
-                Long.toString( fileLength % blockSize ) );
-
+            throw new IllegalArgumentException( Long.toString( fileLength % blockSize ) );
         }
 
         this.fileLength = fileLength;
@@ -98,9 +90,10 @@ public final class IllegalFileLengthMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            new Long( this.fileLength ), new Integer( this.blockSize )
-        };
+        return new Object[]
+            {
+                new Long( this.fileLength ), new Integer( this.blockSize )
+            };
     }
 
     /**
@@ -113,13 +106,9 @@ public final class IllegalFileLengthMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getIllegalFileLengthMessage( locale,
-                                                 new Long( this.fileLength ),
-                                                 new Long( this.blockSize ) );
-
+        return this.getIllegalFileLengthMessage( locale, new Long( this.fileLength ), new Long( this.blockSize ) );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -131,21 +120,21 @@ public final class IllegalFileLengthMessage extends Message
      * <blockquote><pre>The length of the file ({0, number}) is incompatible to the blocksize {1,number}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param fileLength format argument.
-     * @param blockSize format argument.
+     * @param len format argument.
+     * @param blk format argument.
      *
      * @return the text of message <code>illegalFileLength</code>.
      */
     private String getIllegalFileLengthMessage( final Locale locale,
-            final java.lang.Number fileLength,
-            final java.lang.Number blockSize )
+            final java.lang.Number len,
+            final java.lang.Number blk )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "illegalFileLength", locale,
                 new Object[]
                 {
-                    fileLength,
-                    blockSize
+                    len,
+                    blk
                 });
 
     }

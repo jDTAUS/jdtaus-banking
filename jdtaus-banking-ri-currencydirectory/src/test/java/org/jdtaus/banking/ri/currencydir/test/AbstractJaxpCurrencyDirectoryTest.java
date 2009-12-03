@@ -1,5 +1,5 @@
 /*
- *  jDTAUS Banking RI Textschluesselverzeichnis
+ *  jDTAUS Banking RI CurrencyDirectory
  *  Copyright (c) 2005 Christian Schulte
  *
  *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
@@ -20,42 +20,36 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.ri.txtdirectory.test;
+package org.jdtaus.banking.ri.currencydir.test;
 
-import org.jdtaus.banking.TextschluesselVerzeichnis;
-import org.jdtaus.banking.it.TextschluesselVerzeichnisTest;
-import org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis;
+import org.jdtaus.banking.ri.currencydir.JaxpCurrencyDirectory;
+import org.jdtaus.banking.spi.CurrencyMapper;
+import org.jdtaus.banking.spi.it.CurrencyMapperTest;
 
 /**
- * Base tests for the {@link XMLTextschluesselVerzeichnis} implementation.
+ * Base tests for the {@link JaxpCurrencyDirectory} implementation.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class AbstractXMLTextschluesselVerzeichnisTest
-    extends TextschluesselVerzeichnisTest
+public abstract class AbstractJaxpCurrencyDirectoryTest extends CurrencyMapperTest
 {
-    //--TextschluesselVerzeichnisTest-------------------------------------------
 
     /** The implementation to test. */
-    private TextschluesselVerzeichnis directory;
+    private CurrencyMapper mapper;
 
-    public TextschluesselVerzeichnis getTextschluesselVerzeichnis()
+    public CurrencyMapper getCurrencyMapper()
     {
-        if ( this.directory == null )
+        if ( this.mapper == null )
         {
             Thread.currentThread().setContextClassLoader( this.getClassLoader() );
-            this.directory = new XMLTextschluesselVerzeichnis();
-            this.setTextschluesselVerzeichnis( this.directory );
+            this.mapper = new JaxpCurrencyDirectory();
+            this.setCurrencyMapper( this.mapper );
         }
 
-        return super.getTextschluesselVerzeichnis();
+        return super.getCurrencyMapper();
     }
-
-    //-------------------------------------------TextschluesselVerzeichnisTest--
-    //--AbstractXMLTextschluesselVerzeichnisTest--------------------------------
 
     protected abstract ClassLoader getClassLoader();
 
-    //--------------------------------AbstractXMLTextschluesselVerzeichnisTest--
 }

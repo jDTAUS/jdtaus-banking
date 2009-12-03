@@ -34,7 +34,6 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalDataMessage extends Message
 {
-    //--Constants---------------------------------------------------------------
 
     /** Constant for DTAUS alphabet fields. */
     public static final int TYPE_ALPHA = 1;
@@ -82,18 +81,15 @@ public final class IllegalDataMessage extends Message
     public static final int TYPE_CURRENCY = 14;
 
     /** All type constants. */
-    private static final int[] TYPES = {
-        TYPE_ALPHA, TYPE_NUMERIC, TYPE_ALPHA_NUMERIC, TYPE_PACKET_POSITIVE,
-        TYPE_CONSTANT, TYPE_RESERVED, TYPE_SHORTDATE, TYPE_LONGDATE,
-        TYPE_FILETYPE, TYPE_BANKLEITZAHL, TYPE_KONTONUMMER, TYPE_REFERENZNUMMER,
+    private static final int[] TYPES =
+    {
+        TYPE_ALPHA, TYPE_NUMERIC, TYPE_ALPHA_NUMERIC, TYPE_PACKET_POSITIVE, TYPE_CONSTANT, TYPE_RESERVED,
+        TYPE_SHORTDATE, TYPE_LONGDATE, TYPE_FILETYPE, TYPE_BANKLEITZAHL, TYPE_KONTONUMMER, TYPE_REFERENZNUMMER,
         TYPE_TEXTSCHLUESSEL, TYPE_CURRENCY
     };
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 5634623930947949635L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * Constant of the field holding illegal data.
@@ -120,22 +116,19 @@ public final class IllegalDataMessage extends Message
     private final String invalidData;
 
     /**
-     * Creates a new {@code IllegalDataMessage} instance taking information
-     * about the illegal data.
+     * Creates a new {@code IllegalDataMessage} instance taking information about the illegal data.
      *
      * @param field Constant for the field holding illegal data.
      * @param type Constant for the type of the field.
-     * @param position absolute position of the field holding illegal data.
-     * @param invalidData the illegal data held in {@code field} at
-     * {@code position}.
+     * @param position Absolute position of the field holding illegal data.
+     * @param invalidData The illegal data held in {@code field} at {@code position}.
      *
-     * @throws IllegalArgumentException if {@code type} does not match one of
-     * {@link #TYPE_ALPHA TYPE_<i>XYZ</i>} constants.
+     * @throws IllegalArgumentException if {@code type} does not match one of {@link #TYPE_ALPHA TYPE_<i>XYZ</i>}
+     * constants.
      *
      * @see org.jdtaus.banking.dtaus.spi.Fields
      */
-    public IllegalDataMessage( final int field, final int type,
-                                final long position, final String invalidData )
+    public IllegalDataMessage( final int field, final int type, final long position, final String invalidData )
     {
         super();
         this.field = field;
@@ -146,11 +139,10 @@ public final class IllegalDataMessage extends Message
     }
 
     /**
-     * Checks a given integer to match one of the {@code TYPE_<i>XYZ</i>}
-     * constants.
+     * Checks a given integer to match one of the {@code TYPE_<i>XYZ</i>} constants.
      *
-     * @throws IllegalArgumentException if {@code type} does not match one of
-     * {@link #TYPE_ALPHA TYPE_<i>XYZ</i>} constants.
+     * @throws IllegalArgumentException if {@code type} does not match one of {@link #TYPE_ALPHA TYPE_<i>XYZ</i>}
+     * constants.
      */
     private void assertValidType()
     {
@@ -166,17 +158,15 @@ public final class IllegalDataMessage extends Message
 
         if ( !valid )
         {
-            throw new IllegalArgumentException(
-                Integer.toString( this.type ) );
-
+            throw new IllegalArgumentException( Integer.toString( this.type ) );
         }
     }
 
     /**
      * {@inheritDoc}
      *
-     * @return a string describing the field holding illegal data, the
-     * absolute position of that field, and the illegal data held by the field.
+     * @return A string describing the field holding illegal data, the absolute position of that field, and the illegal
+     * data held by the field.
      * <ul>
      * <li>[0]: a string describing the field holding illegal data.</li>
      * <li>[1]: the absolute position of that field.</li>
@@ -185,11 +175,12 @@ public final class IllegalDataMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            Integer.toHexString( this.field ).toUpperCase( locale ),
-            new Long( this.position ),
-            this.invalidData
-        };
+        return new Object[]
+            {
+                Integer.toHexString( this.field ).toUpperCase( locale ),
+                new Long( this.position ),
+                this.invalidData
+            };
     }
 
     /**
@@ -203,12 +194,10 @@ public final class IllegalDataMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getIllegalDataMessage(
-            locale, Integer.toHexString( this.field ).toUpperCase(),
-            new Long( this.position ), this.invalidData );
+            locale, Integer.toHexString( this.field ).toUpperCase(), new Long( this.position ), this.invalidData );
 
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -220,24 +209,24 @@ public final class IllegalDataMessage extends Message
      * <blockquote><pre>"{2}" is no valid value for field {0} (at {1, number}).</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param field format argument.
-     * @param position format argument.
-     * @param illegalData format argument.
+     * @param fld format argument.
+     * @param pos format argument.
+     * @param data format argument.
      *
      * @return the text of message <code>illegalData</code>.
      */
     private String getIllegalDataMessage( final Locale locale,
-            final java.lang.String field,
-            final java.lang.Number position,
-            final java.lang.String illegalData )
+            final java.lang.String fld,
+            final java.lang.Number pos,
+            final java.lang.String data )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "illegalData", locale,
                 new Object[]
                 {
-                    field,
-                    position,
-                    illegalData
+                    fld,
+                    pos,
+                    data
                 });
 
     }

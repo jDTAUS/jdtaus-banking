@@ -28,9 +28,8 @@ import org.jdtaus.banking.CurrencyDirectory;
 
 /**
  * Maps {@code Currency} instances to various codes.
- * <p>jDTAUS Banking SPI {@code CurrencyMapper} specification to be used by
- * implementations to map {@code Currency} instances to codes and vice
- * versa.</p>
+ * <p>jDTAUS Banking SPI {@code CurrencyMapper} specification to be used by implementations to map {@code Currency}
+ * instances to codes and vice versa.</p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
@@ -39,36 +38,31 @@ import org.jdtaus.banking.CurrencyDirectory;
  */
 public interface CurrencyMapper extends CurrencyDirectory
 {
-    //--CurrencyMapper----------------------------------------------------------
 
     /**
      * Gets the DTAUS code for a currency at a given date.
      *
-     * @param currency the currency to return the corresponding DTAUS code for.
-     * @param date the date to return the DTAUS code for.
+     * @param currency The currency to return the corresponding DTAUS code for.
+     * @param date The date to return the DTAUS code for.
      *
-     * @return the DTAUS code for {@code currency} at {@code date}.
+     * @return The DTAUS code for {@code currency} at {@code date}.
      *
-     * @throws NullPointerException if either {@code currency} or {@code date}
-     * is {@code null}.
-     * @throws UnsupportedCurrencyException if {@code currency} is not known to
-     * the directory at {@code date}.
+     * @throws NullPointerException if either {@code currency} or {@code date} is {@code null}.
+     * @throws UnsupportedCurrencyException if {@code currency} is not known to the directory at {@code date}.
      */
     char getDtausCode( Currency currency, Date date );
 
     /**
      * Gets the currency for a DTAUS code at a given date.
      *
-     * @param code the DTAUS code to return the corresponding currency for.
-     * @param date the date to return the currency for.
+     * @param code The DTAUS code to return the corresponding currency for.
+     * @param date The date to return the currency for.
      *
-     * @return the currency corresponding to {@code code} at {@code date} or
-     * {@code null} if no currency matching {@code code} is known to the
-     * directory at {@code date}.
+     * @return The currency corresponding to {@code code} at {@code date} or {@code null} if no currency matching
+     * {@code code} is known to the directory at {@code date}.
      *
      * @throws NullPointerException if {@code date} is {@code null}.
      */
     Currency getDtausCurrency( char code, Date date );
 
-    //----------------------------------------------------------CurrencyMapper--
 }

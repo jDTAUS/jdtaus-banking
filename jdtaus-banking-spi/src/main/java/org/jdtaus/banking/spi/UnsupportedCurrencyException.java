@@ -34,13 +34,9 @@ import org.jdtaus.core.container.ContainerFactory;
  */
 public class UnsupportedCurrencyException extends IllegalArgumentException
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.1.x classes. */
     private static final long serialVersionUID = -4268651061144430651L;
-
-    //---------------------------------------------------------------Constants--
-    //--UnsupportedCurrencyException--------------------------------------------
 
     /**
      * Currency code causing an {@code UnsupportedCurrencyException}.
@@ -55,16 +51,13 @@ public class UnsupportedCurrencyException extends IllegalArgumentException
     private Date date;
 
     /**
-     * Creates a new {@code UnsupportedCurrencyException} taking the
-     * unsupported currency code together with the date for which it was
-     * requested.
+     * Creates a new {@code UnsupportedCurrencyException} taking the unsupported currency code together with the date
+     * for which it was requested.
      *
-     * @param currencyCode the ISO currency code which is not supported at
-     * {@code date}.
+     * @param currencyCode The ISO currency code which is not supported at {@code date}.
      * @param date the date for which {@code currencyCode} is illegal.
      */
-    public UnsupportedCurrencyException( final String currencyCode,
-                                         final Date date )
+    public UnsupportedCurrencyException( final String currencyCode, final Date date )
     {
         super();
         this.currencyCode = currencyCode;
@@ -74,8 +67,7 @@ public class UnsupportedCurrencyException extends IllegalArgumentException
     /**
      * Gets the currency code causing this exception to be thrown.
      *
-     * @return the currency code causing this exception to be thrown or
-     * {@code null}.
+     * @return The currency code causing this exception to be thrown or {@code null}.
      */
     public String getCurrencyCode()
     {
@@ -85,8 +77,7 @@ public class UnsupportedCurrencyException extends IllegalArgumentException
     /**
      * Gets the date for which {@code getCurrencyCode()} is not supported.
      *
-     * @return the date for which {@code getCurrencyCode()} is not supported or
-     * {@code null}.
+     * @return The date for which {@code getCurrencyCode()} is not supported or {@code null}.
      */
     public Date getDate()
     {
@@ -96,17 +87,13 @@ public class UnsupportedCurrencyException extends IllegalArgumentException
     /**
      * Returns the message of the exception.
      *
-     * @return the message of the exception.
+     * @return The message of the exception.
      */
     public String getMessage()
     {
-        return this.getUnsupportedCurrencyMessage( this.getLocale(),
-                                                   this.currencyCode,
-                                                   this.date );
-
+        return this.getUnsupportedCurrencyMessage( this.getLocale(), this.currencyCode, this.date );
     }
 
-    //--------------------------------------------UnsupportedCurrencyException--
     //--Dependencies------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausDependencies

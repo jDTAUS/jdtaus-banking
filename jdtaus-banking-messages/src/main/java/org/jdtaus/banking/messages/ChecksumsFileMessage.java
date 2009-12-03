@@ -34,16 +34,20 @@ import org.jdtaus.core.text.Message;
  */
 public final class ChecksumsFileMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 1362055156122954497L;
 
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
-
     /** Empty array. */
-    private static final Object[] ARGUMENTS = {};
+    private static final Object[] ARGUMENTS =
+    {
+    };
+
+    /** Creates a new {@code ChecksumsFileMessage} instance. */
+    public ChecksumsFileMessage()
+    {
+        super();
+    }
 
     /**
      * {@inheritDoc}
@@ -68,7 +72,6 @@ public final class ChecksumsFileMessage extends Message
         return this.getChecksummingFileMessage( locale );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

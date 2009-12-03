@@ -2,9 +2,6 @@
  *  jDTAUS Banking Messages
  *  Copyright (c) 2005 Christian Schulte
  *
- *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
- *  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
- *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
  *  License as published by the Free Software Foundation; either
@@ -19,6 +16,7 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
+ *  $Id$
  */
 package org.jdtaus.banking.messages;
 
@@ -27,24 +25,24 @@ import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
- * Message stating that a {@code BankleitzahlenDatei} is being updated.
+ * Message stating that bankleitzahl information is being searched.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author Christian Schulte
  * @version $Id$
  */
-public final class UpdatesBankleitzahlenDateiMessage extends Message
+public final class SearchesBankleitzahlInfosMessage extends Message
 {
 
-    /** Serial version UID for backwards compatibility with 1.0.x classes. */
-    private static final long serialVersionUID = 1939962399932527212L;
+    /** Serial version UID for backwards compatibility with 1.11.x classes. */
+    private static final long serialVersionUID = -4962937589599067917L;
 
     /** Empty array. */
     private static final Object[] ARGUMENTS =
     {
     };
 
-    /** Creates a new {@code UpdatesBankleitzahlenDateiMessage} instance. */
-    public UpdatesBankleitzahlenDateiMessage()
+    /** Creates a new {@code SearchesBankleitzahlInfosMessage} instance. */
+    public SearchesBankleitzahlInfosMessage()
     {
         super();
     }
@@ -64,12 +62,12 @@ public final class UpdatesBankleitzahlenDateiMessage extends Message
      *
      * @return The corresponding text from the message's {@code ResourceBundle}
      * <blockquote><pre>
-     * Updates bankfile.
+     * Searches bankcode directory.
      * </pre></blockquote>
      */
     public String getText( final Locale locale )
     {
-        return this.getUpdatingBankleitzahlenDateiMessage( locale );
+        return this.getSearchingBankleitzahlInfosMessage( locale );
     }
 
     //--Messages----------------------------------------------------------------
@@ -78,18 +76,18 @@ public final class UpdatesBankleitzahlenDateiMessage extends Message
     // This section is managed by jdtaus-container-mojo.
 
     /**
-     * Gets the text of message <code>updatingBankleitzahlenDatei</code>.
-     * <blockquote><pre>Aktualisiert Bankleitzahlendatei.</pre></blockquote>
-     * <blockquote><pre>Updates bankfile.</pre></blockquote>
+     * Gets the text of message <code>searchingBankleitzahlInfos</code>.
+     * <blockquote><pre>Durchsucht Bankleitzahlenverzeichnis.</pre></blockquote>
+     * <blockquote><pre>Searches bankcode directory.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *
-     * @return the text of message <code>updatingBankleitzahlenDatei</code>.
+     * @return the text of message <code>searchingBankleitzahlInfos</code>.
      */
-    private String getUpdatingBankleitzahlenDateiMessage( final Locale locale )
+    private String getSearchingBankleitzahlInfosMessage( final Locale locale )
     {
         return ContainerFactory.getContainer().
-            getMessage( this, "updatingBankleitzahlenDatei", locale, null );
+            getMessage( this, "searchingBankleitzahlInfos", locale, null );
 
     }
 

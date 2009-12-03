@@ -1,5 +1,5 @@
 /*
- *  jDTAUS Banking RI Textschluesselverzeichnis
+ *  jDTAUS Banking RI CurrencyDirectory
  *  Copyright (c) 2005 Christian Schulte
  *
  *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
@@ -20,36 +20,29 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.ri.txtdirectory.test;
+package org.jdtaus.banking.ri.currencydir;
 
+import java.io.IOException;
 import java.net.URL;
-import org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis;
 
 /**
- * Tests the {@link XMLTextschluesselVerzeichnis} implementation.
+ * JAXP currency resource provider interface.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
+ *
+ * @see JaxpCurrencyDirectory
  */
-public class XMLTextschluesselVerzeichnis_1_0_NoSchemaLocationTest
-    extends AbstractXMLTextschluesselVerzeichnisTest
+public interface JaxpCurrenciesProvider
 {
-    //--AbstractXMLTextschluesselVerzeichnisTest--------------------------------
 
-    protected ClassLoader getClassLoader()
-    {
-        final ResourceLoader cl =
-            new ResourceLoader( this.getClass().getClassLoader() );
+    /**
+     * Gets URLs to XML documents holding currency instances.
+     *
+     * @return URLs to XML documents holding currency instances.
+     *
+     * @throws IOException if providing the resources fails.
+     */
+    URL[] getResources() throws IOException;
 
-        cl.addResources( "META-INF/jdtaus/textschluessel.xml",
-                         new URL[]
-            {
-                this.getClass().getResource(
-                "textschluessel-no-schemalocation-1.0.xml" )
-            } );
-
-        return cl;
-    }
-
-    //--------------------------------AbstractXMLTextschluesselVerzeichnisTest--
 }

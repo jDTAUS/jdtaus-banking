@@ -8,7 +8,12 @@
     <section name="Introduction">
       <p>
         This artifact provides a <code>CurrencyDirectory</code> implementation
-        backed by XML documents.
+        backed by XML documents. XML resources are read using any available
+        <a href="apidocs/org/jdtaus/banking/ri/currencydir/JaxpCurrenciesProvider.html">JaxpCurrenciesProvider</a>
+        implementation. The <a href="apidocs/org/jdtaus/banking/ri/currencydir/DefaultJaxpCurrenciesProvider.html">DefaultJaxpCurrenciesProvider</a>
+        implementation searches the classpath for resources at location <code>META-INF/jdtaus/currencies.xml</code>.
+        This location can be changed by updating the configuration file located at
+        <code>META-INF/jdtaus/module.xml</code>.
       </p>
       <p>
         The implementation supports documents conforming to schemas as listed in
@@ -58,13 +63,6 @@
           </tr>
         </table>
       </p>
-      <p>
-        To provide any documents to the implementation, an application's
-        classpath needs to be setup to contain documents for use by
-        <a href="apidocs/org/jdtaus/banking/ri/currencydir/ClasspathCurrenciesProvider.html">the classpath <code>CurrenciesProvider</code> implementation</a>
-        which searches for classpath resources in a configurable location
-        (defaulting to <code>META-INF/jdtaus/currencies.xml</code>).
-      </p>
     </section>
     <section name="Upgrading from 1.0">
       <p>
@@ -76,11 +74,11 @@
         artifact's jar file. When upgrading your application to 1.1 you need to
         provide the currency configuration yourself by either placing at least
         one XML document in the application's classpath for use by class
-        <code>ClasspathCurrenciesProvider</code> or by supplying a custom
-        <code>CurrenciesProvider</code> implementation providing the
+        <code>DefaultJaxpCurrenciesProvider</code> or by supplying a custom
+        <code>JaxpCurrenciesProvider</code> implementation providing the
         currency resources. The former default document is available for
         download as a starting point from
-        <a href="./currencies-1.1.xml">here</a>.
+        <a href="./currencies-1.2.xml">here</a>.
       </p>
     </section>
   </body>

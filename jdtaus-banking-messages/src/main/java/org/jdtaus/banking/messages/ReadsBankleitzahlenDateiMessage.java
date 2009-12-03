@@ -34,21 +34,25 @@ import org.jdtaus.core.text.Message;
  */
 public final class ReadsBankleitzahlenDateiMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.1.x classes. */
     private static final long serialVersionUID = -7923064314185101629L;
 
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
-
     /** Empty array. */
-    private static final Object[] ARGUMENTS = {};
+    private static final Object[] ARGUMENTS =
+    {
+    };
+
+    /** Creates a new {@code ReadsBankleitzahlenDateiMessage} instance. */
+    public ReadsBankleitzahlenDateiMessage()
+    {
+        super();
+    }
 
     /**
      * {@inheritDoc}
      *
-     * @return an empty array, since the message has no arguments.
+     * @return An empty array, since the message has no arguments.
      */
     public Object[] getFormatArguments( final Locale locale )
     {
@@ -68,7 +72,6 @@ public final class ReadsBankleitzahlenDateiMessage extends Message
         return this.getReadingBankfilesMessage( locale );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

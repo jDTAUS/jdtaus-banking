@@ -34,21 +34,25 @@ import org.jdtaus.core.text.Message;
  */
 public final class AnalysesFileMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = -8438801970006640351L;
 
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
-
     /** Empty array. */
-    private static final Object[] ARGUMENTS = {};
+    private static final Object[] ARGUMENTS =
+    {
+    };
+
+    /** Creates a new {@code AnalysesFileMessage} instance. */
+    public AnalysesFileMessage()
+    {
+        super();
+    }
 
     /**
      * {@inheritDoc}
      *
-     * @return an empty array, since the message has no arguments.
+     * @return An empty array, since the message has no arguments.
      */
     public Object[] getFormatArguments( final Locale locale )
     {
@@ -68,7 +72,6 @@ public final class AnalysesFileMessage extends Message
         return this.getAnalyzingFileMessage( locale );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

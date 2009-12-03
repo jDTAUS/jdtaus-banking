@@ -33,9 +33,8 @@ import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.Messages;
 
-/**org.jdtaus.banking.spi.IllegalTextschluesselException
- * Gets thrown whenever an illegal Textschlüssel is passed to a method expecting
- * a legal Textschlüssel.
+/**
+ * Gets thrown whenever an illegal Textschlüssel is passed to a method expecting a legal Textschlüssel.
  * <p>Example: Throwing an {@code IllegalTextschluesselException}<br/>
  * <blockquote><pre>
  * IllegalTextschluesselException e = new IllegalTextschluesselException();
@@ -46,16 +45,11 @@ import org.jdtaus.core.text.Messages;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class IllegalTextschluesselException
-    extends org.jdtaus.banking.IllegalTextschluesselException
+public class IllegalTextschluesselException extends org.jdtaus.banking.IllegalTextschluesselException
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.1.x classes. */
     private static final long serialVersionUID = 3384133251965896939L;
-
-    //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
 
     /** Creates a new {@code IllegalTextschluesselException} instance. */
     public IllegalTextschluesselException()
@@ -63,12 +57,8 @@ public class IllegalTextschluesselException
         super();
     }
 
-    //------------------------------------------------------------Constructors--
-    //--IllegalTextschluesselException------------------------------------------
-
     /** Key to the list of messages not bound to any particular property. */
-    private static final String PROP_UNSPECIFIED =
-        Textschluessel.class.getName();
+    private static final String PROP_UNSPECIFIED = "org.jdtaus.banking.Textschluessel";
 
     /**
      * The messages describing the exception.
@@ -91,7 +81,7 @@ public class IllegalTextschluesselException
     /**
      * Adds messages to the instance.
      *
-     * @param messages the messages to add to the instance.
+     * @param messages The messages to add to the instance.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
      */
@@ -111,11 +101,10 @@ public class IllegalTextschluesselException
     /**
      * Adds a message bound to a property to the instance.
      *
-     * @param propertyName the name of a property {@code message} is bound to.
-     * @param message the message to add to the instance.
+     * @param propertyName The name of a property {@code message} is bound to.
+     * @param message The message to add to the instance.
      *
-     * @throws NullPointerException if either {@code message} or
-     * {@code propertyName} is {@code null}.
+     * @throws NullPointerException if either {@code message} or {@code propertyName} is {@code null}.
      */
     public void addMessage( final String propertyName, final Message message )
     {
@@ -141,14 +130,12 @@ public class IllegalTextschluesselException
     /**
      * Adds messages bound to a property to the instance.
      *
-     * @param propertyName the name of a property {@code messages} are bound to.
-     * @param messages the messages to add to the instance.
+     * @param propertyName The name of a property {@code messages} are bound to.
+     * @param messages The messages to add to the instance.
      *
-     * @throws NullPointerException if either {@code messages} or
-     * {@code propertyName} is {@code null}.
+     * @throws NullPointerException if either {@code messages} or {@code propertyName} is {@code null}.
      */
-    public final void addMessages( final String propertyName,
-        final Messages messages )
+    public final void addMessages( final String propertyName, final Messages messages )
     {
         if ( propertyName == null )
         {
@@ -168,8 +155,8 @@ public class IllegalTextschluesselException
     /**
      * Gets all messages describing the exception.
      *
-     * @return an array of messages describing the exception or an empty array
-     * if the instance does not hold any messages.
+     * @return An array of messages describing the exception or an empty array if the instance does not hold any
+     * messages.
      */
     public Message[] getMessages()
     {
@@ -184,14 +171,12 @@ public class IllegalTextschluesselException
     }
 
     /**
-     * Gets messages bound to a property removing these messages from the
-     * instance.
+     * Gets messages bound to a property removing these messages from the instance.
      *
-     * @param propertyName the name of a property to return any messages for.
+     * @param propertyName The name of a property to return any messages for.
      *
-     * @return all messages bound to a property with name {@code propertyName}
-     * or an empty array if the instance does not hold messages for a property
-     * with name {@code propertyName}.
+     * @return All messages bound to a property with name {@code propertyName} or an empty array if the instance does
+     * not hold messages for a property with name {@code propertyName}.
      *
      * @throws NullPointerException if {@code propertyName} is {@code null}.
      */
@@ -203,18 +188,14 @@ public class IllegalTextschluesselException
         }
 
         final List msgs = (List) this.messages.remove( propertyName );
-        return msgs == null
-            ? new Message[ 0 ]
-            : (Message[]) msgs.toArray( new Message[ msgs.size() ] );
-
+        return msgs == null ? new Message[ 0 ] : (Message[]) msgs.toArray( new Message[ msgs.size() ] );
     }
 
     /**
      * Gets the names of all properties for which the exception holds messages.
      *
-     * @return an array of the names of all properties for which the exception
-     * holds messages or an empty array if the exception does not hold any
-     * message bound to a property.
+     * @return An array of the names of all properties for which the exception holds messages or an empty array if the
+     * exception does not hold any message bound to a property.
      */
     public String[] getPropertyNames()
     {
@@ -234,14 +215,13 @@ public class IllegalTextschluesselException
     /**
      * Creates a string representing the messages of the instance.
      *
-     * @return a string representing the messages of the instance.
+     * @return A string representing the messages of the instance.
      */
     private String internalString()
     {
         final StringBuffer buf = new StringBuffer( 200 ).append( '{' );
         final String[] propertyNames = this.getPropertyNames();
-        final List unspecifiedMsgs =
-            (List) this.messages.get( PROP_UNSPECIFIED );
+        final List unspecifiedMsgs = (List) this.messages.get( PROP_UNSPECIFIED );
 
         for ( int i = 0; i < propertyNames.length; i++ )
         {
@@ -252,9 +232,7 @@ public class IllegalTextschluesselException
             for ( Iterator it = msgs.iterator(); it.hasNext(); j++ )
             {
                 final Message msg = (Message) it.next();
-                buf.append( '[' ).append( j ).append( "]=" ).
-                    append( msg.getText( Locale.getDefault() ) );
-
+                buf.append( '[' ).append( j ).append( "]=" ).append( msg.getText( Locale.getDefault() ) );
                 if ( it.hasNext() )
                 {
                     buf.append( ", " );
@@ -262,7 +240,6 @@ public class IllegalTextschluesselException
             }
 
             buf.append( '}' );
-
             if ( i + 1 < propertyNames.length )
             {
                 buf.append( ", " );
@@ -282,9 +259,7 @@ public class IllegalTextschluesselException
             for ( Iterator it = unspecifiedMsgs.iterator(); it.hasNext(); i++ )
             {
                 final Message msg = (Message) it.next();
-                buf.append( "[" ).append( i ).append( "]=" ).
-                    append( msg.getText( Locale.getDefault() ) );
-
+                buf.append( "[" ).append( i ).append( "]=" ).append( msg.getText( Locale.getDefault() ) );
                 if ( it.hasNext() )
                 {
                     buf.append( ", " );
@@ -298,18 +273,14 @@ public class IllegalTextschluesselException
         return buf.toString();
     }
 
-    //------------------------------------------IllegalTextschluesselException--
-    //--Object------------------------------------------------------------------
-
     /**
      * Returns a string representation of the object.
      *
-     * @return a string representation of the object.
+     * @return A string representation of the object.
      */
     public String toString()
     {
         return super.toString() + '\n' + this.internalString();
     }
 
-    //------------------------------------------------------------------Object--
 }

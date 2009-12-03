@@ -35,13 +35,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalDateMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 4086935652662010927L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * The illegal date.
@@ -62,21 +58,19 @@ public final class IllegalDateMessage extends Message
     private final Date dateRangeEnd;
 
     /**
-     * Creates a new {@code IllegalDateMessage} instance taking the illegal
-     * date and the range of dates for which a date is considered legal.
+     * Creates a new {@code IllegalDateMessage} instance taking the illegal date and the range of dates for which a
+     * date is considered legal.
      *
-     * @param date the illegal date.
-     * @param dateRangeStart the starting date of the range for valid dates.
-     * @param dateRangeEnd the ending date of the range for valid dates.
+     * @param date The illegal date.
+     * @param dateRangeStart The starting date of the range for valid dates.
+     * @param dateRangeEnd The ending date of the range for valid dates.
      *
-     * @throws NullPointerException if either {@code date},
-     * {@code dateRangeStart} or {@code dateRangeEnd} is {@code null}.
+     * @throws NullPointerException if either {@code date}, {@code dateRangeStart} or {@code dateRangeEnd} is
+     * {@code null}.
      */
-    public IllegalDateMessage( final Date date, final Date dateRangeStart,
-                                final Date dateRangeEnd )
+    public IllegalDateMessage( final Date date, final Date dateRangeStart, final Date dateRangeEnd )
     {
         super();
-
         if ( date == null )
         {
             throw new NullPointerException( "date" );
@@ -98,7 +92,7 @@ public final class IllegalDateMessage extends Message
     /**
      * {@inheritDoc}
      *
-     * @return the illegal date.
+     * @return The illegal date.
      * <ul>
      * <li>[0]: the illegal date.</li>
      * <li>[1]: the starting date of the range for valid dates.</li>
@@ -107,9 +101,10 @@ public final class IllegalDateMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            this.date, this.dateRangeStart, this.dateRangeEnd
-        };
+        return new Object[]
+            {
+                this.date, this.dateRangeStart, this.dateRangeEnd
+            };
     }
 
     /**
@@ -122,13 +117,9 @@ public final class IllegalDateMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getIllegalDateMessage( locale, this.date,
-                                           this.dateRangeStart,
-                                           this.dateRangeEnd );
-
+        return this.getIllegalDateMessage( locale, this.date, this.dateRangeStart, this.dateRangeEnd );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -140,24 +131,24 @@ public final class IllegalDateMessage extends Message
      * <blockquote><pre>The date {0,date,long} is either before {1,date,long} or after {2,date,long}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param date format argument.
-     * @param startDate format argument.
-     * @param endDate format argument.
+     * @param dat format argument.
+     * @param start format argument.
+     * @param end format argument.
      *
      * @return the text of message <code>illegalDate</code>.
      */
     private String getIllegalDateMessage( final Locale locale,
-            final java.util.Date date,
-            final java.util.Date startDate,
-            final java.util.Date endDate )
+            final java.util.Date dat,
+            final java.util.Date start,
+            final java.util.Date end )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "illegalDate", locale,
                 new Object[]
                 {
-                    date,
-                    startDate,
-                    endDate
+                    dat,
+                    start,
+                    end
                 });
 
     }

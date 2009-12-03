@@ -35,13 +35,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class UnknownBankleitzahlMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.1.x classes. */
     private static final long serialVersionUID = -7923064314185101629L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * Bankleitzahl of the message.
@@ -50,10 +46,9 @@ public final class UnknownBankleitzahlMessage extends Message
     private final Bankleitzahl bankCode;
 
     /**
-     * Creates a new {@code UnknownBankleitzahlMessage} taking the unknown
-     * Bankleitzahl.
+     * Creates a new {@code UnknownBankleitzahlMessage} taking the unknown Bankleitzahl.
      *
-     * @param bankCode the unknown Bankleitzahl.
+     * @param bankCode The unknown Bankleitzahl.
      *
      * @throws NullPointerException if {@code bankCode} is {@code null}.
      */
@@ -77,9 +72,10 @@ public final class UnknownBankleitzahlMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            this.bankCode.format( Bankleitzahl.LETTER_FORMAT )
-        };
+        return new Object[]
+            {
+                this.bankCode.format( Bankleitzahl.LETTER_FORMAT )
+            };
     }
 
     /**
@@ -97,7 +93,6 @@ public final class UnknownBankleitzahlMessage extends Message
 
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

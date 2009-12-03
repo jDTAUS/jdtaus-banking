@@ -9,7 +9,12 @@
     <section name="Introduction">
       <p>
         This artifact provides a <code>TextschluesselVerzeichnis</code>
-        implementation backed by XML documents.
+        implementation backed by XML documents. XML resources are read using any
+        available <a href="apidocs/org/jdtaus/banking/ri/txtdirectory/JaxpTextschluesselProvider.html">JaxpTextschluesselProvider</a>
+        implementation. The <a href="apidocs/org/jdtaus/banking/ri/txtdirectory/DefaultJaxpTextschluesselProvider.html">DefaultJaxpTextschluesselProvider</a>
+        implementation searches the classpath for resources at location <code>META-INF/jdtaus/textschluessel.xml</code>.
+        This location can be changed by updating the configuration file located at
+        <code>META-INF/jdtaus/module.xml</code>.
       </p>
       <p>
         The implementation supports documents conforming to schemas as listed in
@@ -70,13 +75,6 @@
           </tr>
         </table>
       </p>
-      <p>
-        To provide any documents to the implementation, an application's
-        classpath needs to be setup to contain documents for use by
-        <a href="apidocs/org/jdtaus/banking/ri/txtdirectory/ClasspathTextschluesselProvider.html">the classpath <code>TextschluesselProvider</code> implementation</a>
-        which searches for classpath resources in a configurable location
-        (defaulting to <code>META-INF/jdtaus/textschluessel.xml</code>).
-      </p>
     </section>
     <section name="Upgrading from 1.0">
       <p>
@@ -88,8 +86,8 @@
         artifact's jar file. When upgrading your application to 1.1 you need to
         provide the Textschlüssel configuration yourself by either placing at
         least one XML document in the application's classpath for use by class
-        <code>ClasspathTextschluesselProvider</code> or by supplying a custom
-        <code>TextschluesselProvider</code> implementation providing the
+        <code>DefaultJaxpTextschluesselProvider</code> or by supplying a custom
+        <code>JaxpTextschluesselProvider</code> implementation providing the
         Textschlüssel resources. The former default document is available for
         download as a starting point from
         <a href="./textschluessel-1.3.xml">here</a>.

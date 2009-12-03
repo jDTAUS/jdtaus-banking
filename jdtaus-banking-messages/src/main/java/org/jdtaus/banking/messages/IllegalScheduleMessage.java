@@ -35,13 +35,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalScheduleMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = -8689097743116031670L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * Create date of the illegal schedule.
@@ -63,24 +59,19 @@ public final class IllegalScheduleMessage extends Message
     private final int maxDays;
 
     /**
-     * Creates a new {@code IllegalScheduleMessage} instance taking the create
-     * date and the date of execution not forming a valid schedule for a
-     * maximum number of days between them.
+     * Creates a new {@code IllegalScheduleMessage} instance taking the create date and the date of execution not
+     * forming a valid schedule for a maximum number of days between them.
      *
-     * @param createDate the create date of the schedule.
-     * @param executionDate the execution date of the schedule.
-     * @param maxDays the maximum number of days allowed between
-     * {@code createDate} and {@code executionDate}.
+     * @param createDate The create date of the schedule.
+     * @param executionDate The execution date of the schedule.
+     * @param maxDays The maximum number of days allowed between {@code createDate} and {@code executionDate}.
      *
      * @throws NullPointerException if {@code createDate} is {@code null}.
      * @throws IllegalArgumentException if {@code maxDays} is negative.
      */
-    public IllegalScheduleMessage( final Date createDate,
-                                    final Date executionDate,
-                                    final int maxDays )
+    public IllegalScheduleMessage( final Date createDate, final Date executionDate, final int maxDays )
     {
         super();
-
         if ( createDate == null )
         {
             throw new NullPointerException( "createDate" );
@@ -98,7 +89,7 @@ public final class IllegalScheduleMessage extends Message
     /**
      * {@inheritDoc}
      *
-     * @return the create date and the date of execution.
+     * @return The create date and the date of execution.
      * <ul>
      * <li>[0]: the create date of the schedule.</li>
      * <li>[1]: the date of execution of the invalid schedule.</li>
@@ -108,9 +99,10 @@ public final class IllegalScheduleMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            this.createDate, this.executionDate, new Integer( this.maxDays )
-        };
+        return new Object[]
+            {
+                this.createDate, this.executionDate, new Integer( this.maxDays )
+            };
     }
 
     /**
@@ -123,13 +115,11 @@ public final class IllegalScheduleMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getIllegalScheduleMessage( locale, this.createDate,
-                                               this.executionDate,
+        return this.getIllegalScheduleMessage( locale, this.createDate, this.executionDate,
                                                new Integer( this.maxDays ) );
 
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -141,24 +131,24 @@ public final class IllegalScheduleMessage extends Message
      * <blockquote><pre>The executiondate {1,date,long} is before create date {0,date,long} or more than {2,number} days thereafter.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param createDate format argument.
-     * @param executionDate format argument.
-     * @param maxScheduleDays format argument.
+     * @param cdat format argument.
+     * @param edat format argument.
+     * @param max format argument.
      *
      * @return the text of message <code>illegalSchedule</code>.
      */
     private String getIllegalScheduleMessage( final Locale locale,
-            final java.util.Date createDate,
-            final java.util.Date executionDate,
-            final java.lang.Number maxScheduleDays )
+            final java.util.Date cdat,
+            final java.util.Date edat,
+            final java.lang.Number max )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "illegalSchedule", locale,
                 new Object[]
                 {
-                    createDate,
-                    executionDate,
-                    maxScheduleDays
+                    cdat,
+                    edat,
+                    max
                 });
 
     }

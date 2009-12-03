@@ -35,13 +35,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalAmountMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 1922186182644325080L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * The illegal amount.
@@ -52,7 +48,7 @@ public final class IllegalAmountMessage extends Message
     /**
      * Creates a new {@code IllegalAmountMessage} taking an amount.
      *
-     * @param amount the illegal amount.
+     * @param amount The illegal amount.
      *
      * @throws NullPointerException if {@code amount} is {@code null}.
      */
@@ -78,7 +74,10 @@ public final class IllegalAmountMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] { this.amount };
+        return new Object[]
+            {
+                this.amount
+            };
     }
 
     /**
@@ -94,7 +93,6 @@ public final class IllegalAmountMessage extends Message
         return this.getIllegalAmountMessage( locale, this.amount );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -106,18 +104,18 @@ public final class IllegalAmountMessage extends Message
      * <blockquote><pre>{0, number} is no legal amount.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param amount format argument.
+     * @param amt format argument.
      *
      * @return the text of message <code>illegalAmount</code>.
      */
     private String getIllegalAmountMessage( final Locale locale,
-            final java.lang.Number amount )
+            final java.lang.Number amt )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "illegalAmount", locale,
                 new Object[]
                 {
-                    amount
+                    amt
                 });
 
     }

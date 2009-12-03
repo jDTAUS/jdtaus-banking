@@ -29,21 +29,16 @@ import org.jdtaus.core.container.ContainerFactory;
 import org.jdtaus.core.text.Message;
 
 /**
- * Message stating that a {@code Textschluessel} cannot be used in combination
- * with a logical file type.
+ * Message stating that a {@code Textschluessel} cannot be used in combination with a logical file type.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
 public final class TextschluesselConstraintMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 998685158483386658L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * The type of the logical file incompatible with {@code textschluessel}.
@@ -58,18 +53,15 @@ public final class TextschluesselConstraintMessage extends Message
     private final Textschluessel textschluessel;
 
     /**
-     * Creates a new {@code TextschluesselConstraintMessage} taking the
-     * logical file's type and the incompatible {@code Textschluessel}.l
+     * Creates a new {@code TextschluesselConstraintMessage} taking the logical file's type and the incompatible
+     * {@code Textschluessel}.
      *
-     * @param fileType the type of the logical file causing this exception.
-     * @param textschluessel the {@code Textschluessel} incompatible with
-     * {@code fileType}.
+     * @param fileType The type of the logical file causing this exception.
+     * @param textschluessel The {@code Textschluessel} incompatible with {@code fileType}.
      *
-     * @throws NullPointerException if either {@code fileType} or
-     * {@code textschluessel} is {@code null}.
+     * @throws NullPointerException if either {@code fileType} or {@code textschluessel} is {@code null}.
      */
-    public TextschluesselConstraintMessage( final LogicalFileType fileType,
-                                             final Textschluessel textschluessel )
+    public TextschluesselConstraintMessage( final LogicalFileType fileType, final Textschluessel textschluessel )
     {
         super();
 
@@ -89,8 +81,7 @@ public final class TextschluesselConstraintMessage extends Message
     /**
      * {@inheritDoc}
      *
-     * @return the DTAUS code of the file's type and the key and extension
-     * of the incompatible {@code Textschluessel}.
+     * @return The DTAUS code of the file's type and the key and extension of the incompatible {@code Textschluessel}.
      * <ul>
      * <li>[0]: the DTAUS code of the file's type.</li>
      * <li>[!]: the key of the incompatible {@code Textschluessel}.</li>
@@ -99,11 +90,12 @@ public final class TextschluesselConstraintMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            this.fileType.getCode(),
-            new Integer( this.textschluessel.getKey() ),
-            new Integer( this.textschluessel.getExtension() )
-        };
+        return new Object[]
+            {
+                this.fileType.getCode(),
+                new Integer( this.textschluessel.getKey() ),
+                new Integer( this.textschluessel.getExtension() )
+            };
     }
 
     /**
@@ -123,7 +115,6 @@ public final class TextschluesselConstraintMessage extends Message
 
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages

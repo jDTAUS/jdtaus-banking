@@ -34,13 +34,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class IllegalDescriptionCountMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 1131942219877499068L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * Maximum number of supported descriptions.
@@ -55,18 +51,15 @@ public final class IllegalDescriptionCountMessage extends Message
     private final int requestedDescriptions;
 
     /**
-     * Creates a new {@code IllegalDescriptionCountMessage} instance taking
-     * the maximum number of supported descriptions and the number of
-     * requested descriptions.
+     * Creates a new {@code IllegalDescriptionCountMessage} instance taking the maximum number of supported descriptions
+     * and the number of requested descriptions.
      *
-     * @param maxDescriptions the maximum number of supported descriptions.
-     * @param requestedDescriptions the requested number of descriptions.
+     * @param maxDescriptions The maximum number of supported descriptions.
+     * @param requestedDescriptions The requested number of descriptions.
      */
-    public IllegalDescriptionCountMessage( final int maxDescriptions,
-                                            final int requestedDescriptions )
+    public IllegalDescriptionCountMessage( final int maxDescriptions, final int requestedDescriptions )
     {
         super();
-
         this.maxDescriptions = maxDescriptions;
         this.requestedDescriptions = requestedDescriptions;
     }
@@ -74,8 +67,7 @@ public final class IllegalDescriptionCountMessage extends Message
     /**
      * {@inheritDoc}
      *
-     * @return the maximum number of supported descriptions and the requested
-     * number of descriptions.
+     * @return The maximum number of supported descriptions and the requested number of descriptions.
      * <ul>
      * <li>[0]: the maximum number of supported descriptions.</li>
      * <li>[1]: the requested number of descriptions.</li>
@@ -83,10 +75,11 @@ public final class IllegalDescriptionCountMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            new Integer( this.maxDescriptions ),
-            new Integer( this.requestedDescriptions )
-        };
+        return new Object[]
+            {
+                new Integer( this.maxDescriptions ),
+                new Integer( this.requestedDescriptions )
+            };
     }
 
     /**
@@ -100,12 +93,10 @@ public final class IllegalDescriptionCountMessage extends Message
     public String getText( final Locale locale )
     {
         return this.getIllegalDescriptionCountMessage(
-            locale, new Integer( this.requestedDescriptions ),
-            new Integer( this.maxDescriptions ) );
+            locale, new Integer( this.requestedDescriptions ), new Integer( this.maxDescriptions ) );
 
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -118,20 +109,20 @@ public final class IllegalDescriptionCountMessage extends Message
      *
      * @param locale The locale of the message instance to return.
      * @param descriptionCount format argument.
-     * @param maxDescriptions format argument.
+     * @param allowedDescriptions format argument.
      *
      * @return the text of message <code>illegalDescriptionCount</code>.
      */
     private String getIllegalDescriptionCountMessage( final Locale locale,
             final java.lang.Number descriptionCount,
-            final java.lang.Number maxDescriptions )
+            final java.lang.Number allowedDescriptions )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "illegalDescriptionCount", locale,
                 new Object[]
                 {
                     descriptionCount,
-                    maxDescriptions
+                    allowedDescriptions
                 });
 
     }

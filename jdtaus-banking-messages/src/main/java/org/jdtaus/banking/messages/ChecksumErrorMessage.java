@@ -35,13 +35,9 @@ import org.jdtaus.core.text.Message;
  */
 public final class ChecksumErrorMessage extends Message
 {
-    //--Contstants--------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = 2983079946808628079L;
-
-    //---------------------------------------------------------------Constants--
-    //--Message-----------------------------------------------------------------
 
     /**
      * Absolute position of the file with the incorrect checksum.
@@ -64,21 +60,16 @@ public final class ChecksumErrorMessage extends Message
     /**
      * Creates a new {@code ChecksumErrorMessage} instance.
      *
-     * @param storedChecksum the checksum stored in a file.
-     * @param computedChecksum the computed checksum from the same file.
-     * @param position absolute position of the file with the incorrect
-     * checksum.
+     * @param storedChecksum The checksum stored in a file.
+     * @param computedChecksum The computed checksum from the same file.
+     * @param position Absolute position of the file with the incorrect checksum.
      *
-     * @throws NullPointerException if either {@code storedChecksum} or
-     * {@code computedChecksum} is {@code null}.
-     * @throws IllegalArgumentException if {@code storedChecksum} is equal to
-     * {@code computedChecksum} or if {@code position} is negative.
+     * @throws NullPointerException if either {@code storedChecksum} or {@code computedChecksum} is {@code null}.
+     * @throws IllegalArgumentException if {@code storedChecksum} is equal to {@code computedChecksum} or if
+     * {@code position} is negative.
      */
-    public ChecksumErrorMessage( final Checksum storedChecksum,
-                                  final Checksum computedChecksum,
-                                  final long position )
+    public ChecksumErrorMessage( final Checksum storedChecksum, final Checksum computedChecksum, final long position )
     {
-
         if ( storedChecksum == null )
         {
             throw new NullPointerException( "storedChecksum" );
@@ -119,17 +110,18 @@ public final class ChecksumErrorMessage extends Message
      */
     public Object[] getFormatArguments( final Locale locale )
     {
-        return new Object[] {
-            new Long( this.storedChecksum.getSumAmount() ),
-            new Long( this.storedChecksum.getSumTargetAccount() ),
-            new Long( this.storedChecksum.getSumTargetBank() ),
-            new Integer( this.storedChecksum.getTransactionCount() ),
-            new Long( this.computedChecksum.getSumAmount() ),
-            new Long( this.computedChecksum.getSumTargetAccount() ),
-            new Long( this.computedChecksum.getSumTargetBank() ),
-            new Integer( this.computedChecksum.getTransactionCount() ),
-            new Long( this.position )
-        };
+        return new Object[]
+            {
+                new Long( this.storedChecksum.getSumAmount() ),
+                new Long( this.storedChecksum.getSumTargetAccount() ),
+                new Long( this.storedChecksum.getSumTargetBank() ),
+                new Integer( this.storedChecksum.getTransactionCount() ),
+                new Long( this.computedChecksum.getSumAmount() ),
+                new Long( this.computedChecksum.getSumTargetAccount() ),
+                new Long( this.computedChecksum.getSumTargetBank() ),
+                new Integer( this.computedChecksum.getTransactionCount() ),
+                new Long( this.position )
+            };
     }
 
     /**
@@ -142,12 +134,9 @@ public final class ChecksumErrorMessage extends Message
      */
     public String getText( final Locale locale )
     {
-        return this.getChecksumErrorMessage( locale,
-                                             new Long( this.position ) );
-
+        return this.getChecksumErrorMessage( locale, new Long( this.position ) );
     }
 
-    //-----------------------------------------------------------------Message--
     //--Messages----------------------------------------------------------------
 
 // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:jdtausMessages
@@ -159,18 +148,18 @@ public final class ChecksumErrorMessage extends Message
      * <blockquote><pre>The checksum of the logical file beginning at position {0,number} is invalid.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param position format argument.
+     * @param pos format argument.
      *
      * @return the text of message <code>checksumError</code>.
      */
     private String getChecksumErrorMessage( final Locale locale,
-            final java.lang.Number position )
+            final java.lang.Number pos )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "checksumError", locale,
                 new Object[]
                 {
-                    position
+                    pos
                 });
 
     }

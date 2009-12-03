@@ -34,8 +34,7 @@ import org.jdtaus.core.text.Message;
 import org.jdtaus.core.text.Messages;
 
 /**
- * Gets thrown whenever an illegal transaction is passed to a method expecting a
- * legal transaction.
+ * Gets thrown whenever an illegal transaction is passed to a method expecting a legal transaction.
  * <p>Example: Throwing an {@code IllegalTransactionException}<br/><blockquote>
  * <pre>
  * IllegalTransactionException e = new IllegalTransactionException();
@@ -49,13 +48,9 @@ import org.jdtaus.core.text.Messages;
 public class IllegalTransactionException
     extends org.jdtaus.banking.dtaus.IllegalTransactionException
 {
-    //--Constants---------------------------------------------------------------
 
     /** Serial version UID for backwards compatibility with 1.0.x classes. */
     private static final long serialVersionUID = -81649021330912822L;
-
-    //---------------------------------------------------------------Constants--
-    //--Constructors------------------------------------------------------------
 
     /** Creates a new {@code IllegalTransactionException} instance. */
     public IllegalTransactionException()
@@ -63,12 +58,8 @@ public class IllegalTransactionException
         super();
     }
 
-    //------------------------------------------------------------Constructors--
-    //--IllegalTransactionException---------------------------------------------
-
     /** Key to the list of messages not bound to any particular property. */
-    private static final String PROP_UNSPECIFIED =
-        Transaction.class.getName();
+    private static final String PROP_UNSPECIFIED = "org.jdtaus.banking.dtaus.Transaction";
 
     /**
      * The messages describing the exception.
@@ -79,7 +70,7 @@ public class IllegalTransactionException
     /**
      * Adds a message to the instance.
      *
-     * @param message the message to add to the instance.
+     * @param message The message to add to the instance.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
@@ -91,7 +82,7 @@ public class IllegalTransactionException
     /**
      * Adds messages to the instance.
      *
-     * @param messages the messages to add to the instance.
+     * @param messages The messages to add to the instance.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
      */
@@ -111,11 +102,10 @@ public class IllegalTransactionException
     /**
      * Adds a message for a property to the instance.
      *
-     * @param propertyName the name of a property {@code message} is bound to.
-     * @param message the message to add to the instance.
+     * @param propertyName The name of a property {@code message} is bound to.
+     * @param message The message to add to the instance.
      *
-     * @throws NullPointerException if either {@code message} or
-     * {@code propertyName} is {@code null}.
+     * @throws NullPointerException if either {@code message} or {@code propertyName} is {@code null}.
      */
     public void addMessage( final String propertyName, final Message message )
     {
@@ -141,14 +131,12 @@ public class IllegalTransactionException
     /**
      * Adds messages bound to a property to the instance.
      *
-     * @param propertyName the name of a property {@code messages} are bound to.
-     * @param messages the messages to add to the instance.
+     * @param propertyName The name of a property {@code messages} are bound to.
+     * @param messages The messages to add to the instance.
      *
-     * @throws NullPointerException if either {@code messages} or
-     * {@code propertyName} is {@code null}.
+     * @throws NullPointerException if either {@code messages} or {@code propertyName} is {@code null}.
      */
-    public final void addMessages( final String propertyName,
-        final Messages messages )
+    public final void addMessages( final String propertyName, final Messages messages )
     {
         if ( propertyName == null )
         {
@@ -168,8 +156,8 @@ public class IllegalTransactionException
     /**
      * Gets all messages describing the exception.
      *
-     * @return an array of messages describing the exception or an empty array
-     * if the instance does not hold any messages.
+     * @return An array of messages describing the exception or an empty array if the instance does not hold any
+     * messages.
      */
     public Message[] getMessages()
     {
@@ -184,14 +172,12 @@ public class IllegalTransactionException
     }
 
     /**
-     * Gets messages bound to a property removing these messages from the
-     * instance.
+     * Gets messages bound to a property removing these messages from the instance.
      *
      * @param propertyName the name of a property to return any messages for.
      *
-     * @return all messages bound to a property with name {@code propertyName}
-     * or an empty array if the instance does not hold messages for a property
-     * with name {@code propertyName}.
+     * @return All messages bound to a property with name {@code propertyName} or an empty array if the instance does
+     * not hold messages for a property with name {@code propertyName}.
      *
      * @throws NullPointerException if {@code propertyName} is {@code null}.
      */
@@ -203,18 +189,14 @@ public class IllegalTransactionException
         }
 
         final List msgs = (List) this.messages.remove( propertyName );
-        return msgs == null
-            ? new Message[ 0 ]
-            : (Message[]) msgs.toArray( new Message[ msgs.size() ] );
-
+        return msgs == null ? new Message[ 0 ] : (Message[]) msgs.toArray( new Message[ msgs.size() ] );
     }
 
     /**
      * Gets the names of all properties for which the exception holds messages.
      *
-     * @return an array of the names of all properties for which the exception
-     * holds messages or an empty array if the exception does not hold any
-     * message bound to a property.
+     * @return An array of the names of all properties for which the exception holds messages or an empty array if the
+     * exception does not hold any message bound to a property.
      */
     public String[] getPropertyNames()
     {
@@ -234,14 +216,13 @@ public class IllegalTransactionException
     /**
      * Creates a string representing the messages of the instance.
      *
-     * @return a string representing the messages of the instance.
+     * @return A string representing the messages of the instance.
      */
     private String internalString()
     {
         final StringBuffer buf = new StringBuffer( 200 ).append( '{' );
         final String[] propertyNames = this.getPropertyNames();
-        final List unspecifiedMsgs =
-            (List) this.messages.get( PROP_UNSPECIFIED );
+        final List unspecifiedMsgs = (List) this.messages.get( PROP_UNSPECIFIED );
 
         for ( int i = 0; i < propertyNames.length; i++ )
         {
@@ -252,9 +233,7 @@ public class IllegalTransactionException
             for ( Iterator it = msgs.iterator(); it.hasNext(); j++ )
             {
                 final Message msg = (Message) it.next();
-                buf.append( "[" ).append( j ).append( "]=" ).
-                    append( msg.getText( Locale.getDefault() ) );
-
+                buf.append( "[" ).append( j ).append( "]=" ).append( msg.getText( Locale.getDefault() ) );
                 if ( it.hasNext() )
                 {
                     buf.append( ", " );
@@ -282,9 +261,7 @@ public class IllegalTransactionException
             for ( Iterator it = unspecifiedMsgs.iterator(); it.hasNext(); i++ )
             {
                 final Message msg = (Message) it.next();
-                buf.append( "[" ).append( i ).append( "]=" ).
-                    append( msg.getText( Locale.getDefault() ) );
-
+                buf.append( "[" ).append( i ).append( "]=" ).append( msg.getText( Locale.getDefault() ) );
                 if ( it.hasNext() )
                 {
                     buf.append( ", " );
@@ -298,18 +275,14 @@ public class IllegalTransactionException
         return buf.toString();
     }
 
-    //---------------------------------------------IllegalTransactionException--
-    //--Object------------------------------------------------------------------
-
     /**
      * Returns a string representation of the object.
      *
-     * @return a string representation of the object.
+     * @return A string representation of the object.
      */
     public String toString()
     {
         return super.toString() + '\n' + this.internalString();
     }
 
-    //------------------------------------------------------------------Object--
 }

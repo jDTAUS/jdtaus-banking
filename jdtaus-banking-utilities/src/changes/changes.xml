@@ -7,9 +7,10 @@
     <author email="schulte2005@users.sourceforge.net">Christian Schulte</author>
   </properties>
   <body>
+    <!-- ******************************************************************* -->
     <release version="1.0" date="2007-06-01"
              description="First stable release."/>
-
+    <!-- ******************************************************************* -->
     <release version="1.0.1" date="2007-07-01"
              description="Bugfix release.">
 
@@ -19,7 +20,7 @@
       bankfiles instead of the hardcoded ISO-8859-1 encoding.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.0.2" date="2007-08-01"
              description="Maintenance release.">
 
@@ -30,7 +31,7 @@
       classes.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.1" date="2007-12-23"
              description="Feature enhancements.">
 
@@ -48,7 +49,7 @@
       </p></li></ul>]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.1.1" date="2007-12-25"
              description="Maintenance release.">
 
@@ -63,7 +64,7 @@
       instantiation.</blockquote></ul>]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.1.2" date="2008-03-13"
              description="Maintenance release.">
 
@@ -72,7 +73,7 @@
       releases.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.1.3" date="2008-06-20"
              description="Maintenance release.">
 
@@ -81,7 +82,7 @@
       to support records getting readded by an update with a more recent file.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.2" date="2008-10-28"
              description="Maintenance release.">
 
@@ -89,26 +90,33 @@
       Upgraded to latest core features.<ul>
       <li>Removed any internal properties resources and moved any messages to
       the META-INF/jdtaus/module.xml module descriptor.</li>
-      <li>Added support for compatibility checking.</li></ul>]]></action>
+      <li>Added support for compatibility checking.</li></ul>]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[
       Made swing text fields of package <code>org.jdtaus.banking.util.swing</code>
-      non-validating by default.]]></action>
+      non-validating by default.]]>
+      </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.8" date="2008-12-29"
              description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Upgraded to jDTAUS Core version 1.8 to support exchanging references to
-      the <code>java.util.Locale</code> implementation to use.]]></action>
+      the <code>java.util.Locale</code> implementation to use.]]>
+      </action>
     </release>
+    <!-- ******************************************************************* -->
     <release version="1.9" date="2009-07-02"
              description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Updated any references to the jDTAUS server to point to the SF.net
-      servers.]]></action>
+      servers.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[
-      Corrected GPG signatures.]]></action>
+      Corrected GPG signatures.]]>
+      </action>
     </release>
+    <!-- ******************************************************************* -->
     <release version="1.10" date="2009-07-14" description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Updated classes:<ul>
@@ -118,8 +126,10 @@
       <li>org.jdtaus.banking.util.swing.Referenznummer10TextField</li>
       <li>org.jdtaus.banking.util.swing.Referenznummer11TextField</li>
       <blockquote>To use a <code>DocumentFilter</code> for input validation
-      instead of an <code>InputVerifier</code>.</blockquote></ul>]]></action>
+      instead of an <code>InputVerifier</code>.</blockquote></ul>]]>
+      </action>
     </release>
+    <!-- ******************************************************************* -->
     <release version="1.10.1" date="2009-11-07" description="Bugfix release.">
       <action dev="schulte2005" type="fix"><![CDATA[
       Updated classes:<ul>
@@ -128,7 +138,12 @@
       to not convert <code>ß</code> characters to <code>SS</code> when
       properties <code>normalizing</code> and <code>validating</code> are set
       to <code>true</code>.</blockquote>
-      </ul>]]></action>
+      </ul>]]>
+      </action>
+    </release>
+    <!-- ******************************************************************* -->
+    <release version="1.11" date="2009-12-05" description="Feature enhancements.">
+      <action dev="schulte2005" type="update">No changes.</action>
     </release>
   </body>
 </document>

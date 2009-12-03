@@ -20,36 +20,29 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.ri.txtdirectory.test;
+package org.jdtaus.banking.ri.txtdirectory;
 
+import java.io.IOException;
 import java.net.URL;
-import org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis;
 
 /**
- * Tests the {@link XMLTextschluesselVerzeichnis} implementation.
+ * JAXP Textschlüssel resource provider interface.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
+ *
+ * @see JaxpTextschluesselVerzeichnis
  */
-public class XMLTextschluesselVerzeichnis_1_2_NoSchemaLocationTest
-    extends AbstractXMLTextschluesselVerzeichnisTest
+public interface JaxpTextschluesselProvider
 {
-    //--AbstractXMLTextschluesselVerzeichnisTest--------------------------------
 
-    protected ClassLoader getClassLoader()
-    {
-        final ResourceLoader cl =
-            new ResourceLoader( this.getClass().getClassLoader() );
+    /**
+     * Gets URLs to XML documents holding Textschlüssel instances.
+     *
+     * @return URLs to XML documents holding Textschlüssel instances.
+     *
+     * @throws IOException if providing the resources fails.
+     */
+    URL[] getResources() throws IOException;
 
-        cl.addResources( "META-INF/jdtaus/textschluessel.xml",
-                         new URL[]
-            {
-                this.getClass().getResource(
-                "textschluessel-no-schemalocation-1.2.xml" )
-            } );
-
-        return cl;
-    }
-
-    //--------------------------------AbstractXMLTextschluesselVerzeichnisTest--
 }

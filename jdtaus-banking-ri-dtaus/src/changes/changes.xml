@@ -7,9 +7,10 @@
     <author email="schulte2005@users.sourceforge.net">Christian Schulte</author>
   </properties>
   <body>
+    <!-- ******************************************************************* -->
     <release version="1.0" date="2007-06-01"
              description="First stable release."/>
-
+    <!-- ******************************************************************* -->
     <release version="1.1" date="2007-07-02"
              description="Feature enhancements.">
 
@@ -24,7 +25,7 @@
       introduced in the 1.1 SPI.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.2" date="2007-08-01"
              description="Maintenance release.">
 
@@ -35,7 +36,7 @@
       of methods introduced in the 1.2 API.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.3" date="2007-08-24"
              description="Feature enhancements.">
 
@@ -43,7 +44,7 @@
       Added implementations of methods introduced in the 1.3 API.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.3.1" date="2007-11-04"
              description="Maintenance release.">
 
@@ -59,7 +60,7 @@
       collected 250 messages.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.4" date="2007-12-26"
              description="Feature enhancements.">
 
@@ -71,7 +72,7 @@
       version 1.3</blockquote></ul>]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.4.1" date="2007-12-27"
              description="Maintenance release.">
 
@@ -79,7 +80,7 @@
       Added missing metadata.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.4.2" date="2007-12-28"
              description="Maintenance release.">
 
@@ -88,7 +89,7 @@
       <code>org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver</code>.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.4.3" date="2008-03-13"
              description="Maintenance release.">
 
@@ -96,7 +97,7 @@
       Updated to latest mojo releases.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.5" date="2008-04-13"
              description="Feature enhancements.">
 
@@ -105,7 +106,7 @@
       version.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.5.1" date="2008-07-06"
              description="Maintenance release.">
 
@@ -113,17 +114,18 @@
       Maven POM updates.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.6" date="2008-10-27"
              description="Maintenance release.">
 
-       <action dev="schulte2005" type="update"><![CDATA[
+      <action dev="schulte2005" type="update"><![CDATA[
       Upgraded to latest core features.<ul>
       <li>Removed any internal properties resources and moved any messages to
       the META-INF/jdtaus/module.xml module descriptor.</li>
-      <li>Added support for compatibility checking.</li></ul>]]></action>
+      <li>Added support for compatibility checking.</li></ul>]]>
+      </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.6-1" date="2008-11-28"
              description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
@@ -131,31 +133,36 @@
       version 1.7.]]>
       </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.8" date="2008-12-29"
              description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Upgraded to jDTAUS Core version 1.8 to support exchanging references to
-      the <code>java.util.Locale</code> implementation to use.]]></action>
+      the <code>java.util.Locale</code> implementation to use.]]>
+      </action>
     </release>
-
+    <!-- ******************************************************************* -->
     <release version="1.8.1" date="2009-05-19" description="Bugfix release.">
       <action dev="schulte2005" type="fix"><![CDATA[
       Prior to this version tape format extension records were written block
       aligned using a block size of 150 bytes. This version corrects the tape
       format implementation to correctly support non block aligned tape format
-      extension records.]]></action>
+      extension records.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[
-      Incorrect positions were reported when detecting illegal data.]]></action>
+      Incorrect positions were reported when detecting illegal data.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[
       A NullPointerException got thrown when updating a logical file with a
       Header instance having the createDate property equal to null instead
-      of an IllegalHeaderException.]]></action>
+      of an IllegalHeaderException.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[
       Updated classes DefaultHeaderValidator and DefaultTransactionValidator
       to correctly validate properties customer, executiveName and targetName
       disallowing empty texts. Prior to this version properties customer,
-      executiveName and targetName were allowed to be empty.]]></action>
+      executiveName and targetName were allowed to be empty.]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[
       Removed redundant checks of schedules and currency and Textschlüssel
       constraints during reading in favour of interfaces HeaderValidator and
@@ -168,18 +175,28 @@
       application needs to validate schedules, currencies and Textschlüssel
       information itself - that is - any validation performed during
       checksumming/reading is only used for detecting corrupted or unsupported
-      files.]]></action>
+      files.]]>
+      </action>
     </release>
+    <!-- ******************************************************************* -->
     <release version="1.9" date="2009-07-02"
              description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Updated any references to the jDTAUS server to point to the SF.net
-      servers.]]></action>
+      servers.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[
-      Corrected GPG signatures.]]></action>
+      Corrected GPG signatures.]]>
+      </action>
     </release>
+    <!-- ******************************************************************* -->
     <release version="1.10" date="2009-07-14" description="Maintenance release.">
-      <action dev="schulte2005" type="update"><![CDATA[No changes.]]></action>
+      <action dev="schulte2005" type="update"><![CDATA[No changes.]]>
+      </action>
+    </release>
+    <!-- ******************************************************************* -->
+    <release version="1.11" date="2009-12-05" description="Feature enhancements.">
+      <action dev="schulte2005" type="update">No changes.</action>
     </release>
   </body>
 </document>

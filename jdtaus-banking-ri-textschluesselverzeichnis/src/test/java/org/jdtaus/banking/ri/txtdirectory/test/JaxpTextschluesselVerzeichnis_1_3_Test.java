@@ -23,33 +23,26 @@
 package org.jdtaus.banking.ri.txtdirectory.test;
 
 import java.net.URL;
-import org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis;
+import org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselVerzeichnis;
 
 /**
- * Tests the {@link XMLTextschluesselVerzeichnis} implementation.
+ * Tests the {@link JaxpTextschluesselVerzeichnis} implementation.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class XMLTextschluesselVerzeichnis_1_1_NoSchemaLocationTest
-    extends AbstractXMLTextschluesselVerzeichnisTest
+public class JaxpTextschluesselVerzeichnis_1_3_Test extends AbstractJaxpTextschluesselVerzeichnisTest
 {
-    //--AbstractXMLTextschluesselVerzeichnisTest--------------------------------
 
     protected ClassLoader getClassLoader()
     {
-        final ResourceLoader cl =
-            new ResourceLoader( this.getClass().getClassLoader() );
-
-        cl.addResources( "META-INF/jdtaus/textschluessel.xml",
-                         new URL[]
+        final ResourceLoader cl = new ResourceLoader( this.getClass().getClassLoader() );
+        cl.addResources( "META-INF/jdtaus/textschluessel.xml", new URL[]
             {
-                this.getClass().getResource(
-                "textschluessel-no-schemalocation-1.1.xml" )
+                this.getClass().getResource( "textschluessel-1.3.xml" )
             } );
 
         return cl;
     }
 
-    //--------------------------------AbstractXMLTextschluesselVerzeichnisTest--
 }

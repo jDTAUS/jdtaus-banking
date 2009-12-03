@@ -108,6 +108,11 @@
     </dependency>
     <dependency>
       <groupId>org.jdtaus.banking</groupId>
+      <artifactId>jdtaus-banking-messages</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jdtaus.banking</groupId>
       <artifactId>jdtaus-banking-it</artifactId>
       <scope>test</scope>
     </dependency>

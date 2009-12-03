@@ -28,35 +28,29 @@ import org.jdtaus.banking.dtaus.Transaction;
 
 /**
  * Validates {@code Transaction} instances.
- * <p>jDTAUS Banking SPI {@code TransactionValidator} specification to be used
- * by implementations to validate {@code Transaction} instances to hold valid
- * values.</p>
+ * <p>jDTAUS Banking SPI {@code TransactionValidator} specification to be used by implementations to validate
+ * {@code Transaction} instances to hold valid values.</p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
 public interface TransactionValidator
 {
-    //--TransactionValidator----------------------------------------------------
 
     /**
-     * Checks a given {@code Transaction} instance to hold valid values for
-     * use with a given {@code LogicalFile}.
+     * Checks a given {@code Transaction} instance to hold valid values for use with a given {@code LogicalFile}.
      *
-     * @param lFile the logical file holding {@code transaction}.
-     * @param transaction the instance to check.
-     * @param result the validation result to be used or {@code null}.
+     * @param lFile The logical file holding {@code transaction}.
+     * @param transaction The instance to check.
+     * @param result The validation result to be used or {@code null}.
      *
-     * @return the validation result passed in as {@code result}
-     * (maybe {@code null} if the implementation did not detect illegal values).
+     * @return The validation result passed in as {@code result} (maybe {@code null} if the implementation did not
+     * detect illegal values).
      *
-     * @throws NullPointerException if either {@code lFile} or
-     * {@code transaction} is {@code null}.
+     * @throws NullPointerException if either {@code lFile} or {@code transaction} is {@code null}.
      * @throws IOException if reading fails.
      */
-    IllegalTransactionException assertValidTransaction(
-        LogicalFile lFile, Transaction transaction,
-        IllegalTransactionException result ) throws IOException;
+    IllegalTransactionException assertValidTransaction( LogicalFile lFile, Transaction transaction,
+                                                        IllegalTransactionException result ) throws IOException;
 
-    //----------------------------------------------------TransactionValidator--
 }

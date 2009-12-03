@@ -28,51 +28,43 @@ import org.jdtaus.banking.dtaus.LogicalFile;
 
 /**
  * Validates {@code Header} instances.
- * <p>jDTAUS Banking SPI {@code HeaderValidator} specification to be used by
- * implementations to validate {@code Header} instances to hold valid
- * values.</p>
+ * <p>jDTAUS Banking SPI {@code HeaderValidator} specification to be used by implementations to validate {@code Header}
+ * instances to hold valid values.</p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
 public interface HeaderValidator
 {
-    //--HeaderValidator---------------------------------------------------------
 
     /**
-     * Checks a given {@code Header} instance to hold valid values for
-     * creating a new {@code LogicalFile}.
+     * Checks a given {@code Header} instance to hold valid values for creating a new {@code LogicalFile}.
      *
-     * @param header the instance to check.
-     * @param result the validation result to be used or {@code null}.
+     * @param header The instance to check.
+     * @param result The validation result to be used or {@code null}.
      *
-     * @return the validation result passed in as {@code result}
-     * (maybe {@code null} if the implementation did not detect illegal values).
+     * @return The validation result passed in as {@code result} (maybe {@code null} if the implementation did not
+     * detect illegal values).
      *
      * @throws NullPointerException if {@code header} is {@code null}.
      */
-    IllegalHeaderException assertValidHeader(
-        Header header, IllegalHeaderException result );
+    IllegalHeaderException assertValidHeader( Header header, IllegalHeaderException result );
 
     /**
-     * Checks a given {@code Header} instance to hold valid values for
-     * updating a given {@code LogicalFile} with.
+     * Checks a given {@code Header} instance to hold valid values for updating a given {@code LogicalFile} with.
      *
-     * @param lFile the logical file to update with {@code header}.
-     * @param header the instance to check.
-     * @param counter a currency counter reflecting the state of {@code lFile}.
-     * @param result the validation result to be used or {@code null}.
+     * @param lFile The logical file to update with {@code header}.
+     * @param header The instance to check.
+     * @param counter A currency counter reflecting the state of {@code lFile}.
+     * @param result The validation result to be used or {@code null}.
      *
-     * @return the validation result passed in as {@code result}
-     * (maybe {@code null} if the implementation did not detect illegal values).
+     * @return The validation result passed in as {@code result} (maybe {@code null} if the implementation did not
+     * detect illegal values).
      *
-     * @throws NullPointerException if either {@code lFile}, {@code header} or
-     * {@code counter} is {@code null}.
+     * @throws NullPointerException if either {@code lFile}, {@code header} or {@code counter} is {@code null}.
      * @throws IOException if reading fails.
      */
-    IllegalHeaderException assertValidHeader(
-        LogicalFile lFile, Header header, CurrencyCounter counter,
-        IllegalHeaderException result ) throws IOException;
+    IllegalHeaderException assertValidHeader( LogicalFile lFile, Header header, CurrencyCounter counter,
+                                              IllegalHeaderException result ) throws IOException;
 
-    //---------------------------------------------------------HeaderValidator--
 }

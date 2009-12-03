@@ -1,5 +1,5 @@
 /*
- *  jDTAUS Banking RI Textschluesselverzeichnis
+ *  jDTAUS Banking RI CurrencyDirectory
  *  Copyright (c) 2005 Christian Schulte
  *
  *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
@@ -20,35 +20,30 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package org.jdtaus.banking.ri.txtdirectory.test;
+package org.jdtaus.banking.ri.currencydir.test;
 
 import java.net.URL;
-import org.jdtaus.banking.ri.txtdirectory.XMLTextschluesselVerzeichnis;
+import org.jdtaus.banking.ri.currencydir.JaxpCurrencyDirectory;
 
 /**
- * Tests the {@link XMLTextschluesselVerzeichnis} implementation.
+ * Tests the {@link JaxpCurrencyDirectory} implementation to support resources of the
+ * {@code http://jdtaus.org/banking/model} namespace.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class XMLTextschluesselVerzeichnis_1_2_Test
-    extends AbstractXMLTextschluesselVerzeichnisTest
+public class JaxpCurrencyDirectroy_1_2_Test extends AbstractJaxpCurrencyDirectoryTest
 {
-    //--AbstractXMLTextschluesselVerzeichnisTest--------------------------------
 
     protected ClassLoader getClassLoader()
     {
-        final ResourceLoader cl =
-            new ResourceLoader( this.getClass().getClassLoader() );
-
-        cl.addResources( "META-INF/jdtaus/textschluessel.xml",
-            new URL[]
+        final ResourceLoader cl = new ResourceLoader( this.getClass().getClassLoader() );
+        cl.addResources( "META-INF/jdtaus/currencies.xml", new URL[]
             {
-                this.getClass().getResource( "textschluessel-1.2.xml" )
+                this.getClass().getResource( "currencies-1.2.xml" )
             } );
 
         return cl;
     }
 
-    //--------------------------------AbstractXMLTextschluesselVerzeichnisTest--
 }
