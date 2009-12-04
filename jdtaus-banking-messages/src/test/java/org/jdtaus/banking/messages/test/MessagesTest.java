@@ -47,6 +47,8 @@ import org.jdtaus.banking.messages.IllegalFileLengthMessage;
 import org.jdtaus.banking.messages.IllegalScheduleMessage;
 import org.jdtaus.banking.messages.OutdatedBankleitzahlenVerzeichnisMessage;
 import org.jdtaus.banking.messages.ReadsBankleitzahlenDateiMessage;
+import org.jdtaus.banking.messages.ReadsCurrenciesMessage;
+import org.jdtaus.banking.messages.ReadsTextschluesselMessage;
 import org.jdtaus.banking.messages.SearchesBankleitzahlInfosMessage;
 import org.jdtaus.banking.messages.SearchesCurrenciesMessage;
 import org.jdtaus.banking.messages.SearchesTextschluesselMessage;
@@ -96,6 +98,8 @@ public class MessagesTest extends TestCase
         this.assertNotNull( new SearchesBankleitzahlInfosMessage() );
         this.assertNotNull( new SearchesCurrenciesMessage() );
         this.assertNotNull( new SearchesTextschluesselMessage() );
+        this.assertNotNull( new ReadsCurrenciesMessage() );
+        this.assertNotNull( new ReadsTextschluesselMessage() );
     }
 
     private void assertNotNull( final Message message )

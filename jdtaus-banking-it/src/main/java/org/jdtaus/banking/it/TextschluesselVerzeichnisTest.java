@@ -196,4 +196,14 @@ public class TextschluesselVerzeichnisTest
         }
     }
 
+    /**
+     * Tests the {@link TextschluesselVerzeichnis#searchTextschluessel(Boolean,Boolean,Date)} method to not return
+     * {@code null} references.
+     */
+    public void testSearchTextschluessel() throws Exception
+    {
+        assert this.getTextschluesselVerzeichnis() != null;
+        Assert.assertTrue( this.getTextschluesselVerzeichnis().searchTextschluessel( null, null, null ).length >= 0 );
+    }
+
 }

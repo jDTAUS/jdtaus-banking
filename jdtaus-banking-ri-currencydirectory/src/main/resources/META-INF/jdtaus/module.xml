@@ -103,6 +103,14 @@
             <container:text container:language="en"><![CDATA[Default number of milliseconds to pass before resources are checked for modifications.]]></container:text>
           </container:documentation>
         </container:property>
+        <container:property container:name="defaultMonitoringThreshold"
+                            container:type="java.lang.Long"
+                            container:value="1000">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default number of currencies for which progress monitoring gets enabled.]]></container:text>
+          </container:documentation>
+        </container:property>
       </container:properties>
       <container:messages>
         <container:reference container:name="noJAXPValidationWarning"/>
