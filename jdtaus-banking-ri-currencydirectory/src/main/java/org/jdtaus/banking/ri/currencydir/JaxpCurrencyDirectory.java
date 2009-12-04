@@ -114,25 +114,33 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
     /** Number of milliseconds to pass before resources are checked for modifications. */
     private Long reloadIntervalMillis;
 
+    /** Number of currencies for which progress monitoring gets enabled. */
+    private Long monitoringThreshold;
+
     /**
      * Creates a new {@code JaxpCurrencyDirectory} instance taking the number of milliseconds to pass before resources
-     * are checked for modifications.
+     * are checked for modifications and the number of currencies for which progress monitoring gets enabled.
      *
      * @param reloadIntervalMillis Number of milliseconds to pass before resources are checked for modifications.
+     * @param monitoringThreshold Number of currencies for which progress monitoring gets enabled.
      */
-    public JaxpCurrencyDirectory( final long reloadIntervalMillis )
+    public JaxpCurrencyDirectory( final long reloadIntervalMillis, final long monitoringThreshold )
     {
         this();
         if ( reloadIntervalMillis > 0 )
         {
             this.reloadIntervalMillis = new Long( reloadIntervalMillis );
         }
+        if ( monitoringThreshold > 0 )
+        {
+            this.monitoringThreshold = new Long( monitoringThreshold );
+        }
     }
 
     /**
      * Gets the number of milliseconds to pass before resources are checked for modifications.
      *
-     * @return the number of milliseconds to pass before resources are checked for modifications.
+     * @return The number of milliseconds to pass before resources are checked for modifications.
      */
     public long getReloadIntervalMillis()
     {
@@ -142,6 +150,21 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
         }
 
         return this.reloadIntervalMillis.longValue();
+    }
+
+    /**
+     * Gets the number of currencies for which progress monitoring gets enabled.
+     *
+     * @return The number of currencies for which progress monitoring gets enabled.
+     */
+    public long getMonitoringThreshold()
+    {
+        if ( this.monitoringThreshold == null )
+        {
+            this.monitoringThreshold = this.getDefaultMonitoringThreshold();
+        }
+
+        return this.monitoringThreshold.longValue();
     }
 
     public Currency[] getDtausCurrencies( final Date date )
@@ -167,7 +190,10 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
 
         try
         {
-            this.getTaskMonitor().monitor( task );
+            if ( task.getMaximum() > this.getMonitoringThreshold() )
+            {
+                this.getTaskMonitor().monitor( task );
+            }
 
             for ( final Iterator it = this.isoMap.keySet().iterator(); it.hasNext() && !task.isCancelled(); )
             {
@@ -190,7 +216,10 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
         }
         finally
         {
-            this.getTaskMonitor().finish( task );
+            if ( task.getMaximum() > this.getMonitoringThreshold() )
+            {
+                this.getTaskMonitor().finish( task );
+            }
         }
     }
 
@@ -336,6 +365,10 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
         if ( this.getReloadIntervalMillis() < 0L )
         {
             throw new PropertyException( "reloadIntervalMillis", Long.toString( this.getReloadIntervalMillis() ) );
+        }
+        if ( this.getMonitoringThreshold() < 0L )
+        {
+            throw new PropertyException( "monitoringThreshold", Long.toString( this.getMonitoringThreshold() ) );
         }
     }
 
@@ -716,6 +749,18 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
     {
         return (java.lang.Long) ContainerFactory.getContainer().
             getProperty( this, "defaultReloadIntervalMillis" );
+
+    }
+
+    /**
+     * Gets the value of property <code>defaultMonitoringThreshold</code>.
+     *
+     * @return Default number of currencies for which progress monitoring gets enabled.
+     */
+    private java.lang.Long getDefaultMonitoringThreshold()
+    {
+        return (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "defaultMonitoringThreshold" );
 
     }
 

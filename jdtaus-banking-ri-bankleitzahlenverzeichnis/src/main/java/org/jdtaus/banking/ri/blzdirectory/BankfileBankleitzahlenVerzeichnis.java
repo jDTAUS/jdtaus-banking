@@ -92,20 +92,57 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
     /** Last modification of the provider checked for modifications. */
     private long lastModifiedMillis;
 
+    /** Number of bank codes for which progress monitoring gets enabled. */
+    private Long monitoringThreshold;
+
     /**
      * Creates a new {@code BankfileBankleitzahlenVerzeichnis} instance taking the number of milliseconds to pass before
-     * resources are checked for modifications.
+     * resources are checked for modifications and the number of bank codes for which progress monitoring gets enabled.
      *
-     * @param reloadIntervalMillis number of milliseconds to pass before resources are checked for modifications.
+     * @param reloadIntervalMillis Number of milliseconds to pass before resources are checked for modifications.
+     * @param monitoringThreshold Number of bank codes for which progress monitoring gets enabled.
      */
-    public BankfileBankleitzahlenVerzeichnis( final long reloadIntervalMillis )
+    public BankfileBankleitzahlenVerzeichnis( final long reloadIntervalMillis, final long monitoringThreshold )
     {
         this();
-
         if ( reloadIntervalMillis > 0 )
         {
             this.reloadIntervalMillis = new Long( reloadIntervalMillis );
         }
+        if ( monitoringThreshold > 0 )
+        {
+            this.monitoringThreshold = new Long( monitoringThreshold );
+        }
+    }
+
+    /**
+     * Gets the number of milliseconds to pass before providers are checked for modifications.
+     *
+     * @return The number of milliseconds to pass before providers are checked for modifications.
+     */
+    public long getReloadIntervalMillis()
+    {
+        if ( this.reloadIntervalMillis == null )
+        {
+            this.reloadIntervalMillis = this.getDefaultReloadIntervalMillis();
+        }
+
+        return this.reloadIntervalMillis.longValue();
+    }
+
+    /**
+     * Gets the number of bank codes for which progress monitoring gets enabled.
+     *
+     * @return The number of bank codes for which progress monitoring gets enabled.
+     */
+    public long getMonitoringThreshold()
+    {
+        if ( this.monitoringThreshold == null )
+        {
+            this.monitoringThreshold = this.getDefaultMonitoringThreshold();
+        }
+
+        return this.monitoringThreshold.longValue();
     }
 
     public Date getDateOfExpiration()
@@ -187,7 +224,10 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
         try
         {
-            this.getTaskMonitor().monitor( task );
+            if ( task.getMaximum() > this.getMonitoringThreshold() )
+            {
+                this.getTaskMonitor().monitor( task );
+            }
 
             final NumberFormat plzFmt = new DecimalFormat( "00000" );
             final Pattern namePattern =
@@ -234,23 +274,11 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         }
         finally
         {
-            this.getTaskMonitor().finish( task );
+            if ( task.getMaximum() > this.getMonitoringThreshold() )
+            {
+                this.getTaskMonitor().finish( task );
+            }
         }
-    }
-
-    /**
-     * Gets the number of milliseconds to pass before providers are checked for modifications.
-     *
-     * @return The number of milliseconds to pass before providers are checked for modifications.
-     */
-    public long getReloadIntervalMillis()
-    {
-        if ( this.reloadIntervalMillis == null )
-        {
-            this.reloadIntervalMillis = this.getDefaultReloadIntervalMillis();
-        }
-
-        return this.reloadIntervalMillis.longValue();
     }
 
     /**
@@ -635,6 +663,18 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
     {
         return (java.lang.Long) ContainerFactory.getContainer().
             getProperty( this, "defaultReloadIntervalMillis" );
+
+    }
+
+    /**
+     * Gets the value of property <code>defaultMonitoringThreshold</code>.
+     *
+     * @return Default number of bank codes for which progress monitoring gets enabled.
+     */
+    private java.lang.Long getDefaultMonitoringThreshold()
+    {
+        return (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "defaultMonitoringThreshold" );
 
     }
 

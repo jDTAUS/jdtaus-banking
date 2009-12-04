@@ -114,19 +114,27 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     /** Number of milliseconds to pass before resources are checked for modifications. */
     private Long reloadIntervalMillis;
 
+    /** Number of Textschluessel for which progress monitoring gets enabled. */
+    private Long monitoringThreshold;
+
     /**
      * Creates a new {@code XMLTextschluesselVerzeichnis} instance taking the number of milliseconds to pass before
-     * resources are checked for modifications.
+     * resources are checked for modifications and the number of Textschluessel for which progress monitoring gets
+     * enabled.
      *
      * @param reloadIntervalMillis Number of milliseconds to pass before resources are checked for modifications.
+     * @param monitoringThreshold Number of Textschluessel for which progress monitoring gets enabled.
      */
-    public JaxpTextschluesselVerzeichnis( final long reloadIntervalMillis )
+    public JaxpTextschluesselVerzeichnis( final long reloadIntervalMillis, final long monitoringThreshold )
     {
         this();
-
         if ( reloadIntervalMillis > 0 )
         {
             this.reloadIntervalMillis = new Long( reloadIntervalMillis );
+        }
+        if ( monitoringThreshold > 0 )
+        {
+            this.monitoringThreshold = new Long( monitoringThreshold );
         }
     }
 
@@ -143,6 +151,21 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         }
 
         return this.reloadIntervalMillis.longValue();
+    }
+
+    /**
+     * Gets the number of Textschluessel for which progress monitoring gets enabled.
+     *
+     * @return The number of Textschluessel for which progress monitoring gets enabled.
+     */
+    public long getMonitoringThreshold()
+    {
+        if ( this.monitoringThreshold == null )
+        {
+            this.monitoringThreshold = this.getDefaultMonitoringThreshold();
+        }
+
+        return this.monitoringThreshold.longValue();
     }
 
     public Textschluessel[] getTextschluessel()
@@ -231,7 +254,10 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
 
         try
         {
-            this.getTaskMonitor().monitor( task );
+            if ( task.getMaximum() > this.getMonitoringThreshold() )
+            {
+                this.getTaskMonitor().monitor( task );
+            }
 
             for ( int i = this.instances.length - 1; i >= 0 && !task.isCancelled(); i-- )
             {
@@ -254,7 +280,10 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         }
         finally
         {
-            this.getTaskMonitor().finish( task );
+            if ( task.getMaximum() > this.getMonitoringThreshold() )
+            {
+                this.getTaskMonitor().finish( task );
+            }
         }
     }
 
@@ -368,6 +397,10 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         if ( this.getReloadIntervalMillis() < 0L )
         {
             throw new PropertyException( "reloadIntervalMillis", Long.toString( this.getReloadIntervalMillis() ) );
+        }
+        if ( this.getMonitoringThreshold() < 0L )
+        {
+            throw new PropertyException( "monitoringThreshold", Long.toString( this.getMonitoringThreshold() ) );
         }
     }
 
@@ -893,6 +926,18 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     {
         return (java.lang.Long) ContainerFactory.getContainer().
             getProperty( this, "defaultReloadIntervalMillis" );
+
+    }
+
+    /**
+     * Gets the value of property <code>defaultMonitoringThreshold</code>.
+     *
+     * @return Default number of Textschlüssel for which progress monitoring gets enabled.
+     */
+    private java.lang.Long getDefaultMonitoringThreshold()
+    {
+        return (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "defaultMonitoringThreshold" );
 
     }
 

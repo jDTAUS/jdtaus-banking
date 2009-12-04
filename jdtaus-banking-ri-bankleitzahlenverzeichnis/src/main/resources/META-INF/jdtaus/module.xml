@@ -132,6 +132,14 @@
             </container:text>
           </container:documentation>
         </container:property>
+        <container:property container:name="defaultMonitoringThreshold"
+                            container:type="java.lang.Long"
+                            container:value="1000">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default number of bank codes for which progress monitoring gets enabled.]]></container:text>
+          </container:documentation>
+        </container:property>
       </container:properties>
       <container:messages>
         <container:message container:name="outdatedInfo">
