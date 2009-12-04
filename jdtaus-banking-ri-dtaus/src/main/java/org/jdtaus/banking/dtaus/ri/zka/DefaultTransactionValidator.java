@@ -70,8 +70,9 @@ public final class DefaultTransactionValidator implements TransactionValidator
         this.assertValidProperties();
         final Map properties = new HashMap( 20 );
         final LogicalFileType lFileType = lFile.getHeader().getType();
-        final Textschluessel[] allowedTypes = this.getTextschluesselVerzeichnis().search(
-            lFileType.isDebitAllowed(), lFileType.isRemittanceAllowed(), lFile.getHeader().getCreateDate() );
+        final Textschluessel[] allowedTypes = this.getTextschluesselVerzeichnis().searchTextschluessel(
+            Boolean.valueOf( lFileType.isDebitAllowed() ), Boolean.valueOf( lFileType.isRemittanceAllowed() ),
+            lFile.getHeader().getCreateDate() );
 
         if ( transaction.getExecutiveAccount() == null )
         {
