@@ -176,4 +176,16 @@ public class BankleitzahlenVerzeichnisTest
         Assert.assertTrue( this.getBankleitzahlenVerzeichnis().search( null, null, null, true ).length >= 0 );
     }
 
+    /**
+     * Tests the {@link BankleitzahlenVerzeichnis#searchBankleitzahlInfos(String,String,String,Boolean,Boolean)} method
+     * to return sane values.
+     */
+    public void testSearchBankleitzahlInfos() throws Exception
+    {
+        assert this.getBankleitzahlenVerzeichnis() != null;
+        Assert.assertTrue( this.getBankleitzahlenVerzeichnis().searchBankleitzahlInfos(
+            null, null, null, null, null ).length >= 0 );
+
+    }
+
 }
