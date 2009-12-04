@@ -33,7 +33,7 @@
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.12-SNAPSHOT</version>
+  <version>1.11-SNAPSHOT</version>
   <description>jDTAUS Banking parent module.</description>
   <inceptionYear>2005</inceptionYear>
   <prerequisites>
@@ -617,63 +617,63 @@
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-banking-api</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-banking-api</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
         <classifier>tests</classifier>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-charsets</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-it</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-messages</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-schemas</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-spi</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-utilities</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking.dtaus</groupId>
         <artifactId>jdtaus-banking-ri-dtaus</artifactId>
-        <version>1.12-SNAPSHOT</version>
+        <version>1.11-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
