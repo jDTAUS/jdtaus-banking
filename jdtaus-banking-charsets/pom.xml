@@ -60,16 +60,10 @@
         <configuration>
           <forkMode>once</forkMode>
           <skip>false</skip>
-          <systemProperties>
-            <property>
-              <name>java.util.logging.config.file</name>
-              <value>${project.build.testOutputDirectory}/logging.properties</value>
-            </property>
-            <property>
-              <name>java.ext.dirs</name>
-              <value>${project.build.outputDirectory}</value>
-            </property>
-          </systemProperties>
+          <systemPropertyVariables>
+            <java.util.logging.config.file>${project.build.testOutputDirectory}/logging.properties</java.util.logging.config.file>
+            <java.ext.dirs>${project.build.outputDirectory}</java.ext.dirs>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>
