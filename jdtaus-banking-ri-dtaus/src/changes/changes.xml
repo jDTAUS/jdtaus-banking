@@ -7,13 +7,10 @@
     <author email="schulte2005@users.sourceforge.net">Christian Schulte</author>
   </properties>
   <body>
-    <!-- ******************************************************************* -->
-    <release version="1.0" date="2007-06-01"
-             description="First stable release."/>
-    <!-- ******************************************************************* -->
-    <release version="1.1" date="2007-07-02"
-             description="Feature enhancements.">
-
+    <!-- *********************************************************************************************************** -->
+    <release version="1.0" date="2007-06-01" description="First stable release."/>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.1" date="2007-07-02" description="Feature enhancements.">
       <action dev="schulte2005" type="fix"><![CDATA[
       Fixed the implementation name from <code>jDTAUS Banking RI DTAUS</code>
       to <code>jDTAUS Banking SPI</code>.]]>
@@ -25,10 +22,8 @@
       introduced in the 1.1 SPI.]]>
       </action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.2" date="2007-08-01"
-             description="Maintenance release.">
-
+    <!-- *********************************************************************************************************** -->
+    <release version="1.2" date="2007-08-01" description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Updated the XML module descriptor to the 1.1 model version.
       Removed any <code>Message</code>s in favour of the new
@@ -36,18 +31,12 @@
       of methods introduced in the 1.2 API.]]>
       </action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.3" date="2007-08-24"
-             description="Feature enhancements.">
-
-      <action dev="schulte2005" type="update"><![CDATA[
-      Added implementations of methods introduced in the 1.3 API.]]>
-      </action>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.3" date="2007-08-24" description="Feature enhancements.">
+      <action dev="schulte2005" type="update">Added implementations of methods introduced in the 1.3 API.</action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.3.1" date="2007-11-04"
-             description="Maintenance release.">
-
+    <!-- *********************************************************************************************************** -->
+    <release version="1.3.1" date="2007-11-04" description="Maintenance release.">
       <action dev="schulte2005" type="fix"><![CDATA[
       When an extension record's value is invalid, its type is
       reported as invalid, although it is valid.]]>
@@ -60,10 +49,8 @@
       collected 250 messages.]]>
       </action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.4" date="2007-12-26"
-             description="Feature enhancements.">
-
+    <!-- *********************************************************************************************************** -->
+    <release version="1.4" date="2007-12-26" description="Feature enhancements.">
       <action dev="schulte2005" type="update"><![CDATA[
       Added classes<ul>
       <li><code>org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver</code></li>
@@ -72,52 +59,29 @@
       version 1.3</blockquote></ul>]]>
       </action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.4.1" date="2007-12-27"
-             description="Maintenance release.">
-
-      <action dev="schulte2005" type="fix"><![CDATA[
-      Added missing metadata.]]>
-      </action>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.4.1" date="2007-12-27" description="Maintenance release.">
+      <action dev="schulte2005" type="fix">Added missing metadata.</action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.4.2" date="2007-12-28"
-             description="Maintenance release.">
-
+    <!-- *********************************************************************************************************** -->
+    <release version="1.4.2" date="2007-12-28" description="Maintenance release.">
       <action dev="schulte2005" type="fix"><![CDATA[
       Added a missing <code>final</code> modifier to class
       <code>org.jdtaus.banking.dtaus.ri.zka.PhysicalFileExceptionMessageResolver</code>.]]>
       </action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.4.3" date="2008-03-13"
-             description="Maintenance release.">
-
-      <action dev="schulte2005" type="fix"><![CDATA[
-      Updated to latest mojo releases.]]>
-      </action>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.4.3" date="2008-03-13" description="Maintenance release.">
+      <action dev="schulte2005" type="fix">Updated to latest mojo releases.</action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.5" date="2008-04-13"
-             description="Feature enhancements.">
-
-      <action dev="schulte2005" type="update"><![CDATA[
-      Added support for configuration properties introduced in the 1.4 API
-      version.]]>
-      </action>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.5" date="2008-04-13" description="Feature enhancements.">
+      <action dev="schulte2005" type="update">Added support for configuration properties introduced in the 1.4 API version.</action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.5.1" date="2008-07-06"
-             description="Maintenance release.">
-
-      <action dev="schulte2005" type="update"><![CDATA[
-      Maven POM updates.]]>
-      </action>
-    </release>
-    <!-- ******************************************************************* -->
-    <release version="1.6" date="2008-10-27"
-             description="Maintenance release.">
-
+    <!-- *********************************************************************************************************** -->
+    <release version="1.5.1" date="2008-07-06" description="Maintenance release."/>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.6" date="2008-10-27" description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Upgraded to latest core features.<ul>
       <li>Removed any internal properties resources and moved any messages to
@@ -125,23 +89,18 @@
       <li>Added support for compatibility checking.</li></ul>]]>
       </action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.6-1" date="2008-11-28"
-             description="Maintenance release.">
-      <action dev="schulte2005" type="update"><![CDATA[
-      Added support for Textschlüssel validity dates introduced in API
-      version 1.7.]]>
-      </action>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.6-1" date="2008-11-28" description="Maintenance release.">
+      <action dev="schulte2005" type="update">Added support for Textschlüssel validity dates introduced in API version 1.7.</action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.8" date="2008-12-29"
-             description="Maintenance release.">
+    <!-- *********************************************************************************************************** -->
+    <release version="1.8" date="2008-12-29" description="Maintenance release.">
       <action dev="schulte2005" type="update"><![CDATA[
       Upgraded to jDTAUS Core version 1.8 to support exchanging references to
       the <code>java.util.Locale</code> implementation to use.]]>
       </action>
     </release>
-    <!-- ******************************************************************* -->
+    <!-- *********************************************************************************************************** -->
     <release version="1.8.1" date="2009-05-19" description="Bugfix release.">
       <action dev="schulte2005" type="fix"><![CDATA[
       Prior to this version tape format extension records were written block
@@ -178,25 +137,16 @@
       files.]]>
       </action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.9" date="2009-07-02"
-             description="Maintenance release.">
-      <action dev="schulte2005" type="update"><![CDATA[
-      Updated any references to the jDTAUS server to point to the SF.net
-      servers.]]>
-      </action>
-      <action dev="schulte2005" type="fix"><![CDATA[
-      Corrected GPG signatures.]]>
-      </action>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.9" date="2009-07-02" description="Maintenance release.">
+      <action dev="schulte2005" type="update">Updated any references to the jDTAUS server to point to the SF.net servers.</action>
+      <action dev="schulte2005" type="fix">Corrected GPG signatures.</action>
     </release>
-    <!-- ******************************************************************* -->
-    <release version="1.10" date="2009-07-14" description="Maintenance release.">
-      <action dev="schulte2005" type="update"><![CDATA[No changes.]]>
-      </action>
-    </release>
-    <!-- ******************************************************************* -->
-    <release version="1.11" date="2009-12-05" description="Feature enhancements.">
-      <action dev="schulte2005" type="update">No changes.</action>
-    </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.10" date="2009-07-14" description="Maintenance release."/>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11" date="2009-12-05" description="Maintenance release."/>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.1" date="2010-02-26" description="Maintenance release."/>
   </body>
 </document>
