@@ -767,8 +767,8 @@
     </profile>
   </profiles>
   <properties>
-    <jdtausCoreVersion>1.9.3</jdtausCoreVersion>
-    <jdtausContainerMojoVersion>3.5</jdtausContainerMojoVersion>
+    <jdtausCoreVersion>1.9.4</jdtausCoreVersion>
+    <jdtausContainerMojoVersion>3.6</jdtausContainerMojoVersion>
     <mavenJavadocPluginVersion>2.6.1</mavenJavadocPluginVersion>
     <mavenJxrPluginVersion>2.1</mavenJxrPluginVersion>
     <mavenPmdPluginVersion>2.4</mavenPmdPluginVersion>
