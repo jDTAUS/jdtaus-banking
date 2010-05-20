@@ -22,10 +22,10 @@
  */
 package org.jdtaus.banking.util;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.HashMap;
@@ -394,10 +394,10 @@ public final class BankleitzahlenDatei
     }
 
     /**
-     * Reads a Bankleitzahlendatei form an URL initializing the instance to
+     * Reads a Bankleitzahlendatei from an URL initializing the instance to
      * hold its data.
      *
-     * @param resource an URL to a Bankleitzahlendatei.
+     * @param resource An URL to a Bankleitzahlendatei.
      *
      * @throws NullPointerException if {@code resource} is {@code null}.
      * @throws IllegalArgumentException if {@code resource} does not provide
@@ -406,11 +406,6 @@ public final class BankleitzahlenDatei
      */
     private void readBankfile( final URL resource ) throws IOException
     {
-        String line = null;
-        InputStream stream = null;
-        BankleitzahlInfo rec = null;
-        final BufferedReader reader;
-
         if ( resource == null )
         {
             throw new NullPointerException( "resource" );
@@ -420,21 +415,40 @@ public final class BankleitzahlenDatei
 
         if ( this.getLogger().isDebugEnabled() )
         {
-            this.getLogger().debug(
-                this.getFileNameInfoMessage( this.getLocale(),
-                                             resource.toExternalForm() ) );
+            this.getLogger().debug( this.getFileNameInfoMessage(
+                this.getLocale(), resource.toExternalForm() ) );
 
         }
+
+        InputStream stream = null;
 
         try
         {
             stream = resource.openStream();
-            reader = new BufferedReader( new InputStreamReader(
-                                         stream, this.getEncoding() ) );
+            final LineNumberReader reader = new LineNumberReader(
+                new InputStreamReader( stream, this.getEncoding() ) );
 
+            String line;
+            boolean emptyLine = false;
             while ( ( line = reader.readLine() ) != null )
             {
-                rec = new BankleitzahlInfo();
+                if ( line.trim().length() == 0 )
+                {
+                    emptyLine = true;
+                    continue;
+                }
+
+                if ( emptyLine )
+                {
+                    throw new IllegalArgumentException(
+                        this.getUnexpectedDataMessage(
+                        this.getLocale(), new Integer( reader.getLineNumber() ),
+                        resource.toExternalForm() ) );
+
+                }
+
+
+                final BankleitzahlInfo rec = new BankleitzahlInfo();
                 rec.parse( line );
 
                 if ( this.records.put( rec.getSerialNumber(), rec ) != null )
@@ -445,11 +459,11 @@ public final class BankleitzahlenDatei
 
                 }
             }
-
-            this.cachedRecords = null;
         }
         finally
         {
+            this.cachedRecords = null;
+
             if ( stream != null )
             {
                 stream.close();
@@ -600,6 +614,31 @@ public final class BankleitzahlenDatei
                 new Object[]
                 {
                     serialNumber
+                });
+
+    }
+
+    /**
+     * Gets the text of message <code>unexpectedData</code>.
+     * <blockquote><pre>Unerwartete Daten in Zeile {0,number} bei der Verarbeitung von {1}.</pre></blockquote>
+     * <blockquote><pre>Unexpected data at line {0,number} processing {1}.</pre></blockquote>
+     *
+     * @param locale The locale of the message instance to return.
+     * @param lineNumber format argument.
+     * @param resourceName format argument.
+     *
+     * @return the text of message <code>unexpectedData</code>.
+     */
+    private String getUnexpectedDataMessage( final Locale locale,
+            final java.lang.Number lineNumber,
+            final java.lang.String resourceName )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "unexpectedData", locale,
+                new Object[]
+                {
+                    lineNumber,
+                    resourceName
                 });
 
     }

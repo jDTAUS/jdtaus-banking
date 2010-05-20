@@ -23,5 +23,13 @@
       <li><a href="jdtaus-banking-ri-dtaus/changes-report.html">jDTAUS Banking RI DTAUS</a></li></ul>]]>
       </action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.2" date="2010-05-21" description="Maintenance release.">
+      <action dev="schulte2005" type="update"><![CDATA[
+      See<ul>
+      <li><a href="jdtaus-banking-utilities/changes-report.html">jDTAUS Banking Utilities</a></li>
+      <li><a href="jdtaus-banking-ri-bankleitzahlenverzeichnis/changes-report.html">jDTAUS Banking RI Bankleitzahlenverzeichnis</a></li></ul>]]>
+      </action>
+    </release>
   </body>
 </document>

@@ -96,6 +96,7 @@
         <container:reference container:name="removeRecordInfo"/>
         <container:reference container:name="cannotAddDuplicateRecord"/>
         <container:reference container:name="cannotModifyNonexistentRecord"/>
+        <container:reference container:name="unexpectedData"/>
       </container:messages>
     </container:implementation>
 
@@ -308,6 +309,17 @@
       </container:template>
       <container:arguments>
         <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <!-- ******************************************************************* -->
+    <container:message container:name="unexpectedData">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Unexpected data at line {0,number} processing {1}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Unerwartete Daten in Zeile {0,number} bei der Verarbeitung von {1}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="lineNumber" container:type="number"/>
+        <container:argument container:index="1" container:name="resourceName" container:type="text"/>
       </container:arguments>
     </container:message>
     <!-- ******************************************************************* -->
