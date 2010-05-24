@@ -33,16 +33,16 @@
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.11.3-SNAPSHOT</version>
+  <version>1.11.2</version>
   <description>jDTAUS Banking parent module.</description>
   <inceptionYear>2005</inceptionYear>
   <prerequisites>
     <maven>2.0.10</maven>
   </prerequisites>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</url>
+    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-1.11.2</connection>
+    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-1.11.2</developerConnection>
+    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/tags/jdtaus-banking-1.11.2</url>
   </scm>
   <contributors>
     <contributor>
@@ -614,63 +614,63 @@
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-banking-api</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-banking-api</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
         <classifier>tests</classifier>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-charsets</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-it</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-messages</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-schemas</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-spi</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-utilities</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking.dtaus</groupId>
         <artifactId>jdtaus-banking-ri-dtaus</artifactId>
-        <version>1.11.3-SNAPSHOT</version>
+        <version>1.11.2</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
