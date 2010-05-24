@@ -74,6 +74,13 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
+            <index>true</index>
+            <addMavenDescriptor>false</addMavenDescriptor>
+            <compress>true</compress>
+            <manifestEntries>
+              <Build-Date>${buildNumber}</Build-Date>
+              <Maven-Version>${maven.version}</Maven-Version>
+            </manifestEntries>
             <manifestSections>
               <manifestSection>
                 <name>org/jdtaus/banking/model/jdtaus-banking-1.0.xsd</name>
@@ -96,4 +103,32 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>jdtaus-release</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>javadoc</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <classifier>javadoc</classifier>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
