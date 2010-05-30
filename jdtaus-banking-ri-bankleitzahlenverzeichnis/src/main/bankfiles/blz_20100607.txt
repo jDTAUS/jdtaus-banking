@@ -1606,16 +1606,16 @@
 218413281Commerzbank                                               25534Brunsbüttel                        Commerzbank Brunsbüttel    24201COBADEFF21913005030U000000000
 218517201Alte Marner Sparkasse -alt-                               25705Marne, Holst                       Alte Marner Spk -alt-      52137NOLADE21MRNA2008683M000000000
 218518301Verbandssparkasse Meldorf -alt-                           25700Meldorf                            Verb Spk Meldorf -alt-     52135NOLADE21MLDA2006288M000000000
-218523101Sparkasse Hennstedt-Wesselburen                           25764Wesselburen                        Spk Hennstedt-Wesselburen  52144NOLADE21WEB00002256M000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25774Lunden, Holst                      Spk Hennstedt-Wesselburen  52144           00001796U000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25792Neuenkirchen, Dithm                Spk Hennstedt-Wesselburen  52144           00001822D000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25794Pahlen                             Spk Hennstedt-Wesselburen  52144           00002073U000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25795Weddingstedt                       Spk Hennstedt-Wesselburen  52144           00002130U000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25782Tellingstedt                       Spk Hennstedt-Wesselburen  52144           00002187U000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25746Heide, Holst                       Spk Hennstedt-Wesselburen  52144           00002245U000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25774Hemme, Holst                       Spk Hennstedt-Wesselburen  52144           00002248D000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25779Hennstedt, Dithm                   Spk Hennstedt-Wesselburen  52144           00002251U000000000
-218523102Sparkasse Hennstedt-Wesselburen                           25797Wöhrden, Dithm                     Spk Hennstedt-Wesselburen  52144           00002267U000000000
+218523101Sparkasse Hennstedt-Wesselburen                           25764Wesselburen                        Spk Hennstedt-Wesselburen  52144NOLADE21WEBA2002256M000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25774Lunden, Holst                      Spk Hennstedt-Wesselburen  52144           A2001796U000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25792Neuenkirchen, Dithm                Spk Hennstedt-Wesselburen  52144           A2001822D000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25794Pahlen                             Spk Hennstedt-Wesselburen  52144           A2002073U000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25795Weddingstedt                       Spk Hennstedt-Wesselburen  52144           A2002130U000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25782Tellingstedt                       Spk Hennstedt-Wesselburen  52144           A2002187U000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25746Heide, Holst                       Spk Hennstedt-Wesselburen  52144           A2002245U000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25774Hemme, Holst                       Spk Hennstedt-Wesselburen  52144           A2002248D000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25779Hennstedt, Dithm                   Spk Hennstedt-Wesselburen  52144           A2002251U000000000
+218523102Sparkasse Hennstedt-Wesselburen                           25797Wöhrden, Dithm                     Spk Hennstedt-Wesselburen  52144           A2002267U000000000
 218604181Raiffeisenbank Heide                                      25737Heide, Holst                       Raiffeisenbank Heide       62024GENODEF1RHE32016868U000000000
 218604182Raiffeisenbank Heide                                      25767Albersdorf, Holst                  Raiffeisenbank Heide       62024           32016737U000000000
 218604182Raiffeisenbank Heide                                      25779Hennstedt, Dithm                   Raiffeisenbank Heide       62024           32016876U000000000
@@ -6332,8 +6332,8 @@
 500400331Commerzbank Gf BRS                                        60005Frankfurt am Main                  Commerzbank Gf BRS Ffm          COBADEF1BRS09043729U000000000
 500400401Commerzbank Gf ZRK                                        60005Frankfurt am Main                  Commerzbank ZRK Frankfurt  24540COBADEFFZRK13055083U000000000
 500400481Commerzbank GF-F48                                        60005Frankfurt am Main                  Commerzbank FFM GF-F48     24548COBADEFF95013055616U000000000
-500400511Commerzbank Center Dresdner Bank                          60311Frankfurt am Main                  Commerzbank FFM GM-F A 51  24551COBADEFF07013055754A000000000
-500400521Commerzbank Service - BZ                                  60311Frankfurt am Main                  Commerzbank Service - BZ   24552COBADEFF07113055776A000000000
+500400511Commerzbank Center Dresdner Bank Frankfurt                60311Frankfurt am Main                  Commerzbank FFM GM-F A 51  24551COBADEFF07013055754A000000000
+500400521Commerzbank Service - BZ Frankfurt                        60311Frankfurt am Main                  Commerzbank Service - BZ   24552COBADEFF07113055776A000000000
 500400601Commerzbank Gf 460                                        60005Frankfurt am Main                  Commerzbank Gf 460 Ffm     24560COBADEFF06609052899U000000000
 500400611Commerzbank Gf 461                                        60005Frankfurt am Main                  Commerzbank Gf 461 Ffm     24561COBADEFF06709052900U000000000
 500400751Commerzbank Gf ZCM                                        60005Frankfurt am Main                  Commerzbank Gf ZCM Ffm     24570COBADEFFZCM13053165U000000000
@@ -9939,6 +9939,7 @@
 600309001Isbank Fil Stuttgart                                      70173Stuttgart                          Isbank Stuttgart           29842ISBKDEFXSTU06048583U000000000
 600330001Wüstenrot Bausparkasse                                    71630Ludwigsburg, Württ                 Wüstenrot Bausparkasse          BSWLDE61XXX09050492U000000000
 600358101IBM Deutschland Kreditbank                                70548Stuttgart                          IBM Kreditbank Stuttgart        IBKBDES1XXX06050609U000000000
+600388001Düsseldorfer Hypothekenbank, Zndl Stuttgart               70173Stuttgart                          Düsseldorfer Hyp. Stuttgart     DHYPDES1XXX10055780A000000000
 600400711Commerzbank                                               70049Stuttgart                          Commerzbank Stuttgart      24600COBADEFF60013010235U000000000
 600400712Commerzbank                                               70702Fellbach, Württ                    Commerzbank Fellbach Württ 24600COBADEFF60713010214U000000000
 600400712Commerzbank                                               71202Leonberg, Württ                    Commerzbank Leonberg Württ 24600COBADEFF62413010229U000000000
@@ -19855,4 +19856,3 @@
 870962142Volksbank Chemnitz                                        08107Kirchberg, Sachs                   Volksbank Chemnitz         98040           06052120U000000000
 870962142Volksbank Chemnitz                                        08008Zwickau                            Volksbank Chemnitz         98040           06052124U000000000
 870962142Volksbank Chemnitz (Gf P2)                                09003Chemnitz, Sachs                    Volksbank Chemnitz         88040           06054895U000000000
-
