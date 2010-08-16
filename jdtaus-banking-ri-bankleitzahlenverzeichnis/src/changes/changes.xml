@@ -128,5 +128,9 @@
     <release version="1.11.2" date="2010-05-21" description="Maintenance release.">
       <action dev="schulte2005" type="update">Added a recent bankfile valid from 2010-06-07 to 2010-09-05.</action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.3" description="Maintenance release.">
+      <action dev="schulte2005" type="update">Added a recent bankfile (2010-07-19) valid from 2010-09-06 to 2010-12-05.</action>
+    </release>
   </body>
 </document>
