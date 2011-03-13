@@ -488,13 +488,13 @@ public final class BankleitzahlenDatei
      * @return the text of message <code>fileNameInfo</code>.
      */
     private String getFileNameInfoMessage( final Locale locale,
-                                           final java.lang.String fileName )
+            final java.lang.String fileName )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "fileNameInfo", locale,
-                        new Object[]
-            {
-                fileName
+                new Object[]
+                {
+                    fileName
                 });
 
     }
@@ -511,15 +511,15 @@ public final class BankleitzahlenDatei
      * @return the text of message <code>addRecordInfo</code>.
      */
     private String getAddRecordInfoMessage( final Locale locale,
-                                            final java.lang.String label,
-                                            final java.lang.Number serialNumber )
+            final java.lang.String label,
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "addRecordInfo", locale,
-                        new Object[]
-            {
-                label,
-                serialNumber
+                new Object[]
+                {
+                    label,
+                    serialNumber
                 });
 
     }
@@ -536,15 +536,15 @@ public final class BankleitzahlenDatei
      * @return the text of message <code>modifyRecordInfo</code>.
      */
     private String getModifyRecordInfoMessage( final Locale locale,
-                                               final java.lang.String label,
-                                               final java.lang.Number serialNumber )
+            final java.lang.String label,
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "modifyRecordInfo", locale,
-                        new Object[]
-            {
-                label,
-                serialNumber
+                new Object[]
+                {
+                    label,
+                    serialNumber
                 });
 
     }
@@ -561,15 +561,15 @@ public final class BankleitzahlenDatei
      * @return the text of message <code>removeRecordInfo</code>.
      */
     private String getRemoveRecordInfoMessage( final Locale locale,
-                                               final java.lang.String label,
-                                               final java.lang.Number serialNumber )
+            final java.lang.String label,
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "removeRecordInfo", locale,
-                        new Object[]
-            {
-                label,
-                serialNumber
+                new Object[]
+                {
+                    label,
+                    serialNumber
                 });
 
     }
@@ -585,13 +585,13 @@ public final class BankleitzahlenDatei
      * @return the text of message <code>cannotAddDuplicateRecord</code>.
      */
     private String getCannotAddDuplicateRecordMessage( final Locale locale,
-                                                       final java.lang.Number serialNumber )
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "cannotAddDuplicateRecord", locale,
-                        new Object[]
-            {
-                serialNumber
+                new Object[]
+                {
+                    serialNumber
                 });
 
     }
@@ -607,13 +607,13 @@ public final class BankleitzahlenDatei
      * @return the text of message <code>cannotModifyNonexistentRecord</code>.
      */
     private String getCannotModifyNonexistentRecordMessage( final Locale locale,
-                                                            final java.lang.Number serialNumber )
+            final java.lang.Number serialNumber )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "cannotModifyNonexistentRecord", locale,
-                        new Object[]
-            {
-                serialNumber
+                new Object[]
+                {
+                    serialNumber
                 });
 
     }
@@ -630,15 +630,15 @@ public final class BankleitzahlenDatei
      * @return the text of message <code>unexpectedData</code>.
      */
     private String getUnexpectedDataMessage( final Locale locale,
-                                             final java.lang.Number lineNumber,
-                                             final java.lang.String resourceName )
+            final java.lang.Number lineNumber,
+            final java.lang.String resourceName )
     {
         return ContainerFactory.getContainer().
             getMessage( this, "unexpectedData", locale,
-                        new Object[]
-            {
-                lineNumber,
-                resourceName
+                new Object[]
+                {
+                    lineNumber,
+                    resourceName
                 });
 
     }
