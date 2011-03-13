@@ -260,5 +260,10 @@
     <release version="1.11.1" date="2010-02-26" description="Maintenance release."/>
     <!-- *********************************************************************************************************** -->
     <release version="1.11.2" date="2010-05-21" description="Maintenance release."/>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.3" description="Maintenance release.">
+      <action><![CDATA[Updated 'Spezifikation der Datenformate' document to version 2.5.]]></action>
+      <action><![CDATA[Updated 'Merkblatt Bankleitzahlendatei' document.]]></action>
+    </release>
   </body>
 </document>

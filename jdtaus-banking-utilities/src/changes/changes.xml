@@ -132,5 +132,9 @@
       support bankfiles ending with an empty line.]]>
       </action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.3" description="Maintenance release.">
+      <action><![CDATA[Updated 'Merkblatt Bankleitzahlendatei' document.]]></action>
+    </release>
   </body>
 </document>

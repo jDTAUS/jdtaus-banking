@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * Alpha numeric text with a maximum length of twenty seven characters.
  * <p>Data type for the alpha-numeric DTAUS alphabet. For further information
- * see the <a href="../../../doc-files/Anlage%203%20-%20Spezifikation%20der%20Datenformate%20-%20Version%202.3%20Endfassung%20vom%2005.11.2008.pdf">
+ * see the <a href="../../../doc-files/Anlage_3_Datenformate_V2.5.pdf">
  * Spezifikation der Datenformate</a>. An updated version of the document may be found at
  * <a href="http://www.ebics-zka.de/english">Zentraler Kreditausschuß</a>.</p>
  *

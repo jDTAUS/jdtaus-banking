@@ -27,9 +27,8 @@ import java.util.Date;
 /**
  * Public directory of german bank codes.
  * <p>For further information see the
- * <a href="../../../doc-files/Bankleitzahlen%20Richtlinie%20-%20Stand%208.%20September%202008.pdf">
- * Bankleitzahlen Richtlinie</a>. An updated version of the document may be found at
- * <a href="http://www.bundesbank.de/index.en.php">Deutsche Bundesbank</a>.</p>
+ * <a href="../../../doc-files/zv_merkblatt_blz.pdf">Merkblatt Bankleitzahlendatei</a>. An updated version of the document
+ * may be found at <a href="http://www.bundesbank.de/index.en.php">Deutsche Bundesbank</a>.</p>
  * <p>Example: Getting the jDTAUS Banking SPI implementation.<br/><pre>
  * BankleitzahlenVerzeichnis directory =
  *     (BankleitzahlenVerzeichnis) ContainerFactory.getContainer().
