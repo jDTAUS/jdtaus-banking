@@ -133,6 +133,14 @@
       <action dev="schulte2005" type="update">Added a recent bankfile (2010-07-19) valid from 2010-09-06 to 2010-12-05.</action>
       <action dev="schulte2005" type="update">Added a recent bankfile (2010-12-08) valid from 2010-12-06 to 2011-03-06.</action>
       <action dev="schulte2005" type="update">Added a recent bankfile (2011-01-19) valid from 2011-03-07 to 2011-06-05.</action>
+      <action dev="schulte2005" type="update">Added a recent bankfile (2011-04-19) valid from 2011-06-06 to 2011-09-04.</action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected bankfile 'blz_20110606.txt':<pre>
+734c734
+< 180627581VR Bank Forst                                             03149Forst (Lausitz)                    VR Bank Forst              61329GENODEF1FOR32045757A000000000
+---
+> 180627581VR Bank Forst                                             03149Forst (Lausitz)                    VR Bank Forst              61329GENODEF1FOR32045757U000000000
+      </pre>]]>
+      </action>
     </release>
   </body>
 </document>
