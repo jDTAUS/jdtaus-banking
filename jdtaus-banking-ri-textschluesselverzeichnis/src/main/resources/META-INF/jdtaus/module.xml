@@ -122,6 +122,7 @@
         <container:reference container:name="parseException"/>
         <container:reference container:name="noSchemaLocation"/>
         <container:reference container:name="duplicateTextschluessel"/>
+        <container:reference container:name="noTextschluesselFound"/>
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.ri.txtdirectory.DefaultJaxpTextschluesselProvider"
@@ -244,6 +245,12 @@
       <container:arguments>
         <container:argument container:index="0" container:name="resource" container:type="text"/>
       </container:arguments>
+    </container:message>
+    <container:message container:name="noTextschluesselFound">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[No Textschlüssel found.]]></container:text>
+        <container:text container:language="de"><![CDATA[Keine Textschlüssel gefunden.]]></container:text>
+      </container:template>
     </container:message>
   </container:messages>
 </container:module>

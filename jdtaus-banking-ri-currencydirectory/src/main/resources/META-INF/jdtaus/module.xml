@@ -123,6 +123,7 @@
         <container:reference container:name="currencyInfo"/>
         <container:reference container:name="noSchemaLocation"/>
         <container:reference container:name="duplicateCurrency"/>
+        <container:reference container:name="noCurrenciesFound"/>
       </container:messages>
     </container:implementation>
     <container:implementation container:identifier="org.jdtaus.banking.ri.currencydir.DefaultJaxpCurrenciesProvider"
@@ -245,6 +246,12 @@
       <container:arguments>
         <container:argument container:index="0" container:name="resource" container:type="text"/>
       </container:arguments>
+    </container:message>
+    <container:message container:name="noCurrenciesFound">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[No currencies found.]]></container:text>
+        <container:text container:language="de"><![CDATA[Keine Währungen gefunden.]]></container:text>
+      </container:template>
     </container:message>
   </container:messages>
 </container:module>

@@ -31,5 +31,7 @@
       <li><a href="jdtaus-banking-ri-bankleitzahlenverzeichnis/changes-report.html">jDTAUS Banking RI Bankleitzahlenverzeichnis</a></li></ul>]]>
       </action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.3" date="2011-10-24" description="Maintenance release."/>
   </body>
 </document>

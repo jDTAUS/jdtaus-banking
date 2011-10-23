@@ -111,5 +111,11 @@
     <release version="1.11.1" date="2010-02-26" description="Maintenance release."/>
     <!-- *********************************************************************************************************** -->
     <release version="1.11.2" date="2010-05-21" description="Maintenance release."/>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.3" date="2011-10-24" description="Maintenance release.">
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected an 'IllegalArgumentException' thrown when operating
+      without provided currencies (empty directory).]]>
+      </action>
+    </release>
   </body>
 </document>

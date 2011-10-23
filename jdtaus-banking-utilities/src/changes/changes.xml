@@ -133,7 +133,7 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="1.11.3" description="Maintenance release.">
+    <release version="1.11.3" date="2011-10-24" description="Maintenance release.">
       <action><![CDATA[Updated 'Merkblatt Bankleitzahlendatei' document.]]></action>
     </release>
   </body>

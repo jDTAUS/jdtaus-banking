@@ -129,7 +129,10 @@
       <action dev="schulte2005" type="update">Added a recent bankfile valid from 2010-06-07 to 2010-09-05.</action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="1.11.3" description="Maintenance release.">
+    <release version="1.11.3" date="2011-10-24" description="Maintenance release.">
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected an 'IllegalArgumentException' thrown when operating
+      without provided bankfiles (empty directory).]]>
+      </action>
       <action dev="schulte2005" type="update">Added a recent bankfile (2010-07-19) valid from 2010-09-06 to 2010-12-05.</action>
       <action dev="schulte2005" type="update">Added a recent bankfile (2010-12-08) valid from 2010-12-06 to 2011-03-06.</action>
       <action dev="schulte2005" type="update">Added a recent bankfile (2011-01-19) valid from 2011-03-07 to 2011-06-05.</action>

@@ -1,9 +1,6 @@
 /*
  *  jDTAUS Banking RI Bankleitzahlenverzeichnis
- *  Copyright (c) 2005 Christian Schulte
- *
- *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
- *  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
+ *  Copyright (c) 2011 Christian Schulte
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -26,12 +23,12 @@ import java.net.URL;
 import org.jdtaus.banking.ri.blzdirectory.BankfileBankleitzahlenVerzeichnis;
 
 /**
- * Tests the {@link BankfileBankleitzahlenVerzeichnis} implementation.
+ * Tests the {@link BankfileBankleitzahlenVerzeichnis} implementation to operate without finding resources.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class BankfileBankleitzahlenVerzeichnisTest extends AbstractBankfileBankleitzahlenVerzeichnisTest
+public class BankfileBankleitzahlenVerzeichnis_NoBankfiles_Test extends AbstractBankfileBankleitzahlenVerzeichnisTest
 {
 
     protected ClassLoader getClassLoader()
@@ -39,10 +36,15 @@ public class BankfileBankleitzahlenVerzeichnisTest extends AbstractBankfileBankl
         final ResourceLoader cl = new ResourceLoader( this.getClass().getClassLoader() );
         cl.addResources( "META-INF/jdtaus/bankfiles.properties", new URL[]
             {
-                this.getClass().getResource( "bankfiles.properties" )
+                this.getClass().getResource( "no-bankfiles.properties" )
             } );
 
         return cl;
+    }
+
+    public void testBankleitzahlExpirationException() throws Exception
+    {
+        System.out.println( "Skipped due to empty directory." );
     }
 
 }

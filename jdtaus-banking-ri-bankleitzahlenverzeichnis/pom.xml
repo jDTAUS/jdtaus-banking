@@ -48,7 +48,18 @@
       <testResource>
         <filtering>false</filtering>
         <directory>src/main/bankfiles</directory>
+        <targetPath>org/jdtaus/banking/ri/blzdirectory/test</targetPath>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>src/main/bankfiles</directory>
         <targetPath>META-INF/jdtaus</targetPath>
+        <excludes>
+          <exclude>**/*.properties</exclude>
+        </excludes>
       </testResource>
     </testResources>
     <plugins>

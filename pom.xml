@@ -63,6 +63,9 @@
     <contributor>
       <name>Claudio Di Vita</name>
     </contributor>
+    <contributor>
+      <name>Holger Endert</name>
+    </contributor>
   </contributors>
   <build>
     <extensions>

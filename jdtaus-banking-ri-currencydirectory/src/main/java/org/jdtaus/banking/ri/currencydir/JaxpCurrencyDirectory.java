@@ -178,49 +178,53 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
         this.assertInitialized();
 
         final Collection col = new LinkedList();
-        final Task task = new Task();
-        task.setCancelable( true );
-        task.setDescription( new SearchesCurrenciesMessage() );
-        task.setIndeterminate( false );
-        task.setMaximum( this.isoMap.size() );
-        task.setMinimum( 0 );
 
-        int progress = 0;
-        task.setProgress( progress );
-
-        try
+        if ( !this.isoMap.isEmpty() )
         {
-            if ( task.getMaximum() > this.getMonitoringThreshold() )
-            {
-                this.getTaskMonitor().monitor( task );
-            }
+            final Task task = new Task();
+            task.setCancelable( true );
+            task.setDescription( new SearchesCurrenciesMessage() );
+            task.setIndeterminate( false );
+            task.setMaximum( this.isoMap.size() );
+            task.setMinimum( 0 );
 
-            for ( final Iterator it = this.isoMap.keySet().iterator(); it.hasNext() && !task.isCancelled(); )
-            {
-                task.setProgress( progress++ );
-                final String isoCode = (String) it.next();
-                final JaxpCurrency currency = (JaxpCurrency) this.isoMap.get( isoCode );
+            int progress = 0;
+            task.setProgress( progress );
 
-                if ( currency.isValidAt( date ) )
+            try
+            {
+                if ( task.getMaximum() > this.getMonitoringThreshold() )
                 {
-                    col.add( Currency.getInstance( isoCode ) );
+                    this.getTaskMonitor().monitor( task );
+                }
+
+                for ( final Iterator it = this.isoMap.keySet().iterator(); it.hasNext() && !task.isCancelled(); )
+                {
+                    task.setProgress( progress++ );
+                    final String isoCode = (String) it.next();
+                    final JaxpCurrency currency = (JaxpCurrency) this.isoMap.get( isoCode );
+
+                    if ( currency.isValidAt( date ) )
+                    {
+                        col.add( Currency.getInstance( isoCode ) );
+                    }
+                }
+
+                if ( task.isCancelled() )
+                {
+                    col.clear();
                 }
             }
-
-            if ( task.isCancelled() )
+            finally
             {
-                col.clear();
-            }
-
-            return (Currency[]) col.toArray( new Currency[ col.size() ] );
-        }
-        finally
-        {
-            if ( task.getMaximum() > this.getMonitoringThreshold() )
-            {
-                this.getTaskMonitor().finish( task );
+                if ( task.getMaximum() > this.getMonitoringThreshold() )
+                {
+                    this.getTaskMonitor().finish( task );
+                }
             }
         }
+
+        return (Currency[]) col.toArray( new Currency[ col.size() ] );
     }
 
     public Currency getDtausCurrency( final char code, final Date date )
@@ -279,8 +283,8 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
     {
         try
         {
-            if ( System.currentTimeMillis() - this.lastCheck > this.getReloadIntervalMillis() &&
-                 !this.monitorMap.isEmpty() )
+            if ( System.currentTimeMillis() - this.lastCheck > this.getReloadIntervalMillis()
+                 && !this.monitorMap.isEmpty() )
             {
                 this.lastCheck = System.currentTimeMillis();
                 for ( final Iterator it = this.monitorMap.entrySet().iterator(); it.hasNext(); )
@@ -316,9 +320,9 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
                 for ( final Iterator it = col.iterator(); it.hasNext(); )
                 {
                     final JaxpCurrency currency = (JaxpCurrency) it.next();
-                    if ( this.isoMap.put( currency.getIsoCode(), currency ) != null ||
-                         ( currency.getDtausCode() != null &&
-                           this.dtausMap.put( currency.getDtausCode(), currency ) != null ) )
+                    if ( this.isoMap.put( currency.getIsoCode(), currency ) != null
+                         || ( currency.getDtausCode() != null
+                              && this.dtausMap.put( currency.getDtausCode(), currency ) != null ) )
                     {
                         throw new IllegalStateException( this.getDuplicateCurrencyMessage(
                             this.getLocale(), currency.getIsoCode(),
@@ -446,98 +450,106 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
 
         final URL[] resources = this.getResources();
         final Document[] ret = new Document[ resources.length ];
-        final DocumentBuilder validatingParser = this.getDocumentBuilder();
-        final DocumentBuilderFactory namespaceAwareFactory = DocumentBuilderFactory.newInstance();
-        namespaceAwareFactory.setNamespaceAware( true );
-        final DocumentBuilder nonValidatingParser = namespaceAwareFactory.newDocumentBuilder();
 
-        final Task task = new Task();
-        task.setCancelable( false );
-        task.setDescription( new ReadsCurrenciesMessage() );
-        task.setIndeterminate( false );
-        task.setMaximum( resources.length - 1 );
-        task.setMinimum( 0 );
-        task.setProgress( 0 );
-
-        try
+        if ( resources.length > 0 )
         {
-            this.getTaskMonitor().monitor( task );
+            final DocumentBuilder validatingParser = this.getDocumentBuilder();
+            final DocumentBuilderFactory namespaceAwareFactory = DocumentBuilderFactory.newInstance();
+            namespaceAwareFactory.setNamespaceAware( true );
+            final DocumentBuilder nonValidatingParser = namespaceAwareFactory.newDocumentBuilder();
 
-            for ( int i = resources.length - 1; i >= 0; i-- )
+            final Task task = new Task();
+            task.setCancelable( false );
+            task.setDescription( new ReadsCurrenciesMessage() );
+            task.setIndeterminate( false );
+            task.setMaximum( resources.length - 1 );
+            task.setMinimum( 0 );
+            task.setProgress( 0 );
+
+            try
             {
-                task.setProgress( task.getMaximum() - i );
+                this.getTaskMonitor().monitor( task );
 
-                final URL resource = resources[i];
-                final ErrorHandler errorHandler = new ErrorHandler()
+                for ( int i = resources.length - 1; i >= 0; i-- )
                 {
+                    task.setProgress( task.getMaximum() - i );
 
-                    public void warning( final SAXParseException e ) throws SAXException
+                    final URL resource = resources[i];
+                    final ErrorHandler errorHandler = new ErrorHandler()
                     {
-                        getLogger().warn( getParseExceptionMessage(
-                            getLocale(), resource.toExternalForm(),
-                            e.getMessage(), new Integer( e.getLineNumber() ),
-                            new Integer( e.getColumnNumber() ) ) );
 
-                    }
+                        public void warning( final SAXParseException e ) throws SAXException
+                        {
+                            getLogger().warn( getParseExceptionMessage(
+                                getLocale(), resource.toExternalForm(),
+                                e.getMessage(), new Integer( e.getLineNumber() ),
+                                new Integer( e.getColumnNumber() ) ) );
 
-                    public void error( final SAXParseException e ) throws SAXException
+                        }
+
+                        public void error( final SAXParseException e ) throws SAXException
+                        {
+                            throw new SAXException( getParseExceptionMessage(
+                                getLocale(), resource.toExternalForm(),
+                                e.getMessage(), new Integer( e.getLineNumber() ),
+                                new Integer( e.getColumnNumber() ) ), e );
+
+                        }
+
+                        public void fatalError( final SAXParseException e ) throws SAXException
+                        {
+                            throw new SAXException( getParseExceptionMessage(
+                                getLocale(), resource.toExternalForm(),
+                                e.getMessage(), new Integer( e.getLineNumber() ),
+                                new Integer( e.getColumnNumber() ) ), e );
+
+                        }
+
+                    };
+
+                    nonValidatingParser.setErrorHandler( errorHandler );
+                    validatingParser.setErrorHandler( errorHandler );
+
+                    try
                     {
-                        throw new SAXException( getParseExceptionMessage(
-                            getLocale(), resource.toExternalForm(),
-                            e.getMessage(), new Integer( e.getLineNumber() ),
-                            new Integer( e.getColumnNumber() ) ), e );
-
-                    }
-
-                    public void fatalError( final SAXParseException e ) throws SAXException
-                    {
-                        throw new SAXException( getParseExceptionMessage(
-                            getLocale(), resource.toExternalForm(),
-                            e.getMessage(), new Integer( e.getLineNumber() ),
-                            new Integer( e.getColumnNumber() ) ), e );
-
-                    }
-
-                };
-
-                nonValidatingParser.setErrorHandler( errorHandler );
-                validatingParser.setErrorHandler( errorHandler );
-
-                try
-                {
-                    this.monitorResource( resources[i] );
-                    stream = resources[i].openStream();
-                    ret[i] = nonValidatingParser.parse( stream );
-
-                    if ( ret[i].getDocumentElement().hasAttributeNS( XSI_NS, "schemaLocation" ) )
-                    {
-                        stream.close();
+                        this.monitorResource( resources[i] );
                         stream = resources[i].openStream();
-                        ret[i] = validatingParser.parse( stream );
-                    }
-                    else if ( this.getLogger().isInfoEnabled() )
-                    {
-                        this.getLogger().info( this.getNoSchemaLocationMessage(
-                            this.getLocale(), resources[i].toExternalForm() ) );
+                        ret[i] = nonValidatingParser.parse( stream );
 
+                        if ( ret[i].getDocumentElement().hasAttributeNS( XSI_NS, "schemaLocation" ) )
+                        {
+                            stream.close();
+                            stream = resources[i].openStream();
+                            ret[i] = validatingParser.parse( stream );
+                        }
+                        else if ( this.getLogger().isInfoEnabled() )
+                        {
+                            this.getLogger().info( this.getNoSchemaLocationMessage(
+                                this.getLocale(), resources[i].toExternalForm() ) );
+
+                        }
                     }
-                }
-                finally
-                {
-                    if ( stream != null )
+                    finally
                     {
-                        stream.close();
-                        stream = null;
+                        if ( stream != null )
+                        {
+                            stream.close();
+                            stream = null;
+                        }
                     }
                 }
             }
-
-            return ret;
+            finally
+            {
+                this.getTaskMonitor().finish( task );
+            }
         }
-        finally
+        else
         {
-            this.getTaskMonitor().finish( task );
+            this.getLogger().warn( this.getNoCurrenciesFoundMessage( this.getLocale() ) );
         }
+
+        return ret;
     }
 
     /**
@@ -1007,6 +1019,22 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
                     currencyCode,
                     currencySymbol
                 });
+
+    }
+
+    /**
+     * Gets the text of message <code>noCurrenciesFound</code>.
+     * <blockquote><pre>Keine Währungen gefunden.</pre></blockquote>
+     * <blockquote><pre>No currencies found.</pre></blockquote>
+     *
+     * @param locale The locale of the message instance to return.
+     *
+     * @return the text of message <code>noCurrenciesFound</code>.
+     */
+    private String getNoCurrenciesFoundMessage( final Locale locale )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "noCurrenciesFound", locale, null );
 
     }
 

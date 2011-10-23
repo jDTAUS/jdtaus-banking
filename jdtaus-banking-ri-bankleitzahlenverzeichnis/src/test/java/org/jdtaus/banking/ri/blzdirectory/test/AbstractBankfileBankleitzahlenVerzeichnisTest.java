@@ -1,9 +1,6 @@
 /*
  *  jDTAUS Banking RI Bankleitzahlenverzeichnis
- *  Copyright (c) 2005 Christian Schulte
- *
- *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
- *  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
+ *  Copyright (c) 2011 Christian Schulte
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -22,27 +19,34 @@
  */
 package org.jdtaus.banking.ri.blzdirectory.test;
 
-import java.net.URL;
+import org.jdtaus.banking.BankleitzahlenVerzeichnis;
+import org.jdtaus.banking.it.BankleitzahlenVerzeichnisTest;
 import org.jdtaus.banking.ri.blzdirectory.BankfileBankleitzahlenVerzeichnis;
 
 /**
- * Tests the {@link BankfileBankleitzahlenVerzeichnis} implementation.
+ * Base tests for the {@link BankfileBankleitzahlenVerzeichnis} implementation.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class BankfileBankleitzahlenVerzeichnisTest extends AbstractBankfileBankleitzahlenVerzeichnisTest
+public abstract class AbstractBankfileBankleitzahlenVerzeichnisTest extends BankleitzahlenVerzeichnisTest
 {
 
-    protected ClassLoader getClassLoader()
-    {
-        final ResourceLoader cl = new ResourceLoader( this.getClass().getClassLoader() );
-        cl.addResources( "META-INF/jdtaus/bankfiles.properties", new URL[]
-            {
-                this.getClass().getResource( "bankfiles.properties" )
-            } );
+    /** The implementation to test. */
+    private BankleitzahlenVerzeichnis directory;
 
-        return cl;
+    public BankleitzahlenVerzeichnis getBankleitzahlenVerzeichnis()
+    {
+        if ( this.directory == null )
+        {
+            Thread.currentThread().setContextClassLoader( this.getClassLoader() );
+            this.directory = new BankfileBankleitzahlenVerzeichnis();
+            this.setBankleitzahlenVerzeichnis( this.directory );
+        }
+
+        return super.getBankleitzahlenVerzeichnis();
     }
+
+    protected abstract ClassLoader getClassLoader();
 
 }

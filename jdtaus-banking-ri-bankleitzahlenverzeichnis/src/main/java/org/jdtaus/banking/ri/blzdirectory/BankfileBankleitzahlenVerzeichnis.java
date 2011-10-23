@@ -214,71 +214,74 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         final BankleitzahlInfo[] records =
             this.bankFile == null ? new BankleitzahlInfo[ 0 ] : this.bankFile.getRecords();
 
-        final Task task = new Task();
-        task.setCancelable( true );
-        task.setDescription( new SearchesBankleitzahlInfosMessage() );
-        task.setIndeterminate( false );
-        task.setMinimum( 0 );
-        task.setMaximum( records.length - 1 );
-        task.setProgress( 0 );
+        final Collection col = new ArrayList( records.length );
 
-        try
+        if ( records.length > 0 )
         {
-            if ( task.getMaximum() > this.getMonitoringThreshold() )
+            final Task task = new Task();
+            task.setCancelable( true );
+            task.setDescription( new SearchesBankleitzahlInfosMessage() );
+            task.setIndeterminate( false );
+            task.setMinimum( 0 );
+            task.setMaximum( records.length - 1 );
+            task.setProgress( 0 );
+
+            try
             {
-                this.getTaskMonitor().monitor( task );
-            }
-
-            final NumberFormat plzFmt = new DecimalFormat( "00000" );
-            final Pattern namePattern =
-                name != null ? Pattern.compile( ".*" + name.toUpperCase() + ".*" ) : null;
-
-            final Pattern postalPattern =
-                postalCode != null ? Pattern.compile( ".*" + postalCode.toUpperCase() + ".*" ) : null;
-
-            final Pattern cityPattern =
-                city != null ? Pattern.compile( ".*" + city.toUpperCase() + ".*" ) : null;
-
-            final Collection col = new ArrayList( records.length );
-
-            for ( int i = records.length - 1; i >= 0 && !task.isCancelled(); i-- )
-            {
-                final String plz = plzFmt.format( records[i].getPostalCode() );
-                task.setProgress( task.getMaximum() - i );
-
-                if ( ( namePattern == null
-                       ? true : namePattern.matcher( records[i].getName().toUpperCase() ).matches() ) &&
-                     ( postalPattern == null
-                       ? true : postalPattern.matcher( plz ).matches() ) &&
-                     ( cityPattern == null
-                       ? true : cityPattern.matcher( records[i].getCity().toUpperCase() ).matches() ) &&
-                     ( headOffices == null
-                       ? true : records[i].isHeadOffice() == headOffices.booleanValue() ) &&
-                     ( branchOffices == null
-                       ? true : records[i].isHeadOffice() != branchOffices.booleanValue() ) )
+                if ( task.getMaximum() > this.getMonitoringThreshold() )
                 {
-                    col.add( records[i].clone() );
+                    this.getTaskMonitor().monitor( task );
+                }
+
+                final NumberFormat plzFmt = new DecimalFormat( "00000" );
+                final Pattern namePattern =
+                    name != null ? Pattern.compile( ".*" + name.toUpperCase() + ".*" ) : null;
+
+                final Pattern postalPattern =
+                    postalCode != null ? Pattern.compile( ".*" + postalCode.toUpperCase() + ".*" ) : null;
+
+                final Pattern cityPattern =
+                    city != null ? Pattern.compile( ".*" + city.toUpperCase() + ".*" ) : null;
+
+                for ( int i = records.length - 1; i >= 0 && !task.isCancelled(); i-- )
+                {
+                    final String plz = plzFmt.format( records[i].getPostalCode() );
+                    task.setProgress( task.getMaximum() - i );
+
+                    if ( ( namePattern == null
+                           ? true : namePattern.matcher( records[i].getName().toUpperCase() ).matches() )
+                         && ( postalPattern == null
+                              ? true : postalPattern.matcher( plz ).matches() )
+                         && ( cityPattern == null
+                              ? true : cityPattern.matcher( records[i].getCity().toUpperCase() ).matches() )
+                         && ( headOffices == null
+                              ? true : records[i].isHeadOffice() == headOffices.booleanValue() )
+                         && ( branchOffices == null
+                              ? true : records[i].isHeadOffice() != branchOffices.booleanValue() ) )
+                    {
+                        col.add( records[i].clone() );
+                    }
+                }
+
+                if ( task.isCancelled() )
+                {
+                    col.clear();
                 }
             }
-
-            if ( task.isCancelled() )
+            catch ( final PatternSyntaxException e )
             {
-                col.clear();
+                throw (IllegalArgumentException) new IllegalArgumentException( e.getMessage() ).initCause( e );
             }
-
-            return (BankleitzahlInfo[]) col.toArray( new BankleitzahlInfo[ col.size() ] );
-        }
-        catch ( final PatternSyntaxException e )
-        {
-            throw (IllegalArgumentException) new IllegalArgumentException( e.getMessage() ).initCause( e );
-        }
-        finally
-        {
-            if ( task.getMaximum() > this.getMonitoringThreshold() )
+            finally
             {
-                this.getTaskMonitor().finish( task );
+                if ( task.getMaximum() > this.getMonitoringThreshold() )
+                {
+                    this.getTaskMonitor().finish( task );
+                }
             }
         }
+
+        return (BankleitzahlInfo[]) col.toArray( new BankleitzahlInfo[ col.size() ] );
     }
 
     /**
@@ -294,8 +297,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
         try
         {
-            if ( this.provider == null ||
-                 System.currentTimeMillis() - this.lastModificationCheck > this.getReloadIntervalMillis() )
+            if ( this.provider == null
+                 || System.currentTimeMillis() - this.lastModificationCheck > this.getReloadIntervalMillis() )
             {
                 this.lastModificationCheck = System.currentTimeMillis();
                 if ( this.provider == null || this.provider.getLastModifiedMillis() != this.lastModifiedMillis )
@@ -357,8 +360,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
                         for ( int j = records.length - 1; j >= 0; j-- )
                         {
-                            if ( records[j].getChangeLabel() == 'D' &&
-                                 update.getRecord( records[j].getSerialNumber() ) == null )
+                            if ( records[j].getChangeLabel() == 'D'
+                                 && update.getRecord( records[j].getSerialNumber() ) == null )
                             {
                                 List l = (List) this.outdated.get( records[j].getBankCode() );
 
@@ -412,6 +415,10 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
                             }, MessageEvent.NOTIFICATION ) );
 
                     }
+                }
+                else
+                {
+                    this.getLogger().warn( this.getNoBankfilesFoundMessage( this.getLocale() ) );
                 }
             }
         }
@@ -528,9 +535,9 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
         for ( int i = providers.length - 1; i >= 0; i-- )
         {
-            if ( providers[i].getBankfileCount() > 0 &&
-                 ( latest == null || latest.getDateOfExpiration( latest.getBankfileCount() - 1 ).
-                before( providers[i].getDateOfExpiration( providers[i].getBankfileCount() - 1 ) ) ) )
+            if ( providers[i].getBankfileCount() > 0
+                 && ( latest == null || latest.getDateOfExpiration( latest.getBankfileCount() - 1 ).
+                     before( providers[i].getDateOfExpiration( providers[i].getBankfileCount() - 1 ) ) ) )
             {
                 latest = providers[i];
             }
@@ -555,8 +562,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
         for ( int i = records.length - 1; i >= 0; i-- )
         {
-            if ( records[i].getBankCode().equals( bankCode ) &&
-                 records[i].isHeadOffice() != branchOffices && !col.add( records[i] ) )
+            if ( records[i].getBankCode().equals( bankCode ) && records[i].isHeadOffice() != branchOffices
+                 && !col.add( records[i] ) )
             {
                 throw new IllegalStateException( this.getDuplicateRecordMessage(
                     this.getLocale(), records[i].getSerialNumber(), bankCode.format( Bankleitzahl.LETTER_FORMAT ) ) );
@@ -804,6 +811,22 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
                     lastModification,
                     lastProviderModification
                 });
+
+    }
+
+    /**
+     * Gets the text of message <code>noBankfilesFound</code>.
+     * <blockquote><pre>Keine Bankleitzahlendateien gefunden.</pre></blockquote>
+     * <blockquote><pre>No bankcode files found.</pre></blockquote>
+     *
+     * @param locale The locale of the message instance to return.
+     *
+     * @return the text of message <code>noBankfilesFound</code>.
+     */
+    private String getNoBankfilesFoundMessage( final Locale locale )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "noBankfilesFound", locale, null );
 
     }
 

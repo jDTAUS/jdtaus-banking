@@ -191,8 +191,8 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
 
         for ( int i = this.instances.length - 1; i >= 0; i-- )
         {
-            if ( this.instances[i].getKey() == key &&
-                 ( this.instances[i].isVariable() || this.instances[i].getExtension() == extension ) )
+            if ( this.instances[i].getKey() == key
+                 && ( this.instances[i].isVariable() || this.instances[i].getExtension() == extension ) )
             {
                 return (Textschluessel) this.instances[i].clone();
             }
@@ -244,47 +244,52 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         this.assertInitialized();
 
         final Collection col = new ArrayList( this.instances.length );
-        final Task task = new Task();
-        task.setCancelable( true );
-        task.setDescription( new SearchesTextschluesselMessage() );
-        task.setIndeterminate( false );
-        task.setMaximum( this.instances.length - 1 );
-        task.setMinimum( 0 );
-        task.setProgress( 0 );
 
-        try
+        if ( this.instances.length > 0 )
         {
-            if ( task.getMaximum() > this.getMonitoringThreshold() )
-            {
-                this.getTaskMonitor().monitor( task );
-            }
+            final Task task = new Task();
+            task.setCancelable( true );
+            task.setDescription( new SearchesTextschluesselMessage() );
+            task.setIndeterminate( false );
+            task.setMaximum( this.instances.length - 1 );
+            task.setMinimum( 0 );
+            task.setProgress( 0 );
 
-            for ( int i = this.instances.length - 1; i >= 0 && !task.isCancelled(); i-- )
+            try
             {
-                task.setProgress( task.getMaximum() - i );
-
-                if ( ( debit == null ? true : this.instances[i].isDebit() == debit.booleanValue() ) &&
-                     ( remittance == null ? true : this.instances[i].isRemittance() == remittance.booleanValue() ) &&
-                     ( date == null ? true : this.instances[i].isValidAt( date ) ) )
+                if ( task.getMaximum() > this.getMonitoringThreshold() )
                 {
-                    col.add( this.instances[i].clone() );
+                    this.getTaskMonitor().monitor( task );
+                }
+
+                for ( int i = this.instances.length - 1; i >= 0 && !task.isCancelled(); i-- )
+                {
+                    task.setProgress( task.getMaximum() - i );
+
+                    if ( ( debit == null ? true : this.instances[i].isDebit() == debit.booleanValue() )
+                         && ( remittance == null ? true : this.instances[i].isRemittance() == remittance.booleanValue() )
+                         && ( date == null ? true : this.instances[i].isValidAt( date ) ) )
+                    {
+                        col.add( this.instances[i].clone() );
+                    }
+                }
+
+                if ( task.isCancelled() )
+                {
+                    col.clear();
+                }
+
+            }
+            finally
+            {
+                if ( task.getMaximum() > this.getMonitoringThreshold() )
+                {
+                    this.getTaskMonitor().finish( task );
                 }
             }
-
-            if ( task.isCancelled() )
-            {
-                col.clear();
-            }
-
-            return (Textschluessel[]) col.toArray( new Textschluessel[ col.size() ] );
         }
-        finally
-        {
-            if ( task.getMaximum() > this.getMonitoringThreshold() )
-            {
-                this.getTaskMonitor().finish( task );
-            }
-        }
+
+        return (Textschluessel[]) col.toArray( new Textschluessel[ col.size() ] );
     }
 
     /**
@@ -298,8 +303,8 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     {
         try
         {
-            if ( System.currentTimeMillis() - this.lastCheck > this.getReloadIntervalMillis() &&
-                 !this.monitorMap.isEmpty() )
+            if ( System.currentTimeMillis() - this.lastCheck > this.getReloadIntervalMillis()
+                 && !this.monitorMap.isEmpty() )
             {
                 this.lastCheck = System.currentTimeMillis();
                 for ( final Iterator it = this.monitorMap.entrySet().iterator(); it.hasNext(); )
@@ -478,91 +483,99 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
 
         final URL[] resources = this.getResources();
         final List documents = new LinkedList();
-        final DocumentBuilder validatingParser = this.getDocumentBuilder();
-        final DocumentBuilderFactory namespaceAwareFactory = DocumentBuilderFactory.newInstance();
 
-        namespaceAwareFactory.setNamespaceAware( true );
-        final DocumentBuilder nonValidatingParser = namespaceAwareFactory.newDocumentBuilder();
-
-        final Task task = new Task();
-        task.setCancelable( false );
-        task.setDescription( new ReadsTextschluesselMessage() );
-        task.setIndeterminate( false );
-        task.setMaximum( resources.length - 1 );
-        task.setMinimum( 0 );
-        task.setProgress( 0 );
-
-        try
+        if ( resources.length > 0 )
         {
-            this.getTaskMonitor().monitor( task );
+            final DocumentBuilder validatingParser = this.getDocumentBuilder();
+            final DocumentBuilderFactory namespaceAwareFactory = DocumentBuilderFactory.newInstance();
 
-            for ( int i = resources.length - 1; i >= 0; i-- )
+            namespaceAwareFactory.setNamespaceAware( true );
+            final DocumentBuilder nonValidatingParser = namespaceAwareFactory.newDocumentBuilder();
+
+            final Task task = new Task();
+            task.setCancelable( false );
+            task.setDescription( new ReadsTextschluesselMessage() );
+            task.setIndeterminate( false );
+            task.setMaximum( resources.length - 1 );
+            task.setMinimum( 0 );
+            task.setProgress( 0 );
+
+            try
             {
-                task.setProgress( task.getMaximum() - i );
-                final URL resource = resources[i];
-                final ErrorHandler errorHandler = new ErrorHandler()
+                this.getTaskMonitor().monitor( task );
+
+                for ( int i = resources.length - 1; i >= 0; i-- )
                 {
-
-                    public void warning( final SAXParseException e )
-                        throws SAXException
+                    task.setProgress( task.getMaximum() - i );
+                    final URL resource = resources[i];
+                    final ErrorHandler errorHandler = new ErrorHandler()
                     {
-                        getLogger().warn( getParseExceptionMessage(
-                            getLocale(), resource.toExternalForm(),
-                            e.getMessage(), new Integer( e.getLineNumber() ),
-                            new Integer( e.getColumnNumber() ) ) );
 
-                    }
+                        public void warning( final SAXParseException e )
+                            throws SAXException
+                        {
+                            getLogger().warn( getParseExceptionMessage(
+                                getLocale(), resource.toExternalForm(),
+                                e.getMessage(), new Integer( e.getLineNumber() ),
+                                new Integer( e.getColumnNumber() ) ) );
 
-                    public void error( final SAXParseException e )
-                        throws SAXException
-                    {
-                        throw new SAXException( getParseExceptionMessage(
-                            getLocale(), resource.toExternalForm(),
-                            e.getMessage(), new Integer( e.getLineNumber() ),
-                            new Integer( e.getColumnNumber() ) ), e );
+                        }
 
-                    }
+                        public void error( final SAXParseException e )
+                            throws SAXException
+                        {
+                            throw new SAXException( getParseExceptionMessage(
+                                getLocale(), resource.toExternalForm(),
+                                e.getMessage(), new Integer( e.getLineNumber() ),
+                                new Integer( e.getColumnNumber() ) ), e );
 
-                    public void fatalError( final SAXParseException e )
-                        throws SAXException
-                    {
-                        throw new SAXException( getParseExceptionMessage(
-                            getLocale(), resource.toExternalForm(),
-                            e.getMessage(), new Integer( e.getLineNumber() ),
-                            new Integer( e.getColumnNumber() ) ), e );
+                        }
 
-                    }
+                        public void fatalError( final SAXParseException e )
+                            throws SAXException
+                        {
+                            throw new SAXException( getParseExceptionMessage(
+                                getLocale(), resource.toExternalForm(),
+                                e.getMessage(), new Integer( e.getLineNumber() ),
+                                new Integer( e.getColumnNumber() ) ), e );
 
-                };
+                        }
 
-                nonValidatingParser.setErrorHandler( errorHandler );
-                validatingParser.setErrorHandler( errorHandler );
+                    };
 
-                this.monitorResource( resource );
-                stream = resource.openStream();
-                Document doc = nonValidatingParser.parse( stream );
-                if ( doc.getDocumentElement().hasAttributeNS( XSI_NS, "schemaLocation" ) )
-                {
-                    stream.close();
+                    nonValidatingParser.setErrorHandler( errorHandler );
+                    validatingParser.setErrorHandler( errorHandler );
+
+                    this.monitorResource( resource );
                     stream = resource.openStream();
-                    doc = validatingParser.parse( stream );
-                }
-                else if ( this.getLogger().isInfoEnabled() )
-                {
-                    this.getLogger().info(
-                        this.getNoSchemaLocationMessage( this.getLocale(), resource.toExternalForm() ) );
-                }
+                    Document doc = nonValidatingParser.parse( stream );
+                    if ( doc.getDocumentElement().hasAttributeNS( XSI_NS, "schemaLocation" ) )
+                    {
+                        stream.close();
+                        stream = resource.openStream();
+                        doc = validatingParser.parse( stream );
+                    }
+                    else if ( this.getLogger().isInfoEnabled() )
+                    {
+                        this.getLogger().info(
+                            this.getNoSchemaLocationMessage( this.getLocale(), resource.toExternalForm() ) );
+                    }
 
-                documents.add( doc );
-                stream.close();
+                    documents.add( doc );
+                    stream.close();
+                }
             }
-
-            return documents;
+            finally
+            {
+                this.getTaskMonitor().finish( task );
+            }
         }
-        finally
+        else
         {
-            this.getTaskMonitor().finish( task );
+            this.getLogger().warn( this.getNoTextschluesselFoundMessage( this.getLocale() ) );
         }
+
+        return documents;
     }
 
     /**
@@ -1184,6 +1197,22 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                     key,
                     extension
                 });
+
+    }
+
+    /**
+     * Gets the text of message <code>noTextschluesselFound</code>.
+     * <blockquote><pre>Keine Textschlüssel gefunden.</pre></blockquote>
+     * <blockquote><pre>No Textschlüssel found.</pre></blockquote>
+     *
+     * @param locale The locale of the message instance to return.
+     *
+     * @return the text of message <code>noTextschluesselFound</code>.
+     */
+    private String getNoTextschluesselFoundMessage( final Locale locale )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "noTextschluesselFound", locale, null );
 
     }
 

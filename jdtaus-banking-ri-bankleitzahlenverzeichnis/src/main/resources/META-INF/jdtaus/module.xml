@@ -181,6 +181,12 @@
             <container:argument container:index="1" container:name="lastProviderModification" container:type="date"/>
           </container:arguments>
         </container:message>
+        <container:message container:name="noBankfilesFound">
+          <container:template container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[No bankcode files found.]]></container:text>
+            <container:text container:language="de"><![CDATA[Keine Bankleitzahlendateien gefunden.]]></container:text>
+          </container:template>
+        </container:message>
       </container:messages>
     </container:implementation>
 
