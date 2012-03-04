@@ -189,24 +189,27 @@ public final class DefaultHeaderValidator implements HeaderValidator
         final LogicalFileType oldLabel = lFile.getHeader().getType();
         final LogicalFileType newLabel = header.getType();
 
-        if ( oldLabel != null && lFile.getChecksum().getTransactionCount() > 0 &&
-             ( oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed() ) ||
-             ( oldLabel.isRemittanceAllowed() && !newLabel.isRemittanceAllowed() ) )
+        if ( newLabel != null )
         {
-            if ( e == null )
+            if ( oldLabel != null && lFile.getChecksum().getTransactionCount() > 0
+                 && ( ( oldLabel.isDebitAllowed() && !newLabel.isDebitAllowed() )
+                      || ( oldLabel.isRemittanceAllowed() && !newLabel.isRemittanceAllowed() ) ) )
             {
-                e = new IllegalHeaderException();
+                if ( e == null )
+                {
+                    e = new IllegalHeaderException();
+                }
+
+                e.addMessage( Header.PROP_TYPE, new TextschluesselConstraintMessage(
+                    newLabel, lFile.getTransaction( 0 ).getType() ) );
+
             }
-
-            e.addMessage( Header.PROP_TYPE, new TextschluesselConstraintMessage(
-                newLabel, lFile.getTransaction( 0 ).getType() ) );
-
         }
 
         if ( header.getCreateDate() != null )
         {
-            final Currency[] oldCurrencies = this.getCurrencyMapper().getDtausCurrencies(
-                lFile.getHeader().getCreateDate() );
+            final Currency[] oldCurrencies =
+                this.getCurrencyMapper().getDtausCurrencies( lFile.getHeader().getCreateDate() );
 
             final Currency[] newCurrencies = this.getCurrencyMapper().getDtausCurrencies( header.getCreateDate() );
 
@@ -319,8 +322,8 @@ public final class DefaultHeaderValidator implements HeaderValidator
             if ( executionDate != null )
             {
                 final long executionMillis = executionDate.getTime();
-                valid = executionMillis >= createMillis &&
-                        executionMillis <= createMillis + this.getMaxScheduleDaysMillis();
+                valid = executionMillis >= createMillis
+                        && executionMillis <= createMillis + this.getMaxScheduleDaysMillis();
 
             }
         }

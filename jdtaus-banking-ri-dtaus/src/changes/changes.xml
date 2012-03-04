@@ -152,5 +152,12 @@
     <release version="1.11.2" date="2010-05-21" description="Maintenance release."/>
     <!-- *********************************************************************************************************** -->
     <release version="1.11.3" date="2011-10-24" description="Maintenance release."/>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.4" description="Bugfix release.">
+      <action dev="schulte2005" type="fix"><![CDATA[Updated class
+      <code>org.jdtaus.banking.dtaus.ri.zka.DefaultHeaderValidator</code> to correct a <code>NullPointerException</code>
+      thrown when validating <code>Header</code> instances with a <code>null</code> logical file type.]]>
+      </action>
+    </release>
   </body>
 </document>
