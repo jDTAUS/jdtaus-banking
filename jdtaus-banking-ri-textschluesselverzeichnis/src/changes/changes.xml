@@ -171,5 +171,7 @@
       without provided Textschlüssel (empty directory).]]>
       </action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.4" date="2012-03-05" description="Maintenance release."/>
   </body>
 </document>

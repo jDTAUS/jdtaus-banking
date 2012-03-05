@@ -159,5 +159,7 @@
       thrown when validating <code>Header</code> instances with a <code>null</code> logical file type.]]>
       </action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.4" date="2012-03-05" description="Maintenance release."/>
   </body>
 </document>

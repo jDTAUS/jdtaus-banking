@@ -265,5 +265,7 @@
       <action><![CDATA[Updated 'Spezifikation der Datenformate' document to version 2.5.]]></action>
       <action><![CDATA[Updated 'Merkblatt Bankleitzahlendatei' document.]]></action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.11.4" date="2012-03-05" description="Maintenance release."/>
   </body>
 </document>
