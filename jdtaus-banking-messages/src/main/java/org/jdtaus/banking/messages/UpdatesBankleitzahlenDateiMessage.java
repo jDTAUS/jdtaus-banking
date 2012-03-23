@@ -80,7 +80,7 @@ public final class UpdatesBankleitzahlenDateiMessage extends Message
     /**
      * Gets the text of message <code>updatingBankleitzahlenDatei</code>.
      * <blockquote><pre>Aktualisiert Bankleitzahlendatei.</pre></blockquote>
-     * <blockquote><pre>Updates bankfile.</pre></blockquote>
+     * <blockquote><pre>Updating bankfile.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *

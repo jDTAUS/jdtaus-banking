@@ -78,7 +78,7 @@ public final class SearchesCurrenciesMessage extends Message
     /**
      * Gets the text of message <code>searchingCurrencies</code>.
      * <blockquote><pre>Durchsucht Währungsverzeichnis.</pre></blockquote>
-     * <blockquote><pre>Searches currency directory.</pre></blockquote>
+     * <blockquote><pre>Searching currency directory.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *

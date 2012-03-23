@@ -294,6 +294,7 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
     private synchronized void assertInitialized()
     {
         Task task = null;
+        boolean logExpirationMessage = false;
 
         try
         {
@@ -401,20 +402,12 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
                         }
                     }
 
+                    logExpirationMessage = true;
                     this.initialized = true;
 
                     this.getLogger().info( this.getBankfileInfoMessage(
                         this.getLocale(), new Long( processedRecords ), new Integer( rsrc.length ) ) );
 
-                    // Log an application message if the directory is outdated.
-                    if ( new Date().after( this.getDateOfExpiration() ) )
-                    {
-                        this.getApplicationLogger().log( new MessageEvent( this, new Message[]
-                            {
-                                new OutdatedBankleitzahlenVerzeichnisMessage( this.getDateOfExpiration() )
-                            }, MessageEvent.NOTIFICATION ) );
-
-                    }
                 }
                 else
                 {
@@ -435,6 +428,19 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
             if ( task != null )
             {
                 this.getTaskMonitor().finish( task );
+            }
+        }
+
+        // Log an application message if the directory is outdated.
+        if ( logExpirationMessage )
+        {
+            if ( new Date().after( this.getDateOfExpiration() ) )
+            {
+                this.getApplicationLogger().log( new MessageEvent( this, new Message[]
+                    {
+                        new OutdatedBankleitzahlenVerzeichnisMessage( this.getDateOfExpiration() )
+                    }, MessageEvent.NOTIFICATION ) );
+
             }
         }
     }
@@ -537,7 +543,7 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         {
             if ( providers[i].getBankfileCount() > 0
                  && ( latest == null || latest.getDateOfExpiration( latest.getBankfileCount() - 1 ).
-                     before( providers[i].getDateOfExpiration( providers[i].getBankfileCount() - 1 ) ) ) )
+                before( providers[i].getDateOfExpiration( providers[i].getBankfileCount() - 1 ) ) ) )
             {
                 latest = providers[i];
             }

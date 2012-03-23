@@ -77,7 +77,7 @@ public class ReadsTextschluesselMessage extends Message
     /**
      * Gets the text of message <code>readingTextschluessel</code>.
      * <blockquote><pre>Liest Textschlüssel.</pre></blockquote>
-     * <blockquote><pre>Reads Textschlüssel.</pre></blockquote>
+     * <blockquote><pre>Reading Textschlüssel.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *

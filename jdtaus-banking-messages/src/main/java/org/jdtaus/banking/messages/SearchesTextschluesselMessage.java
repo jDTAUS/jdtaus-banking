@@ -78,7 +78,7 @@ public final class SearchesTextschluesselMessage extends Message
     /**
      * Gets the text of message <code>searchingTextschluessel</code>.
      * <blockquote><pre>Durchsucht Textschlüsselverzeichnis.</pre></blockquote>
-     * <blockquote><pre>Searches Textschlüssel directory.</pre></blockquote>
+     * <blockquote><pre>Searching Textschlüssel directory.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *

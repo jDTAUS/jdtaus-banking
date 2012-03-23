@@ -77,7 +77,7 @@ public final class ReadsCurrenciesMessage extends Message
     /**
      * Gets the text of message <code>readingCurrencies</code>.
      * <blockquote><pre>Liest Währungen.</pre></blockquote>
-     * <blockquote><pre>Reads currencies.</pre></blockquote>
+     * <blockquote><pre>Reading currencies.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *

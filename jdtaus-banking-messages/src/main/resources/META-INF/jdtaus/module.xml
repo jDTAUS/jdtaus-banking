@@ -51,7 +51,7 @@
       <container:messages>
         <container:message container:name="analyzingFile">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Analyses file.]]></container:text>
+            <container:text container:language="en"><![CDATA[Analysing file.]]></container:text>
             <container:text container:language="de"><![CDATA[Analysiert Datei.]]></container:text>
           </container:template>
         </container:message>
@@ -132,7 +132,7 @@
       <container:messages>
         <container:message container:name="checksummingFile">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Computes checksum.]]></container:text>
+            <container:text container:language="en"><![CDATA[Computing checksum.]]></container:text>
             <container:text container:language="de"><![CDATA[Berechnet Prüfsumme.]]></container:text>
           </container:template>
         </container:message>
@@ -411,7 +411,7 @@
       <container:messages>
         <container:message container:name="updatingBankleitzahlenDatei">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Updates bankfile.]]></container:text>
+            <container:text container:language="en"><![CDATA[Updating bankfile.]]></container:text>
             <container:text container:language="de"><![CDATA[Aktualisiert Bankleitzahlendatei.]]></container:text>
           </container:template>
         </container:message>
@@ -429,7 +429,7 @@
       <container:messages>
         <container:message container:name="searchingBankleitzahlInfos">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Searches bankcode directory.]]></container:text>
+            <container:text container:language="en"><![CDATA[Searching bankcode directory.]]></container:text>
             <container:text container:language="de"><![CDATA[Durchsucht Bankleitzahlenverzeichnis.]]></container:text>
           </container:template>
         </container:message>
@@ -447,7 +447,7 @@
       <container:messages>
         <container:message container:name="searchingTextschluessel">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Searches Textschlüssel directory.]]></container:text>
+            <container:text container:language="en"><![CDATA[Searching Textschlüssel directory.]]></container:text>
             <container:text container:language="de"><![CDATA[Durchsucht Textschlüsselverzeichnis.]]></container:text>
           </container:template>
         </container:message>
@@ -465,7 +465,7 @@
       <container:messages>
         <container:message container:name="searchingCurrencies">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Searches currency directory.]]></container:text>
+            <container:text container:language="en"><![CDATA[Searching currency directory.]]></container:text>
             <container:text container:language="de"><![CDATA[Durchsucht Währungsverzeichnis.]]></container:text>
           </container:template>
         </container:message>
@@ -483,7 +483,7 @@
       <container:messages>
         <container:message container:name="readingCurrencies">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Reads currencies.]]></container:text>
+            <container:text container:language="en"><![CDATA[Reading currencies.]]></container:text>
             <container:text container:language="de"><![CDATA[Liest Währungen.]]></container:text>
           </container:template>
         </container:message>
@@ -501,7 +501,7 @@
       <container:messages>
         <container:message container:name="readingTextschluessel">
           <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Reads Textschlüssel.]]></container:text>
+            <container:text container:language="en"><![CDATA[Reading Textschlüssel.]]></container:text>
             <container:text container:language="de"><![CDATA[Liest Textschlüssel.]]></container:text>
           </container:template>
         </container:message>

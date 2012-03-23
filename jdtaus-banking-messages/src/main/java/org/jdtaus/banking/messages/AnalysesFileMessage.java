@@ -80,7 +80,7 @@ public final class AnalysesFileMessage extends Message
     /**
      * Gets the text of message <code>analyzingFile</code>.
      * <blockquote><pre>Analysiert Datei.</pre></blockquote>
-     * <blockquote><pre>Analyses file.</pre></blockquote>
+     * <blockquote><pre>Analysing file.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *

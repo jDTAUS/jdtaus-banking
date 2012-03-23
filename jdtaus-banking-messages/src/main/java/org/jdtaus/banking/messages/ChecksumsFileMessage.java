@@ -80,7 +80,7 @@ public final class ChecksumsFileMessage extends Message
     /**
      * Gets the text of message <code>checksummingFile</code>.
      * <blockquote><pre>Berechnet Prüfsumme.</pre></blockquote>
-     * <blockquote><pre>Computes checksum.</pre></blockquote>
+     * <blockquote><pre>Computing checksum.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *

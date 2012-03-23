@@ -78,7 +78,7 @@ public final class SearchesBankleitzahlInfosMessage extends Message
     /**
      * Gets the text of message <code>searchingBankleitzahlInfos</code>.
      * <blockquote><pre>Durchsucht Bankleitzahlenverzeichnis.</pre></blockquote>
-     * <blockquote><pre>Searches bankcode directory.</pre></blockquote>
+     * <blockquote><pre>Searching bankcode directory.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      *
