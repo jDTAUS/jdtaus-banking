@@ -99,7 +99,7 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
 
     /**
      * Gets the text of message <code>outdatedDirectory</code>.
-     * <blockquote><pre>Das Bankleitzahlenverzeichnis is am {0,date,long} abgelaufen.</pre></blockquote>
+     * <blockquote><pre>Das Bankleitzahlenverzeichnis ist am {0,date,long} abgelaufen.</pre></blockquote>
      * <blockquote><pre>The directory of bankcodes expired at {0,date,long}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
