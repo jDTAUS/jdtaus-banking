@@ -2,10 +2,8 @@
 <!--
 
   ${project.name}
-  Copyright (c) 2005 Christian Schulte
-
-  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
-  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
+  Copyright (C) 2005 Christian Schulte
+  <schulte2005@users.sourceforge.net>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -23,10 +21,10 @@
 
   Document   : module.xml
   Author     : Christian Schulte <schulte2005@users.sourceforge.net>
-  Version    : $Id$
+  Version    : $JDTAUS$
   Description: Runtime configuration for the ${project.name} module.
 
-  $Id$
+  $JDTAUS$
 -->
 <container:module xmlns:container="http://jdtaus.org/core/model/container"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

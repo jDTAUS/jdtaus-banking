@@ -1,9 +1,7 @@
 /*
  *  jDTAUS Banking RI DTAUS
- *  Copyright (c) 2005 Christian Schulte
- *
- *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
- *  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
+ *  Copyright (C) 2005 Christian Schulte
+ *  <schulte2005@users.sourceforge.net>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -29,7 +27,7 @@ import java.util.Map;
  * Gathers configuration of the file format implementations.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id: AbstractErrorMessage.java 4667 2008-03-13 02:28:10Z schulte2005 $
+ * @version $JDTAUS$
  */
 public class Configuration
 {

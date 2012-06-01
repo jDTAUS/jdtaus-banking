@@ -1,9 +1,7 @@
 /*
  *  jDTAUS Banking RI CurrencyDirectory
- *  Copyright (c) 2005 Christian Schulte
- *
- *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
- *  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
+ *  Copyright (C) 2005 Christian Schulte
+ *  <schulte2005@users.sourceforge.net>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -35,7 +33,7 @@ import java.util.Set;
  * Class loader for providing classpath resources.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id$
+ * @version $JDTAUS$
  *
  * @see #addResource(java.lang.String, java.net.URL)
  * @see #addResources(java.lang.String, java.net.URL[])

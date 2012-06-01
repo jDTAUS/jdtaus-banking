@@ -25,7 +25,7 @@ import org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselVerzeichnis;
  * Tests the {@link JaxpTextschluesselVerzeichnis} implementation to operate without finding resources.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id$
+ * @version $JDTAUS$
  */
 public class JaxpTextschluesselVerzeichnis_NoTextschluessel_Test extends AbstractJaxpTextschluesselVerzeichnisTest
 {

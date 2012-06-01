@@ -1,9 +1,7 @@
 /*
  *  jDTAUS Banking Utilities
- *  Copyright (c) 2005 Christian Schulte
- *
- *  Christian Schulte, Haldener Strasse 72, 58095 Hagen, Germany
- *  <schulte2005@users.sourceforge.net> (+49 2331 3543887)
+ *  Copyright (C) 2005 Christian Schulte
+ *  <schulte2005@users.sourceforge.net>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -43,7 +41,7 @@ import org.jdtaus.core.container.PropertyException;
  * for which the {@link Kontonummer#parse(String)} method throws a {@code ParseException}.</p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id$
+ * @version $JDTAUS$
  */
 public final class KontonummerTextField extends JFormattedTextField
 {

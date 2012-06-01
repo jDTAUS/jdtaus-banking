@@ -16,7 +16,7 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  $Id$
+ *  $JDTAUS$
  */
 package org.jdtaus.banking.messages;
 
@@ -28,7 +28,7 @@ import org.jdtaus.core.text.Message;
  * Message stating that currency information is being searched.
  *
  * @author Christian Schulte
- * @version $Id$
+ * @version $JDTAUS$
  */
 public final class SearchesCurrenciesMessage extends Message
 {
