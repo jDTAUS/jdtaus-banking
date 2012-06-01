@@ -224,6 +224,12 @@ public abstract class AbstractLogicalFile implements LogicalFile
     /** Pre-allocated temporary buffer. */
     private byte[] defaultBuffer;
 
+    /**
+     * Maximal erlaubte Anzahl Erweiterungsteile in einem C-Datensatz.
+     * @since 1.12
+     */
+    private Long maximumExtensionCount;
+
     /** Statische Initialisierung der konstanten Felder. */
     static
     {
@@ -411,6 +417,35 @@ public abstract class AbstractLogicalFile implements LogicalFile
     public void setMonitoringThreshold( final int value )
     {
         this.monitoringThreshold = new Integer( value );
+    }
+
+    /**
+     * Gets the maximum allowed number of extensions.
+     *
+     * @return The maximum allowed number of extensions.
+     *
+     * @since 1.12
+     */
+    public long getMaximumExtensionCount()
+    {
+        if ( this.maximumExtensionCount == null )
+        {
+            this.maximumExtensionCount = this.getDefaultMaximumExtensionCount();
+        }
+
+        return this.maximumExtensionCount.longValue();
+    }
+
+    /**
+     * Sets the maximum allowed number of extensions.
+     *
+     * @param value The new maximum allowed number of extensions or {@code null}.
+     *
+     * @since 1.12
+     */
+    public void setMaximumExtensionCount( final Long value )
+    {
+        this.maximumExtensionCount = value;
     }
 
     /**
@@ -2244,6 +2279,18 @@ public abstract class AbstractLogicalFile implements LogicalFile
     {
         return (java.lang.Integer) ContainerFactory.getContainer().
             getProperty( this, "defaultMonitoringThreshold" );
+
+    }
+
+    /**
+     * Gets the value of property <code>defaultMaximumExtensionCount</code>.
+     *
+     * @return Default maximum number of extensions allowed in a C record (field C18).
+     */
+    protected java.lang.Long getDefaultMaximumExtensionCount()
+    {
+        return (java.lang.Long) ContainerFactory.getContainer().
+            getProperty( this, "defaultMaximumExtensionCount" );
 
     }
 

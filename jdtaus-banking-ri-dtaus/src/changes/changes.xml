@@ -167,5 +167,13 @@
     <release version="1.11.6" date="2012-03-23" description="Maintenance release."/>
     <!-- *********************************************************************************************************** -->
     <release version="1.11.7" date="2012-04-05" description="Maintenance release."/>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.12" description="Maintenance release.">
+      <action dev="schulte2005" type="add"><![CDATA[Added property <code>maximumExtensionCount</code> to class
+      <code>org.jdtaus.banking.dtaus.ri.zka.AbstractLogicalFile</code> and updated classes
+      <code>org.jdtaus.banking.dtaus.ri.zka.DTAUSDisk</code> and <code>org.jdtaus.banking.dtaus.ri.zka.DTAUSTape</code>
+      to validate c-record field 18 based on the value of that property.]]>
+      </action>
+    </release>
   </body>
 </document>

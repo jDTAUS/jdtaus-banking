@@ -123,6 +123,14 @@
             <container:text container:language="en"><![CDATA[Number of bytes which need to minimally be copied to enable any task monitoring during copy operations.]]></container:text>
           </container:documentation>
         </container:property>
+        <container:property container:name="defaultMaximumExtensionCount"
+                            container:type="java.lang.Long"
+                            container:value="15">
+
+          <container:documentation container:defaultLanguage="en">
+            <container:text container:language="en"><![CDATA[Default maximum number of extensions allowed in a C record (field C18).]]></container:text>
+          </container:documentation>
+        </container:property>
       </container:properties>
       <container:messages>
         <container:reference container:name="readNumberIllegalFileInfo"/>

@@ -780,6 +780,22 @@ public final class DTAUSTape extends AbstractLogicalFile
         extCount = this.readNumberPackedPositive(
             Fields.FIELD_C18, position + CRECORD_OFFSETS1[21], CRECORD_LENGTH1[21], true );
 
+        if ( extCount != NO_NUMBER && extCount > this.getMaximumExtensionCount() )
+        {
+            if ( ThreadLocalMessages.isErrorsEnabled() )
+            {
+                throw new CorruptedException( this.getImplementation(), position + CRECORD_OFFSETS1[21] );
+            }
+            else
+            {
+                final Message msg = new IllegalDataMessage(
+                    Fields.FIELD_C18, IllegalDataMessage.TYPE_CONSTANT, position + CRECORD_OFFSETS1[21],
+                    Long.toString( extCount ) );
+
+                ThreadLocalMessages.getMessages().addMessage( msg );
+            }
+        }
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 1
         num = this.readNumberBinary( Fields.FIELD_C1, position + CRECORD_OFFSETS1[0], CRECORD_LENGTH1[0] );
 

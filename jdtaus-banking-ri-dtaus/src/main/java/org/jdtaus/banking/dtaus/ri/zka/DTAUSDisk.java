@@ -796,12 +796,30 @@ public final class DTAUSDisk extends AbstractLogicalFile
             Fields.FIELD_C18, position + this.getBlockSize() + CRECORD_OFFSETS2[4], CRECORD_LENGTH2[4],
             ENCODING_ASCII ).longValue();
 
+        if ( extCount != NO_NUMBER && extCount > this.getMaximumExtensionCount() )
+        {
+            if ( ThreadLocalMessages.isErrorsEnabled() )
+            {
+                throw new CorruptedException( this.getImplementation(),
+                                              position + this.getBlockSize() + CRECORD_OFFSETS2[4] );
+
+            }
+            else
+            {
+                final Message msg = new IllegalDataMessage(
+                    Fields.FIELD_C18, IllegalDataMessage.TYPE_CONSTANT,
+                    position + this.getBlockSize() + CRECORD_OFFSETS2[4], Long.toString( extCount ) );
+
+                ThreadLocalMessages.getMessages().addMessage( msg );
+            }
+        }
+
         // Konstanter Teil - Satzaschnitt 1 - Feld 1
         num = this.readNumber(
             Fields.FIELD_C1, position + CRECORD_OFFSETS1[0], CRECORD_LENGTH1[0], ENCODING_ASCII );
 
-        if ( num.longValue() != NO_NUMBER && extCount != NO_NUMBER &&
-             num.intValue() != CRECORD_CONST_LENGTH + extCount * CRECORD_EXT_LENGTH )
+        if ( num.longValue() != NO_NUMBER && extCount != NO_NUMBER
+             && num.intValue() != CRECORD_CONST_LENGTH + extCount * CRECORD_EXT_LENGTH )
         {
             if ( ThreadLocalMessages.isErrorsEnabled() )
             {
