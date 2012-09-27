@@ -26,7 +26,7 @@ import org.jdtaus.banking.ri.blzdirectory.BankfileBankleitzahlenVerzeichnis;
 /**
  * Base tests for the {@link BankfileBankleitzahlenVerzeichnis} implementation.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
 public abstract class AbstractBankfileBankleitzahlenVerzeichnisTest extends BankleitzahlenVerzeichnisTest

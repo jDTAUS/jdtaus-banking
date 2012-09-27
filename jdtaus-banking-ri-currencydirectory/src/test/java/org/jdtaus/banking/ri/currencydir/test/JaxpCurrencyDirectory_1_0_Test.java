@@ -1,7 +1,7 @@
 /*
  *  jDTAUS Banking RI CurrencyDirectory
  *  Copyright (C) 2005 Christian Schulte
- *  <schulte2005@users.sourceforge.net>
+ *  <cs@schulte.it>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ import org.jdtaus.banking.ri.currencydir.JaxpCurrencyDirectory;
  * Tests the {@link JaxpCurrencyDirectory} implementation to support resources of the
  * {@code http://jdtaus.org/banking/xml/currencies} namespace.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
 public class JaxpCurrencyDirectory_1_0_Test extends AbstractJaxpCurrencyDirectoryTest

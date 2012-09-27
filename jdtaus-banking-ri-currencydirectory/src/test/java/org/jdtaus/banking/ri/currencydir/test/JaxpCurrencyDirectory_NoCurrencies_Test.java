@@ -28,7 +28,7 @@ import org.jdtaus.banking.spi.UnsupportedCurrencyException;
 /**
  * Tests the {@link JaxpCurrencyDirectory} implementation to operate without finding resources.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
 public class JaxpCurrencyDirectory_NoCurrencies_Test extends AbstractJaxpCurrencyDirectoryTest

@@ -3,7 +3,7 @@
 
   ${project.name}
   Copyright (C) 2005 Christian Schulte
-  <schulte2005@users.sourceforge.net>
+  <cs@schulte.it>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Document   : module.xml
-  Author     : Christian Schulte <schulte2005@users.sourceforge.net>
+  Author     : Christian Schulte <cs@schulte.it>
   Version    : $JDTAUS$
   Description: Runtime configuration for the ${project.name} module.
 

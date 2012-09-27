@@ -3,7 +3,7 @@
 
   jDTAUS Banking RI Textschluesselverzeichnis
   Copyright (C) 2005 Christian Schulte
-  <schulte2005@users.sourceforge.net>
+  <cs@schulte.it>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Document    : jdtaus-textschluessel-1.1.xsd
-  Autor       : Christian Schulte <schulte2005@users.sourceforge.net>
+  Autor       : Christian Schulte <cs@schulte.it>
   Beschreibung: Schema for the XML model of the TextschluesselVerzeichnis.
 
   Example usage:
