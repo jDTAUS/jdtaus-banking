@@ -620,14 +620,14 @@ public class Transaction implements Cloneable, Serializable
             append( ", descriptions=" ).append( this.descriptions ).
             append( ", executiveAccount=" ).append( this.executiveAccount ).
             append( ", executiveBank=" ).append( this.executiveBank ).
-            append( ", executiveName=" ).append( this.executiveName ).
-            append( ", executiveExt=" ).append( this.executiveExt ).
+            append( ", executiveName=" ).append( (Object) this.executiveName ).
+            append( ", executiveExt=" ).append( (Object) this.executiveExt ).
             append( ", primaryBank=" ).append( this.primaryBank ).
             append( ", reference=" ).append( this.reference ).
             append( ", targetAccount=" ).append( this.targetAccount ).
             append( ", targetBank=" ).append( this.targetBank ).
-            append( ", targetName=" ).append( this.targetName ).
-            append( ", targetExt=" ).append( this.targetExt ).
+            append( ", targetName=" ).append( (Object) this.targetName ).
+            append( ", targetExt=" ).append( (Object) this.targetExt ).
             append( ", type=" ).append( this.type ).
             append( '}' ).toString();
 

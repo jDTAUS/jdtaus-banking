@@ -455,7 +455,7 @@ public class Header implements Cloneable, Serializable
             append( ", bank=" ).append( this.bank ).
             append( ", bankData=" ).append( this.bankData ).
             append( ", currency=" ).append( this.currency ).
-            append( ", customer=" ).append( this.customer ).
+            append( ", customer=" ).append( (Object) this.customer ).
             append( ", createDate=" ).append( this.createDate ).
             append( ", executionDate=" ).append( this.executionDate ).
             append( ", type=" ).append( this.type ).
