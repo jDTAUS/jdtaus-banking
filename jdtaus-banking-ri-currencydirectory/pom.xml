@@ -41,12 +41,10 @@
     <testResources>
       <testResource>
         <filtering>false</filtering>
-        <directory>src/site/resources</directory>
+        <directory>src/main/xml</directory>
         <targetPath>org/jdtaus/banking/ri/currencydir/test</targetPath>
         <includes>
-          <include>currencies-1.0.xml</include>
-          <include>currencies-1.1.xml</include>
-          <include>currencies-1.2.xml</include>
+          <include>*.xml</include>
         </includes>
       </testResource>
       <testResource>
@@ -62,15 +60,41 @@
           <configuration>
             <artifacts combine.children="append">
               <artifact>
-                <file>src/site/resources/currencies-1.2.xml</file>
+                <file>src/main/xml/currencies-1.2.xml</file>
                 <classifier>currencies</classifier>
                 <type>xml</type>
               </artifact>
             </artifacts>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>wagon-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-upload</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>upload</goal>
+              </goals>
+              <configuration>
+                <fromDir>src/main/xml</fromDir>
+                <includes>*.x??</includes>
+                <serverId>${jdtaus.xsd.distribution.id}</serverId>
+                <toDir>1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory</toDir>
+                <url>${jdtaus.xsd.distribution.url}</url>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>wagon-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
     <dependency>

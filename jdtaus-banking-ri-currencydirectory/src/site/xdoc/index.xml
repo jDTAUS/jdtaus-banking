@@ -34,7 +34,7 @@
               <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd">jdtaus-currencies-1.0.xsd</a>
             </td>
             <td>
-              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.0.xml">currencies-1.0.xml</a>
+              <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.0.xml">currencies-1.0.xml</a>
             </td>
             <td>1.0</td>
             <td>2.0</td>
@@ -45,7 +45,7 @@
               <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd">jdtaus-banking-1.0.xsd</a>
             </td>
             <td>
-              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.1.xml">currencies-1.1.xml</a>
+              <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.1.xml">currencies-1.1.xml</a>
             </td>
             <td>1.4</td>
             <td>2.0</td>
@@ -56,7 +56,7 @@
               <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd">jdtaus-banking-1.1.xsd</a>
             </td>
             <td>
-              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.2.xml">currencies-1.2.xml</a>
+              <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.2.xml">currencies-1.2.xml</a>
             </td>
             <td>1.8</td>
             <td></td>
@@ -69,7 +69,8 @@
         All released 1.0 artifacts come with a default
         <code>currencies.xml</code> document located at
         <code>META-INF/jdtaus/currencies.xml</code> holding currency
-        instances as specified by <a href="http://www.zka.de">ZKA</a>. Starting
+        instances as specified by
+        <a href="http://www.zka.de">ZKA</a>. Starting
         with version 1.1 this default XML document is no longer part of the
         artifact's jar file. When upgrading your application to 1.1 you need to
         provide the currency configuration yourself by either placing at least
@@ -78,7 +79,7 @@
         <code>JaxpCurrenciesProvider</code> implementation providing the
         currency resources. The former default document is available for
         download as a starting point from
-        <a href="./currencies-1.2.xml">here</a>.
+        <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.2.xml">here</a>.
       </p>
     </section>
   </body>

@@ -35,29 +35,7 @@
     <resources>
       <resource>
         <filtering>false</filtering>
-        <directory>src/site/resources</directory>
-        <targetPath>org/jdtaus/banking/model</targetPath>
-        <includes>
-          <include>jdtaus-banking-1.0.xsd</include>
-          <include>jdtaus-banking-1.1.xsd</include>
-        </includes>
-      </resource>
-      <resource>
-        <filtering>false</filtering>
-        <directory>src/site/resources</directory>
-        <targetPath>org/jdtaus/banking/xml/currencies</targetPath>
-        <includes>
-          <include>jdtaus-currencies-1.0.xsd</include>
-        </includes>
-      </resource>
-      <resource>
-        <filtering>false</filtering>
-        <directory>src/site/resources</directory>
-        <targetPath>org/jdtaus/banking/xml/textschluessel</targetPath>
-        <includes>
-          <include>jdtaus-textschluessel-1.0.xsd</include>
-          <include>jdtaus-textschluessel-1.1.xsd</include>
-        </includes>
+        <directory>src/main/resources</directory>
       </resource>
     </resources>
     <testResources>
@@ -93,7 +71,61 @@
             </archive>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>wagon-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-model-upload</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>upload</goal>
+              </goals>
+              <configuration>
+                <fromDir>src/main/resources/org/jdtaus/banking/model</fromDir>
+                <includes>*.xsd</includes>
+                <serverId>${jdtaus.xsd.distribution.id}</serverId>
+                <toDir>1.0.x/jdtaus-banking/jdtaus-banking-schemas</toDir>
+                <url>${jdtaus.xsd.distribution.url}</url>
+              </configuration>
+            </execution>
+            <execution>
+              <id>default-currencies-upload</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>upload</goal>
+              </goals>
+              <configuration>
+                <fromDir>src/main/resources/org/jdtaus/banking/xml/currencies</fromDir>
+                <includes>*.xsd</includes>
+                <serverId>${jdtaus.xsd.distribution.id}</serverId>
+                <toDir>1.0.x/jdtaus-banking/jdtaus-banking-schemas</toDir>
+                <url>${jdtaus.xsd.distribution.url}</url>
+              </configuration>
+            </execution>
+            <execution>
+              <id>default-textschluessel-upload</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>upload</goal>
+              </goals>
+              <configuration>
+                <fromDir>src/main/resources/org/jdtaus/banking/xml/textschluessel</fromDir>
+                <includes>*.xsd</includes>
+                <serverId>${jdtaus.xsd.distribution.id}</serverId>
+                <toDir>1.0.x/jdtaus-banking/jdtaus-banking-schemas</toDir>
+                <url>${jdtaus.xsd.distribution.url}</url>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>wagon-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 </project>
