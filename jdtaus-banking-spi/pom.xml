@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-spi</artifactId>
   <groupId>org.jdtaus.banking</groupId>
-  <name>jDTAUS Banking SPI</name>
+  <name>jDTAUS Banking ⁑ SPI</name>
   <description>jDTAUS banking implementation programming interface.</description>
   <dependencies>
     <dependency>

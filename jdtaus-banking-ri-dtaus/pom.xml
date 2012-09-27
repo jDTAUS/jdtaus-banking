@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-dtaus</artifactId>
   <groupId>org.jdtaus.banking.dtaus</groupId>
-  <name>jDTAUS Banking RI DTAUS</name>
+  <name>jDTAUS Banking ⁑ RI DTAUS</name>
   <description>jDTAUS DTAUS reference implementation.</description>
   <build>
     <resources>

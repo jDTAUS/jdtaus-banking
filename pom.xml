@@ -22,9 +22,9 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>jdtaus-site</artifactId>
     <groupId>org.jdtaus</groupId>
-    <version>1.5</version>
+    <artifactId>jdtaus-lgpl-parent</artifactId>
+    <version>1.10</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus</groupId>
@@ -32,15 +32,16 @@
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
   <version>1.13-SNAPSHOT</version>
+  <url>${jdtaus.artifacts.url}/jdtaus-banking</url>
   <description>jDTAUS Banking parent module.</description>
   <inceptionYear>2005</inceptionYear>
   <prerequisites>
     <maven>2.0.10</maven>
   </prerequisites>
   <scm>
-    <connection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</connection>
-    <developerConnection>scm:svn:https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</developerConnection>
-    <url>http://jdtaus.svn.sourceforge.net/viewvc/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</url>
+    <connection>scm:svn:http://svn.jdtaus.org/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</connection>
+    <developerConnection>scm:svn:http://svn.jdtaus.org/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</developerConnection>
+    <url>http://svn.jdtaus.org/jdtaus-banking/branches/jdtaus-banking-1.x</url>
   </scm>
   <contributors>
     <contributor>
@@ -70,28 +71,14 @@
       <extension>
         <groupId>org.jdtaus</groupId>
         <artifactId>jdtaus-build-resources</artifactId>
-        <version>${jdtaus.version}</version>
+        <version>${jdtaus-build.version}</version>
       </extension>
     </extensions>
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.1</version>
-          <configuration>
-            <source>1.4</source>
-            <target>1.4</target>
-            <debug>true</debug>
-            <optimize>true</optimize>
-            <showDeprecation>true</showDeprecation>
-            <showWarnings>true</showWarnings>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>2.0.1</version>
           <dependencies>
             <dependency>
               <groupId>org.jdtaus.core.container</groupId>
@@ -101,209 +88,31 @@
             </dependency>
           </dependencies>
           <configuration>
-            <locales>en</locales>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4.2</version>
-          <configuration>
-            <delimiters>
-              <delimiter>${*}</delimiter>
-            </delimiters>
-            <useDefaultDelimiters>false</useDefaultDelimiters>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.0</version>
-          <configuration>
-            <useReleaseProfile>false</useReleaseProfile>
-            <releaseProfiles>jdtaus-release</releaseProfiles>
-            <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/tags</tagBase>
+            <reportPlugins combine.children="append">
+              <reportPlugin>
+                <groupId>org.jdtaus.mojo</groupId>
+                <artifactId>jdtaus-container-mojo</artifactId>
+                <version>${jdtausContainerMojoVersion}</version>
+                <configuration>
+                  <moduleName>${project.name}</moduleName>
+                </configuration>
+              </reportPlugin>
+            </reportPlugins>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>${surefireVersion}</version>
           <configuration>
-            <redirectTestOutputToFile>true</redirectTestOutputToFile>
-            <systemPropertyVariables>
+            <systemPropertyVariables combine.children="append">
               <java.util.logging.config.file>${project.build.testOutputDirectory}/logging.properties</java.util.logging.config.file>
             </systemPropertyVariables>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>2.3</version>
-          <configuration>
-            <archive>
-              <index>true</index>
-              <addMavenDescriptor>false</addMavenDescriptor>
-              <compress>true</compress>
-              <manifestEntries>
-                <Build-Date>${buildNumber}</Build-Date>
-                <Maven-Version>${maven.version}</Maven-Version>
-              </manifestEntries>
-            </archive>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-remote-resources-plugin</artifactId>
-          <version>1.0</version>
-          <executions>
-            <execution>
-              <id>process</id>
-              <goals>
-                <goal>process</goal>
-              </goals>
-              <configuration>
-                <resourceBundles>
-                  <resourceBundle>org.jdtaus:jdtaus-lgpl-resource-bundle:${jdtaus.version}</resourceBundle>
-                </resourceBundles>
-                <properties>
-                  <buildNumber>${buildNumber}</buildNumber>
-                </properties>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${mavenJavadocPluginVersion}</version>
-          <configuration>
-            <author>true</author>
-            <keywords>true</keywords>
-            <linksource>true</linksource>
-            <nodeprecated>true</nodeprecated>
-            <quiet>false</quiet>
-            <verbose>false</verbose>
-            <serialwarn>true</serialwarn>
-            <show>public</show>
-            <source>1.4</source>
-            <doctitle>${project.name} ${project.version}</doctitle>
-            <windowtitle>${project.name} ${project.version}</windowtitle>
-            <detectJavaApiLink>true</detectJavaApiLink>
-            <detectOfflineLinks>false</detectOfflineLinks>
-            <!-- <detectLinks>true</detectLinks> Disabled due to http://jira.codehaus.org/browse/MJAVADOC-273 -->
-            <archive>
-              <index>true</index>
-              <addMavenDescriptor>false</addMavenDescriptor>
-              <compress>true</compress>
-              <manifestEntries>
-                <Build-Date>${buildNumber}</Build-Date>
-                <Maven-Version>${maven.version}</Maven-Version>
-              </manifestEntries>
-            </archive>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jxr-plugin</artifactId>
-          <version>${mavenJxrPluginVersion}</version>
-          <configuration>
-            <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
-            <outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-pmd-plugin</artifactId>
-          <version>${mavenPmdPluginVersion}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>${surefireVersion}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>${mavenCheckstylePluginVersion}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-changes-plugin</artifactId>
-          <version>${mavenChangesPluginVersion}</version>
-          <configuration>
-            <issueLinkTemplatePerSystem>
-              <MantisBT>http://apps.sourceforge.net/mantisbt/jdtaus/view.php?id=%ISSUE%</MantisBT>
-            </issueLinkTemplatePerSystem>
-            <reportSets>
-              <reportSet>
-                <reports>
-                  <report>changes-report</report>
-                </reports>
-              </reportSet>
-            </reportSets>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>2.4</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.5</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>2.1.1</version>
-          <configuration>
-            <archive>
-              <index>true</index>
-              <addMavenDescriptor>false</addMavenDescriptor>
-              <compress>true</compress>
-              <manifestEntries>
-                <Build-Date>${buildNumber}</Build-Date>
-                <Maven-Version>${maven.version}</Maven-Version>
-              </manifestEntries>
-            </archive>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>buildnumber-maven-plugin</artifactId>
-          <groupId>org.codehaus.mojo</groupId>
-          <version>1.0-beta-4</version>
-          <executions>
-            <execution>
-              <phase>validate</phase>
-              <goals>
-                <goal>create</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <format>{0,date,yyyy-MM-dd'T'HH:mm:ssZ}</format>
-            <items>
-              <item>timestamp</item>
-            </items>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.jdtaus.mojo</groupId>
           <artifactId>jdtaus-container-mojo</artifactId>
           <version>${jdtausContainerMojoVersion}</version>
-          <inherited>true</inherited>
           <dependencies>
             <dependency>
               <groupId>org.jdtaus.core.container</groupId>
@@ -349,50 +158,9 @@
             <locale>en</locale>
           </configuration>
         </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.5</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>maven-version</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-scm-plugin</artifactId>
-          <version>1.3</version>
-          <configuration>
-            <message>[maven-scm-plugin] Build ${buildNumber}</message>
-            <username>${jdtaus.scm.username}</username>
-            <password>${jdtaus.scm.password}</password>
-            <tag>${project.artifactId}-${project.version}-${buildNumber}</tag>
-            <tagBase>https://jdtaus.svn.sourceforge.net/svnroot/jdtaus/jdtaus-banking/builds</tagBase>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jarsigner-plugin</artifactId>
-          <version>1.2</version>
-        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-      </plugin>
       <plugin>
         <groupId>org.jdtaus.mojo</groupId>
         <artifactId>jdtaus-container-mojo</artifactId>
@@ -412,149 +180,6 @@
     <module>jdtaus-banking-ri-textschluesselverzeichnis</module>
     <module>jdtaus-banking-ri-dtaus</module>
   </modules>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.1.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${mavenJavadocPluginVersion}</version>
-        <reportSets>
-          <reportSet>
-            <id>javadoc</id>
-            <inherited>true</inherited>
-            <reports>
-              <report>javadoc</report>
-              <report>test-javadoc</report>
-            </reports>
-            <configuration>
-              <author>true</author>
-              <keywords>true</keywords>
-              <linksource>true</linksource>
-              <nodeprecated>true</nodeprecated>
-              <quiet>false</quiet>
-              <verbose>false</verbose>
-              <serialwarn>true</serialwarn>
-              <show>public</show>
-              <source>1.4</source>
-              <doctitle>${project.name} ${project.version}</doctitle>
-              <windowtitle>${project.name} ${project.version}</windowtitle>
-              <detectJavaApiLink>true</detectJavaApiLink>
-              <detectOfflineLinks>false</detectOfflineLinks>
-              <!-- <detectLinks>true</detectLinks> Disabled due to http://jira.codehaus.org/browse/MJAVADOC-273 -->
-              <archive>
-                <index>true</index>
-                <addMavenDescriptor>false</addMavenDescriptor>
-                <compress>true</compress>
-                <manifestEntries>
-                  <Build-Date>${buildNumber}</Build-Date>
-                  <Maven-Version>${maven.version}</Maven-Version>
-                </manifestEntries>
-              </archive>
-            </configuration>
-          </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>aggregate</report>
-            </reports>
-            <configuration>
-              <linksource>true</linksource>
-              <serialwarn>true</serialwarn>
-              <show>private</show>
-              <doctitle>${project.name} ${project.version} Documentation</doctitle>
-              <windowtitle>${project.name} ${project.version} Documentation</windowtitle>
-              <groups>
-                <group>
-                  <title>Application Programming Interface</title>
-                  <packages>org.jdtaus.banking:org.jdtaus.banking.dtaus</packages>
-                </group>
-                <group>
-                  <title>Implementation Programming Interface</title>
-                  <packages>org.jdtaus.banking.spi:org.jdtaus.banking.dtaus.spi</packages>
-                </group>
-                <group>
-                  <title>Utility Components</title>
-                  <packages>org.jdtaus.banking.util:org.jdtaus.banking.util.swing</packages>
-                </group>
-                <group>
-                  <title>Reference Implementation</title>
-                  <packages>org.jdtaus.banking.ri*:org.jdtaus.banking.dtaus.ri*:org.jdtaus.banking.messages</packages>
-                </group>
-                <group>
-                  <title>Tests</title>
-                  <packages>org.jdtaus.banking.it*:org.jdtaus.banking.spi.it*:org.jdtaus.banking.dtaus.it*</packages>
-                </group>
-                <group>
-                  <title>Charsets</title>
-                  <packages>org.jdtaus.banking.charsets.spi</packages>
-                </group>
-              </groups>
-            </configuration>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>${mavenJxrPluginVersion}</version>
-        <configuration>
-          <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
-          <outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>${mavenPmdPluginVersion}</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>${surefireVersion}</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${mavenCheckstylePluginVersion}</version>
-        <configuration>
-          <configLocation>org/jdtaus/build/resources/checkstyle.xml</configLocation>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <version>${mavenChangesPluginVersion}</version>
-        <reportSets>
-          <reportSet>
-            <id>changes</id>
-            <inherited>true</inherited>
-            <reports>
-              <report>changes-report</report>
-            </reports>
-            <configuration>
-              <issueLinkTemplatePerSystem>
-                <MantisBT>https://apps.sourceforge.net/mantisbt/jdtaus/view.php?id=%ISSUE%</MantisBT>
-              </issueLinkTemplatePerSystem>
-            </configuration>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <artifactId>jdtaus-container-mojo</artifactId>
-        <groupId>org.jdtaus.mojo</groupId>
-        <version>${jdtausContainerMojoVersion}</version>
-        <configuration>
-          <moduleName>${project.name}</moduleName>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -680,6 +305,13 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <distributionManagement>
+    <site>
+      <id>${jdtaus.artifacts.distribution.id}</id>
+      <name>${jdtaus.artifacts.distribution.name}</name>
+      <url>${jdtaus.artifacts.distribution.url}/jdtaus-banking</url>
+    </site>
+  </distributionManagement>
   <dependencies>
     <dependency>
       <artifactId>jdtaus-core-client-container</artifactId>
@@ -724,58 +356,26 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>jdtaus-ci</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
+      <id>jdtaus-release</id>
       <build>
         <plugins>
           <plugin>
-            <artifactId>maven-scm-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>update-workdir</id>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>update</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>checkin-main</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>checkin</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>checkin-test</id>
-                <phase>process-test-resources</phase>
-                <goals>
-                  <goal>checkin</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>tag-deployment</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>tag</goal>
-                </goals>
-              </execution>
-            </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <inherited>false</inherited>
           </plugin>
         </plugins>
       </build>
     </profile>
   </profiles>
   <properties>
-    <jdtausCoreVersion>1.12</jdtausCoreVersion>
-    <jdtausContainerMojoVersion>3.10</jdtausContainerMojoVersion>
-    <mavenJavadocPluginVersion>2.6.1</mavenJavadocPluginVersion>
-    <mavenJxrPluginVersion>2.1</mavenJxrPluginVersion>
-    <mavenPmdPluginVersion>2.4</mavenPmdPluginVersion>
-    <mavenCheckstylePluginVersion>2.3</mavenCheckstylePluginVersion>
-    <mavenChangesPluginVersion>2.2</mavenChangesPluginVersion>
-    <surefireVersion>2.5</surefireVersion>
-    <jdtaus.version>1.5</jdtaus.version>
+    <maven.compiler.source>1.4</maven.compiler.source>
+    <maven.compiler.target>1.4</maven.compiler.target>
+    <maven.site.locales>en</maven.site.locales>
+    <mojo.animal-sniffer.signature.artifactId>java14</mojo.animal-sniffer.signature.artifactId>
+    <mojo.animal-sniffer.signature.artifactVersion>1.0</mojo.animal-sniffer.signature.artifactVersion>
+    <jdtaus.trac.query>order=id&amp;version=${project.version}&amp;component=jDTAUS Banking|${project.name}</jdtaus.trac.query>
+    <jdtausCoreVersion>1.13-SNAPSHOT</jdtausCoreVersion>
+    <jdtausContainerMojoVersion>3.11-SNAPSHOT</jdtausContainerMojoVersion>
   </properties>
 </project>

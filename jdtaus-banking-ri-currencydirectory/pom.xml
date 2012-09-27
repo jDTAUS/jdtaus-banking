@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
   <groupId>org.jdtaus.banking</groupId>
-  <name>jDTAUS Banking RI CurrencyDirectory</name>
+  <name>jDTAUS Banking ⁑ RI CurrencyDirectory</name>
   <description>jDTAUS CurrencyDirectory reference implementation.</description>
   <build>
     <resources>
@@ -54,29 +54,23 @@
         <directory>src/test/resources</directory>
       </testResource>
     </testResources>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>src/site/resources/currencies-1.2.xml</file>
-                  <type>xml</type>
-                </artifact>
-              </artifacts>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <configuration>
+            <artifacts combine.children="append">
+              <artifact>
+                <file>src/site/resources/currencies-1.2.xml</file>
+                <classifier>currencies</classifier>
+                <type>xml</type>
+              </artifact>
+            </artifacts>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
   <dependencies>
     <dependency>

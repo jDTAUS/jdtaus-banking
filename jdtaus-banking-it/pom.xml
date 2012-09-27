@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-it</artifactId>
-  <name>jDTAUS Banking Test Suite</name>
+  <name>jDTAUS Banking ⁑ Test Suite</name>
   <description>jDTAUS banking test suite.</description>
   <build>
     <resources>

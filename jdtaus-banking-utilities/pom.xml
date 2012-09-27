@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-utilities</artifactId>
   <groupId>org.jdtaus.banking</groupId>
-  <name>jDTAUS Banking Utilities</name>
+  <name>jDTAUS Banking ⁑ Utilities</name>
   <description>jDTAUS banking utility components.</description>
   <dependencies>
     <dependency>

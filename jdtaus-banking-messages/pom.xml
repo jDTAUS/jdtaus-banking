@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-messages</artifactId>
-  <name>jDTAUS Banking Messages</name>
+  <name>jDTAUS Banking ⁑ Messages</name>
   <description>jDTAUS banking application messages.</description>
   <build>
     <resources>

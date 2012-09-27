@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
-  <name>jDTAUS Banking RI Bankleitzahlenverzeichnis</name>
+  <name>jDTAUS Banking ⁑ RI Bankleitzahlenverzeichnis</name>
   <description>jDTAUS BankleitzahlenVerzeichnis reference implementation.</description>
   <build>
     <resources>
@@ -60,29 +60,31 @@
         </excludes>
       </testResource>
     </testResources>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-bankfiles</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classesDirectory>src/main/bankfiles</classesDirectory>
-              <classifier>bankfiles</classifier>
-              <includes>
-                <include>*.txt</include>
-                <include>*.properties</include>
-              </includes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>attach-bankfiles</id>
+              <phase>process-resources</phase>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+              <configuration>
+                <classesDirectory>src/main/bankfiles</classesDirectory>
+                <classifier>bankfiles</classifier>
+                <includes>
+                  <include>*.txt</include>
+                  <include>*.properties</include>
+                </includes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
   <dependencies>
     <dependency>
