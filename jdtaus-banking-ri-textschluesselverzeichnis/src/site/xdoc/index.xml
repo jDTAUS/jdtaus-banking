@@ -32,7 +32,7 @@
           <tr>
             <td>http://jdtaus.org/banking/xml/textschluessel</td>
             <td>
-              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-textschluessel-1.0.xsd">jdtaus-textschluessel-1.0.xsd</a>
+              <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-textschluessel-1.0.xsd">jdtaus-textschluessel-1.0.xsd</a>
             </td>
             <td>
               <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.0.xml">textschluessel-1.0.xml</a>
@@ -43,7 +43,7 @@
           <tr>
             <td>http://jdtaus.org/banking/xml/textschluessel</td>
             <td>
-              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-textschluessel-1.1.xsd">jdtaus-textschluessel-1.1.xsd</a>
+              <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-textschluessel-1.1.xsd">jdtaus-textschluessel-1.1.xsd</a>
             </td>
             <td>
               <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.1.xml">textschluessel-1.1.xml</a>
@@ -54,7 +54,7 @@
           <tr>
             <td>http://jdtaus.org/banking/model</td>
             <td>
-              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd">jdtaus-banking-1.0.xsd</a>
+              <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd">jdtaus-banking-1.0.xsd</a>
             </td>
             <td>
               <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.2.xml">textschluessel-1.2.xml</a>
@@ -65,7 +65,7 @@
           <tr>
             <td>http://jdtaus.org/banking/model</td>
             <td>
-              <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd">jdtaus-banking-1.1.xsd</a>
+              <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd">jdtaus-banking-1.1.xsd</a>
             </td>
             <td>
               <a href="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/textschluessel-1.3.xml">textschluessel-1.3.xml</a>

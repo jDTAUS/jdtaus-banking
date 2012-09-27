@@ -27,7 +27,7 @@
 -->
 <banking:textschluesselList  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                              xmlns:banking="http://jdtaus.org/banking/model"
-                             xsi:schemaLocation='http://jdtaus.org/banking/model http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd'
+                             xsi:schemaLocation='http://jdtaus.org/banking/model http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd'
                              banking:modelVersion="1.0">
 
   <banking:textschluessel banking:key="04" banking:extension="000" banking:debit="true" banking:remittance="false" banking:variableExtension="false">

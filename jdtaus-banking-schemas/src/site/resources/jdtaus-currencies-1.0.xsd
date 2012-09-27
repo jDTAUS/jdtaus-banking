@@ -28,7 +28,7 @@
   <jdtaus:currencies xmlns="http://jdtaus.org/banking/xml/currencies"
       xmlns:jdtaus="http://jdtaus.org/banking/xml/currencies"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://jdtaus.org/banking/xml/currencies http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd"
+      xsi:schemaLocation="http://jdtaus.org/banking/xml/currencies http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-currencies-1.0.xsd"
       jdtaus:version="1.0">
 
   </jdtaus:currencies>

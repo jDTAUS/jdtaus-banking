@@ -27,7 +27,7 @@
 -->
 <container:module xmlns:container="http://jdtaus.org/core/model/container"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://jdtaus.sourceforge.net/1.0.x/jdtaus-core/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
+                  xsi:schemaLocation="http://jdtaus.org/core/model/container http://xml.jdtaus.org/1.0.x/jdtaus-core/jdtaus-core-schemas/jdtaus-container-1.1.xsd"
                   container:name="${project.name}"
                   container:version="${project.version}"
                   container:modelVersion="1.4">

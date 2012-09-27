@@ -26,7 +26,7 @@
   Example usage:
 
   <xsd:import namespace="http://jdtaus.org/banking/model"
-              schemaLocation="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
+              schemaLocation="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
 
   The recommended namespace prefix is "banking".
 
@@ -64,7 +64,7 @@
   Example usage:
 
   <xsd:import namespace="http://jdtaus.org/banking/model"
-              schemaLocation="http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
+              schemaLocation="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.0.xsd" />
 
   The recommended namespace prefix is "banking".
 

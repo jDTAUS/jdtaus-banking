@@ -26,7 +26,7 @@
 -->
 <banking:currencyList xmlns:banking="http://jdtaus.org/banking/model"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                      xsi:schemaLocation="http://jdtaus.org/banking/model http://jdtaus.sourceforge.net/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd"
+                      xsi:schemaLocation="http://jdtaus.org/banking/model http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-schemas/jdtaus-banking-1.1.xsd"
                       banking:modelVersion="1.0">
 
   <banking:currency banking:isoCode="EUR" banking:dtausCode="1"
