@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.jdtaus</groupId>
     <artifactId>jdtaus-lgpl-parent</artifactId>
-    <version>1.11-SNAPSHOT</version>
+    <version>1.12</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus</groupId>
@@ -375,7 +375,7 @@
     <mojo.animal-sniffer.signature.artifactId>java14</mojo.animal-sniffer.signature.artifactId>
     <mojo.animal-sniffer.signature.artifactVersion>1.0</mojo.animal-sniffer.signature.artifactVersion>
     <jdtaus.trac.query>order=id&amp;version=${project.version}&amp;component=jDTAUS Banking|${project.name}</jdtaus.trac.query>
-    <jdtausCoreVersion>1.13-SNAPSHOT</jdtausCoreVersion>
-    <jdtausContainerMojoVersion>3.11-SNAPSHOT</jdtausContainerMojoVersion>
+    <jdtausCoreVersion>1.13</jdtausCoreVersion>
+    <jdtausContainerMojoVersion>3.11</jdtausContainerMojoVersion>
   </properties>
 </project>
