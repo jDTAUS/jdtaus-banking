@@ -19,7 +19,6 @@
  */
 package org.jdtaus.banking.ri.blzdirectory.test;
 
-import org.jdtaus.banking.BankleitzahlenVerzeichnis;
 import org.jdtaus.banking.it.BankleitzahlenVerzeichnisTest;
 import org.jdtaus.banking.ri.blzdirectory.BankfileBankleitzahlenVerzeichnis;
 
@@ -32,19 +31,12 @@ import org.jdtaus.banking.ri.blzdirectory.BankfileBankleitzahlenVerzeichnis;
 public abstract class AbstractBankfileBankleitzahlenVerzeichnisTest extends BankleitzahlenVerzeichnisTest
 {
 
-    /** The implementation to test. */
-    private BankleitzahlenVerzeichnis directory;
-
-    public BankleitzahlenVerzeichnis getBankleitzahlenVerzeichnis()
+    /** Creates a new {@code AbstractBankfileBankleitzahlenVerzeichnisTest} instance. */
+    public AbstractBankfileBankleitzahlenVerzeichnisTest()
     {
-        if ( this.directory == null )
-        {
-            Thread.currentThread().setContextClassLoader( this.getClassLoader() );
-            this.directory = new BankfileBankleitzahlenVerzeichnis();
-            this.setBankleitzahlenVerzeichnis( this.directory );
-        }
-
-        return super.getBankleitzahlenVerzeichnis();
+        super();
+        this.setBankleitzahlenVerzeichnis( new BankfileBankleitzahlenVerzeichnis() );
+        Thread.currentThread().setContextClassLoader( this.getClassLoader() );
     }
 
     protected abstract ClassLoader getClassLoader();

@@ -21,6 +21,7 @@
 package org.jdtaus.banking.test;
 
 import java.io.ObjectInputStream;
+import junit.framework.TestCase;
 import org.jdtaus.banking.BankleitzahlInfo;
 
 /**
@@ -29,7 +30,7 @@ import org.jdtaus.banking.BankleitzahlInfo;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class BankleitzahlInfoTest
+public class BankleitzahlInfoTest extends TestCase
 {
 
     public void testSerializable() throws Exception

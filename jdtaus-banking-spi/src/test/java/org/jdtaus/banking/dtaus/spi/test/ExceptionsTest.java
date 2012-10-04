@@ -22,6 +22,7 @@ package org.jdtaus.banking.dtaus.spi.test;
 
 import java.util.Locale;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.jdtaus.banking.dtaus.Header;
 import org.jdtaus.banking.dtaus.Transaction;
 import org.jdtaus.banking.dtaus.spi.IllegalHeaderException;
@@ -34,7 +35,7 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class ExceptionsTest
+public class ExceptionsTest extends TestCase
 {
     //--Tests-------------------------------------------------------------------
 

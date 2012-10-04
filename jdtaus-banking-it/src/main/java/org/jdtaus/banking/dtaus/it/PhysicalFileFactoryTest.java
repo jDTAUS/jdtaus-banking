@@ -22,6 +22,7 @@ package org.jdtaus.banking.dtaus.it;
 
 import java.io.File;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.jdtaus.banking.dtaus.PhysicalFile;
 import org.jdtaus.banking.dtaus.PhysicalFileException;
 import org.jdtaus.banking.dtaus.PhysicalFileFactory;
@@ -34,7 +35,7 @@ import org.jdtaus.core.io.util.MemoryFileOperations;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class PhysicalFileFactoryTest
+public class PhysicalFileFactoryTest extends TestCase
 {
 
     /** Implementation to test. */

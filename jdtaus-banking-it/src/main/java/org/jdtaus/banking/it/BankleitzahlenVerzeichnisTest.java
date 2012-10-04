@@ -21,6 +21,7 @@
 package org.jdtaus.banking.it;
 
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.BankleitzahlExpirationException;
 import org.jdtaus.banking.BankleitzahlenVerzeichnis;
@@ -31,7 +32,7 @@ import org.jdtaus.banking.BankleitzahlenVerzeichnis;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class BankleitzahlenVerzeichnisTest
+public class BankleitzahlenVerzeichnisTest extends TestCase
 {
 
     /** Implementation to test. */

@@ -20,7 +20,6 @@
  */
 package org.jdtaus.banking.dtaus.ri.zka.test;
 
-import org.jdtaus.banking.dtaus.PhysicalFileFactory;
 import org.jdtaus.banking.dtaus.it.PhysicalFileFactoryTest;
 import org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory;
 
@@ -33,17 +32,11 @@ import org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory;
 public class DefaultPhysicalFileFactoryTest extends PhysicalFileFactoryTest
 {
 
-    /** Implementation tests are performed with. */
-    private PhysicalFileFactory factory;
-
-    public PhysicalFileFactory getPhysicalFileFactory()
+    /** Creates a new {@code DefaultPhysicalFileFactoryTest} instance. */
+    public DefaultPhysicalFileFactoryTest()
     {
-        if ( this.factory == null )
-        {
-            this.factory = new DefaultPhysicalFileFactory();
-        }
-
-        return this.factory;
+        super();
+        this.setPhysicalFileFactory( new DefaultPhysicalFileFactory() );
     }
 
 }

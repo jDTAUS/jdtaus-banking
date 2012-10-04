@@ -22,6 +22,7 @@ package org.jdtaus.banking.it;
 
 import java.util.Date;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.jdtaus.banking.TextschluesselVerzeichnis;
 
 /**
@@ -30,7 +31,7 @@ import org.jdtaus.banking.TextschluesselVerzeichnis;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class TextschluesselVerzeichnisTest
+public class TextschluesselVerzeichnisTest extends TestCase
 {
 
     /** Implementation to test. */

@@ -20,6 +20,7 @@
  */
 package org.jdtaus.banking.test;
 
+import junit.framework.TestCase;
 import org.jdtaus.banking.Bankleitzahl;
 import org.jdtaus.banking.BankleitzahlExpirationException;
 import org.jdtaus.banking.BankleitzahlInfo;
@@ -32,7 +33,7 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class ExceptionsTest
+public class ExceptionsTest extends TestCase
 {
 
     public void testExceptionInstantiation() throws Exception

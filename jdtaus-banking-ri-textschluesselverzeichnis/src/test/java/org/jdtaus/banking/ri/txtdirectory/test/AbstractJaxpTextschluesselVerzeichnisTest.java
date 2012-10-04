@@ -20,7 +20,6 @@
  */
 package org.jdtaus.banking.ri.txtdirectory.test;
 
-import org.jdtaus.banking.TextschluesselVerzeichnis;
 import org.jdtaus.banking.it.TextschluesselVerzeichnisTest;
 import org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselVerzeichnis;
 
@@ -33,19 +32,12 @@ import org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselVerzeichnis;
 public abstract class AbstractJaxpTextschluesselVerzeichnisTest extends TextschluesselVerzeichnisTest
 {
 
-    /** The implementation to test. */
-    private TextschluesselVerzeichnis directory;
-
-    public TextschluesselVerzeichnis getTextschluesselVerzeichnis()
+    /** Creates a new {@code AbstractJaxpTextschluesselVerzeichnisTest} instance. */
+    public AbstractJaxpTextschluesselVerzeichnisTest()
     {
-        if ( this.directory == null )
-        {
-            Thread.currentThread().setContextClassLoader( this.getClassLoader() );
-            this.directory = new JaxpTextschluesselVerzeichnis();
-            this.setTextschluesselVerzeichnis( this.directory );
-        }
-
-        return super.getTextschluesselVerzeichnis();
+        super();
+        this.setTextschluesselVerzeichnis( new JaxpTextschluesselVerzeichnis() );
+        Thread.currentThread().setContextClassLoader( this.getClassLoader() );
     }
 
     protected abstract ClassLoader getClassLoader();

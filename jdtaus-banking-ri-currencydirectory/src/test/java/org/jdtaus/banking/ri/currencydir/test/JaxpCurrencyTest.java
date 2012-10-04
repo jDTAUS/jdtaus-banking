@@ -22,6 +22,7 @@ package org.jdtaus.banking.ri.currencydir.test;
 
 import java.util.Date;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.jdtaus.banking.ri.currencydir.JaxpCurrency;
 
 /**
@@ -30,7 +31,7 @@ import org.jdtaus.banking.ri.currencydir.JaxpCurrency;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class JaxpCurrencyTest
+public class JaxpCurrencyTest extends TestCase
 {
 
     public void testObject() throws Exception

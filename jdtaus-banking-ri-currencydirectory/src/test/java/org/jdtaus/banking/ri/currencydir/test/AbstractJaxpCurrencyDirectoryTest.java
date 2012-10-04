@@ -21,7 +21,6 @@
 package org.jdtaus.banking.ri.currencydir.test;
 
 import org.jdtaus.banking.ri.currencydir.JaxpCurrencyDirectory;
-import org.jdtaus.banking.spi.CurrencyMapper;
 import org.jdtaus.banking.spi.it.CurrencyMapperTest;
 
 /**
@@ -33,19 +32,12 @@ import org.jdtaus.banking.spi.it.CurrencyMapperTest;
 public abstract class AbstractJaxpCurrencyDirectoryTest extends CurrencyMapperTest
 {
 
-    /** The implementation to test. */
-    private CurrencyMapper mapper;
-
-    public CurrencyMapper getCurrencyMapper()
+    /** Creates a new {@code AbstractJaxpCurrencyDirectoryTest} instance. */
+    public AbstractJaxpCurrencyDirectoryTest()
     {
-        if ( this.mapper == null )
-        {
-            Thread.currentThread().setContextClassLoader( this.getClassLoader() );
-            this.mapper = new JaxpCurrencyDirectory();
-            this.setCurrencyMapper( this.mapper );
-        }
-
-        return super.getCurrencyMapper();
+        super();
+        this.setCurrencyMapper( new JaxpCurrencyDirectory() );
+        Thread.currentThread().setContextClassLoader( this.getClassLoader() );
     }
 
     protected abstract ClassLoader getClassLoader();

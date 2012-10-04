@@ -20,6 +20,7 @@
  */
 package org.jdtaus.banking.dtaus.test;
 
+import junit.framework.TestCase;
 import org.jdtaus.banking.dtaus.CorruptedException;
 import org.jdtaus.banking.dtaus.PhysicalFileException;
 import org.jdtaus.core.container.Implementation;
@@ -30,7 +31,7 @@ import org.jdtaus.core.container.Implementation;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class ExceptionsTest
+public class ExceptionsTest extends TestCase
 {
 
     public void testExceptionInstantiation() throws Exception

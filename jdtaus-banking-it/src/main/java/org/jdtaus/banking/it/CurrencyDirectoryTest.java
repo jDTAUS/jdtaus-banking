@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.jdtaus.banking.CurrencyDirectory;
 
 /**
@@ -32,7 +33,7 @@ import org.jdtaus.banking.CurrencyDirectory;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class CurrencyDirectoryTest
+public class CurrencyDirectoryTest extends TestCase
 {
 
     /** Implementation to test. */

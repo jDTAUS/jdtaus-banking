@@ -22,6 +22,7 @@ package org.jdtaus.banking.spi.test;
 
 import java.util.Date;
 import java.util.Locale;
+import junit.framework.TestCase;
 import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.spi.IllegalTextschluesselException;
 import org.jdtaus.banking.spi.UnsupportedCurrencyException;
@@ -33,7 +34,7 @@ import org.jdtaus.core.text.Message;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class ExceptionsTest
+public class ExceptionsTest extends TestCase
 {
     //--Tests-------------------------------------------------------------------
 

@@ -24,6 +24,7 @@ import java.io.ObjectInputStream;
 import java.util.Arrays;
 import java.util.List;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.jdtaus.banking.dtaus.LogicalFileType;
 
 /**
@@ -32,7 +33,7 @@ import org.jdtaus.banking.dtaus.LogicalFileType;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
  */
-public class LogicalFileTypeTest
+public class LogicalFileTypeTest extends TestCase
 {
 
     public void testSearchLogicalFileTypes() throws Exception
