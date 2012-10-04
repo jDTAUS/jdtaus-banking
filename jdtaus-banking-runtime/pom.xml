@@ -58,6 +58,7 @@
                 <goal>copy-dependencies</goal>
               </goals>
               <configuration>
+                <excludeGroupIds>org.jdtaus.core</excludeGroupIds>
                 <includeScope>runtime</includeScope>
                 <outputDirectory>${project.build.directory}/dependency/lib</outputDirectory>
               </configuration>
@@ -205,6 +206,7 @@
                     <goal>copy-dependencies</goal>
                   </goals>
                   <configuration>
+                    <excludeGroupIds>org.jdtaus.core</excludeGroupIds>
                     <includeScope>runtime</includeScope>
                     <classifier>project</classifier>
                     <type>jar</type>
@@ -219,6 +221,7 @@
                     <goal>copy-dependencies</goal>
                   </goals>
                   <configuration>
+                    <excludeGroupIds>org.jdtaus.core</excludeGroupIds>
                     <includeScope>runtime</includeScope>
                     <classifier>site</classifier>
                     <type>jar</type>
@@ -233,6 +236,7 @@
                     <goal>copy-dependencies</goal>
                   </goals>
                   <configuration>
+                    <excludeGroupIds>org.jdtaus.core</excludeGroupIds>
                     <includeScope>runtime</includeScope>
                     <classifier>javadoc</classifier>
                     <type>jar</type>
@@ -247,6 +251,7 @@
                     <goal>copy-dependencies</goal>
                   </goals>
                   <configuration>
+                    <excludeGroupIds>org.jdtaus.core</excludeGroupIds>
                     <includeScope>runtime</includeScope>
                     <classifier>sources</classifier>
                     <type>jar</type>
