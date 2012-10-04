@@ -41,9 +41,9 @@ import org.jdtaus.core.monitor.spi.TaskMonitor;
 /**
  * German Bankleitzahlendatei for the format as of 2006-06-01.
  * <p>For further information see the
- * <a href="../../../../doc-files/zv_merkblatt_blz.pdf">Merkblatt Bankleitzahlendatei</a>.
+ * <a href="../../../../doc-files/merkblatt_bankleitzahlendatei.pdf">Merkblatt Bankleitzahlendatei</a>.
  * An updated version of the document may be found at
- * <a href="http://www.bundesbank.de/index.en.php">Deutsche Bundesbank</a>.
+ * <a href="http://www.bundesbank.de">Deutsche Bundesbank</a>.
  * </p>
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>

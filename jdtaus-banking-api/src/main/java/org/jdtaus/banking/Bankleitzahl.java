@@ -32,8 +32,8 @@ import java.util.Map;
 /**
  * Unique identifier to a particular office (branch) of a german bank.
  * <p>A Bankleitzahl (BLZ) is a positive integer with a maximum of eight digits. For further information see the
- * <a href="../../../doc-files/zv_merkblatt_blz.pdf">Merkblatt Bankleitzahlendatei</a>. An updated version of the document
- * may be found at <a href="http://www.bundesbank.de/index.en.php">Deutsche Bundesbank</a>.</p>
+ * <a href="../../../doc-files/merkblatt_bankleitzahlendatei.pdf">Merkblatt Bankleitzahlendatei</a>. An updated version of the document
+ * may be found at <a href="http://www.bundesbank.de">Deutsche Bundesbank</a>.</p>
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JDTAUS$
