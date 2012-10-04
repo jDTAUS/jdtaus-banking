@@ -179,6 +179,7 @@
     <module>jdtaus-banking-ri-currencydirectory</module>
     <module>jdtaus-banking-ri-textschluesselverzeichnis</module>
     <module>jdtaus-banking-ri-dtaus</module>
+    <module>jdtaus-banking-runtime</module>
   </modules>
   <dependencyManagement>
     <dependencies>
@@ -235,6 +236,11 @@
       <dependency>
         <artifactId>jdtaus-core-entity-resolver</artifactId>
         <groupId>org.jdtaus.core.sax</groupId>
+        <version>${jdtausCoreVersion}</version>
+      </dependency>
+      <dependency>
+        <artifactId>jdtaus-core-runtime</artifactId>
+        <groupId>org.jdtaus.core</groupId>
         <version>${jdtausCoreVersion}</version>
       </dependency>
       <dependency>
@@ -313,41 +319,6 @@
     </site>
   </distributionManagement>
   <dependencies>
-    <dependency>
-      <artifactId>jdtaus-core-client-container</artifactId>
-      <groupId>org.jdtaus.core.container</groupId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <artifactId>jdtaus-core-memory-manager</artifactId>
-      <groupId>org.jdtaus.core.lang</groupId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <artifactId>jdtaus-core-jdk-logging</artifactId>
-      <groupId>org.jdtaus.core.logging</groupId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <artifactId>jdtaus-core-application-logger</artifactId>
-      <groupId>org.jdtaus.core.text</groupId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <artifactId>jdtaus-core-task-monitor</artifactId>
-      <groupId>org.jdtaus.core.monitor</groupId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <artifactId>jdtaus-core-jdk14-executor</artifactId>
-      <groupId>org.jdtaus.core.lang</groupId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <artifactId>jdtaus-core-entity-resolver</artifactId>
-      <groupId>org.jdtaus.core.sax</groupId>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

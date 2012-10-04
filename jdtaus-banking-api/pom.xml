@@ -66,5 +66,40 @@
       <artifactId>jdtaus-banking-schemas</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <artifactId>jdtaus-core-client-container</artifactId>
+      <groupId>org.jdtaus.core.container</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>jdtaus-core-memory-manager</artifactId>
+      <groupId>org.jdtaus.core.lang</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>jdtaus-core-jdk-logging</artifactId>
+      <groupId>org.jdtaus.core.logging</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>jdtaus-core-application-logger</artifactId>
+      <groupId>org.jdtaus.core.text</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>jdtaus-core-task-monitor</artifactId>
+      <groupId>org.jdtaus.core.monitor</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>jdtaus-core-jdk14-executor</artifactId>
+      <groupId>org.jdtaus.core.lang</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>jdtaus-core-entity-resolver</artifactId>
+      <groupId>org.jdtaus.core.sax</groupId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
