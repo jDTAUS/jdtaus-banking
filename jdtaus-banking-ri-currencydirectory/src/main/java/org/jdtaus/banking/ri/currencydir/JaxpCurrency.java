@@ -160,7 +160,8 @@ public class JaxpCurrency implements Serializable, Cloneable
      *
      * @param date The date with which to check.
      *
-     * @return {@code true}, if the currency is valid at {@code date}; {@code false} if not.
+     * @return {@code true}, if the currency is valid at {@code date};
+     * {@code false} if not.
      *
      * @throws NullPointerException if {@code date} is {@code null}.
      */
@@ -171,8 +172,11 @@ public class JaxpCurrency implements Serializable, Cloneable
             throw new NullPointerException( "date" );
         }
 
-        return ( date.equals( this.getStartDate() ) || date.after( this.getStartDate() ) ) &&
-               ( this.getEndDate() == null || date.equals( this.getEndDate() ) || date.before( this.getEndDate() ) );
+        return ( date.equals( this.getStartDate() )
+                 || date.after( this.getStartDate() ) )
+               && ( this.getEndDate() == null
+                    || date.equals( this.getEndDate() )
+                    || date.before( this.getEndDate() ) );
 
     }
 
@@ -217,13 +221,19 @@ public class JaxpCurrency implements Serializable, Cloneable
         if ( !ret && o instanceof JaxpCurrency )
         {
             final JaxpCurrency that = (JaxpCurrency) o;
+
             ret = ( this.getIsoCode() == null
-                    ? that.getIsoCode() == null : this.getIsoCode().equals( that.getIsoCode() ) ) &&
-                  ( this.getDtausCode() == that.getDtausCode() ) &&
-                  ( this.getStartDate() == null
-                    ? that.getStartDate() == null : this.getStartDate().equals( that.getStartDate() ) ) &&
-                  ( this.getEndDate() == null
-                    ? that.getEndDate() == null : this.getEndDate().equals( that.getEndDate() ) );
+                    ? that.getIsoCode() == null
+                    : this.getIsoCode().equals( that.getIsoCode() ) )
+                  && ( this.getDtausCode() == null
+                       ? that.getDtausCode() == null
+                       : this.getDtausCode().equals( that.getDtausCode() ) )
+                  && ( this.getStartDate() == null
+                       ? that.getStartDate() == null
+                       : this.getStartDate().equals( that.getStartDate() ) )
+                  && ( this.getEndDate() == null
+                       ? that.getEndDate() == null
+                       : this.getEndDate().equals( that.getEndDate() ) );
 
         }
 
@@ -240,10 +250,19 @@ public class JaxpCurrency implements Serializable, Cloneable
         if ( this.hashCode == NO_HASHCODE )
         {
             int hc = 23;
-            hc = 37 * hc + ( this.dtausCode == null ? 0 : (int) this.dtausCode.charValue() );
-            hc = 37 * hc + ( this.isoCode == null ? 0 : this.isoCode.hashCode() );
-            hc = 37 * hc + ( this.startDate == null ? 0 : this.startDate.hashCode() );
-            hc = 37 * hc + ( this.endDate == null ? 0 : this.endDate.hashCode() );
+            hc = 37 * hc + ( this.dtausCode == null
+                             ? 0
+                             : (int) this.dtausCode.charValue() );
+            hc = 37 * hc + ( this.isoCode == null
+                             ? 0
+                             : this.isoCode.hashCode() );
+            hc = 37 * hc + ( this.startDate == null
+                             ? 0
+                             : this.startDate.hashCode() );
+            hc = 37 * hc + ( this.endDate == null
+                             ? 0
+                             : this.endDate.hashCode() );
+
             this.hashCode = hc;
         }
 
