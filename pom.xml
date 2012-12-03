@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.jdtaus</groupId>
     <artifactId>jdtaus-lgpl-parent</artifactId>
-    <version>1.12</version>
+    <version>1.14</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus</groupId>
@@ -83,7 +83,7 @@
             <dependency>
               <groupId>org.jdtaus.core.container</groupId>
               <artifactId>jdtaus-core-client-container</artifactId>
-              <version>${jdtausCoreVersion}</version>
+              <version>${core.version}</version>
               <scope>runtime</scope>
             </dependency>
           </dependencies>
@@ -92,7 +92,7 @@
               <reportPlugin>
                 <groupId>org.jdtaus.mojo</groupId>
                 <artifactId>jdtaus-container-mojo</artifactId>
-                <version>${jdtausContainerMojoVersion}</version>
+                <version>${jdtaus-container-mojo.artifact.version}</version>
                 <configuration>
                   <moduleName>${project.name}</moduleName>
                 </configuration>
@@ -112,12 +112,12 @@
         <plugin>
           <groupId>org.jdtaus.mojo</groupId>
           <artifactId>jdtaus-container-mojo</artifactId>
-          <version>${jdtausContainerMojoVersion}</version>
+          <version>${jdtaus-container-mojo.artifact.version}</version>
           <dependencies>
             <dependency>
               <groupId>org.jdtaus.core.container</groupId>
               <artifactId>jdtaus-core-client-container</artifactId>
-              <version>${jdtausCoreVersion}</version>
+              <version>${core.version}</version>
               <scope>runtime</scope>
             </dependency>
           </dependencies>
@@ -186,62 +186,62 @@
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-core-api</artifactId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core</groupId>
         <artifactId>jdtaus-core-spi</artifactId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core</groupId>
         <artifactId>jdtaus-core-utilities</artifactId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.core</groupId>
         <artifactId>jdtaus-core-messages</artifactId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-client-container</artifactId>
         <groupId>org.jdtaus.core.container</groupId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-memory-manager</artifactId>
         <groupId>org.jdtaus.core.lang</groupId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-jdk-logging</artifactId>
         <groupId>org.jdtaus.core.logging</groupId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-application-logger</artifactId>
         <groupId>org.jdtaus.core.text</groupId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-task-monitor</artifactId>
         <groupId>org.jdtaus.core.monitor</groupId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-jdk14-executor</artifactId>
         <groupId>org.jdtaus.core.lang</groupId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-entity-resolver</artifactId>
         <groupId>org.jdtaus.core.sax</groupId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <artifactId>jdtaus-core-runtime</artifactId>
         <groupId>org.jdtaus.core</groupId>
-        <version>${jdtausCoreVersion}</version>
+        <version>${core.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.common</groupId>
@@ -343,11 +343,10 @@
     <nodeprecated>true</nodeprecated>
     <maven.compiler.source>1.4</maven.compiler.source>
     <maven.compiler.target>1.4</maven.compiler.target>
-    <maven.site.locales>en</maven.site.locales>
     <mojo.animal-sniffer.signature.artifactId>java14</mojo.animal-sniffer.signature.artifactId>
     <mojo.animal-sniffer.signature.artifactVersion>1.0</mojo.animal-sniffer.signature.artifactVersion>
     <jdtaus.trac.query>order=id&amp;version=${project.version}&amp;component=jDTAUS Banking|${project.name}</jdtaus.trac.query>
-    <jdtausCoreVersion>1.13</jdtausCoreVersion>
-    <jdtausContainerMojoVersion>3.11</jdtausContainerMojoVersion>
+    <core.version>1.14-SNAPSHOT</core.version>
+    <jdtaus-container-mojo.artifact.version>3.11</jdtaus-container-mojo.artifact.version>
   </properties>
 </project>
