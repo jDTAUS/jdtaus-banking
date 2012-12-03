@@ -21,7 +21,6 @@
 package org.jdtaus.banking.util;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.UnsupportedEncodingException;
@@ -418,13 +417,12 @@ public final class BankleitzahlenDatei
 
         }
 
-        InputStream stream = null;
+        LineNumberReader reader = null;
 
         try
         {
-            stream = resource.openStream();
-            final LineNumberReader reader = new LineNumberReader(
-                new InputStreamReader( stream, this.getEncoding() ) );
+            reader = new LineNumberReader( new InputStreamReader(
+                resource.openStream(), this.getEncoding() ) );
 
             String line;
             boolean emptyLine = false;
@@ -462,9 +460,9 @@ public final class BankleitzahlenDatei
         {
             this.cachedRecords = null;
 
-            if ( stream != null )
+            if ( reader != null )
             {
-                stream.close();
+                reader.close();
             }
         }
     }
