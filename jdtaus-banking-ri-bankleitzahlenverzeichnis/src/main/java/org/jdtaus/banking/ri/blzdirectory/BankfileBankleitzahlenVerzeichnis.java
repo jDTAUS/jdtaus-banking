@@ -147,7 +147,7 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
     {
         this.assertValidProperties();
         this.assertInitialized();
-        return this.dateOfExpiration;
+        return (Date) this.dateOfExpiration.clone();
     }
 
     public BankleitzahlInfo getHeadOffice( final Bankleitzahl bankCode ) throws BankleitzahlExpirationException
