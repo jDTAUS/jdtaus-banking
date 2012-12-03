@@ -617,7 +617,7 @@ public class Transaction implements Cloneable, Serializable
         return new StringBuffer( 300 ).append( '{' ).
             append( "amount=" ).append( this.amount ).
             append( ", currency=" ).append( this.currency ).
-            append( ", descriptions=" ).append( this.descriptions ).
+            append( ", descriptions=" ).append( toString( this.descriptions ) ).
             append( ", executiveAccount=" ).append( this.executiveAccount ).
             append( ", executiveBank=" ).append( this.executiveBank ).
             append( ", executiveName=" ).append( (Object) this.executiveName ).
@@ -631,6 +631,33 @@ public class Transaction implements Cloneable, Serializable
             append( ", type=" ).append( this.type ).
             append( '}' ).toString();
 
+    }
+
+    private static String toString( final AlphaNumericText27[] texts )
+    {
+        String string = null;
+
+        if ( texts != null )
+        {
+            final StringBuffer stringBuilder =
+                new StringBuffer( texts.length * AlphaNumericText27.MAX_LENGTH + texts.length * 2 + 2 );
+
+            stringBuilder.append( '[' );
+
+            for ( int i = 0, max = texts.length - 1; i < max; i++ )
+            {
+                texts[i].format( stringBuilder );
+
+                if ( i < max )
+                {
+                    stringBuilder.append( ", " );
+                }
+            }
+
+            string = stringBuilder.append( ']' ).toString();
+        }
+
+        return string;
     }
 
 }
