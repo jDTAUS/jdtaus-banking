@@ -30,7 +30,7 @@
   <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking ⁑ RI Bankleitzahlenverzeichnis</name>
-  <description>jDTAUS BankleitzahlenVerzeichnis reference implementation.</description>
+  <description>BankleitzahlenVerzeichnis reference implementation.</description>
   <build>
     <resources>
       <resource>

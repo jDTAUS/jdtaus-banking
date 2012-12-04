@@ -30,7 +30,7 @@
   <artifactId>jdtaus-banking-utilities</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking ⁑ Utilities</name>
-  <description>jDTAUS banking utility components.</description>
+  <description>Banking utility components.</description>
   <dependencies>
     <dependency>
       <groupId>org.jdtaus.common</groupId>

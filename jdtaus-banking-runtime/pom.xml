@@ -31,7 +31,7 @@
   <artifactId>jdtaus-banking-runtime</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking ⁑ Reference Implementation</name>
-  <description>jDTAUS banking reference implementation.</description>
+  <description>Banking reference implementation.</description>
   <build>
     <pluginManagement>
       <plugins>

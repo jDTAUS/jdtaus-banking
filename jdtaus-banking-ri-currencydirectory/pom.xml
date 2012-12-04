@@ -30,7 +30,7 @@
   <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking ⁑ RI CurrencyDirectory</name>
-  <description>jDTAUS CurrencyDirectory reference implementation.</description>
+  <description>CurrencyDirectory reference implementation.</description>
   <build>
     <resources>
       <resource>

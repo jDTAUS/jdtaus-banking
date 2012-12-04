@@ -30,7 +30,7 @@
   <groupId>org.jdtaus.common</groupId>
   <artifactId>jdtaus-banking-api</artifactId>
   <name>jDTAUS Banking ⁑ API</name>
-  <description>jDTAUS banking application programming interface.</description>
+  <description>Payment system application programming interface.</description>
   <build>
     <resources>
       <resource>

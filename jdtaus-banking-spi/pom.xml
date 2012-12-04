@@ -30,7 +30,7 @@
   <artifactId>jdtaus-banking-spi</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking ⁑ SPI</name>
-  <description>jDTAUS banking implementation programming interface.</description>
+  <description>Implementation programming interface.</description>
   <dependencies>
     <dependency>
       <groupId>org.jdtaus.common</groupId>

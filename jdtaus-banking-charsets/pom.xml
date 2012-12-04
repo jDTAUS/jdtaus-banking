@@ -30,7 +30,7 @@
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-charsets</artifactId>
   <name>jDTAUS Banking ⁑ Charset Providers</name>
-  <description>jDTAUS banking charset provider implementations.</description>
+  <description>Charset providers.</description>
   <dependencies>
     <dependency>
       <groupId>org.jdtaus.core</groupId>

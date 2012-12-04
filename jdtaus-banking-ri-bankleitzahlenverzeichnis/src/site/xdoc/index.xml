@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document>
+<!--
+
+  jDTAUS
+  Copyright (C) 2005 Christian Schulte
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  $JDTAUS$
+
+-->
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
   <properties>
     <title>jDTAUS Banking RI Bankleitzahlenverzeichnis</title>
     <author email="cs@schulte.it">Christian Schulte</author>
@@ -11,9 +35,7 @@
         implementation backed by bankfiles. Bankfile resources are read using
         any available <a href="apidocs/org/jdtaus/banking/ri/blzdirectory/BankfileProvider.html">BankfileProvider</a>
         implementation. The <a href="apidocs/org/jdtaus/banking/ri/blzdirectory/DefaultBankfileProvider.html">DefaultBankfileProvider</a>
-        implementation searches the bankfiles at classpath location <code>META-INF/jdtaus</code>.
-        This location can be changed by updating the configuration file located at
-        <code>META-INF/jdtaus/module.xml</code>.
+        implementation searches bankfiles at classpath location <code>META-INF/jdtaus</code>.
       </p>
     </section>
     <section name="Upgrading from 1.10">
@@ -27,7 +49,7 @@
         <code>BankfileProvider</code> implementation providing the
         bankfile resources. The former default bankfiles are available for
         download as a starting point from
-        <a href="http://repo1.maven.org/maven2/org/jdtaus/banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/1.11/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.11-bankfiles.jar">here</a>.
+        <a href="http://repo.maven.apache.org/maven2/org/jdtaus/banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/1.14/jdtaus-banking-ri-bankleitzahlenverzeichnis-1.14-bankfiles.jar">here</a>.
       </p>
     </section>
   </body>

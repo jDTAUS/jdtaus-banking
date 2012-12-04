@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document>
+<!--
+
+  jDTAUS
+  Copyright (C) 2005 Christian Schulte
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  $JDTAUS$
+
+-->
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
   <properties>
     <title>jDTAUS Banking RI DTAUS</title>
     <author email="cs@schulte.it">Christian Schulte</author>
@@ -14,35 +38,49 @@
         interface taking a <code>Properties</code> instance. The following
         properties may be specified:
         <ul>
-          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.readAheadCaching</code><blockquote>
+          <li>
+            <code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.readAheadCaching</code>
+            <blockquote>
               The <code>readAheadCaching</code> property is used to enabled or
               disable the use of a read-ahead caching algorithm. Its expected
               value is of type <code>Boolean</code> and defaults to
               <code>Boolean.TRUE</code>, if using one of the methods of the
               <code>PhysicalFileFactory</code> interface not taking a
               <code>Properties</code> instance.
-          </blockquote></li>
-          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.readAheadCacheSize</code><blockquote>
+            </blockquote>
+          </li>
+          <li>
+            <code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.readAheadCacheSize</code>
+            <blockquote>
               The <code>readAheadCacheSize</code> property is used to specify
               the size of the read-ahead cache if the read-ahead caching
               algorithm is enabled. Its expected value is of type
               <code>Integer</code>. If not given a default value is used.
-          </blockquote></li>
-          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.coalescingCaching</code><blockquote>
+            </blockquote>
+          </li>
+          <li>
+            <code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.coalescingCaching</code>
+            <blockquote>
               The <code>coalescingCaching</code> property is used to enabled or
               disable the use of a coalescing caching algorithm. Its expected
               value is of type <code>Boolean</code> and defaults to
               <code>Boolean.TRUE</code>, if using one of the methods of the
               <code>PhysicalFileFactory</code> interface not taking a
               <code>Properties</code> instance.
-          </blockquote></li>
-          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.coalescingBlockSize</code><blockquote>
+            </blockquote>
+          </li>
+          <li>
+            <code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.coalescingBlockSize</code>
+            <blockquote>
               The <code>coalescingBlockSize</code> property is used to specify
               the block size of the coalescing cache if the coalescing caching
               algorithm is enabled. Its expected value is of type
               <code>Integer</code>. If not given a default value is used.
-          </blockquote></li>
-          <li><code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.spaceCharactersAllowed.<i>Field</i></code><blockquote>
+            </blockquote>
+          </li>
+          <li>
+            <code>org.jdtaus.banking.dtaus.ri.zka.DefaultPhysicalFileFactory.spaceCharactersAllowed.<i>Field</i></code>
+            <blockquote>
               The <code>spaceCharactersAllowed</code> property is used to
               specify numeric fields for which space characters are to be
               allowed. It is used as a prefix with the hexadecimal field
@@ -54,7 +92,8 @@
               needs to be specified with a value equal to <code>Boolean.TRUE</code>.
               This will lead to space characters getting converted to zero
               digits if occuring in field A10.
-          </blockquote></li>
+            </blockquote>
+          </li>
         </ul>
       </p>
     </section>

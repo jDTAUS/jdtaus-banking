@@ -29,26 +29,26 @@
     <author email="cs@schulte.it">Christian Schulte</author>
   </properties>
   <body>
-    <section name="Introduction">
+    <section name="Einleitung">
       <p>
-        This artifact provides a <code>CurrencyDirectory</code> implementation
-        backed by XML documents. XML resources are read using any available
-        <a href="apidocs/org/jdtaus/banking/ri/currencydir/JaxpCurrenciesProvider.html">JaxpCurrenciesProvider</a>
-        implementation. The <a href="apidocs/org/jdtaus/banking/ri/currencydir/DefaultJaxpCurrenciesProvider.html">DefaultJaxpCurrenciesProvider</a>
-        implementation searches the classpath for resources at location <code>META-INF/jdtaus/currencies.xml</code>.
+        Dieses Artefakt stellt eine <code>CurrencyDirectory</code>
+        Implementierung basierend auf XML-Dokumenten zur Verfügung.
+        XML-Dokumente werden mittels <a href="apidocs/org/jdtaus/banking/ri/currencydir/JaxpCurrenciesProvider.html">JaxpCurrenciesProvider</a>
+        Implementierungen zur Verfügung gestellt. Die <a href="apidocs/org/jdtaus/banking/ri/currencydir/DefaultJaxpCurrenciesProvider.html">DefaultJaxpCurrenciesProvider</a>
+        Implementierung sucht nach XML-Dokumenten im Klassenpfad an <code>META-INF/jdtaus/currencies.xml</code>.
       </p>
       <p>
-        The implementation supports documents conforming to schemas as listed in
-        the following table. Support for deprecated schemas may be removed in
-        next major releases so that it is recommended to upgrade any documents
-        to conform to the latest schema before upgrading to such releases.
+        Die Implementierung unterstützt Dokumente konform zu den folgenden
+        XML-Schemas. Die Unterstützung veralteter Schemata könnte in nächsten
+        Hauptversionen entfallen. Bitte verwenden Sie diese Schemata daher
+        nicht mehr.
         <table>
           <tr>
-            <th>Namespace URI</th>
-            <th>Schema location</th>
-            <th>Default document</th>
-            <th>Introduced in</th>
-            <th>End of support</th>
+            <th>URI</th>
+            <th>Ort</th>
+            <th>Dokument</th>
+            <th>Eingeführt</th>
+            <th>Ende der Unterstützung</th>
           </tr>
           <tr>
             <td>http://jdtaus.org/banking/xml/currencies</td>
@@ -86,20 +86,18 @@
         </table>
       </p>
     </section>
-    <section name="Upgrading from 1.0">
+    <section name="Aktualisierung von 1.0">
       <p>
-        All released 1.0 artifacts come with a default
-        <code>currencies.xml</code> document located at
-        <code>META-INF/jdtaus/currencies.xml</code>. Starting with version 1.1
-        this default XML document is no longer part of the artifact's jar file.
-        When upgrading your application to 1.1 you need to provide the currency
-        configuration yourself by either placing at least one XML document in
-        the application's classpath for use by class
-        <code>DefaultJaxpCurrenciesProvider</code> or by supplying a custom
-        <code>JaxpCurrenciesProvider</code> implementation providing the
-        currency resources. The former default document is available for as a
-        starting point from
-        <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.2.xml">here</a>.
+        Alle veröffentlichten Artefakte bis Version 1.0 beinhalten ein
+        Dokument mit Standard-Währungen. Seit Version 1.1 ist dieses Dokument
+        nicht mehr Bestandteil des Java-Archivs. Bei der Aktualisierung von
+        Version 1.0 muss daher ein entsprechendes Dokument manuell
+        bereitgestellt werden. Hierzu werden Ressourcen im Klassenpfad zur
+        Verwendung mit der <code>DefaultJaxpCurrenciesProvider</code>
+        Implementierung, oder über eine eigenständige
+        <code>JaxpCurrenciesProvider</code> Implementierung zur Verfügung
+        gestellt. Ein Beispieldokument finden Sie unter anderem
+        <a href="http://xml.jdtaus.org/1.0.x/jdtaus-banking/jdtaus-banking-ri-currencydirectory/currencies-1.2.xml">hier</a>.
       </p>
     </section>
   </body>

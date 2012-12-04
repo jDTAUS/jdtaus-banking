@@ -30,7 +30,7 @@
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-messages</artifactId>
   <name>jDTAUS Banking ⁑ Messages</name>
-  <description>jDTAUS banking application messages.</description>
+  <description>Banking application messages.</description>
   <build>
     <resources>
       <resource>

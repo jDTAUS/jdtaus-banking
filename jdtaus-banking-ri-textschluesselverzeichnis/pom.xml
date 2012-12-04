@@ -30,7 +30,7 @@
   <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
   <groupId>org.jdtaus.banking</groupId>
   <name>jDTAUS Banking ⁑ RI Textschluesselverzeichnis</name>
-  <description>jDTAUS TextschluesselVerzeichnis reference implementation.</description>
+  <description>TextschluesselVerzeichnis reference implementation.</description>
   <build>
     <resources>
       <resource>

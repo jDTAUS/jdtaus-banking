@@ -33,7 +33,7 @@
   <name>jDTAUS Banking</name>
   <version>1.14-SNAPSHOT</version>
   <url>${jdtaus.artifacts.url}/jdtaus-banking</url>
-  <description>jDTAUS Banking parent module.</description>
+  <description>DTAUS/DTA file format.</description>
   <inceptionYear>2005</inceptionYear>
   <prerequisites>
     <maven>2.0.10</maven>
@@ -346,7 +346,7 @@
     <mojo.animal-sniffer.signature.artifactId>java14</mojo.animal-sniffer.signature.artifactId>
     <mojo.animal-sniffer.signature.artifactVersion>1.0</mojo.animal-sniffer.signature.artifactVersion>
     <jdtaus.trac.query>order=id&amp;version=${project.version}&amp;component=jDTAUS Banking|${project.name}</jdtaus.trac.query>
-    <core.version>1.14-SNAPSHOT</core.version>
-    <jdtaus-container-mojo.artifact.version>3.11</jdtaus-container-mojo.artifact.version>
+    <core.version>1.14</core.version>
+    <jdtaus-container-mojo.artifact.version>3.12</jdtaus-container-mojo.artifact.version>
   </properties>
 </project>

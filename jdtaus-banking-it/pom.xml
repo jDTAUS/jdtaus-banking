@@ -30,7 +30,7 @@
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-it</artifactId>
   <name>jDTAUS Banking ⁑ Test Suite</name>
-  <description>jDTAUS banking test suite.</description>
+  <description>Banking test suite.</description>
   <build>
     <resources>
       <resource>

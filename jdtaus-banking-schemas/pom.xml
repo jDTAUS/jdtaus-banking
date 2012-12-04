@@ -30,7 +30,7 @@
   <groupId>org.jdtaus.banking</groupId>
   <artifactId>jdtaus-banking-schemas</artifactId>
   <name>jDTAUS Banking ⁑ XML Schemas</name>
-  <description>jDTAUS banking XML schemas.</description>
+  <description>Banking XML schemas.</description>
   <build>
     <resources>
       <resource>

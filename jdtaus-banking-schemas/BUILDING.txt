@@ -76,6 +76,23 @@
         <jdtaus.scm.password>Password</jdtaus.scm.password>
         <!--                                                                 -->
         <!--                                                                 -->
+        <!-- Issue Management System Properties                              -->
+        <!-- ========================================                        -->
+        <!--                                                                 -->
+        <!-- The 'jdtaus.trac.username' property must be set to the name of  -->
+        <!-- the user used for authentication with the project issue         -->
+        <!-- management system.                                              -->
+        <!--                                                                 -->
+        <jdtaus.trac.username>Username</jdtaus.trac.username>
+        <!--                                                                 -->
+        <!-- The 'jdtaus.trac.password' property must be set to the password -->
+        <!-- used for authentication with the project issue management       -->
+        <!-- system. To avoid storing cleartext passwords, this property     -->
+        <!-- should be set using the '-D' command line option.               -->
+        <!--                                                                 -->
+        <jdtaus.trac.password>Password</jdtaus.trac.password>
+        <!--                                                                 -->
+        <!--                                                                 -->
         <!-- Code Signing Properties                                         -->
         <!-- =======================                                         -->
         <!--                                                                 -->
@@ -214,14 +231,27 @@
   Deploying Release Artifacts
   ---------------------------
 
-    For deploying release artifacts, a server definition needs to be specified
-    in the local Maven settings.xml file used for authentication with the remote
-    staging repository.
+    For deploying releases, various server definitions need to be specified in
+    the local Maven settings.xml file used for authentication with the remote
+    staging repository, the remote file release server and the remote XML schema
+    server.
 
     <server>
       <id>sonatype-nexus-staging</id>
       <username>OSS Username</username>
       <password>OSS Password</password>
+    </server>
+
+    <server>
+      <id>frs.dtaus.org</id>
+      <username>FRS Username</username>
+      <password>FRS Password</password>
+    </server>
+
+    <server>
+      <id>xml.jdtaus.org</id>
+      <username>XML Username</username>
+      <password>XML Password</password>
     </server>
 
     Release artifacts are deployed by executing:
@@ -235,7 +265,7 @@
     the project web server.
 
     <server>
-      <id>jdtaus.org</id>
+      <id>www.jdtaus.org</id>
       <username>Username</username>
       <password>Password</password>
     </server>
@@ -251,7 +281,7 @@
     http://www.jdtaus.org/redirect/mrelease
 
     Releases are prepared by executing:
-    cmd> mvn release:prepare -Pjdtaus-release,jdtaus.org
+    cmd> mvn release:prepare -Pjdtaus.org
 
     Releases are performed by executing:
-    cmd> mvn release:perform -Darguments="-Pjdtaus-release,jdtaus.org"
+    cmd> mvn release:perform -Pjdtaus-release,jdtaus.org
