@@ -146,7 +146,7 @@ public final class ChecksumErrorMessage extends Message
      * <blockquote><pre>The checksum of the logical file beginning at position {0,number} is invalid.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param pos format argument.
+     * @param pos format parameter.
      *
      * @return the text of message <code>checksumError</code>.
      */

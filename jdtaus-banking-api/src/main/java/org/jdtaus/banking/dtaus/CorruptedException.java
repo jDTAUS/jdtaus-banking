@@ -112,7 +112,7 @@ public class CorruptedException extends ImplementationException
      * <blockquote><pre>The physical file got corrupted at position {0,number}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param pos format argument.
+     * @param pos format parameter.
      *
      * @return the text of message <code>corruptedException</code>.
      */

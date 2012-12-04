@@ -102,7 +102,7 @@ public final class IllegalAmountMessage extends Message
      * <blockquote><pre>{0, number} is no legal amount.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param amt format argument.
+     * @param amt format parameter.
      *
      * @return the text of message <code>illegalAmount</code>.
      */

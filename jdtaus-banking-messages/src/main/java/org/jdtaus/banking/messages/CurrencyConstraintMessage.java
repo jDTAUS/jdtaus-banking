@@ -114,8 +114,8 @@ public final class CurrencyConstraintMessage extends Message
      * <blockquote><pre>The {0} currency is in use but not valid at {1,date,long}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param currency format argument.
-     * @param constraintDate format argument.
+     * @param currency format parameter.
+     * @param constraintDate format parameter.
      *
      * @return the text of message <code>currencyConstraint</code>.
      */

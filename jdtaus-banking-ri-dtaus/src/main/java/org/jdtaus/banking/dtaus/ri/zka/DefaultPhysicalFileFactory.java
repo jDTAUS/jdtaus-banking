@@ -574,9 +574,9 @@ public final class DefaultPhysicalFileFactory implements PhysicalFileFactory
      * <blockquote><pre>The type {1} for attribute {0} is invalid. Expected {2}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param attributeName format argument.
-     * @param typeName format argument.
-     * @param expectedTypeName format argument.
+     * @param attributeName format parameter.
+     * @param typeName format parameter.
+     * @param expectedTypeName format parameter.
      *
      * @return the text of message <code>illegalAttributeType</code>.
      */

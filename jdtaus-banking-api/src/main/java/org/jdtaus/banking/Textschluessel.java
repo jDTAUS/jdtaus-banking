@@ -609,8 +609,8 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
      * <blockquote><pre>{0,number,00}{1,number,000}</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param k format argument.
-     * @param e format argument.
+     * @param k format parameter.
+     * @param e format parameter.
      *
      * @return the text of message <code>textschluesselDescription</code>.
      */

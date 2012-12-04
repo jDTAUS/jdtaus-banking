@@ -966,7 +966,7 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>No JAXP validation available. {0}</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param detailMessage format argument.
+     * @param detailMessage format parameter.
      *
      * @return the text of message <code>noJAXPValidationWarning</code>.
      */
@@ -988,8 +988,8 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>{0} cannot be monitored. {1}</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param resourceName format argument.
-     * @param detailMessage format argument.
+     * @param resourceName format parameter.
+     * @param detailMessage format parameter.
      *
      * @return the text of message <code>notMonitoringWarning</code>.
      */
@@ -1013,7 +1013,7 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>{0} changed.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param resourceName format argument.
+     * @param resourceName format parameter.
      *
      * @return the text of message <code>changeInfo</code>.
      */
@@ -1035,7 +1035,7 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Monitoring {0} for changes.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param resourceName format argument.
+     * @param resourceName format parameter.
      *
      * @return the text of message <code>monitoringInfo</code>.
      */
@@ -1057,8 +1057,8 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Read {1,choice,0#no document|1#one document|1<{1} documents}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param entityCount format argument.
-     * @param documentCount format argument.
+     * @param entityCount format parameter.
+     * @param documentCount format parameter.
      *
      * @return the text of message <code>textschluesselInfo</code>.
      */
@@ -1082,7 +1082,7 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Unsupported XML namespace {0}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param namespace format argument.
+     * @param namespace format parameter.
      *
      * @return the text of message <code>unsupportedNamespace</code>.
      */
@@ -1104,7 +1104,7 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Unsupported model version {0}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param modelVersion format argument.
+     * @param modelVersion format parameter.
      *
      * @return the text of message <code>unsupportedModelVersion</code>.
      */
@@ -1126,10 +1126,10 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Error parsing resource "{0}" at line {2}, column {3}. {1}</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param resourceName format argument.
-     * @param cause format argument.
-     * @param line format argument.
-     * @param column format argument.
+     * @param resourceName format parameter.
+     * @param cause format parameter.
+     * @param line format parameter.
+     * @param column format parameter.
      *
      * @return the text of message <code>parseException</code>.
      */
@@ -1157,7 +1157,7 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>No schemaLocation attribute in resource "{0}". Schema validation skipped.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param resource format argument.
+     * @param resource format parameter.
      *
      * @return the text of message <code>noSchemaLocation</code>.
      */
@@ -1179,8 +1179,8 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
      * <blockquote><pre>Non-unique Textschluessel {0,number,00}{1,number,000}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param key format argument.
-     * @param extension format argument.
+     * @param key format parameter.
+     * @param extension format parameter.
      *
      * @return the text of message <code>duplicateTextschluessel</code>.
      */
