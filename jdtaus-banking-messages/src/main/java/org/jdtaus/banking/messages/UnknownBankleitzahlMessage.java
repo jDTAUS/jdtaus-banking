@@ -102,7 +102,7 @@ public final class UnknownBankleitzahlMessage extends Message
      * <blockquote><pre>Unknown Bankleitzahl {0}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param unknownBankleitzahl format argument.
+     * @param unknownBankleitzahl format parameter.
      *
      * @return the text of message <code>unknownBankleitzahl</code>.
      */

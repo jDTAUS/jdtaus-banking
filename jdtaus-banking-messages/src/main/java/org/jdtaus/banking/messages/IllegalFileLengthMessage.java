@@ -118,8 +118,8 @@ public final class IllegalFileLengthMessage extends Message
      * <blockquote><pre>The length of the file ({0, number}) is incompatible to the blocksize {1,number}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param len format argument.
-     * @param blk format argument.
+     * @param len format parameter.
+     * @param blk format parameter.
      *
      * @return the text of message <code>illegalFileLength</code>.
      */

@@ -275,7 +275,7 @@ public final class DefaultBankfileProvider extends AbstractPropertiesBankfilePro
      * <blockquote><pre>Properties resource ''{0}'' not found - not providing classpath bankcode files.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param location format argument.
+     * @param location format parameter.
      *
      * @return the text of message <code>propertiesNotFound</code>.
      */

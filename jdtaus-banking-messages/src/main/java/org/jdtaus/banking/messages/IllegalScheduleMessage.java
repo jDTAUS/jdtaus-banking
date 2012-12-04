@@ -129,9 +129,9 @@ public final class IllegalScheduleMessage extends Message
      * <blockquote><pre>The executiondate {1,date,long} is before create date {0,date,long} or more than {2,number} days thereafter.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param cdat format argument.
-     * @param edat format argument.
-     * @param max format argument.
+     * @param cdat format parameter.
+     * @param edat format parameter.
+     * @param max format parameter.
      *
      * @return the text of message <code>illegalSchedule</code>.
      */

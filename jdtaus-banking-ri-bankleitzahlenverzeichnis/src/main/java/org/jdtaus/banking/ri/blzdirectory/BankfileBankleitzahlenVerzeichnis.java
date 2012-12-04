@@ -727,7 +727,7 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
      * <blockquote><pre>Bankleitzahl {0} is outdated.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param bankleitzahl format argument.
+     * @param bankleitzahl format parameter.
      *
      * @return the text of message <code>outdatedInfo</code>.
      */
@@ -749,8 +749,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
      * <blockquote><pre>Multiple bankfile records with serial number {0,number} detected during searching the directory for bankcode {1}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param serialNumber format argument.
-     * @param bankleitzahl format argument.
+     * @param serialNumber format parameter.
+     * @param bankleitzahl format parameter.
      *
      * @return the text of message <code>duplicateRecord</code>.
      */
@@ -774,8 +774,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
      * <blockquote><pre>Read {1,choice,0#no bankfile|1#one bankfile|1<{1} bankfiles}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param entityCount format argument.
-     * @param bankfileCount format argument.
+     * @param entityCount format parameter.
+     * @param bankfileCount format parameter.
      *
      * @return the text of message <code>bankfileInfo</code>.
      */
@@ -799,8 +799,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
      * <blockquote><pre>Provider's last modification timestamp changed from ''{0,date} {0,time}'' to ''{1,date} {1,time}''. Loading new bankcodes.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param lastModification format argument.
-     * @param lastProviderModification format argument.
+     * @param lastModification format parameter.
+     * @param lastProviderModification format parameter.
      *
      * @return the text of message <code>reloadInfo</code>.
      */

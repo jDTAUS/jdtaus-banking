@@ -442,7 +442,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
      * <blockquote><pre>BLZ {0}</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param bankCode format argument.
+     * @param bankCode format parameter.
      *
      * @return the text of message <code>blzInfo</code>.
      */
@@ -464,7 +464,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
      * <blockquote><pre>BIC {0}</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param bic format argument.
+     * @param bic format parameter.
      *
      * @return the text of message <code>bicInfo</code>.
      */

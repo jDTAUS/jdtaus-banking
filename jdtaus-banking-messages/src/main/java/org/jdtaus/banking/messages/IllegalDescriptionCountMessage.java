@@ -106,8 +106,8 @@ public final class IllegalDescriptionCountMessage extends Message
      * <blockquote><pre>The number of descriptions ({1,number}) exceeds the possible number {0,number}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param descriptionCount format argument.
-     * @param allowedDescriptions format argument.
+     * @param descriptionCount format parameter.
+     * @param allowedDescriptions format parameter.
      *
      * @return the text of message <code>illegalDescriptionCount</code>.
      */

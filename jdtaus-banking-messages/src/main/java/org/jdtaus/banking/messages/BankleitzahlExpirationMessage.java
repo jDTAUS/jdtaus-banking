@@ -103,7 +103,7 @@ public final class BankleitzahlExpirationMessage extends Message
      * <blockquote><pre>The Bankleitzahl {0} has expired.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param bankleitzahl format argument.
+     * @param bankleitzahl format parameter.
      *
      * @return the text of message <code>bankleitzahlExpiration</code>.
      */

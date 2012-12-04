@@ -123,8 +123,8 @@ public class UnsupportedCurrencyException extends IllegalArgumentException
      * <blockquote><pre>The currency {0} is not available at {1,date,long}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param currency format argument.
-     * @param date format argument.
+     * @param currency format parameter.
+     * @param date format parameter.
      *
      * @return the text of message <code>unsupportedCurrency</code>.
      */

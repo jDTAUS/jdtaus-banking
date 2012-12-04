@@ -116,8 +116,8 @@ public final class IllegalCurrencyMessage extends Message
      * <blockquote><pre>The currency {0} is illegal at {1,date,long}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param cur format argument.
-     * @param dat format argument.
+     * @param cur format parameter.
+     * @param dat format parameter.
      *
      * @return the text of message <code>illegalCurrency</code>.
      */

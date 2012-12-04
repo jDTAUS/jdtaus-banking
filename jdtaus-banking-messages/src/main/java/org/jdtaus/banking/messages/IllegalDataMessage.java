@@ -207,9 +207,9 @@ public final class IllegalDataMessage extends Message
      * <blockquote><pre>"{2}" is no valid value for field {0} (at {1, number}).</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param fld format argument.
-     * @param pos format argument.
-     * @param data format argument.
+     * @param fld format parameter.
+     * @param pos format parameter.
+     * @param data format parameter.
      *
      * @return the text of message <code>illegalData</code>.
      */

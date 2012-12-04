@@ -2318,8 +2318,8 @@ public abstract class AbstractLogicalFile implements LogicalFile
      * <blockquote><pre>An illegal space character in a numeric field has been converted to zero. Converted string "{0}" to number "{1,number}".</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param readString format argument.
-     * @param convertedNumber format argument.
+     * @param readString format parameter.
+     * @param convertedNumber format parameter.
      *
      * @return the text of message <code>readNumberIllegalFileInfo</code>.
      */

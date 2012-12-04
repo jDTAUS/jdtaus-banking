@@ -129,9 +129,9 @@ public final class IllegalDateMessage extends Message
      * <blockquote><pre>The date {0,date,long} is either before {1,date,long} or after {2,date,long}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param dat format argument.
-     * @param start format argument.
-     * @param end format argument.
+     * @param dat format parameter.
+     * @param start format parameter.
+     * @param end format parameter.
      *
      * @return the text of message <code>illegalDate</code>.
      */

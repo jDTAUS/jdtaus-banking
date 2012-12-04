@@ -129,8 +129,8 @@ public class BankleitzahlExpirationException extends Exception
      * <blockquote><pre>The Bankleitzahl {0} has expired. The bank published the replacement Bankleitzahl {1}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param expired format argument.
-     * @param rplc format argument.
+     * @param expired format parameter.
+     * @param rplc format parameter.
      *
      * @return the text of message <code>bankleitzahlExpiration</code>.
      */

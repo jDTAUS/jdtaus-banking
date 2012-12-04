@@ -479,7 +479,7 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>Loading Bankleitzahlendatei "{0}".</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param fileName format argument.
+     * @param fileName format parameter.
      *
      * @return the text of message <code>fileNameInfo</code>.
      */
@@ -501,8 +501,8 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>{0}: Added record {1, number}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param label format argument.
-     * @param serialNumber format argument.
+     * @param label format parameter.
+     * @param serialNumber format parameter.
      *
      * @return the text of message <code>addRecordInfo</code>.
      */
@@ -526,8 +526,8 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>{0}: Updated record {1, number}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param label format argument.
-     * @param serialNumber format argument.
+     * @param label format parameter.
+     * @param serialNumber format parameter.
      *
      * @return the text of message <code>modifyRecordInfo</code>.
      */
@@ -551,8 +551,8 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>{0}: Removed record {1, number}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param label format argument.
-     * @param serialNumber format argument.
+     * @param label format parameter.
+     * @param serialNumber format parameter.
      *
      * @return the text of message <code>removeRecordInfo</code>.
      */
@@ -576,7 +576,7 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>Record with serial number {0,number} already exists and cannot be added.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param serialNumber format argument.
+     * @param serialNumber format parameter.
      *
      * @return the text of message <code>cannotAddDuplicateRecord</code>.
      */
@@ -598,7 +598,7 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>Record with serial number {0,number} does not exist and cannot be updated.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param serialNumber format argument.
+     * @param serialNumber format parameter.
      *
      * @return the text of message <code>cannotModifyNonexistentRecord</code>.
      */
@@ -620,8 +620,8 @@ public final class BankleitzahlenDatei
      * <blockquote><pre>Unexpected data at line {0,number} processing {1}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param lineNumber format argument.
-     * @param resourceName format argument.
+     * @param lineNumber format parameter.
+     * @param resourceName format parameter.
      *
      * @return the text of message <code>unexpectedData</code>.
      */

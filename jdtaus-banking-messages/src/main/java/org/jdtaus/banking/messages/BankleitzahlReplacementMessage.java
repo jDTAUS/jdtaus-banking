@@ -103,7 +103,7 @@ public final class BankleitzahlReplacementMessage extends Message
      * <blockquote><pre>The bank has published the replacement Bankleitzahl {0}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param bankleitzahl format argument.
+     * @param bankleitzahl format parameter.
      *
      * @return the text of message <code>bankleitzahlReplacement</code>.
      */

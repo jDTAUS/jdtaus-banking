@@ -124,9 +124,9 @@ public final class TextschluesselConstraintMessage extends Message
      * <blockquote><pre>A logical file with label {0} cannot hold transactions with Textschlüssel {1,number,00}{2,number,000}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param label format argument.
-     * @param key format argument.
-     * @param extension format argument.
+     * @param label format parameter.
+     * @param key format parameter.
+     * @param extension format parameter.
      *
      * @return the text of message <code>textschluesselConstraint</code>.
      */

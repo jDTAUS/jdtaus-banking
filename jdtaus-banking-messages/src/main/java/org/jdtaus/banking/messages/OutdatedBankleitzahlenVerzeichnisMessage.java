@@ -101,7 +101,7 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
      * <blockquote><pre>The directory of bankcodes expired at {0,date,long}.</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
-     * @param expirationDate format argument.
+     * @param expirationDate format parameter.
      *
      * @return the text of message <code>outdatedDirectory</code>.
      */
