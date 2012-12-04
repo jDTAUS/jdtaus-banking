@@ -43,4 +43,12 @@
       <item name="Utilities" href="${project.url}/jdtaus-banking-utilities/de/index.html"/>
     </menu>
   </body>
+  <custom>
+    <languages-tool combine.self="override"
+                    languages-navigation="true"
+                    default-language="en">
+      <language>en</language>
+      <language>de</language>
+    </languages-tool>
+  </custom>
 </project>
