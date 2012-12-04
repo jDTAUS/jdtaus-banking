@@ -437,7 +437,7 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
                 this.getApplicationLogger().log( new MessageEvent( this, new Message[]
                     {
                         new OutdatedBankleitzahlenVerzeichnisMessage( this.getDateOfExpiration() )
-                    }, MessageEvent.NOTIFICATION ) );
+                    }, MessageEvent.WARNING ) );
 
             }
         }
