@@ -442,6 +442,21 @@ public final class DTAUSDisk extends AbstractLogicalFile
         final Date createDate = this.readShortDate(
             Fields.FIELD_A7, this.getHeaderPosition() + ARECORD_OFFSETS[6], ENCODING_ASCII );
 
+        if ( createDate == null )
+        {
+            if ( ThreadLocalMessages.isErrorsEnabled() )
+            {
+                throw new CorruptedException( this.getImplementation(), this.getHeaderPosition() + ARECORD_OFFSETS[6] );
+            }
+            else
+            {
+                ThreadLocalMessages.getMessages().addMessage( new IllegalDataMessage(
+                    Fields.FIELD_A7, IllegalDataMessage.TYPE_SHORTDATE, this.getHeaderPosition() + ARECORD_OFFSETS[6],
+                    "      " ) );
+
+            }
+        }
+
         // Feld 8
         // Nur belegt wenn Absender Kreditinistitut ist, sonst "".
         txt = this.readAlphaNumeric(
@@ -973,7 +988,8 @@ public final class DTAUSDisk extends AbstractLogicalFile
 
         transaction.setType( null );
 
-        if ( keyType.longValue() != NO_NUMBER && num.longValue() != NO_NUMBER )
+        if ( keyType.longValue() != NO_NUMBER && num.longValue() != NO_NUMBER
+             && this.getHeader().getCreateDate() != null )
         {
             final Textschluessel type = this.getTextschluesselVerzeichnis().getTextschluessel(
                 keyType.intValue(), num.intValue(), this.getHeader().getCreateDate() );
@@ -1111,7 +1127,7 @@ public final class DTAUSDisk extends AbstractLogicalFile
                     ThreadLocalMessages.getMessages().addMessage( msg );
                 }
             }
-            else
+            else if ( this.getHeader().getCreateDate() != null )
             {
                 final char c = txt.charAt( 0 );
                 final Currency cur = this.getCurrencyMapper().getDtausCurrency( c, this.getHeader().getCreateDate() );
