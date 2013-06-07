@@ -504,7 +504,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                     ThreadLocalMessages.getMessages().addMessage( msg );
                 }
             }
-            else
+            else if ( createDate != null )
             {
                 final char c = txt.charAt( 0 );
                 final Currency cur = this.getCurrencyMapper().getDtausCurrency( c, createDate );
@@ -957,7 +957,7 @@ public final class DTAUSTape extends AbstractLogicalFile
             Fields.FIELD_C7B, position + CRECORD_OFFSETS1[9], CRECORD_LENGTH1[9], true );
 
         transaction.setType( null );
-        if ( num != NO_NUMBER && keyType != NO_NUMBER )
+        if ( num != NO_NUMBER && keyType != NO_NUMBER && this.getHeader().getCreateDate() != null )
         {
             type = this.getTextschluesselVerzeichnis().getTextschluessel(
                 (int) keyType, (int) num, this.getHeader().getCreateDate() );
@@ -1089,7 +1089,7 @@ public final class DTAUSTape extends AbstractLogicalFile
                     ThreadLocalMessages.getMessages().addMessage( msg );
                 }
             }
-            else
+            else if ( this.getHeader().getCreateDate() != null )
             {
                 final char c = txt.charAt( 0 );
                 cur = this.getCurrencyMapper().getDtausCurrency( c, this.getHeader().getCreateDate() );

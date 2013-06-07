@@ -348,6 +348,24 @@ public class LogicalFileTest extends TestCase
         return factory.getPhysicalFile( ops, properties );
     }
 
+    protected static PhysicalFile getDTAUS0IllegalCreateDateWithLegalTransaction() throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write( LogicalFileTest.class.getResourceAsStream( "dtaus0_illegal_create_date_with_legal_transaction" ) );
+        return factory.getPhysicalFile( ops );
+    }
+
+    protected static PhysicalFile getDTAUSIllegalCreateDateWithLegalTransaction() throws Exception
+    {
+        final MemoryFileOperations ops = getMemoryFileOperations();
+        final PhysicalFileFactory factory = getPhysicalFileFactory();
+
+        ops.write( LogicalFileTest.class.getResourceAsStream( "dtaus_illegal_create_date_with_legal_transaction" ) );
+        return factory.getPhysicalFile( ops );
+    }
+
     /** Testet die {@link org.jdtaus.banking.dtaus.LogicalFile#getHeader()} Methode.*/
     public void testGetHeader() throws Exception
     {
@@ -808,6 +826,34 @@ public class LogicalFileTest extends TestCase
         }
     }
 
+    public void testDTAUS0IllegalCreateDateWithLegalTransaction() throws Exception
+    {
+        try
+        {
+            getDTAUS0IllegalCreateDateWithLegalTransaction();
+            fail();
+        }
+        catch ( PhysicalFileException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+    }
+
+    public void testDTAUSIllegalCreateDateWithLegalTransaction() throws Exception
+    {
+        try
+        {
+            getDTAUSIllegalCreateDateWithLegalTransaction();
+            fail();
+        }
+        catch ( PhysicalFileException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+    }
+
     private void assertValidHeader( final Header header )
     {
         final Calendar createCal = Calendar.getInstance();
@@ -844,8 +890,9 @@ public class LogicalFileTest extends TestCase
         Assert.assertTrue( transaction.getTargetAccount().longValue() == 3333333333L );
         Assert.assertTrue( transaction.getReference().longValue() == 44444444444L );
         /*
-        Assert.assertTrue(t.getType().equals(AbstractLogicalFileTest.
-        getConfiguration().getTransactionType(5,0)));
+
+         Assert.assertTrue(t.getType().equals(AbstractLogicalFileTest.
+         getConfiguration().getTransactionType(5,0)));
          */
 
         Assert.assertTrue( transaction.getExecutiveBank().intValue() == 55555555 );
