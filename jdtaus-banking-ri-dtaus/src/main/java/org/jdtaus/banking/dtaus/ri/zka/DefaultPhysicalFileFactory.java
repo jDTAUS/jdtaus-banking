@@ -42,7 +42,6 @@ import org.jdtaus.core.io.FileOperations;
 import org.jdtaus.core.io.util.CoalescingFileOperations;
 import org.jdtaus.core.io.util.RandomAccessFileOperations;
 import org.jdtaus.core.io.util.ReadAheadFileOperations;
-import org.jdtaus.core.io.util.StructuredFileOperations;
 import org.jdtaus.core.nio.util.Charsets;
 import org.jdtaus.core.text.Message;
 
@@ -475,7 +474,6 @@ public final class DefaultPhysicalFileFactory implements PhysicalFileFactory
 
         final DefaultPhysicalFile ret;
         final Message[] messages;
-        final StructuredFileOperations sops;
         format = ops.getLength() > 0 ? this.analyse( ops ) : format;
 
         try

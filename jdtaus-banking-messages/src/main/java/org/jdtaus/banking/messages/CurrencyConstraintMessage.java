@@ -70,7 +70,7 @@ public final class CurrencyConstraintMessage extends Message
         }
 
         this.currencyCode = currencyCode;
-        this.date = date;
+        this.date = (Date) date.clone();
     }
 
     /**

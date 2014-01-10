@@ -82,9 +82,9 @@ public final class IllegalDateMessage extends Message
             throw new NullPointerException( "dateRangeEnd" );
         }
 
-        this.date = date;
-        this.dateRangeStart = dateRangeStart;
-        this.dateRangeEnd = dateRangeEnd;
+        this.date = (Date) date.clone();
+        this.dateRangeStart = (Date) dateRangeStart.clone();
+        this.dateRangeEnd = (Date) dateRangeEnd.clone();
     }
 
     /**

@@ -681,31 +681,6 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
     }
 
     /**
-     * Gets the text of message <code>duplicateRecord</code>.
-     * <blockquote><pre>Mehrere Bankleitzahlendatei-Datensätze mit Seriennummer {0,number} während der Suche nach Bankleitzahl {1}.</pre></blockquote>
-     * <blockquote><pre>Multiple bankfile records with serial number {0,number} detected during searching the directory for bankcode {1}.</pre></blockquote>
-     *
-     * @param locale The locale of the message instance to return.
-     * @param serialNumber format parameter.
-     * @param bankleitzahl format parameter.
-     *
-     * @return the text of message <code>duplicateRecord</code>.
-     */
-    private String getDuplicateRecordMessage( final Locale locale,
-            final java.lang.Number serialNumber,
-            final java.lang.String bankleitzahl )
-    {
-        return ContainerFactory.getContainer().
-            getMessage( this, "duplicateRecord", locale,
-                new Object[]
-                {
-                    serialNumber,
-                    bankleitzahl
-                });
-
-    }
-
-    /**
      * Gets the text of message <code>bankfileInfo</code>.
      * <blockquote><pre>{1,choice,0#Keine Bankleitzahlendatei|1#Eine Bankleitzahlendatei|1<{1} Bankleitzahlendateien} gelesen. {0,choice,0#Keine Datensätze|1#Einen Datensatz|1<{0} Datensätze} verarbeitet.</pre></blockquote>
      * <blockquote><pre>Read {1,choice,0#no bankfile|1#one bankfile|1<{1} bankfiles}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.</pre></blockquote>

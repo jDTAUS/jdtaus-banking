@@ -149,16 +149,6 @@
             <container:argument container:index="0" container:name="bankleitzahl" container:type="text"/>
           </container:arguments>
         </container:message>
-        <container:message container:name="duplicateRecord">
-          <container:template container:defaultLanguage="en">
-            <container:text container:language="en"><![CDATA[Multiple bankfile records with serial number {0,number} detected during searching the directory for bankcode {1}.]]></container:text>
-            <container:text container:language="de"><![CDATA[Mehrere Bankleitzahlendatei-Datensätze mit Seriennummer {0,number} während der Suche nach Bankleitzahl {1}.]]></container:text>
-          </container:template>
-          <container:arguments>
-            <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
-            <container:argument container:index="1" container:name="bankleitzahl" container:type="text"/>
-          </container:arguments>
-        </container:message>
         <container:message container:name="bankfileInfo">
           <container:template container:defaultLanguage="en">
             <container:text container:language="en"><![CDATA[Read {1,choice,0#no bankfile|1#one bankfile|1<{1} bankfiles}. Processed {0,choice,0#no entities|1#one entity|1<{0} entities}.]]></container:text>

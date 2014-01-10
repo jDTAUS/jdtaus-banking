@@ -163,7 +163,7 @@ public final class DefaultBankfileProvider extends AbstractPropertiesBankfilePro
                 this.getLogger().info( this.getPropertiesNotFoundMessage( this.getLocale(), propertiesLocation ) );
             }
 
-            return p;
+            this.properties = p;
         }
 
         return this.properties;

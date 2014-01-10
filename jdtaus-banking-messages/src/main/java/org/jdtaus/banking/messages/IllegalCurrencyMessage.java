@@ -72,7 +72,7 @@ public final class IllegalCurrencyMessage extends Message
         }
 
         this.currencyCode = currencyCode;
-        this.date = date;
+        this.date = (Date) date.clone();
     }
 
     /**

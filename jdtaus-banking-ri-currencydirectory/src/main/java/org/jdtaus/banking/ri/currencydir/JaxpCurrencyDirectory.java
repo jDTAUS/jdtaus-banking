@@ -570,7 +570,7 @@ public class JaxpCurrencyDirectory implements CurrencyMapper
 
         if ( namespace == null )
         {
-            throw new RuntimeException( this.getUnsupportedNamespaceMessage( this.getLocale(), namespace ) );
+            throw new RuntimeException( this.getUnsupportedNamespaceMessage( this.getLocale(), null ) );
         }
         else if ( CURRENCIES_NS.equals( namespace ) )
         {

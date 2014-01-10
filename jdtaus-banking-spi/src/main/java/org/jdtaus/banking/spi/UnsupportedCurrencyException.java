@@ -59,7 +59,7 @@ public class UnsupportedCurrencyException extends IllegalArgumentException
     {
         super();
         this.currencyCode = currencyCode;
-        this.date = date;
+        this.date = (Date) ( date == null ? null : date.clone() );
     }
 
     /**
@@ -79,7 +79,7 @@ public class UnsupportedCurrencyException extends IllegalArgumentException
      */
     public Date getDate()
     {
-        return this.date;
+        return (Date) ( this.date == null ? null : this.date.clone() );
     }
 
     /**

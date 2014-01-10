@@ -58,7 +58,7 @@ public final class OutdatedBankleitzahlenVerzeichnisMessage extends Message
             throw new NullPointerException( "dateOfExpiration" );
         }
 
-        this.dateOfExpiration = dateOfExpiration;
+        this.dateOfExpiration = (Date) dateOfExpiration.clone();
     }
 
     /**

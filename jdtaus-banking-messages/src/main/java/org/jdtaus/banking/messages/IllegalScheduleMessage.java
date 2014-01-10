@@ -79,8 +79,8 @@ public final class IllegalScheduleMessage extends Message
             throw new IllegalArgumentException( Integer.toString( maxDays ) );
         }
 
-        this.createDate = createDate;
-        this.executionDate = executionDate;
+        this.createDate = (Date) createDate.clone();
+        this.executionDate = (Date) ( executionDate == null ? null : executionDate.clone() );
         this.maxDays = maxDays;
     }
 

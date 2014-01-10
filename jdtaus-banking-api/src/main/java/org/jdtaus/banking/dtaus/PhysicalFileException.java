@@ -65,7 +65,14 @@ public class PhysicalFileException extends Exception
      */
     public final Message[] getMessages()
     {
-        return this.messages;
+        final Message[] copy = new Message[ this.messages.length ];
+
+        for ( int i = 0, l0 = this.messages.length; i < l0; i++ )
+        {
+            copy[i] = this.messages[i];
+        }
+
+        return copy;
     }
 
     /**

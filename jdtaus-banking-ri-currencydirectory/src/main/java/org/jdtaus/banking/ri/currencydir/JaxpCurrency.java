@@ -120,7 +120,7 @@ public class JaxpCurrency implements Serializable, Cloneable
      */
     public Date getStartDate()
     {
-        return this.startDate;
+        return (Date) ( this.startDate == null ? null : this.startDate.clone() );
     }
 
     /**
@@ -130,7 +130,7 @@ public class JaxpCurrency implements Serializable, Cloneable
      */
     public void setStartDate( final Date value )
     {
-        this.startDate = value;
+        this.startDate = (Date) ( value == null ? null : value.clone() );
         this.hashCode = NO_HASHCODE;
     }
 
@@ -141,7 +141,7 @@ public class JaxpCurrency implements Serializable, Cloneable
      */
     public Date getEndDate()
     {
-        return this.endDate;
+        return (Date) ( this.endDate == null ? null : this.endDate.clone() );
     }
 
     /**
@@ -151,7 +151,7 @@ public class JaxpCurrency implements Serializable, Cloneable
      */
     public void setEndDate( final Date value )
     {
-        this.endDate = value;
+        this.endDate = (Date) ( value == null ? null : value.clone() );
         this.hashCode = NO_HASHCODE;
     }
 
@@ -172,11 +172,11 @@ public class JaxpCurrency implements Serializable, Cloneable
             throw new NullPointerException( "date" );
         }
 
-        return ( date.equals( this.getStartDate() )
-                 || date.after( this.getStartDate() ) )
-               && ( this.getEndDate() == null
-                    || date.equals( this.getEndDate() )
-                    || date.before( this.getEndDate() ) );
+        return ( date.equals( this.startDate )
+                 || date.after( this.startDate ) )
+               && ( this.endDate == null
+                    || date.equals( this.endDate )
+                    || date.before( this.endDate ) );
 
     }
 
@@ -222,18 +222,18 @@ public class JaxpCurrency implements Serializable, Cloneable
         {
             final JaxpCurrency that = (JaxpCurrency) o;
 
-            ret = ( this.getIsoCode() == null
-                    ? that.getIsoCode() == null
-                    : this.getIsoCode().equals( that.getIsoCode() ) )
-                  && ( this.getDtausCode() == null
-                       ? that.getDtausCode() == null
-                       : this.getDtausCode().equals( that.getDtausCode() ) )
-                  && ( this.getStartDate() == null
-                       ? that.getStartDate() == null
-                       : this.getStartDate().equals( that.getStartDate() ) )
-                  && ( this.getEndDate() == null
-                       ? that.getEndDate() == null
-                       : this.getEndDate().equals( that.getEndDate() ) );
+            ret = ( this.isoCode == null
+                    ? that.isoCode == null
+                    : this.isoCode.equals( that.isoCode ) )
+                  && ( this.dtausCode == null
+                       ? that.dtausCode == null
+                       : this.dtausCode.equals( that.dtausCode ) )
+                  && ( this.startDate == null
+                       ? that.startDate == null
+                       : this.startDate.equals( that.startDate ) )
+                  && ( this.endDate == null
+                       ? that.endDate == null
+                       : this.endDate.equals( that.endDate ) );
 
         }
 
