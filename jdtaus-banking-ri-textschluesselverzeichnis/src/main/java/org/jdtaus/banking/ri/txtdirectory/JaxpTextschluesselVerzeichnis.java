@@ -103,6 +103,18 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
     /** Holds the loaded Textschlüssel instances. */
     private Textschluessel[] instances;
 
+    /**
+     * Holds mappings of Textschlüssel keys to instances.
+     * @since 1.15
+     */
+    private final Map textschluesselMap = new HashMap();
+
+    /**
+     * Holds mappings of Textschlüssel keys to instances with variable extension.
+     * @since 1.15
+     */
+    private final Map variableTextschluesselMap = new HashMap();
+
     /** Maps {@code File} instances to theire last modification timestamp. */
     private final Map monitorMap = new HashMap();
 
@@ -187,16 +199,32 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
         this.assertValidProperties();
         this.assertInitialized();
 
-        for ( int i = this.instances.length - 1; i >= 0; i-- )
+        Textschluessel textschluessel = null;
+        final Number keyObject = new Integer( key );
+        final Map extensionMap = (Map) this.textschluesselMap.get( keyObject );
+
+        if ( extensionMap != null )
         {
-            if ( this.instances[i].getKey() == key
-                 && ( this.instances[i].isVariable() || this.instances[i].getExtension() == extension ) )
+            textschluessel = (Textschluessel) extensionMap.get( new Integer( extension ) );
+
+            if ( textschluessel != null )
             {
-                return (Textschluessel) this.instances[i].clone();
+                textschluessel = (Textschluessel) textschluessel.clone();
             }
         }
 
-        return null;
+        if ( textschluessel == null )
+        {
+            textschluessel = (Textschluessel) this.variableTextschluesselMap.get( keyObject );
+
+            if ( textschluessel != null )
+            {
+                textschluessel = (Textschluessel) textschluessel.clone();
+                textschluessel.setExtension( extension );
+            }
+        }
+
+        return textschluessel;
     }
 
     public Textschluessel getTextschluessel( final int key, final int extension, final Date date )
@@ -325,6 +353,8 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
             if ( !this.initialized )
             {
                 this.monitorMap.clear();
+                this.textschluesselMap.clear();
+                this.variableTextschluesselMap.clear();
 
                 final List/*<Document>*/ documents = this.parseResources();
                 final Collection parsedTextschluessel = new LinkedList();
@@ -335,27 +365,40 @@ public class JaxpTextschluesselVerzeichnis implements TextschluesselVerzeichnis
                     parsedTextschluessel.addAll( this.transformDocument( document ) );
                 }
 
-                final Map types = new HashMap( parsedTextschluessel.size() );
                 final Collection checked = new ArrayList( parsedTextschluessel.size() );
 
                 for ( final Iterator it = parsedTextschluessel.iterator(); it.hasNext(); )
                 {
-                    Map keys;
                     final Textschluessel i = (Textschluessel) it.next();
                     final Integer key = new Integer( i.getKey() );
                     final Integer ext = new Integer( i.getExtension() );
 
-                    if ( ( keys = (Map) types.get( key ) ) == null )
+                    if ( i.isVariable() )
                     {
-                        keys = new HashMap();
-                        types.put( key, keys );
+                        if ( this.textschluesselMap.containsKey( key )
+                             || this.variableTextschluesselMap.put( key, i ) != null )
+                        {
+                            throw new IllegalStateException( this.getDuplicateTextschluesselMessage(
+                                this.getLocale(), key, ext ) );
+
+                        }
                     }
-
-                    if ( keys.put( ext, i ) != null )
+                    else
                     {
-                        throw new IllegalStateException( this.getDuplicateTextschluesselMessage(
-                            this.getLocale(), key, ext ) );
+                        Map extensionsMap = (Map) this.textschluesselMap.get( key );
 
+                        if ( extensionsMap == null )
+                        {
+                            extensionsMap = new HashMap();
+                            this.textschluesselMap.put( key, extensionsMap );
+                        }
+
+                        if ( extensionsMap.put( ext, i ) != null )
+                        {
+                            throw new IllegalStateException( this.getDuplicateTextschluesselMessage(
+                                this.getLocale(), key, ext ) );
+
+                        }
                     }
 
                     checked.add( i );

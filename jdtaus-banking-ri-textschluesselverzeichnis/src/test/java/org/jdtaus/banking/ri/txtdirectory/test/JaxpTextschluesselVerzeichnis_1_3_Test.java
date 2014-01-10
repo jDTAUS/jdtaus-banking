@@ -21,6 +21,8 @@
 package org.jdtaus.banking.ri.txtdirectory.test;
 
 import java.net.URL;
+import junit.framework.Assert;
+import org.jdtaus.banking.Textschluessel;
 import org.jdtaus.banking.ri.txtdirectory.JaxpTextschluesselVerzeichnis;
 
 /**
@@ -36,11 +38,29 @@ public class JaxpTextschluesselVerzeichnis_1_3_Test extends AbstractJaxpTextschl
     {
         final ResourceLoader cl = new ResourceLoader( this.getClass().getClassLoader() );
         cl.addResources( "META-INF/jdtaus/textschluessel.xml", new URL[]
-            {
-                this.getClass().getResource( "textschluessel-1.3.xml" )
-            } );
+        {
+            this.getClass().getResource( "textschluessel-1.3.xml" )
+        } );
 
         return cl;
+    }
+
+    public void testPreserveVariableExtension() throws Exception
+    {
+        assert this.getTextschluesselVerzeichnis() != null;
+
+        final Textschluessel textschluessel1 = this.getTextschluesselVerzeichnis().getTextschluessel( 54, 0 );
+        final Textschluessel textschluessel2 = this.getTextschluesselVerzeichnis().getTextschluessel( 54, 1 );
+        final Textschluessel textschluessel3 = this.getTextschluesselVerzeichnis().getTextschluessel( 54, 999 );
+
+        Assert.assertEquals( textschluessel1.getKey(), 54 );
+        Assert.assertEquals( textschluessel1.getExtension(), 0 );
+
+        Assert.assertEquals( textschluessel2.getKey(), 54 );
+        Assert.assertEquals( textschluessel2.getExtension(), 1 );
+
+        Assert.assertEquals( textschluessel3.getKey(), 54 );
+        Assert.assertEquals( textschluessel3.getExtension(), 999 );
     }
 
 }
