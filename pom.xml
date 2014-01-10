@@ -31,7 +31,7 @@
   <artifactId>jdtaus-banking</artifactId>
   <packaging>pom</packaging>
   <name>jDTAUS Banking</name>
-  <version>1.15-SNAPSHOT</version>
+  <version>1.15</version>
   <url>${jdtaus.artifacts.url}/jdtaus-banking</url>
   <description>DTAUS/DTA file format.</description>
   <inceptionYear>2005</inceptionYear>
@@ -39,9 +39,9 @@
     <maven>2.0.10</maven>
   </prerequisites>
   <scm>
-    <connection>scm:svn:http://svn.jdtaus.org/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</connection>
-    <developerConnection>scm:svn:http://svn.jdtaus.org/svnroot/jdtaus/jdtaus-banking/branches/jdtaus-banking-1.x</developerConnection>
-    <url>http://svn.jdtaus.org/jdtaus-banking/branches/jdtaus-banking-1.x</url>
+    <connection>scm:svn:http://svn.jdtaus.org/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-1.15</connection>
+    <developerConnection>scm:svn:http://svn.jdtaus.org/svnroot/jdtaus/jdtaus-banking/tags/jdtaus-banking-1.15</developerConnection>
+    <url>http://svn.jdtaus.org/jdtaus-banking/tags/jdtaus-banking-1.15</url>
   </scm>
   <contributors>
     <contributor>
@@ -246,63 +246,63 @@
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-banking-api</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.common</groupId>
         <artifactId>jdtaus-banking-api</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
         <classifier>tests</classifier>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-charsets</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-it</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-messages</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-bankleitzahlenverzeichnis</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-currencydirectory</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-ri-textschluesselverzeichnis</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-schemas</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-spi</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking</groupId>
         <artifactId>jdtaus-banking-utilities</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>org.jdtaus.banking.dtaus</groupId>
         <artifactId>jdtaus-banking-ri-dtaus</artifactId>
-        <version>1.15-SNAPSHOT</version>
+        <version>1.15</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
