@@ -25,22 +25,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd">
   <body>
-    <menu name="jDTAUS Banking" inherit="top">
-      <item name="Start" href="${project.url}/de/index.html"/>
+    <menu name="Banking Spezifikationen" inherit="top">
+      <item name="API" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-api/de/index.html"/>
+      <item name="SPI" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-spi/de/index.html"/>
+      <item name="Schemata" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-schemas/de/index.html"/>
     </menu>
-    <menu name="Spezifikation">
-      <item name="API" href="${project.url}/jdtaus-banking-api/de/index.html"/>
-      <item name="SPI" href="${project.url}/jdtaus-banking-spi/de/index.html"/>
-      <item name="Schemata" href="${project.url}/jdtaus-banking-schemas/de/index.html"/>
-    </menu>
-    <menu name="Implementierung">
-      <item name="Bankcode Directory" href="${project.url}/jdtaus-banking-ri-bankleitzahlenverzeichnis/de/index.html"/>
-      <item name="Currency Directory" href="${project.url}/jdtaus-banking-ri-currencydirectory/de/index.html"/>
-      <item name="Textschlüssel Directory" href="${project.url}/jdtaus-banking-ri-textschluesselverzeichnis/de/index.html"/>
-      <item name="DTAUS" href="${project.url}/jdtaus-banking-ri-dtaus/de/index.html"/>
-      <item name="Messages" href="${project.url}/jdtaus-banking-messages/de/index.html"/>
-      <item name="Charset Providers" href="${project.url}/jdtaus-banking-charsets/de/index.html"/>
-      <item name="Utilities" href="${project.url}/jdtaus-banking-utilities/de/index.html"/>
+    <menu name="Banking Implementierungen" inherit="top">
+      <item name="Bankcode Directory" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-ri-bankleitzahlenverzeichnis/de/index.html"/>
+      <item name="Currency Directory" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-ri-currencydirectory/de/index.html"/>
+      <item name="Textschlüssel Directory" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-ri-textschluesselverzeichnis/de/index.html"/>
+      <item name="DTAUS" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-ri-dtaus/de/index.html"/>
+      <item name="Messages" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-messages/de/index.html"/>
+      <item name="Charset Providers" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-charsets/de/index.html"/>
+      <item name="Utilities" href="${jdtaus.artifacts.url}/jdtaus-banking/jdtaus-banking-utilities/de/index.html"/>
     </menu>
   </body>
   <custom>
