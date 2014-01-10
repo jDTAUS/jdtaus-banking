@@ -26,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import org.jdtaus.banking.util.BankleitzahlenDatei;
 
 /**
  * {@code BankfileProvider} implementation backed by a properties file.
@@ -133,6 +134,22 @@ public abstract class AbstractPropertiesBankfileProvider implements BankfileProv
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
+    }
+
+    public final int getFormat( final int index ) throws IOException
+    {
+        if ( index < 0 || index >= this.getBankfileCount() )
+        {
+            throw new IndexOutOfBoundsException( Integer.toString( index ) );
+        }
+
+        final String value =
+            this.getProperties().getProperty( BANKFILE_PREFIX + index + ".format" );
+
+        return value == null
+               ? BankleitzahlenDatei.JUNE_2006_FORMAT
+               : Integer.parseInt( value );
+
     }
 
     /**

@@ -92,4 +92,19 @@ public interface BankfileProvider
      */
     Date getDateOfExpiration( int index ) throws IOException;
 
+    /**
+     * Gets the format of the bankfile resource.
+     *
+     * @param index The index of the bankfile resource to get the format of.
+     *
+     * @return The format of the bankfile resource.
+     *
+     * @throws IOException if getting the format of the bankfile resource fails.
+     *
+     * @since 1.15
+     * @see org.jdtaus.banking.util.BankleitzahlenDatei#JUNE_2006_FORMAT
+     * @see org.jdtaus.banking.util.BankleitzahlenDatei#JUNE_2013_FORMAT
+     */
+    int getFormat( int index ) throws IOException;
+
 }

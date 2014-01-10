@@ -93,8 +93,12 @@
         <container:reference container:name="modifyRecordInfo"/>
         <container:reference container:name="removeRecordInfo"/>
         <container:reference container:name="cannotAddDuplicateRecord"/>
+        <container:reference container:name="cannotAddDuplicateHeadOfficeRecord"/>
         <container:reference container:name="cannotModifyNonexistentRecord"/>
+        <container:reference container:name="cannotUpdateIncomptibleFile"/>
         <container:reference container:name="unexpectedData"/>
+        <container:reference container:name="bankcodeFileUpgradeInfo"/>
+        <container:reference container:name="cannotRemoveDuplicateRecord"/>
       </container:messages>
     </container:implementation>
 
@@ -300,6 +304,16 @@
       </container:arguments>
     </container:message>
     <!-- ******************************************************************* -->
+    <container:message container:name="cannotAddDuplicateHeadOfficeRecord">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Head office record of bank code {0,number} already exists and cannot be added.]]></container:text>
+        <container:text container:language="de"><![CDATA[Datensatz der Hauptstelle {0,number} existiert bereits und kann nicht hinzugefügt werden.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="bankCode" container:type="number"/>
+      </container:arguments>
+    </container:message>
+    <!-- ******************************************************************* -->
     <container:message container:name="cannotModifyNonexistentRecord">
       <container:template container:defaultLanguage="en">
         <container:text container:language="en"><![CDATA[Record with serial number {0,number} does not exist and cannot be updated.]]></container:text>
@@ -318,6 +332,38 @@
       <container:arguments>
         <container:argument container:index="0" container:name="lineNumber" container:type="number"/>
         <container:argument container:index="1" container:name="resourceName" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <!-- ******************************************************************* -->
+    <container:message container:name="cannotUpdateIncomptibleFile">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[''{0}'' bank code file cannot be updated with a ''{1}'' bank code file.]]></container:text>
+        <container:text container:language="de"><![CDATA[''{0}'' Bankleitzahlendatei kann nicht mit ''{1}'' Bankleitzahlendatei aktualisiert werden.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="targetBankCodeFileFormat" container:type="text"/>
+        <container:argument container:index="1" container:name="sourceBankCodeFileFormat" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <!-- ******************************************************************* -->
+    <container:message container:name="bankcodeFileUpgradeInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[''{0}'' bank code file upgraded to ''{1}'' bank code file.]]></container:text>
+        <container:text container:language="de"><![CDATA[''{0}'' Bankleitzahlendatei zu ''{1}'' Bankleitzahlendatei aktualisiert.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="targetBankCodeFileFormat" container:type="text"/>
+        <container:argument container:index="1" container:name="sourceBankCodeFileFormat" container:type="text"/>
+      </container:arguments>
+    </container:message>
+    <!-- ******************************************************************* -->
+    <container:message container:name="cannotRemoveDuplicateRecord">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Record with serial number {0,number} already deleted.]]></container:text>
+        <container:text container:language="de"><![CDATA[Datensatz mit Seriennummer {0,number} bereits gelöscht.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="serialNumber" container:type="number"/>
       </container:arguments>
     </container:message>
     <!-- ******************************************************************* -->

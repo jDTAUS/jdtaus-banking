@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Record of the {@code BankleitzahlenVerzeichnis}.
@@ -152,6 +153,38 @@ public class BankleitzahlInfo implements Cloneable, Serializable
      * @serial
      */
     private Bankleitzahl replacingBankCode;
+
+    /**
+     * Label of the rule used for generating international bank account numbers.
+     * @serial
+     * @since 1.15
+     */
+    private Integer ibanRuleLabel;
+
+    /**
+     * Version of the rule used for generating international bank account numbers.
+     * @serial
+     * @since 1.15
+     */
+    private Integer ibanRuleVersion;
+
+    /**
+     * The date the record got created at.
+     * @since 1.15
+     */
+    private Date creationDate;
+
+    /**
+     * The date the record got modified at.
+     * @since 1.15
+     */
+    private Date modificationDate;
+
+    /**
+     * The date the record got deleted at.
+     * @since 1.15
+     */
+    private Date deletionDate;
 
     /** Creates a new {@code BankleitzahlInfo} instance. */
     public BankleitzahlInfo()
@@ -427,6 +460,134 @@ public class BankleitzahlInfo implements Cloneable, Serializable
     }
 
     /**
+     * Getter for property {@code ibanRuleLabel}.
+     *
+     * @return The label of the rule to use for generating international bank account numbers or {@code null}, if
+     * generating an IBAN for an account at the bank identified by the bank code of this record is not supported
+     * (field 14).
+     *
+     * @since 1.15
+     */
+    public Integer getIbanRuleLabel()
+    {
+        return this.ibanRuleLabel;
+    }
+
+    /**
+     * Setter for property {@code ibanRuleLabel}.
+     *
+     * @param value The label of the algorithm to use for generating international bank account numbers or {@code null},
+     * if generating an IBAN for an account at the bank identified by the bank code of this record should not be
+     * supported (field 14).
+     *
+     * @since 1.15
+     */
+    public void setIbanRuleLabel( final Integer value )
+    {
+        this.ibanRuleLabel = value;
+    }
+
+    /**
+     * Getter for property {@code ibanRuleVersion}.
+     *
+     * @return The version of the rule to use for generating international bank account numbers or {@code null}, if
+     * generating an IBAN for an account at the bank identified by the bank code of this record is not supported
+     * (field 14).
+     *
+     * @since 1.15
+     */
+    public Integer getIbanRuleVersion()
+    {
+        return this.ibanRuleVersion;
+    }
+
+    /**
+     * Setter for property {@code ibanRuleVersion}.
+     *
+     * @param value The label of the rule to use for generating international bank account numbers or {@code null},
+     * if generating an IBAN for an account at the bank identified by the bank code of this record should not be
+     * supported (field 14).
+     *
+     * @since 1.15
+     */
+    public void setIbanRuleVersion( final Integer value )
+    {
+        this.ibanRuleVersion = value;
+    }
+
+    /**
+     * Getter for property {@code creationDate}.
+     *
+     * @return The date the record got created at.
+     *
+     * @since 1.15
+     */
+    public Date getCreationDate()
+    {
+        return (Date) ( this.creationDate != null ? this.creationDate.clone() : null );
+    }
+
+    /**
+     * Setter for property {@code creationDate}.
+     *
+     * @param value The new date the record got created at.
+     *
+     * @since 1.15
+     */
+    public void setCreationDate( final Date value )
+    {
+        this.creationDate = (Date) ( value != null ? value.clone() : null );
+    }
+
+    /**
+     * Getter for property {@code modificationDate}.
+     *
+     * @return The date the record got modified at.
+     *
+     * @since 1.15
+     */
+    public Date getModificationDate()
+    {
+        return (Date) ( this.modificationDate != null ? this.modificationDate.clone() : null );
+    }
+
+    /**
+     * Setter for property {@code modificationDate}.
+     *
+     * @param value The new date the record got modified at.
+     *
+     * @since 1.15
+     */
+    public void setModificationDate( final Date value )
+    {
+        this.modificationDate = (Date) ( value != null ? value.clone() : null );
+    }
+
+    /**
+     * Getter for property {@code deletionDate}.
+     *
+     * @return The date the record got deleted at.
+     *
+     * @since 1.15
+     */
+    public Date getDeletionDate()
+    {
+        return (Date) ( this.deletionDate != null ? this.deletionDate.clone() : null );
+    }
+
+    /**
+     * Setter for property {@code deletionDate}.
+     *
+     * @param value The new date the record got deleted at.
+     *
+     * @since 1.15
+     */
+    public void setDeletionDate( final Date value )
+    {
+        this.deletionDate = (Date) ( value != null ? value.clone() : null );
+    }
+
+    /**
      * Parses text from a Bankleitzahlendatei to initialize the instance.
      * <p>This method may be used for reading records from the german Bankleitzahlendatei as published by
      * <a href="http://www.bundesbank.de/index.en.php">Deutsche Bundesbank</a>.
@@ -436,6 +597,8 @@ public class BankleitzahlInfo implements Cloneable, Serializable
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws IllegalArgumentException if the parse fails.
+     *
+     * @deprecated As of 1.15, please use class {@link org.jdtaus.banking.util.BankleitzahlenDatei}.
      */
     public void parse( final String line )
     {
@@ -580,6 +743,11 @@ public class BankleitzahlInfo implements Cloneable, Serializable
             append( ", serialNumber=" ).append( this.serialNumber ).
             append( ", description=" ).append( this.description ).
             append( ", validationLabel=" ).append( this.validationLabel ).
+            append( ", ibanRuleLabel=" ).append( this.ibanRuleLabel ).
+            append( ", ibanRuleVersion=" ).append( this.ibanRuleVersion ).
+            append( ", creationDate=" ).append( this.creationDate ).
+            append( ", modificationDate=" ).append( this.modificationDate ).
+            append( ", deletionDate=" ).append( this.deletionDate ).
             append( '}' ).toString();
 
     }

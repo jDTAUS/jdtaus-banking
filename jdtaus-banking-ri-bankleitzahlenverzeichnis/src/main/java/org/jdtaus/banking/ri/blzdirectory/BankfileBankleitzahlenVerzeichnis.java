@@ -30,12 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.jdtaus.banking.Bankleitzahl;
@@ -71,9 +66,6 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
     /** {@code BankleitzahlenDatei} delegate. */
     private BankleitzahlenDatei bankFile;
-
-    /** Maps bank codes to a list of outdated records. */
-    private final Map outdated = new HashMap( 5000 );
 
     /** Date of expiration. */
     private Date dateOfExpiration;
@@ -160,19 +152,22 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         this.assertValidProperties();
         this.assertInitialized();
 
-        BankleitzahlInfo ret = null;
-        final BankleitzahlInfo[] matches = this.findByBankCode( bankCode, false );
+        BankleitzahlInfo headOffice = this.bankFile.getHeadOfficeRecord( bankCode );
 
-        if ( matches.length == 1 )
+        if ( headOffice == null )
         {
-            ret = matches[0];
-        }
-        else
-        {
-            this.checkReplacement( bankCode );
+            final BankleitzahlInfo deletedHeadOfficeRecord = this.bankFile.getDeletedHeadOfficeRecord( bankCode );
+            final BankleitzahlInfo replacementRecord = this.findReplacementBankeitzahlInfo( deletedHeadOfficeRecord );
+
+            if ( replacementRecord != null
+                 && ( replacementRecord.getDeletionDate() == null
+                      || !replacementRecord.getDeletionDate().before( this.getDateOfExpiration() ) ) )
+            {
+                throw new BankleitzahlExpirationException( deletedHeadOfficeRecord, replacementRecord );
+            }
         }
 
-        return ret;
+        return headOffice;
     }
 
     public BankleitzahlInfo[] getBranchOffices( final Bankleitzahl bankCode ) throws BankleitzahlExpirationException
@@ -185,14 +180,22 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         this.assertValidProperties();
         this.assertInitialized();
 
-        final BankleitzahlInfo[] matches = this.findByBankCode( bankCode, true );
+        final BankleitzahlInfo[] branchOfficeRecords = this.bankFile.getBranchOfficeRecords( bankCode );
 
-        if ( matches.length == 0 )
+        if ( branchOfficeRecords.length == 0 )
         {
-            this.checkReplacement( bankCode );
+            final BankleitzahlInfo deletedHeadOfficeRecord = this.bankFile.getDeletedHeadOfficeRecord( bankCode );
+            final BankleitzahlInfo replacementRecord = this.findReplacementBankeitzahlInfo( deletedHeadOfficeRecord );
+
+            if ( replacementRecord != null
+                 && ( replacementRecord.getDeletionDate() == null
+                      || !replacementRecord.getDeletionDate().before( this.getDateOfExpiration() ) ) )
+            {
+                throw new BankleitzahlExpirationException( deletedHeadOfficeRecord, replacementRecord );
+            }
         }
 
-        return matches;
+        return branchOfficeRecords;
     }
 
     public final BankleitzahlInfo[] search( final String name, final String postalCode, final String city,
@@ -302,7 +305,6 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
                 this.lastModificationCheck = System.currentTimeMillis();
                 if ( this.provider == null || this.provider.getLastModifiedMillis() != this.lastModifiedMillis )
                 {
-                    this.outdated.clear();
                     this.bankFile = null;
                     this.dateOfExpiration = null;
                     this.initialized = false;
@@ -347,56 +349,36 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
                     int progress = 0;
                     long processedRecords = 0L;
                     task.setProgress( progress++ );
-                    this.bankFile = new BankleitzahlenDatei( rsrc[0] );
+                    this.bankFile = new BankleitzahlenDatei( rsrc[0], bankfileProvider.getFormat( 0 ),
+                                                             bankfileProvider.getDateOfValidity( 0 ),
+                                                             bankfileProvider.getDateOfExpiration( 0 ) );
+
                     processedRecords += this.bankFile.getRecords().length;
                     for ( int i = 1; i < rsrc.length; i++ )
                     {
                         task.setProgress( progress++ );
-                        final BankleitzahlenDatei update = new BankleitzahlenDatei( rsrc[i] );
-
-                        // Build mapping of outdated records.
-                        final BankleitzahlInfo[] records = this.bankFile.getRecords();
-
-                        for ( int j = records.length - 1; j >= 0; j-- )
-                        {
-                            if ( records[j].getChangeLabel() == 'D'
-                                 && update.getRecord( records[j].getSerialNumber() ) == null )
-                            {
-                                List l = (List) this.outdated.get( records[j].getBankCode() );
-
-                                if ( l == null )
-                                {
-                                    l = new LinkedList();
-                                    this.outdated.put( records[j].getBankCode(), l );
-                                }
-
-                                l.add( records[j] );
-                            }
-                        }
+                        final BankleitzahlenDatei update =
+                            new BankleitzahlenDatei( rsrc[i], bankfileProvider.getFormat( i ),
+                                                     bankfileProvider.getDateOfValidity( i ),
+                                                     bankfileProvider.getDateOfExpiration( i ) );
 
                         this.bankFile.update( update );
                         processedRecords += update.getRecords().length;
                     }
 
-                    // Remove all outdated records for which another record with the same Bankleitzahl still exists.
-                    for ( final Iterator it = this.outdated.keySet().iterator(); it.hasNext(); )
-                    {
-                        final Bankleitzahl key = (Bankleitzahl) it.next();
-                        if ( this.findByBankCode( key, false ).length > 0 )
-                        {
-                            it.remove();
-                        }
-                    }
-
                     // Log outdated records.
                     if ( this.getLogger().isDebugEnabled() )
                     {
-                        for ( final Iterator it = this.outdated.keySet().iterator(); it.hasNext(); )
+                        for ( int i = 0, l0 = this.bankFile.getDeletedRecords().length; i < l0; i++ )
                         {
-                            final Bankleitzahl blz = (Bankleitzahl) it.next();
-                            this.getLogger().debug( this.getOutdatedInfoMessage(
-                                this.getLocale(), blz.format( Bankleitzahl.LETTER_FORMAT ) ) );
+                            final BankleitzahlInfo record = this.bankFile.getDeletedRecords()[i];
 
+                            if ( record.isHeadOffice() )
+                            {
+                                this.getLogger().debug( this.getOutdatedInfoMessage(
+                                    this.getLocale(), record.getBankCode().format( Bankleitzahl.LETTER_FORMAT ) ) );
+
+                            }
                         }
                     }
 
@@ -435,10 +417,9 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
             if ( new Date().after( this.getDateOfExpiration() ) )
             {
                 this.getApplicationLogger().log( new MessageEvent( this, new Message[]
-                    {
-                        new OutdatedBankleitzahlenVerzeichnisMessage( this.getDateOfExpiration() )
-                    }, MessageEvent.WARNING ) );
-
+                {
+                    new OutdatedBankleitzahlenVerzeichnisMessage( this.getDateOfExpiration() )
+                }, MessageEvent.WARNING ) );
             }
         }
     }
@@ -475,50 +456,34 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
     }
 
     /**
-     * Throws a {@code BankleitzahlExpirationException} if {@code bankCode} is outdated and if a valid replacement
-     * record exists in the directory.
+     * Searches for a record replacing a given record recursively.
      *
-     * @param bankCode the Bankleitzahl to check for expiration.
+     * @param bankInfo The record to search a replacing record for or {@code null}.
      *
-     * @throws NullPointerException if {@code bankCode} is {@code null}.
+     * @return The record to replace {@code bankInfo} with {@code null}.
      */
-    private void checkReplacement( final Bankleitzahl bankCode ) throws BankleitzahlExpirationException
+    private BankleitzahlInfo findReplacementBankeitzahlInfo( final BankleitzahlInfo bankInfo )
     {
-        if ( bankCode == null )
+        BankleitzahlInfo replacement = null;
+
+        if ( bankInfo != null && bankInfo.getReplacingBankCode() != null )
         {
-            throw new NullPointerException( "bankCode" );
-        }
+            replacement = this.bankFile.getHeadOfficeRecord( bankInfo.getReplacingBankCode() );
 
-        final List l = (List) this.outdated.get( bankCode );
-
-        if ( l != null )
-        {
-            // Finds the most recent record specifying a replacing Bankleitzahl.
-            BankleitzahlInfo current = null;
-            BankleitzahlInfo record = null;
-
-            for ( final Iterator it = l.iterator(); it.hasNext(); )
+            if ( replacement == null )
             {
-                current = (BankleitzahlInfo) it.next();
-                if ( current.getReplacingBankCode() != null )
-                {
-                    record = current;
-                }
+                replacement = this.bankFile.getDeletedHeadOfficeRecord( bankInfo.getReplacingBankCode() );
             }
 
-            // Only throw an exception for records specifying a replacing Bankleitzahl which is not outdated.
-            if ( record != null )
-            {
-                final BankleitzahlInfo[] replacement = this.findByBankCode( record.getReplacingBankCode(), false );
-                assert replacement.length == 0 || replacement.length == 1 :
-                    "Multiple head offices for '" + record.getReplacingBankCode() + "'.";
+            final BankleitzahlInfo recurse = this.findReplacementBankeitzahlInfo( replacement );
 
-                if ( replacement.length == 1 )
-                {
-                    throw new BankleitzahlExpirationException( record, replacement[0] );
-                }
+            if ( recurse != null )
+            {
+                replacement = recurse;
             }
         }
+
+        return replacement;
     }
 
     /**
@@ -541,41 +506,13 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         {
             if ( providers[i].getBankfileCount() > 0
                  && ( latest == null || latest.getDateOfExpiration( latest.getBankfileCount() - 1 ).
-                before( providers[i].getDateOfExpiration( providers[i].getBankfileCount() - 1 ) ) ) )
+                     before( providers[i].getDateOfExpiration( providers[i].getBankfileCount() - 1 ) ) ) )
             {
                 latest = providers[i];
             }
         }
 
         return latest;
-    }
-
-    /**
-     * Gets all records matching {@code bankCode} with {@code isHeadOffice() != branchOffices}.
-     *
-     * @param bankCode the bank code to return matching records for.
-     * @param branchOffices {@code true} to return all known branch offices matching {@code bankCode}; {@code false} to
-     * return all known head offices matching {@code bankCode}.
-     */
-    private BankleitzahlInfo[] findByBankCode( final Bankleitzahl bankCode, final boolean branchOffices )
-    {
-        final BankleitzahlInfo[] records =
-            this.bankFile == null ? new BankleitzahlInfo[ 0 ] : this.bankFile.getRecords();
-
-        final Collection col = new ArrayList( records.length );
-
-        for ( int i = records.length - 1; i >= 0; i-- )
-        {
-            if ( records[i].getBankCode().equals( bankCode ) && records[i].isHeadOffice() != branchOffices
-                 && !col.add( records[i] ) )
-            {
-                throw new IllegalStateException( this.getDuplicateRecordMessage(
-                    this.getLocale(), records[i].getSerialNumber(), bankCode.format( Bankleitzahl.LETTER_FORMAT ) ) );
-
-            }
-        }
-
-        return (BankleitzahlInfo[]) col.toArray( new BankleitzahlInfo[ col.size() ] );
     }
 
     //--Constructors------------------------------------------------------------
