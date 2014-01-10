@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Alpha numeric text with a maximum length of twenty seven characters.
  * <p>Data type for the alpha-numeric DTAUS alphabet. For further information
- * see the <a href="../../../doc-files/Anlage_3_DatenformateV2.6.pdf">
+ * see the <a href="../../../doc-files/Anlage3_Datenformate_V2.7.pdf">
  * Spezifikation der Datenformate</a>. An updated version of the document may be found at
  * <a href="http://www.ebics.de">EBICS</a>.</p>
  *
@@ -418,7 +418,7 @@ public final class AlphaNumericText27 implements CharSequence, Comparable, Seria
 
     /**
      * Compares this object with the specified object for order.  Returns a negative integer, zero, or a positive
-     * integer as this object is less than, equal to, or greater than the specified object.<p>
+     * integer as this object is less than, equal to, or greater than the specified object.
      *
      * @param o The Object to be compared.
      * @return A negative integer, zero, or a positive integer as this object is less than, equal to, or greater than
