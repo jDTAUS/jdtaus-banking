@@ -246,6 +246,7 @@
         <container:reference container:name="blzInfo"/>
         <container:reference container:name="bicInfo"/>
         <container:reference container:name="headOfficeInfo"/>
+        <container:reference container:name="bankleitzahlMarkedForDeletionInfo"/>
       </container:messages>
     </container:implementation>
   </container:implementations>
@@ -369,8 +370,8 @@
     <!-- ******************************************************************* -->
     <container:message container:name="blzInfo">
       <container:template container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[BLZ {0}]]></container:text>
-        <container:text container:language="de"><![CDATA[BLZ {0}]]></container:text>
+        <container:text container:language="en"><![CDATA[BLZ&nbsp;{0}]]></container:text>
+        <container:text container:language="de"><![CDATA[BLZ&nbsp;{0}]]></container:text>
       </container:template>
       <container:arguments>
         <container:argument container:index="0" container:name="bankCode" container:type="text"/>
@@ -379,8 +380,8 @@
     <!-- ******************************************************************* -->
     <container:message container:name="bicInfo">
       <container:template container:defaultLanguage="en">
-        <container:text container:language="en"><![CDATA[BIC {0}]]></container:text>
-        <container:text container:language="de"><![CDATA[BIC {0}]]></container:text>
+        <container:text container:language="en"><![CDATA[BIC&nbsp;{0}]]></container:text>
+        <container:text container:language="de"><![CDATA[BIC&nbsp;{0}]]></container:text>
       </container:template>
       <container:arguments>
         <container:argument container:index="0" container:name="bic" container:type="text"/>
@@ -392,6 +393,16 @@
         <container:text container:language="en"><![CDATA[Headoffice]]></container:text>
         <container:text container:language="de"><![CDATA[Hauptstelle]]></container:text>
       </container:template>
+    </container:message>
+    <!-- ******************************************************************* -->
+    <container:message container:name="bankleitzahlMarkedForDeletionInfo">
+      <container:template container:defaultLanguage="en">
+        <container:text container:language="en"><![CDATA[Marked for deletion at {0,date,full}.]]></container:text>
+        <container:text container:language="de"><![CDATA[Vorgesehen zur Löschung am {0,date,full}.]]></container:text>
+      </container:template>
+      <container:arguments>
+        <container:argument container:index="0" container:name="deletionDate" container:type="date"/>
+      </container:arguments>
     </container:message>
   </container:messages>
 </container:module>

@@ -154,11 +154,15 @@ public final class AlphaNumericText27TextField extends JFormattedTextField
                                         s = String.valueOf( chars );
                                     }
 
-                                    final StringBuffer b =
-                                        new StringBuffer( fb.getDocument().getLength() + s.length() );
+                                    final StringBuffer b = new StringBuffer(
+                                        fb.getDocument().getText( 0, fb.getDocument().getLength() ) );
 
-                                    b.append( fb.getDocument().getText( 0, fb.getDocument().getLength() ) );
-                                    b.replace( o, o + s.length(), s );
+                                    b.delete( o, o + l );
+
+                                    if ( s != null )
+                                    {
+                                        b.insert( o, s );
+                                    }
 
                                     try
                                     {

@@ -146,9 +146,15 @@ public final class BankleitzahlTextField extends JFormattedTextField
                             {
                                 if ( isValidating() )
                                 {
-                                    final StringBuffer b = new StringBuffer( fb.getDocument().getLength() + s.length() );
-                                    b.append( fb.getDocument().getText( 0, fb.getDocument().getLength() ) );
-                                    b.replace( o, o + s.length(), s );
+                                    final StringBuffer b = new StringBuffer(
+                                        fb.getDocument().getText( 0, fb.getDocument().getLength() ) );
+
+                                    b.delete( o, o + l );
+
+                                    if ( s != null )
+                                    {
+                                        b.insert( o, s );
+                                    }
 
                                     try
                                     {
@@ -182,7 +188,7 @@ public final class BankleitzahlTextField extends JFormattedTextField
 
                     public void run()
                     {
-                        updateTooltip();
+                        updateTooltip( (Bankleitzahl) evt.getNewValue() );
                     }
 
                 }.start();
@@ -271,18 +277,18 @@ public final class BankleitzahlTextField extends JFormattedTextField
      * {@link #getBankleitzahl()}. This method is called whenever a {@code PropertyChangeEvent} for the property with
      * name {@code value} occurs.
      */
-    private void updateTooltip()
+    private void updateTooltip( final Bankleitzahl bankCode )
     {
-        final Bankleitzahl blz = this.getBankleitzahl();
         final StringBuffer tooltip = new StringBuffer( 200 );
 
-        if ( blz != null )
+        if ( bankCode != null )
         {
             tooltip.append( "<html>" );
 
             try
             {
-                final BankleitzahlInfo headOffice = this.getBankleitzahlenVerzeichnis().getHeadOffice( blz );
+                final BankleitzahlInfo headOffice = this.getBankleitzahlenVerzeichnis().getHeadOffice( bankCode );
+
                 if ( headOffice != null )
                 {
                     tooltip.append( "<b>" ).append( this.getHeadOfficeInfoMessage( this.getLocale() ) ).
@@ -292,10 +298,10 @@ public final class BankleitzahlTextField extends JFormattedTextField
                 }
                 else
                 {
-                    tooltip.append( new UnknownBankleitzahlMessage( blz ).getText( this.getLocale() ) );
+                    tooltip.append( new UnknownBankleitzahlMessage( bankCode ).getText( this.getLocale() ) );
                 }
             }
-            catch ( BankleitzahlExpirationException e )
+            catch ( final BankleitzahlExpirationException e )
             {
                 tooltip.append( new BankleitzahlExpirationMessage(
                     e.getExpiredBankleitzahlInfo() ).getText( this.getLocale() ) );
@@ -359,13 +365,13 @@ public final class BankleitzahlTextField extends JFormattedTextField
         final NumberFormat zipFormat = new DecimalFormat( "#####" );
         buf.append( "<br>" ).append( bankleitzahlInfo.getName() );
 
-        if ( bankleitzahlInfo.getDescription() != null && bankleitzahlInfo.getDescription().trim().length() > 0 &&
-             !bankleitzahlInfo.getName().equals( bankleitzahlInfo.getDescription() ) )
+        if ( bankleitzahlInfo.getDescription() != null && bankleitzahlInfo.getDescription().trim().length() > 0
+             && !bankleitzahlInfo.getName().equals( bankleitzahlInfo.getDescription() ) )
         {
-            buf.append( " (" ).append( bankleitzahlInfo.getDescription() ).append( ")" );
+            buf.append( "&nbsp;(" ).append( bankleitzahlInfo.getDescription() ).append( ")" );
         }
 
-        buf.append( "<br>" ).append( zipFormat.format( bankleitzahlInfo.getPostalCode() ) ).append( " " ).
+        buf.append( "<br>" ).append( zipFormat.format( bankleitzahlInfo.getPostalCode() ) ).append( "&nbsp;" ).
             append( bankleitzahlInfo.getCity() );
 
         buf.append( "<br>" ).append( this.getBlzInfoMessage(
@@ -374,6 +380,13 @@ public final class BankleitzahlTextField extends JFormattedTextField
         if ( bankleitzahlInfo.getBic() != null && bankleitzahlInfo.getBic().trim().length() > 0 )
         {
             buf.append( "<br>" ).append( this.getBicInfoMessage( this.getLocale(), bankleitzahlInfo.getBic() ) );
+        }
+
+        if ( bankleitzahlInfo.isMarkedForDeletion() )
+        {
+            buf.append( "<br><br><b>" ).append( this.getBankleitzahlMarkedForDeletionInfoMessage(
+                this.getLocale(), this.getBankleitzahlenVerzeichnis().getDateOfExpiration() ) ).append( "</b>" );
+
         }
 
         return buf;
@@ -438,8 +451,8 @@ public final class BankleitzahlTextField extends JFormattedTextField
 
     /**
      * Gets the text of message <code>blzInfo</code>.
-     * <blockquote><pre>BLZ {0}</pre></blockquote>
-     * <blockquote><pre>BLZ {0}</pre></blockquote>
+     * <blockquote><pre>BLZ&nbsp;{0}</pre></blockquote>
+     * <blockquote><pre>BLZ&nbsp;{0}</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      * @param bankCode format parameter.
@@ -460,8 +473,8 @@ public final class BankleitzahlTextField extends JFormattedTextField
 
     /**
      * Gets the text of message <code>bicInfo</code>.
-     * <blockquote><pre>BIC {0}</pre></blockquote>
-     * <blockquote><pre>BIC {0}</pre></blockquote>
+     * <blockquote><pre>BIC&nbsp;{0}</pre></blockquote>
+     * <blockquote><pre>BIC&nbsp;{0}</pre></blockquote>
      *
      * @param locale The locale of the message instance to return.
      * @param bic format parameter.
@@ -493,6 +506,28 @@ public final class BankleitzahlTextField extends JFormattedTextField
     {
         return ContainerFactory.getContainer().
             getMessage( this, "headOfficeInfo", locale, null );
+
+    }
+
+    /**
+     * Gets the text of message <code>bankleitzahlMarkedForDeletionInfo</code>.
+     * <blockquote><pre>Vorgesehen zur Löschung am {0,date,full}.</pre></blockquote>
+     * <blockquote><pre>Marked for deletion at {0,date,full}.</pre></blockquote>
+     *
+     * @param locale The locale of the message instance to return.
+     * @param deletionDate format parameter.
+     *
+     * @return the text of message <code>bankleitzahlMarkedForDeletionInfo</code>.
+     */
+    private String getBankleitzahlMarkedForDeletionInfoMessage( final Locale locale,
+            final java.util.Date deletionDate )
+    {
+        return ContainerFactory.getContainer().
+            getMessage( this, "bankleitzahlMarkedForDeletionInfo", locale,
+                new Object[]
+                {
+                    deletionDate
+                });
 
     }
 

@@ -133,9 +133,15 @@ public final class Referenznummer10TextField extends JFormattedTextField
                             {
                                 if ( isValidating() )
                                 {
-                                    final StringBuffer b = new StringBuffer( fb.getDocument().getLength() + s.length() );
-                                    b.append( fb.getDocument().getText( 0, fb.getDocument().getLength() ) );
-                                    b.replace( o, o + s.length(), s );
+                                    final StringBuffer b = new StringBuffer(
+                                        fb.getDocument().getText( 0, fb.getDocument().getLength() ) );
+
+                                    b.delete( o, o + l );
+
+                                    if ( s != null )
+                                    {
+                                        b.insert( o, s );
+                                    }
 
                                     try
                                     {
@@ -242,8 +248,8 @@ public final class Referenznummer10TextField extends JFormattedTextField
      */
     private void assertValidProperties()
     {
-        if ( this.getFormat() != Referenznummer10.ELECTRONIC_FORMAT &&
-             this.getFormat() != Referenznummer10.LETTER_FORMAT )
+        if ( this.getFormat() != Referenznummer10.ELECTRONIC_FORMAT
+             && this.getFormat() != Referenznummer10.LETTER_FORMAT )
         {
             throw new PropertyException( "format", Integer.toString( this.getFormat() ) );
         }

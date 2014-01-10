@@ -133,9 +133,15 @@ public final class KontonummerTextField extends JFormattedTextField
                             {
                                 if ( isValidating() )
                                 {
-                                    final StringBuffer b = new StringBuffer( fb.getDocument().getLength() + s.length() );
-                                    b.append( fb.getDocument().getText( 0, fb.getDocument().getLength() ) );
-                                    b.replace( o, o + s.length(), s );
+                                    final StringBuffer b = new StringBuffer(
+                                        fb.getDocument().getText( 0, fb.getDocument().getLength() ) );
+
+                                    b.delete( o, o + l );
+
+                                    if ( s != null )
+                                    {
+                                        b.insert( o, s );
+                                    }
 
                                     try
                                     {
