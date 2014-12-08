@@ -160,8 +160,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
             final BankleitzahlInfo replacementRecord = this.findReplacementBankeitzahlInfo( deletedHeadOfficeRecord );
 
             if ( replacementRecord != null
-                 && ( replacementRecord.getDeletionDate() == null
-                      || !replacementRecord.getDeletionDate().before( this.getDateOfExpiration() ) ) )
+                     && ( replacementRecord.getDeletionDate() == null
+                          || replacementRecord.getDeletionDate().before( this.getDateOfExpiration() ) ) )
             {
                 throw new BankleitzahlExpirationException( deletedHeadOfficeRecord, replacementRecord );
             }
@@ -188,8 +188,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
             final BankleitzahlInfo replacementRecord = this.findReplacementBankeitzahlInfo( deletedHeadOfficeRecord );
 
             if ( replacementRecord != null
-                 && ( replacementRecord.getDeletionDate() == null
-                      || !replacementRecord.getDeletionDate().before( this.getDateOfExpiration() ) ) )
+                     && ( replacementRecord.getDeletionDate() == null
+                          || replacementRecord.getDeletionDate().before( this.getDateOfExpiration() ) ) )
             {
                 throw new BankleitzahlExpirationException( deletedHeadOfficeRecord, replacementRecord );
             }
