@@ -507,23 +507,23 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
      */
     public boolean equals( final Object o )
     {
-        boolean ret = o == this;
+        boolean equal = o == this;
 
-        if ( !ret && o instanceof Textschluessel )
+        if ( !equal && o instanceof Textschluessel )
         {
             final Textschluessel that = (Textschluessel) o;
 
             if ( this.isVariable() )
             {
-                ret = that.isVariable() && this.key == that.getKey();
+                equal = that.isVariable() && this.key == that.getKey();
             }
             else
             {
-                ret = !that.isVariable() && this.key == that.getKey() && this.extension == that.getExtension();
+                equal = !that.isVariable() && this.key == that.getKey() && this.extension == that.getExtension();
             }
         }
 
-        return ret;
+        return equal;
     }
 
     /**
@@ -539,7 +539,11 @@ public class Textschluessel implements Cloneable, Comparable, Serializable
 
             hc = 37 * hc + ( this.variable ? 0 : 1 );
             hc = 37 * hc + this.key;
-            hc = 37 * hc + this.extension;
+
+            if ( !this.variable )
+            {
+                hc = 37 * hc + this.extension;
+            }
 
             this.hashCode = hc;
         }
