@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.jdtaus</groupId>
     <artifactId>jdtaus-lgpl-parent</artifactId>
-    <version>1.16</version>
+    <version>1.19</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdtaus</groupId>
@@ -325,20 +325,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <profiles>
-    <profile>
-      <id>jdtaus-release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <inherited>false</inherited>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
   <properties>
     <nodeprecated>true</nodeprecated>
     <maven.compiler.source>1.4</maven.compiler.source>
@@ -348,5 +334,6 @@
     <jdtaus.trac.query>order=id&amp;version=${project.version}&amp;component=jDTAUS Banking|${project.name}</jdtaus.trac.query>
     <core.version>1.15</core.version>
     <jdtaus-container-mojo.artifact.version>3.13</jdtaus-container-mojo.artifact.version>
+    <checkstyle.skip>false</checkstyle.skip>
   </properties>
 </project>

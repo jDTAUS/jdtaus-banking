@@ -251,14 +251,14 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
                     if ( ( namePattern == null
                            ? true : namePattern.matcher( records[i].getName().toUpperCase() ).matches() )
-                         && ( postalPattern == null
-                              ? true : postalPattern.matcher( plz ).matches() )
-                         && ( cityPattern == null
-                              ? true : cityPattern.matcher( records[i].getCity().toUpperCase() ).matches() )
-                         && ( headOffices == null
-                              ? true : records[i].isHeadOffice() == headOffices.booleanValue() )
-                         && ( branchOffices == null
-                              ? true : records[i].isHeadOffice() != branchOffices.booleanValue() ) )
+                             && ( postalPattern == null
+                                  ? true : postalPattern.matcher( plz ).matches() )
+                             && ( cityPattern == null
+                                  ? true : cityPattern.matcher( records[i].getCity().toUpperCase() ).matches() )
+                             && ( headOffices == null
+                                  ? true : records[i].isHeadOffice() == headOffices.booleanValue() )
+                             && ( branchOffices == null
+                                  ? true : records[i].isHeadOffice() != branchOffices.booleanValue() ) )
                     {
                         col.add( records[i].clone() );
                     }
@@ -300,7 +300,7 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         try
         {
             if ( this.provider == null
-                 || System.currentTimeMillis() - this.lastModificationCheck > this.getReloadIntervalMillis() )
+                     || System.currentTimeMillis() - this.lastModificationCheck > this.getReloadIntervalMillis() )
             {
                 this.lastModificationCheck = System.currentTimeMillis();
                 if ( this.provider == null || this.provider.getLastModifiedMillis() != this.lastModifiedMillis )
@@ -311,8 +311,9 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
 
                     if ( this.provider != null )
                     {
-                        this.getLogger().info( this.getReloadInfoMessage( this.getLocale(), new Date(
-                            this.lastModifiedMillis ), new Date( this.provider.getLastModifiedMillis() ) ) );
+                        this.getLogger().info( this.getReloadInfoMessage(
+                            this.getLocale(), new Date( this.lastModifiedMillis ),
+                            new Date( this.provider.getLastModifiedMillis() ) ) );
 
                     }
                 }
@@ -416,10 +417,12 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         {
             if ( new Date().after( this.getDateOfExpiration() ) )
             {
-                this.getApplicationLogger().log( new MessageEvent( this, new Message[]
-                {
-                    new OutdatedBankleitzahlenVerzeichnisMessage( this.getDateOfExpiration() )
-                }, MessageEvent.WARNING ) );
+                this.getApplicationLogger().log( new MessageEvent(
+                    this, new Message[]
+                    {
+                        new OutdatedBankleitzahlenVerzeichnisMessage( this.getDateOfExpiration() )
+                    }, MessageEvent.WARNING ) );
+
             }
         }
     }
@@ -505,8 +508,8 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
         for ( int i = providers.length - 1; i >= 0; i-- )
         {
             if ( providers[i].getBankfileCount() > 0
-                 && ( latest == null || latest.getDateOfExpiration( latest.getBankfileCount() - 1 ).
-                     before( providers[i].getDateOfExpiration( providers[i].getBankfileCount() - 1 ) ) ) )
+                     && ( latest == null || latest.getDateOfExpiration( latest.getBankfileCount() - 1 ).
+                         before( providers[i].getDateOfExpiration( providers[i].getBankfileCount() - 1 ) ) ) )
             {
                 latest = providers[i];
             }
