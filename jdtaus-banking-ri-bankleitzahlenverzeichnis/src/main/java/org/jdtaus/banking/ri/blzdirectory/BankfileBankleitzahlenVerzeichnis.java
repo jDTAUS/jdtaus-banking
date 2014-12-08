@@ -286,6 +286,19 @@ public class BankfileBankleitzahlenVerzeichnis implements BankleitzahlenVerzeich
     }
 
     /**
+     * Gets the {@code BankleitzahlenDatei} backing the instance.
+     *
+     * @return The {@code BankleitzahlenDatei} backing the instance.
+     * @since 1.16
+     */
+    protected BankleitzahlenDatei getBankfile()
+    {
+        this.assertValidProperties();
+        this.assertInitialized();
+        return this.bankFile;
+    }
+
+    /**
      * Initializes the instance.
      *
      * @throws RuntimeException if initialization fails.
